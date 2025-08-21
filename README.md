@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Visarut Sankham Portfolio Website
 
-## Getting Started
+A modern portfolio website for วิศรุต แสนคำ (Visarut Sankham), a Thai media professional specializing in photography, videography, web development, graphic design, and creative services.
 
-First, run the development server:
+## 🚀 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Framework**: Next.js 14+ with App Router
+- **UI Library**: Chakra UI v3
+- **Language**: TypeScript
+- **CMS**: WordPress Headless (REST API)
+- **Styling**: Custom CSS with Thai font support
+- **Icons**: Lucide React
+- **Deployment**: Vercel (recommended)
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── layout.tsx         # Root layout with providers
+│   ├── page.tsx           # Homepage
+│   ├── portfolio/         # Portfolio pages
+│   ├── about/             # About page
+│   └── contact/           # Contact page
+├── components/            # Reusable components
+│   ├── layout/           # Layout components (Header, Footer)
+│   ├── portfolio/        # Portfolio-specific components
+│   ├── ui/               # UI components
+│   └── providers.tsx     # Chakra UI provider
+├── lib/                  # Library code
+│   ├── config.ts         # Site configuration
+│   ├── theme.ts          # Chakra UI theme
+│   └── wordpress.ts      # WordPress API client
+├── types/                # TypeScript type definitions
+│   ├── index.ts          # Common types
+│   ├── portfolio.ts      # Portfolio-specific types
+│   └── wordpress.ts      # WordPress API types
+├── utils/                # Utility functions
+│   └── index.ts          # Common utilities
+└── hooks/                # Custom React hooks
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Design Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Thai Language Support**: Custom Kanit font for Thai text
+- **Dark/Light Mode**: System preference with manual toggle
+- **Responsive Design**: Mobile-first approach
+- **Modern UI**: Clean, minimal design with smooth animations
+- **Color Scheme**:
+  - Primary: #1a1a1a
+  - Secondary: #ffffff
+  - Accent: #6b7280 (Apple-style gray)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📊 Portfolio Categories
 
-## Learn More
+The website supports the following portfolio categories:
 
-To learn more about Next.js, take a look at the following resources:
+1. **ภาพถ่าย** (Photography)
+2. **ถ่ายวีดีโอ** (Videography)
+3. **ตัดต่อวีดีโอ** (Video Editing)
+4. **เว็บไซต์** (Website)
+5. **ออกแบบกราฟิก** (Graphic Design)
+6. **สิ่งพิมพ์** (Print)
+7. **นิทรรศการ** (Exhibition)
+8. **แคมเปญ** (Campaign)
+9. **โปรดิวเซอร์** (Producer)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔌 WordPress Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The website integrates with WordPress as a headless CMS:
 
-## Deploy on Vercel
+- **Base URL**: `https://visarutsankham.com/wp-json/wp/v2/`
+- **Portfolios Endpoint**: `/portfolios`
+- **Categories Endpoint**: `/portfolio_category`
+- **Media Support**: Images, videos, galleries
+- **ACF Support**: Category-specific custom fields
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- WordPress site with REST API enabled
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## 📝 Development Status
+
+### Phase 1: Foundation ✅
+
+- [x] Project setup and configuration
+- [x] Basic layout components (Header, Footer)
+- [x] Homepage with hero section
+- [x] TypeScript types and API client
+- [x] Chakra UI theme configuration
+
+### Next Steps
+
+- [ ] Portfolio grid component with filtering
+- [ ] Individual portfolio item pages
+- [ ] WordPress API integration
+- [ ] Contact form
+- [ ] About page
+
+## 🛠️ Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## 📞 Contact
+
+- **Email**: contact@visarutsankham.com
+- **Website**: https://visarutsankham.com

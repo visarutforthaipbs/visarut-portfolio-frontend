@@ -1,0 +1,455 @@
+import axios from "axios";
+import { apiCache } from "./cache";
+import type {
+  WordPressPost,
+  WordPressFeaturedMedia,
+  PortfolioItem,
+  PortfolioResponse,
+  CategoriesResponse,
+  PortfolioCategory,
+  MediaItem,
+  ImageMedia,
+  VideoMedia,
+} from "@/types";
+
+// WordPress API Configuration
+const WP_API_BASE = "https://visarutsankham.com/wp-json/wp/v2";
+
+// Create axios instance with default config
+const wpApi = axios.create({
+  baseURL: WP_API_BASE,
+  timeout: 30000, // Increased timeout to 30 seconds
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// WordPress API Client Class
+export class WordPressAPI {
+  /**
+   * Fetch portfolio items from WordPress
+   */
+  static async getPortfolios(params?: {
+    page?: number;
+    per_page?: number;
+    categories?: string;
+    search?: string;
+    orderby?: string;
+    order?: "asc" | "desc";
+  }): Promise<PortfolioResponse> {
+    // Create cache key
+    const cacheKey = `portfolios_${JSON.stringify(params || {})}`;
+
+    // Try to get from cache first
+    const cached = apiCache.get<PortfolioResponse>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    try {
+      // Map category names to IDs for the API
+      let categoryId: number | undefined;
+      if (params?.categories && params.categories !== "all") {
+        switch (params.categories) {
+          case "video-editing":
+            categoryId = 23;
+            break;
+          case "videography":
+            categoryId = 24;
+            break;
+          case "photography":
+            categoryId = 26;
+            break;
+          case "website":
+            categoryId = 29;
+            break;
+          case "graphic-design":
+            categoryId = 30;
+            break;
+          case "print":
+            categoryId = 31;
+            break;
+          case "exhibition":
+            categoryId = 32;
+            break;
+          case "campaign":
+            categoryId = 33;
+            break;
+          case "producer":
+            categoryId = 34;
+            break;
+        }
+      }
+
+      const response = await wpApi.get("/portfolios", {
+        params: {
+          per_page: 12,
+          orderby: "date",
+          order: "desc",
+          _embed: true, // Include featured media and other embedded data
+          portfolio_category: categoryId, // Use category ID for filtering
+          page: params?.page,
+          search: params?.search,
+          ...params,
+        },
+      });
+
+      const items: PortfolioItem[] = response.data.map((post: WordPressPost) =>
+        this.transformPortfolioPost(post)
+      );
+
+      // Get pagination info from headers
+      const total = parseInt(response.headers["x-wp-total"] || "0");
+      const totalPages = parseInt(response.headers["x-wp-totalpages"] || "1");
+      const currentPage = params?.page || 1;
+
+      const result: PortfolioResponse = {
+        items,
+        total,
+        totalPages,
+        currentPage,
+      };
+
+      // Cache the result for 5 minutes
+      apiCache.set(cacheKey, result, 5);
+
+      return result;
+    } catch (error) {
+      console.error("Error fetching portfolios:", error);
+
+      // Return empty result instead of throwing error to prevent app crashes
+      return {
+        items: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: 1,
+      };
+    }
+  }
+
+  /**
+   * Fetch a single portfolio item by slug
+   */
+  static async getPortfolioBySlug(slug: string): Promise<PortfolioItem | null> {
+    const cacheKey = `portfolio_${slug}`;
+
+    // Try to get from cache first
+    const cached = apiCache.get<PortfolioItem>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    try {
+      const response = await wpApi.get("/portfolios", {
+        params: {
+          slug,
+          _embed: true,
+        },
+      });
+
+      if (response.data.length === 0) {
+        return null;
+      }
+
+      const result = this.transformPortfolioPost(response.data[0]);
+
+      // Cache the result for 10 minutes
+      apiCache.set(cacheKey, result, 10);
+
+      return result;
+    } catch (error) {
+      console.error("Error fetching portfolio by slug:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Fetch portfolio categories
+   */
+  static async getPortfolioCategories(): Promise<CategoriesResponse> {
+    const cacheKey = "portfolio_categories";
+
+    // Try to get from cache first
+    const cached = apiCache.get<CategoriesResponse>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    try {
+      const response = await wpApi.get("/portfolio_category", {
+        params: {
+          per_page: 100,
+          orderby: "name",
+          order: "asc",
+        },
+      });
+
+      const result: CategoriesResponse = {
+        categories: response.data,
+      };
+
+      // Cache categories for 30 minutes (they don't change often)
+      apiCache.set(cacheKey, result, 30);
+
+      return result;
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      return {
+        categories: [],
+      };
+    }
+  }
+
+  /**
+   * Fetch featured media by ID
+   */
+  static async getFeaturedMedia(
+    mediaId: number
+  ): Promise<WordPressFeaturedMedia | null> {
+    try {
+      const response = await wpApi.get(`/media/${mediaId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching featured media:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Transform WordPress post to PortfolioItem
+   */
+  private static transformPortfolioPost(post: WordPressPost): PortfolioItem {
+    // Extract category from post categories
+    // This is a simplified approach - you might need to map category IDs to slugs
+    const category = this.extractPortfolioCategory(post);
+
+    // Extract featured image from embedded data
+    const featuredImage = this.extractFeaturedImage(post);
+
+    // Extract media items from ACF fields and content
+    const media = this.extractMediaItems(post);
+
+    return {
+      ...post,
+      category,
+      featured_image: featuredImage,
+      media,
+    } as PortfolioItem;
+  }
+
+  /**
+   * Extract portfolio category from post
+   */
+  private static extractPortfolioCategory(
+    post: WordPressPost
+  ): PortfolioCategory {
+    // Extract category from portfolio_category field
+    if (post.portfolio_category && post.portfolio_category.length > 0) {
+      // Map WordPress category IDs to our category types based on your API
+      const categoryId = post.portfolio_category[0];
+      switch (categoryId) {
+        case 23: // Video Editing (ตัดต่อวีดีโอ)
+          return "video-editing";
+        case 24: // Videography (ถ่ายวีดีโอ)
+          return "videography";
+        case 26: // Photography (ภาพถ่าย)
+          return "photography";
+        case 29: // Website (เว็บไซต์)
+          return "website";
+        // Add other category mappings as needed
+        case 30:
+          return "graphic-design";
+        case 31:
+          return "print";
+        case 32:
+          return "exhibition";
+        case 33:
+          return "campaign";
+        case 34:
+          return "producer";
+        default:
+          return "photography";
+      }
+    }
+    return "photography"; // Default category
+  }
+
+  /**
+   * Extract featured image from embedded data
+   */
+  private static extractFeaturedImage(
+    post: WordPressPost
+  ): ImageMedia | undefined {
+    // Check if featured media is embedded
+    const embedded = (
+      post as WordPressPost & {
+        _embedded?: { "wp:featuredmedia"?: WordPressFeaturedMedia[] };
+      }
+    )._embedded;
+    if (
+      embedded &&
+      embedded["wp:featuredmedia"] &&
+      embedded["wp:featuredmedia"][0]
+    ) {
+      const media = embedded["wp:featuredmedia"][0];
+      return {
+        id: media.id.toString(),
+        type: "image",
+        url: media.source_url,
+        alt: media.alt_text || "",
+        caption: media.caption?.rendered || "",
+        width: media.media_details?.width,
+        height: media.media_details?.height,
+        sizes: media.media_details?.sizes
+          ? {
+              thumbnail:
+                media.media_details.sizes.thumbnail?.source_url ||
+                media.source_url,
+              medium:
+                media.media_details.sizes.medium?.source_url ||
+                media.source_url,
+              large:
+                media.media_details.sizes.large?.source_url || media.source_url,
+              full: media.source_url,
+            }
+          : undefined,
+      };
+    }
+    return undefined;
+  }
+
+  /**
+   * Extract media items from ACF fields and content
+   */
+  private static extractMediaItems(post: WordPressPost): MediaItem[] {
+    const media: MediaItem[] = [];
+
+    // Extract images from content HTML (WordPress gallery blocks)
+    const contentImages = this.extractImagesFromContent(post.content.rendered);
+    media.push(...contentImages);
+
+    // Extract from ACF fields if available
+    if (post.acf.gallery && Array.isArray(post.acf.gallery)) {
+      post.acf.gallery.forEach((item: unknown) => {
+        const galleryItem = item as {
+          id?: number;
+          url?: string;
+          source_url?: string;
+          alt?: string;
+          caption?: string;
+          width?: number;
+          height?: number;
+        };
+
+        media.push({
+          id: galleryItem.id?.toString() || Math.random().toString(),
+          type: "image",
+          url: galleryItem.url || galleryItem.source_url || "",
+          alt: galleryItem.alt || "",
+          caption: galleryItem.caption || "",
+          width: galleryItem.width,
+          height: galleryItem.height,
+        });
+      });
+    }
+
+    return media;
+  }
+
+  /**
+   * Extract images from WordPress content HTML
+   */
+  private static extractImagesFromContent(content: string): ImageMedia[] {
+    const images: ImageMedia[] = [];
+
+    // Pattern to match WordPress gallery images
+    const imgRegex =
+      /<img[^>]*src="([^"]*)"[^>]*(?:data-id="([^"]*)")?[^>]*(?:alt="([^"]*)")?[^>]*>/gi;
+    let match;
+
+    while ((match = imgRegex.exec(content)) !== null) {
+      const [, src, dataId, alt] = match;
+
+      // Skip if already processed (avoid duplicates)
+      if (images.some((img) => img.url === src)) continue;
+
+      images.push({
+        id: dataId || Math.random().toString(),
+        type: "image",
+        url: src,
+        alt: alt || "",
+        caption: "",
+        // Extract dimensions from srcset if available
+        ...this.extractImageDimensions(match[0]),
+      });
+    }
+
+    return images;
+  }
+
+  /**
+   * Extract image dimensions from img tag
+   */
+  private static extractImageDimensions(imgTag: string): {
+    width?: number;
+    height?: number;
+  } {
+    const widthMatch = imgTag.match(/width="(\d+)"/);
+    const heightMatch = imgTag.match(/height="(\d+)"/);
+
+    return {
+      width: widthMatch ? parseInt(widthMatch[1]) : undefined,
+      height: heightMatch ? parseInt(heightMatch[1]) : undefined,
+    };
+  }
+
+  /**
+   * Safely render WordPress HTML content
+   * This handles Elementor and other WordPress content
+   */
+  static renderContent(htmlContent: string): string {
+    // Basic sanitization - you might want to use a library like DOMPurify for production
+    // For now, we'll return the content as-is since it's from a trusted source
+    return htmlContent;
+  }
+
+  /**
+   * Extract video embeds from WordPress content
+   */
+  static extractVideoEmbeds(content: string): VideoMedia[] {
+    const videos: VideoMedia[] = [];
+
+    // YouTube embed pattern
+    const youtubeRegex =
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi;
+    let match;
+
+    while ((match = youtubeRegex.exec(content)) !== null) {
+      videos.push({
+        id: match[1],
+        type: "video",
+        provider: "youtube",
+        videoId: match[1],
+        url: `https://www.youtube.com/watch?v=${match[1]}`,
+        thumbnail: `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`,
+      });
+    }
+
+    // Vimeo embed pattern
+    const vimeoRegex = /(?:vimeo\.com\/)([0-9]+)/gi;
+    while ((match = vimeoRegex.exec(content)) !== null) {
+      videos.push({
+        id: match[1],
+        type: "video",
+        provider: "vimeo",
+        videoId: match[1],
+        url: `https://vimeo.com/${match[1]}`,
+      });
+    }
+
+    return videos;
+  }
+}
+
+// Export default instance
+export default WordPressAPI;

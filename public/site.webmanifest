@@ -1,0 +1,35 @@
+{
+  "name": "วิศรุต แสนคำ - ผู้ผลิตสื่อ",
+  "short_name": "วิศรุต แสนคำ",
+  "description": "ผู้ผลิตสื่อหลายรูปแบบ โดยมีความเชี่ยวชาญเป็นพิเศษกับภาคประชาสังคม องค์กรพัฒนาเอกชน และสถาบันการศึกษา",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6b7280",
+  "orientation": "portrait-primary",
+  "lang": "th",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/logo/black-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["photography", "business", "productivity"],
+  "screenshots": [
+    {
+      "src": "/og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Homepage of Visarut Sankham Portfolio"
+    }
+  ]
+}

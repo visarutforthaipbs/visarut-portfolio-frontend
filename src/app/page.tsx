@@ -1,103 +1,229 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import {
+  Box,
+  Container,
+  Heading,
+  Text,
+  Button,
+  VStack,
+  HStack,
+  SimpleGrid,
+} from "@chakra-ui/react";
+import { ArrowRight, Camera, Video, Code, Palette } from "lucide-react";
+import Link from "next/link";
+import { Layout } from "@/components/layout";
+import { PortfolioPreview } from "@/components/portfolio";
+import { BlogPreview } from "@/components/blog/BlogPreview";
+import { JsonLd } from "@/components/JsonLd";
+import {
+  generatePersonSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+} from "@/lib/seo";
+
+export default function HomePage() {
+  const services = [
+    {
+      icon: <Camera size={32} />,
+      title: "ภาพถ่าย",
+      titleEn: "Photography",
+      description: "บริการถ่ายภาพสินค้า บุคคล และกิจกรรม",
+      category: "photography",
+    },
+    {
+      icon: <Video size={32} />,
+      title: "วิดีโอ",
+      titleEn: "Videography",
+      description: "ถ่ายทำและตัดต่อวิดีโอคุณภาพสูง",
+      category: "videography",
+    },
+    {
+      icon: <Code size={32} />,
+      title: "เว็บไซต์",
+      titleEn: "Web Development",
+      description: "พัฒนาเว็บไซต์และแอปพลิเคชัน",
+      category: "website",
+    },
+    {
+      icon: <Palette size={32} />,
+      title: "กราฟิกดีไซน์",
+      titleEn: "Graphic Design",
+      description: "ออกแบบกราฟิกและสื่อสิ่งพิมพ์",
+      category: "graphic-design",
+    },
+  ];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      {/* Structured Data */}
+      <JsonLd data={generatePersonSchema()} />
+      <JsonLd data={generateOrganizationSchema()} />
+      <JsonLd data={generateWebsiteSchema()} />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <Layout>
+        {/* Hero Section - Full Width */}
+        <Box
+          bg={{ base: "white", _dark: "gray.900" }}
+          py={{ base: 12, md: 20, lg: 24 }}
+          className="full-width"
+          display="flex"
+          justifyContent="center"
+          w="100%"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <Container maxW="5xl" px={{ base: 4, md: 6, lg: 8 }}>
+            <VStack gap={{ base: 6, md: 8 }} textAlign="center">
+              <VStack gap={{ base: 3, md: 4 }}>
+                <Heading
+                  fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "6xl" }}
+                  fontWeight="bold"
+                  color={{ base: "gray.800", _dark: "white" }}
+                  className="thai-text"
+                  lineHeight={{ base: "1.2", md: "1.1" }}
+                >
+                  วิศรุต แสนคำ
+                </Heading>
+                <Text
+                  fontSize={{ base: "md", sm: "lg", md: "xl" }}
+                  color={{ base: "gray.600", _dark: "gray.300" }}
+                  maxW={{ base: "90%", md: "600px" }}
+                  className="thai-text"
+                  lineHeight={{ base: "1.6", md: "1.7" }}
+                  px={{ base: 2, md: 0 }}
+                >
+                  ผู้เชี่ยวชาญด้านสื่อ เชี่ยวชาญในการถ่ายภาพ การถ่ายวิดีโอ
+                  การพัฒนาเว็บไซต์ และการออกแบบกราฟิก
+                </Text>
+              </VStack>
+
+              <HStack gap={{ base: 3, md: 4 }} flexWrap="wrap" justify="center">
+                <Link href="/portfolio">
+                  <Button
+                    size={{ base: "md", md: "lg" }}
+                    bg="accent.500"
+                    color="white"
+                    _hover={{ bg: "accent.600" }}
+                    className="thai-text"
+                    px={{ base: 4, md: 6 }}
+                    py={{ base: 2, md: 3 }}
+                    fontSize={{ base: "sm", md: "md" }}
+                  >
+                    <HStack gap={2}>
+                      <Text>ดูผลงาน</Text>
+                      <ArrowRight size={20} />
+                    </HStack>
+                  </Button>
+                </Link>
+              </HStack>
+            </VStack>
+          </Container>
+        </Box>
+
+        {/* Portfolio Preview Section - Full Width with WordPress Data */}
+        <Box
+          bg={{ base: "gray.50", _dark: "gray.800" }}
+          py={{ base: 12, md: 16, lg: 20 }}
+          className="full-width"
+          display="flex"
+          justifyContent="center"
+          w="100%"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <Container maxW="5xl" px={{ base: 4, md: 6, lg: 8 }}>
+            <PortfolioPreview maxItems={6} />
+          </Container>
+        </Box>
+
+        {/* Blog Preview Section - Full Width */}
+        <BlogPreview maxPosts={3} />
+
+        {/* Services Section - Full Width */}
+        <Box
+          bg={{ base: "white", _dark: "gray.900" }}
+          py={{ base: 12, md: 16, lg: 20 }}
+          className="full-width"
+          display="flex"
+          justifyContent="center"
+          w="100%"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <Container maxW="5xl" px={{ base: 4, md: 6, lg: 8 }}>
+            <VStack gap={{ base: 8, md: 12 }}>
+              <VStack gap={{ base: 3, md: 4 }} textAlign="center">
+                <Heading
+                  fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
+                  color={{ base: "gray.800", _dark: "white" }}
+                  className="thai-text"
+                >
+                  บริการของเรา
+                </Heading>
+                <Text
+                  fontSize={{ base: "md", md: "lg" }}
+                  color={{ base: "gray.600", _dark: "gray.300" }}
+                  maxW={{ base: "90%", md: "500px" }}
+                  className="thai-text"
+                  px={{ base: 2, md: 0 }}
+                >
+                  เราให้บริการครบวงจรด้านสื่อและการสื่อสาร
+                </Text>
+              </VStack>
+
+              <SimpleGrid
+                columns={{ base: 1, sm: 2, lg: 4 }}
+                gap={{ base: 4, md: 6, lg: 8 }}
+                w="full"
+              >
+                {services.map((service, index) => (
+                  <Link
+                    key={index}
+                    href={`/portfolio/category/${service.category}`}
+                  >
+                    <Box
+                      bg={{ base: "white", _dark: "gray.700" }}
+                      p={{ base: 4, md: 6 }}
+                      borderRadius="lg"
+                      shadow="md"
+                      textAlign="center"
+                      _hover={{
+                        transform: "translateY(-4px)",
+                        shadow: "lg",
+                      }}
+                      transition="all 0.3s ease"
+                      cursor="pointer"
+                      border="1px solid"
+                      borderColor={{ base: "gray.200", _dark: "gray.600" }}
+                    >
+                      <VStack gap={{ base: 3, md: 4 }}>
+                        <Box
+                          color={{ base: "accent.500", _dark: "accent.300" }}
+                          fontSize={{ base: "xl", md: "2xl" }}
+                        >
+                          {service.icon}
+                        </Box>
+                        <VStack gap={2}>
+                          <Heading
+                            fontSize={{ base: "lg", md: "xl" }}
+                            color={{ base: "gray.800", _dark: "white" }}
+                            className="thai-text"
+                          >
+                            {service.title}
+                          </Heading>
+                          <Text
+                            fontSize={{ base: "xs", md: "sm" }}
+                            color={{ base: "gray.600", _dark: "gray.300" }}
+                            className="thai-text"
+                            lineHeight="1.5"
+                          >
+                            {service.description}
+                          </Text>
+                        </VStack>
+                      </VStack>
+                    </Box>
+                  </Link>
+                ))}
+              </SimpleGrid>
+            </VStack>
+          </Container>
+        </Box>
+      </Layout>
+    </>
   );
 }
