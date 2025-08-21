@@ -20,7 +20,7 @@ export const siteConfig: SiteConfig = {
   },
   api: {
     wordpress: {
-      baseUrl: "https://visarutsankham.com/wp-json/wp/v2",
+      baseUrl: "http://admin.visarutsankham.com/wp-json/wp/v2",
       postsEndpoint: "/portfolios",
       categoriesEndpoint: "/portfolio_category",
       blogPostsEndpoint: "/posts",
