@@ -13,7 +13,7 @@ import type {
 } from "@/types";
 
 // WordPress API Configuration
-const WP_API_BASE = "http://admin.visarutsankham.com/wp-json/wp/v2";
+const WP_API_BASE = "https://admin.visarutsankham.com/wp-json/wp/v2";
 
 // Create axios instance with default config
 const wpApi = axios.create({
@@ -22,7 +22,33 @@ const wpApi = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // Enable credentials for CORS
+  withCredentials: false,
 });
+
+// Add request interceptor for debugging
+wpApi.interceptors.request.use(
+  (config) => {
+    console.log("API Request:", config.url, config.params);
+    return config;
+  },
+  (error) => {
+    console.error("API Request Error:", error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for debugging
+wpApi.interceptors.response.use(
+  (response) => {
+    console.log("API Response:", response.status, response.config.url);
+    return response;
+  },
+  (error) => {
+    console.error("API Response Error:", error.message, error.response?.status);
+    return Promise.reject(error);
+  }
+);
 
 // WordPress API Client Class
 export class WordPressAPI {
@@ -117,7 +143,119 @@ export class WordPressAPI {
     } catch (error) {
       console.error("Error fetching portfolios:", error);
 
-      // Return empty result instead of throwing error to prevent app crashes
+      // Log more detailed error information
+      if (axios.isAxiosError(error)) {
+        console.error("API Error Details:", {
+          message: error.message,
+          code: error.code,
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          url: error.config?.url,
+          baseURL: error.config?.baseURL,
+        });
+
+        // If it's a network error, try to provide helpful debugging info
+        if (error.code === "ERR_NETWORK") {
+          console.error(
+            "Network Error - Check if WordPress API is accessible at:",
+            WP_API_BASE
+          );
+          console.error("Possible causes:");
+          console.error("1. WordPress server is down");
+          console.error("2. CORS policy blocking the request");
+          console.error("3. Network connectivity issues");
+          console.error(
+            "4. SSL certificate issues (check browser console for SSL errors)"
+          );
+          console.error("5. Incorrect API URL");
+        }
+
+        // Handle SSL/TLS certificate errors
+        if (
+          error.message.includes("ERR_CERT") ||
+          error.message.includes("SSL") ||
+          error.message.includes("certificate")
+        ) {
+          console.error(
+            "SSL Certificate Error - The admin subdomain may not have a valid SSL certificate"
+          );
+          console.error(
+            "Consider setting up a proper SSL certificate for admin.visarutsankham.com"
+          );
+        }
+      }
+
+      // For development, return mock data to prevent app crashes
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Using mock portfolio data due to API error");
+        return {
+          items: [
+            {
+              id: 1,
+              date: new Date().toISOString(),
+              date_gmt: new Date().toISOString(),
+              guid: { rendered: "sample-guid" },
+              modified: new Date().toISOString(),
+              modified_gmt: new Date().toISOString(),
+              slug: "sample-portfolio",
+              status: "publish",
+              type: "portfolio",
+              link: "sample-link",
+              title: { rendered: "Sample Portfolio Item" },
+              content: {
+                rendered: "Sample content",
+                protected: false,
+              },
+              excerpt: {
+                rendered:
+                  "This is a sample portfolio item while the API is unavailable.",
+                protected: false,
+              },
+              author: 1,
+              featured_media: 0,
+              comment_status: "closed",
+              ping_status: "closed",
+              sticky: false,
+              template: "",
+              format: "standard",
+              meta: {},
+              categories: [],
+              tags: [],
+              portfolio_category: [],
+              category: "website" as const,
+              acf: {
+                gallery: [],
+                video_url: "",
+                client: "Sample Client",
+                year: new Date().getFullYear().toString(),
+                role: "Sample Role",
+                description: "Sample description",
+                skills: ["Sample Skill"],
+                project_type: "Sample Type",
+                duration: "1 month",
+                team_size: "1 person",
+                tools_used: ["Sample Tool"],
+                challenges: "Sample challenge",
+                results: "Sample result",
+                testimonial: {
+                  quote: "",
+                  author: "",
+                  position: "",
+                },
+              },
+              _links: {
+                self: [{ href: "sample-link" }],
+                collection: [{ href: "sample-collection" }],
+              },
+            },
+          ],
+          total: 1,
+          totalPages: 1,
+          currentPage: 1,
+        };
+      }
+
+      // Return empty result for production
       return {
         items: [],
         total: 0,
