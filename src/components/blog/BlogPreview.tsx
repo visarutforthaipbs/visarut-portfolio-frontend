@@ -11,11 +11,18 @@ import {
   SimpleGrid,
   Button,
   Badge,
+  Image,
 } from "@chakra-ui/react";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config";
-import type { BlogPost, BlogCategory } from "@/types/wordpress";
+import { getBlogPostImage } from "@/utils";
+import { getWordPressMediaUrl } from "@/utils";
+import type {
+  BlogPost,
+  BlogCategory,
+  WordPressFeaturedMedia,
+} from "@/types/wordpress";
 
 interface BlogPreviewProps {
   maxPosts?: number;
@@ -152,6 +159,71 @@ function BlogPostCard({
   post: BlogPost;
   categories: BlogCategory[];
 }) {
+  const [featuredImage, setFeaturedImage] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeaturedImage = async () => {
+      console.log(
+        "BlogPreview: Fetching featured image for post:",
+        post.id,
+        post.title.rendered
+      );
+      setImageLoading(true);
+
+      if (post.featured_media && post.featured_media > 0) {
+        console.log(
+          "BlogPreview: Post has featured_media ID:",
+          post.featured_media
+        );
+        try {
+          // Fetch featured media details
+          const mediaResponse = await fetch(
+            getWordPressMediaUrl(
+              siteConfig.api.wordpress.baseUrl,
+              post.featured_media
+            )
+          );
+
+          if (mediaResponse.ok) {
+            const mediaData: WordPressFeaturedMedia =
+              await mediaResponse.json();
+            console.log(
+              "BlogPreview: Featured media data:",
+              mediaData.source_url
+            );
+            setFeaturedImage(mediaData.source_url);
+            setImageLoading(false);
+            return;
+          } else {
+            console.log(
+              "BlogPreview: Failed to fetch featured media:",
+              mediaResponse.status
+            );
+          }
+        } catch (error) {
+          console.error("BlogPreview: Failed to fetch featured media:", error);
+        }
+      } else {
+        console.log("BlogPreview: No featured_media for post:", post.id);
+      }
+
+      // Fallback to first image in content
+      console.log("BlogPreview: Trying to extract image from content...");
+      const contentImage = getBlogPostImage(null, post.content.rendered);
+      console.log("BlogPreview: Extracted content image:", contentImage);
+      setFeaturedImage(contentImage);
+      setImageLoading(false);
+    };
+
+    fetchFeaturedImage();
+  }, [
+    post.featured_media,
+    post.content.rendered,
+    post.id,
+    post.title.rendered,
+  ]);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("th-TH", {
       year: "numeric",
@@ -181,22 +253,32 @@ function BlogPostCard({
       transition="all 0.3s ease"
     >
       <VStack align="stretch" gap={0}>
-        {/* Featured Image Placeholder */}
-        {post.featured_media && (
-          <Box
-            h="180px"
-            bg="gray.100"
-            position="relative"
-            overflow="hidden"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+        {/* Featured Image */}
+        <Box
+          h="180px"
+          bg="gray.100"
+          position="relative"
+          overflow="hidden"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {featuredImage && !imageLoading ? (
+            <Image
+              src={featuredImage}
+              alt={post.title.rendered}
+              w="full"
+              h="full"
+              objectFit="cover"
+              loading="lazy"
+              onError={() => setFeaturedImage(null)}
+            />
+          ) : (
             <Text color="gray.500" fontSize="sm" className="thai-text">
-              รูปภาพประกอบ
+              {imageLoading ? "กำลังโหลด..." : "รูปภาพประกอบ"}
             </Text>
-          </Box>
-        )}
+          )}
+        </Box>
 
         <VStack align="stretch" gap={4} p={6}>
           {/* Categories */}

@@ -43,6 +43,15 @@ export function slugify(text: string): string {
 }
 
 /**
+ * Get WordPress media URL for featured media API
+ */
+export function getWordPressMediaUrl(baseUrl: string, mediaId: number): string {
+  // Remove any trailing /wp/v2 from baseUrl to avoid duplication
+  const cleanBaseUrl = baseUrl.replace(/\/wp\/v2$/, "");
+  return `${cleanBaseUrl}/wp/v2/media/${mediaId}`;
+}
+
+/**
  * Check if a URL is external
  */
 export function isExternalUrl(url: string): boolean {
@@ -87,6 +96,42 @@ export function getVimeoVideoId(url: string): string | null {
   const regExp = /(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
   const match = url.match(regExp);
   return match ? match[1] : null;
+}
+
+/**
+ * Extract the first image URL from HTML content
+ */
+export function extractFirstImage(htmlContent: string): string | null {
+  if (!htmlContent) return null;
+
+  // Create a temporary DOM element to parse HTML safely
+  if (typeof window !== "undefined") {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+    const firstImg = tempDiv.querySelector("img");
+    return firstImg?.src || null;
+  }
+
+  // Server-side fallback using regex
+  const imgRegex = /<img[^>]+src=["']([^"']+)["'][^>]*>/i;
+  const match = htmlContent.match(imgRegex);
+  return match ? match[1] : null;
+}
+
+/**
+ * Get featured image URL with fallback to first content image
+ */
+export function getBlogPostImage(
+  featuredMediaUrl: string | null,
+  postContent: string
+): string | null {
+  // If we have a featured media URL, use it
+  if (featuredMediaUrl) {
+    return featuredMediaUrl;
+  }
+
+  // Otherwise, try to extract first image from content
+  return extractFirstImage(postContent);
 }
 
 /**

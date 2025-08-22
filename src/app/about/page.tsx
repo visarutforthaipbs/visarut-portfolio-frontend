@@ -136,7 +136,7 @@ export default function AboutPage() {
                 mx="auto"
               >
                 <Image
-                  src="https://visarutsankham.com/wp-content/uploads/2025/08/visarut-profile.jpg"
+                  src="/image/profile-1.jpg"
                   alt="วิศรุต แสนคำ - นักสื่อสารและช่างภาพสารคดี"
                   objectFit="cover"
                   borderRadius="full"
@@ -145,7 +145,7 @@ export default function AboutPage() {
                   shadow="lg"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder-profile.jpg";
+                    target.src = "/placeholder-image.jpg";
                   }}
                 />
               </AspectRatio>

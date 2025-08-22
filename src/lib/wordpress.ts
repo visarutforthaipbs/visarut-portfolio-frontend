@@ -13,7 +13,7 @@ import type {
 } from "@/types";
 
 // WordPress API Configuration
-const WP_API_BASE = "https://admin.visarutsankham.com/wp-json/wp/v2";
+const WP_API_BASE = "https://backend.visarutsankham.com/wp-json/wp/v2";
 
 // Create axios instance with default config
 const wpApi = axios.create({
