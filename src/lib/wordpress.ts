@@ -511,10 +511,16 @@ export class WordPressAPI {
       // Skip if already processed (avoid duplicates)
       if (images.some((img) => img.url === src)) continue;
 
+      // Replace old domain with current backend domain
+      const correctedUrl = src.replace(
+        "https://visarutsankham.com/",
+        "https://backend.visarutsankham.com/"
+      );
+
       images.push({
         id: dataId || Math.random().toString(),
         type: "image",
-        url: src,
+        url: correctedUrl,
         alt: alt || "",
         caption: "",
         // Extract dimensions from srcset if available

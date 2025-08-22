@@ -920,8 +920,15 @@ export function PortfolioGallery({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Get media items (images from content + ACF gallery)
-  const images = portfolio.media?.filter((item) => item.type === "image") || [];
+  // Get media items (featured image + images from content + ACF gallery)
+  const mediaImages =
+    portfolio.media?.filter((item) => item.type === "image") || [];
+
+  // Combine featured image (if exists) with media images
+  const images = [
+    ...(portfolio.featured_image ? [portfolio.featured_image] : []),
+    ...mediaImages,
+  ];
 
   // Lightbox helper functions
   const openLightbox = (imageIndex: number) => {

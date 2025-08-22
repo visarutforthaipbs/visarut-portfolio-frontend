@@ -168,9 +168,9 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   const getFeaturedImageUrl = (
     image: string | ImageMedia | undefined
   ): string => {
-    if (!image) return "/placeholder-image.jpg";
+    if (!image) return "/placeholder-image.svg";
     if (typeof image === "string") return image;
-    return image.url || "/placeholder-image.jpg";
+    return image.url || "/placeholder-image.svg";
   };
 
   // Handle text content
@@ -200,6 +200,10 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
             src={getFeaturedImageUrl(portfolio.featured_image)}
             alt={getTextContent(portfolio.title)}
             objectFit="cover"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/placeholder-image.svg";
+            }}
           />
         </AspectRatio>
 
