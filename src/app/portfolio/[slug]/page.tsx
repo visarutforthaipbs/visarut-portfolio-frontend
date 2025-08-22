@@ -19,7 +19,7 @@ import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { usePortfolioBySlug } from "@/hooks/useWordPress";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
-import WordPressContent from "@/components/WordPressContent";
+import { WordPressContent } from "@/components/WordPressContent";
 import PortfolioVideo from "@/components/PortfolioVideo";
 import PortfolioSEO from "@/components/PortfolioSEO";
 import {
