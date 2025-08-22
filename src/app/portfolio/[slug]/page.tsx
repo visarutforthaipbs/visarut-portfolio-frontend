@@ -203,8 +203,8 @@ export default function PortfolioDetailPage() {
                   </HStack>
                 </VStack>
 
-                {/* Featured Image */}
-                {portfolio.featured_image && (
+                {/* Featured Image - Hide for photography category as it's shown in gallery */}
+                {portfolio.featured_image && portfolio.category !== "photography" && (
                   <AspectRatio ratio={16 / 9} w="full">
                     <Image
                       src={portfolio.featured_image.url}
