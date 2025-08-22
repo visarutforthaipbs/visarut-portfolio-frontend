@@ -14,7 +14,7 @@ export function PortfolioSEO({ portfolio }: PortfolioSEOProps) {
     ? portfolio.excerpt.rendered.replace(/<[^>]*>/g, "").substring(0, 160)
     : `ผลงาน${PORTFOLIO_CATEGORIES[portfolio.category]} โดย วิศรุต แสนคำ`;
   const image = portfolio.featured_image?.url || "/placeholder-image.svg";
-  const url = `https://visarutsankham.com/portfolio/${portfolio.slug}`;
+  const url = `https://www.visarutsankham.com/portfolio/${portfolio.slug}`;
 
   return (
     <Head>
