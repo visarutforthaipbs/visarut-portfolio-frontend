@@ -83,26 +83,26 @@ export class WordPressAPI {
           case "videography":
             categoryId = 24;
             break;
+          case "exhibition":
+            categoryId = 25;
+            break;
           case "photography":
             categoryId = 26;
+            break;
+          case "print":
+            categoryId = 27;
+            break;
+          case "graphic-design":
+            categoryId = 28;
             break;
           case "website":
             categoryId = 29;
             break;
-          case "graphic-design":
+          case "campaign":
             categoryId = 30;
             break;
-          case "print":
-            categoryId = 31;
-            break;
-          case "exhibition":
-            categoryId = 32;
-            break;
-          case "campaign":
-            categoryId = 33;
-            break;
           case "producer":
-            categoryId = 34;
+            categoryId = 31;
             break;
         }
       }
@@ -390,22 +390,19 @@ export class WordPressAPI {
           return "video-editing";
         case 24: // Videography (ถ่ายวีดีโอ)
           return "videography";
+        case 25: // Exhibition (นิทรรศการ)
+          return "exhibition";
         case 26: // Photography (ภาพถ่าย)
           return "photography";
+        case 27: // Print (สิ่งพิมพ์)
+          return "print";
         case 28: // Graphic Design (ออกแบบกราฟิก)
           return "graphic-design";
         case 29: // Website (เว็บไซต์)
           return "website";
-        // Add other category mappings as needed
-        case 30:
-          return "graphic-design";
-        case 31:
-          return "print";
-        case 32:
-          return "exhibition";
-        case 33:
+        case 30: // Campaign (แคมเปญ)
           return "campaign";
-        case 34:
+        case 31: // Producer (โปรดิวเซอร์)
           return "producer";
         default:
           return "photography";
