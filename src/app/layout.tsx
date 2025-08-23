@@ -94,18 +94,14 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logo/black-favicon.svg",
+        url: "/logo/white-favicon.svg",
         type: "image/svg+xml",
       },
-      {
-        url: "/favicon.ico",
-        sizes: "any",
-      },
     ],
-    shortcut: "/logo/black-favicon.svg",
+    shortcut: "/logo/white-favicon.svg",
     apple: [
       {
-        url: "/logo/black-favicon.svg",
+        url: "/logo/white-favicon.svg",
         sizes: "180x180",
         type: "image/svg+xml",
       },
