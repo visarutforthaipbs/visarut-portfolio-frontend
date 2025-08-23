@@ -28,7 +28,7 @@ export default function HomePage() {
       icon: <Camera size={32} />,
       title: "ภาพถ่าย",
       titleEn: "Photography",
-      description: "บริการถ่ายภาพสินค้า บุคคล และกิจกรรม",
+      description: "บริการถ่ายภาพ บุคคล และกิจกรรม",
       category: "photography",
     },
     {
@@ -91,8 +91,8 @@ export default function HomePage() {
                   lineHeight={{ base: "1.6", md: "1.7" }}
                   px={{ base: 2, md: 0 }}
                 >
-                  ผู้เชี่ยวชาญด้านสื่อ เชี่ยวชาญในการถ่ายภาพ การถ่ายวิดีโอ
-                  การพัฒนาเว็บไซต์ และการออกแบบกราฟิก
+                  ผู้ผลิตสื่อหลากหลายประเภท
+                  ที่หวังว่าจะช่วยทำให้สังคมดีขึ้นได้่ผ่านการสื่อสาร
                 </Text>
               </VStack>
 
