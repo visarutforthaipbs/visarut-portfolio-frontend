@@ -392,6 +392,8 @@ export class WordPressAPI {
           return "videography";
         case 26: // Photography (ภาพถ่าย)
           return "photography";
+        case 28: // Graphic Design (ออกแบบกราฟิก)
+          return "graphic-design";
         case 29: // Website (เว็บไซต์)
           return "website";
         // Add other category mappings as needed
