@@ -94,7 +94,6 @@ export async function generateMetadata({
       description,
       openGraph: {
         title: portfolio.title.rendered,
-        description,
         url: portfolioUrl,
         siteName: siteConfig.titleTh,
         images: featuredImageUrl
@@ -123,7 +122,6 @@ export async function generateMetadata({
       twitter: {
         card: "summary_large_image",
         title: portfolio.title.rendered,
-        description,
         images: featuredImageUrl
           ? [featuredImageUrl]
           : [`${siteConfig.url}/portfolio/${portfolio.slug}/opengraph-image`],
