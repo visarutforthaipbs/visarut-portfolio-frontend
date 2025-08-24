@@ -11,6 +11,7 @@ import {
   Image,
   AspectRatio,
   Button,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Calendar, ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -24,15 +25,55 @@ import {
   PortfolioGallery,
 } from "@/components/portfolio/PortfolioDetails";
 import { WordPressAPI } from "@/lib/wordpress";
-import type { PortfolioItem } from "@/types/portfolio";
+import { usePortfolioBySlug } from "@/hooks/useWordPress";
 
 interface PortfolioDetailClientProps {
-  portfolio: PortfolioItem;
+  slug: string;
 }
 
 export default function PortfolioDetailClient({
-  portfolio,
+  slug,
 }: PortfolioDetailClientProps) {
+  const { portfolio, loading, error } = usePortfolioBySlug(slug);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Box
+          py={{ base: 16, md: 20 }}
+          className="full-width"
+          display="flex"
+          justifyContent="center"
+          w="100%"
+        >
+          <Container maxW="3xl" px={{ base: 6, md: 8 }}>
+            <VStack gap={8} align="start">
+              <Skeleton height="60px" width="80%" />
+              <Skeleton height={{ base: "200px", md: "400px" }} w="full" />
+            </VStack>
+          </Container>
+        </Box>
+      </Layout>
+    );
+  }
+
+  if (error || !portfolio) {
+    return (
+      <Layout>
+        <Box
+          py={{ base: 16, md: 20 }}
+          className="full-width"
+          display="flex"
+          justifyContent="center"
+          w="100%"
+        >
+          <Container maxW="3xl" px={{ base: 6, md: 8 }}>
+            <Text>Portfolio not found</Text>
+          </Container>
+        </Box>
+      </Layout>
+    );
+  }
   // Extract videos from content
   const videos = WordPressAPI.extractVideoEmbeds(portfolio.content.rendered);
 
