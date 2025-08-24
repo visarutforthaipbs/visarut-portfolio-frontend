@@ -74,13 +74,18 @@ export async function generateMetadata({
       featuredImageUrl = getBlogPostImage(null, portfolio.content.rendered);
     }
 
-    // Clean excerpt for description
-    const description =
-      portfolio.excerpt.rendered
-        .replace(/<[^>]*>/g, "") // Strip HTML
-        .trim()
-        .slice(0, 160) || // Limit to 160 chars for meta description
-      portfolio.title.rendered;
+    // Clean excerpt for description - portfolio items might not have excerpts
+    const description = portfolio.excerpt?.rendered
+      ? portfolio.excerpt.rendered
+          .replace(/<[^>]*>/g, "") // Strip HTML
+          .trim()
+          .slice(0, 160)
+      : portfolio.content?.rendered
+      ? portfolio.content.rendered
+          .replace(/<[^>]*>/g, "") // Strip HTML
+          .trim()
+          .slice(0, 160)
+      : portfolio.title.rendered;
 
     const portfolioUrl = `${siteConfig.url}/portfolio/${portfolio.slug}`;
 

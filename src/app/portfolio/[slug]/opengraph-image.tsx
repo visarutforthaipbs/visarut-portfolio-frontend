@@ -54,8 +54,13 @@ export default async function Image({
     }
 
     const title = portfolio?.title.rendered || "Portfolio";
-    const excerpt = portfolio?.excerpt.rendered
+    const excerpt = portfolio?.excerpt?.rendered
       ? portfolio.excerpt.rendered
+          .replace(/<[^>]*>/g, "")
+          .trim()
+          .slice(0, 120)
+      : portfolio?.content?.rendered
+      ? portfolio.content.rendered
           .replace(/<[^>]*>/g, "")
           .trim()
           .slice(0, 120)
