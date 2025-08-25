@@ -599,33 +599,33 @@ export class WordPressAPI {
  */
 export class ViewTracker {
   /**
-   * Track a view for a blog post using WP-PostViews
+   * Track a view for a blog post using our custom REST endpoint
    */
   static async trackPostView(postId: number): Promise<boolean> {
     try {
-      // WP-PostViews typically provides an AJAX endpoint for tracking views
-      // The standard endpoint is usually wp-admin/admin-ajax.php with action=postviews
+      // Use our custom REST API endpoint
       const response = await fetch(
-        `${WP_API_BASE.replace("/wp-json/wp/v2", "")}/wp-admin/admin-ajax.php`,
+        `${WP_API_BASE}/posts/${postId}/track-view`,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
           },
-          body: new URLSearchParams({
-            action: "postviews",
-            postviews_id: postId.toString(),
-          }),
         }
       );
 
-      return response.ok;
+      if (response.ok) {
+        const result = await response.json();
+        console.log("View tracked:", result);
+        return true;
+      }
+
+      return false;
     } catch (error) {
       console.error("Error tracking post view:", error);
       return false;
     }
   }
-
   /**
    * Get view count for a post (works with WP-PostViews)
    */
