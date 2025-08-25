@@ -654,10 +654,21 @@ export class ViewTracker {
     const hasViewed = sessionStorage.getItem(viewKey);
 
     if (!hasViewed) {
-      setTimeout(() => {
-        this.trackPostView(postId);
-        sessionStorage.setItem(viewKey, "true");
+      console.log(
+        `📊 Scheduling view tracking for post ${postId} in ${delay}ms`
+      );
+      setTimeout(async () => {
+        console.log(`📊 Tracking view for post ${postId}...`);
+        const success = await this.trackPostView(postId);
+        if (success) {
+          sessionStorage.setItem(viewKey, "true");
+          console.log(`✅ View tracked successfully for post ${postId}`);
+        } else {
+          console.log(`❌ Failed to track view for post ${postId}`);
+        }
       }, delay);
+    } else {
+      console.log(`📊 View already tracked for post ${postId} in this session`);
     }
   }
 }
