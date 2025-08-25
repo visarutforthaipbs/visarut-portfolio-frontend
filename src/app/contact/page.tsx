@@ -209,7 +209,11 @@ export default function ContactPage() {
                     cursor={info.link ? "pointer" : "default"}
                     onClick={
                       info.link
-                        ? () => window.open(info.link, "_self")
+                        ? () => {
+                            if (typeof window !== "undefined") {
+                              window.open(info.link, "_self");
+                            }
+                          }
                         : undefined
                     }
                   >
@@ -271,7 +275,11 @@ export default function ContactPage() {
                       }}
                       transition="all 0.2s"
                       cursor="pointer"
-                      onClick={() => window.open(social.url, "_blank")}
+                      onClick={() => {
+                        if (typeof window !== "undefined") {
+                          window.open(social.url, "_blank");
+                        }
+                      }}
                     >
                       {social.icon}
                     </Box>

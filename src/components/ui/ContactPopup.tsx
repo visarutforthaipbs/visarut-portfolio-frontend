@@ -143,9 +143,11 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
           {/* Action Buttons */}
           <VStack gap={{ base: 2, md: 3 }} pt={2}>
             <Button
-              onClick={() =>
-                window.open("mailto:visarut298@gmail.com", "_blank")
-              }
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.open("mailto:visarut298@gmail.com", "_blank");
+                }
+              }}
               bg="accent.500"
               color="white"
               _hover={{ bg: "accent.600" }}
@@ -162,7 +164,11 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
             </Button>
 
             <Button
-              onClick={() => window.open("tel:0627283058", "_self")}
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.open("tel:0627283058", "_self");
+                }
+              }}
               variant="outline"
               borderColor={{ base: "accent.500", _dark: "accent.300" }}
               color={{ base: "accent.500", _dark: "accent.300" }}

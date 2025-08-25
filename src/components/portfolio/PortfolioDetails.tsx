@@ -278,7 +278,11 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   transition: "all 0.2s ease",
                 }}
                 cursor="pointer"
-                onClick={() => window.open(videoACF.video_url, "_blank")}
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.open(videoACF.video_url, "_blank");
+                  }
+                }}
               >
                 <HStack gap={3}>
                   <Box bg="accent.500" borderRadius="full" p={2} color="white">

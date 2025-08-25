@@ -467,7 +467,7 @@ export class WordPressAPI {
 
     // Extract from ACF fields if available
     if (post.acf.gallery && Array.isArray(post.acf.gallery)) {
-      post.acf.gallery.forEach((item: unknown) => {
+      post.acf.gallery.forEach((item: unknown, index: number) => {
         const galleryItem = item as {
           id?: number;
           url?: string;
@@ -479,7 +479,7 @@ export class WordPressAPI {
         };
 
         media.push({
-          id: galleryItem.id?.toString() || Math.random().toString(),
+          id: galleryItem.id?.toString() || `gallery-${index}`,
           type: "image",
           url: galleryItem.url || galleryItem.source_url || "",
           alt: galleryItem.alt || "",
@@ -517,7 +517,7 @@ export class WordPressAPI {
       );
 
       images.push({
-        id: dataId || Math.random().toString(),
+        id: dataId || `content-img-${images.length}`,
         type: "image",
         url: correctedUrl,
         alt: alt || "",
