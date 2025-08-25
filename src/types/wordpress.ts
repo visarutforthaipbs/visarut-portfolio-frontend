@@ -64,6 +64,8 @@ export interface WordPressPost {
   tags: number[];
   portfolio_category?: number[]; // Custom field for portfolio categories
   acf: WordPressACF;
+  views?: number; // View count for the post (WP-PostViews)
+  post_views?: string; // WP-PostViews meta field
   _links: WordPressLinks;
 }
 

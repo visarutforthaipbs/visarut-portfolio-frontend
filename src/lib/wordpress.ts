@@ -594,5 +594,73 @@ export class WordPressAPI {
   }
 }
 
+/**
+ * View tracking utilities
+ */
+export class ViewTracker {
+  /**
+   * Track a view for a blog post using WP-PostViews
+   */
+  static async trackPostView(postId: number): Promise<boolean> {
+    try {
+      // WP-PostViews typically provides an AJAX endpoint for tracking views
+      // The standard endpoint is usually wp-admin/admin-ajax.php with action=postviews
+      const response = await fetch(
+        `${WP_API_BASE.replace("/wp-json/wp/v2", "")}/wp-admin/admin-ajax.php`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            action: "postviews",
+            postviews_id: postId.toString(),
+          }),
+        }
+      );
+
+      return response.ok;
+    } catch (error) {
+      console.error("Error tracking post view:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Get view count for a post (works with WP-PostViews)
+   */
+  static getPostViews(post: WordPressPost): number {
+    // Try different possible fields where WP-PostViews might store the count
+    if (post.views) return post.views;
+    if (post.post_views) return parseInt(post.post_views) || 0;
+
+    // Check in meta field (WP-PostViews usually stores in 'views' meta)
+    if (post.meta && typeof post.meta === "object") {
+      const meta = post.meta as Record<string, unknown>;
+      if (meta.views && typeof meta.views === "string")
+        return parseInt(meta.views) || 0;
+      if (meta.post_views && typeof meta.post_views === "string")
+        return parseInt(meta.post_views) || 0;
+    }
+
+    return 0;
+  }
+  /**
+   * Track view client-side with debouncing to prevent spam
+   */
+  static trackViewWithDebounce(postId: number, delay: number = 3000): void {
+    // Store in sessionStorage to prevent multiple views in same session
+    const viewKey = `post_view_${postId}`;
+    const hasViewed = sessionStorage.getItem(viewKey);
+
+    if (!hasViewed) {
+      setTimeout(() => {
+        this.trackPostView(postId);
+        sessionStorage.setItem(viewKey, "true");
+      }, delay);
+    }
+  }
+}
+
 // Export default instance
 export default WordPressAPI;
