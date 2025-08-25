@@ -146,9 +146,9 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                 {post.title.rendered}
               </Heading>
 
-              {/* Meta Info */}
+              {/* Meta Info - Improved One Line Layout */}
               <HStack
-                gap={4}
+                gap={6}
                 justify="center"
                 flexWrap="wrap"
                 fontSize="sm"

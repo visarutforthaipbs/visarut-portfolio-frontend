@@ -1,4 +1,5 @@
 import { Eye } from "lucide-react";
+import { HStack, Text } from "@chakra-ui/react";
 
 interface ViewCountProps {
   views: number;
@@ -7,14 +8,12 @@ interface ViewCountProps {
 
 export function ViewCount({ views, className = "" }: ViewCountProps) {
   return (
-    <div
-      className={`flex items-center gap-1 text-gray-500 dark:text-gray-400 ${className}`}
-    >
+    <HStack gap={1} className={className}>
       <Eye size={16} />
-      <span className="text-sm">
+      <Text>
         {views.toLocaleString()} {views === 1 ? "view" : "views"}
-      </span>
-    </div>
+      </Text>
+    </HStack>
   );
 }
 

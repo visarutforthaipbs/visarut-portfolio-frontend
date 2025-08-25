@@ -336,9 +336,9 @@ function BlogPostCard({
             />
           )}
 
-          {/* Meta */}
+          {/* Meta - One Line Layout */}
           <VStack align="stretch" gap={2}>
-            <HStack gap={4} fontSize="xs" color="gray.500">
+            <HStack gap={4} fontSize="xs" color="gray.500" justify="center">
               <HStack gap={1}>
                 <Calendar size={12} />
                 <Text className="thai-text">{formatDate(post.date)}</Text>
