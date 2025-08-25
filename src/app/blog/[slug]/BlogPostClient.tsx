@@ -14,9 +14,6 @@ import {
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
-import { ViewCount } from "@/components/ui";
-import { useViewTracker } from "@/hooks/useViewTracker";
-import { ViewTracker } from "@/lib/wordpress";
 import { siteConfig } from "@/lib/config";
 import type { BlogPost, BlogCategory } from "@/types/wordpress";
 
@@ -29,9 +26,6 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Track page view when post is loaded
-  useViewTracker(post?.id || 0, !!post);
 
   useEffect(() => {
     const fetchBlogPost = async () => {
@@ -168,7 +162,6 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                   <User size={16} />
                   <Text>{siteConfig.authorTh}</Text>
                 </HStack>
-                <ViewCount views={ViewTracker.getPostViews(post)} />
               </HStack>
 
               {/* Categories */}

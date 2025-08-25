@@ -15,8 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { ViewCount } from "@/components/ui";
-import { ViewTracker } from "@/lib/wordpress";
 import { siteConfig } from "@/lib/config";
 import { getBlogPostImage } from "@/utils";
 import { getWordPressMediaUrl } from "@/utils";
@@ -347,10 +345,6 @@ function BlogPostCard({
                 <User size={12} />
                 <Text className="thai-text">{siteConfig.authorTh}</Text>
               </HStack>
-              <ViewCount
-                views={ViewTracker.getPostViews(post)}
-                className="text-xs"
-              />
             </HStack>
 
             <Link href={`/blog/${post.slug}`}>
