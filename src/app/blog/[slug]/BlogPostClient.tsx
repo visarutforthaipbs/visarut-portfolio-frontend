@@ -205,10 +205,26 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                   "& ul, & ol": {
                     paddingLeft: "2rem",
                     marginBottom: "1.5rem",
+                    listStylePosition: "outside",
+                  },
+                  "& ul": {
+                    listStyleType: "disc",
+                  },
+                  "& ol": {
+                    listStyleType: "decimal",
+                  },
+                  "& ul ul": {
+                    listStyleType: "circle",
+                    marginTop: "0.5rem",
+                    marginBottom: "0.5rem",
+                  },
+                  "& ul ul ul": {
+                    listStyleType: "square",
                   },
                   "& li": {
                     marginBottom: "0.75rem",
                     lineHeight: "1.7",
+                    paddingLeft: "0.5rem",
                   },
                   "& blockquote": {
                     borderLeft: "4px solid #3182ce",
