@@ -136,7 +136,7 @@ export default function AboutPage() {
                 mx="auto"
               >
                 <Image
-                  src="/image/profile-1.jpg"
+                  src="/image/profile.png"
                   alt="วิศรุต แสนคำ - นักสื่อสารและช่างภาพสารคดี"
                   objectFit="cover"
                   borderRadius="full"
