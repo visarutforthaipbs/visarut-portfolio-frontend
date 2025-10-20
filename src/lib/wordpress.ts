@@ -499,7 +499,50 @@ export class WordPressAPI {
   private static extractImagesFromContent(content: string): ImageMedia[] {
     const images: ImageMedia[] = [];
 
-    // Pattern to match WordPress gallery images
+    // Pattern to match WordPress gallery figures with images and captions
+    const figureRegex =
+      /<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>([\s\S]*?)<\/figure>/gi;
+    let figureMatch;
+
+    while ((figureMatch = figureRegex.exec(content)) !== null) {
+      const figureContent = figureMatch[1];
+
+      // Extract img tag
+      const imgMatch = figureContent.match(
+        /<img[^>]*src="([^"]*)"[^>]*(?:data-id="([^"]*)")?[^>]*(?:alt="([^"]*)")?[^>]*>/i
+      );
+
+      if (!imgMatch) continue;
+
+      const [, src, dataId, alt] = imgMatch;
+
+      // Extract figcaption
+      const captionMatch = figureContent.match(
+        /<figcaption[^>]*class="[^"]*wp-element-caption[^"]*"[^>]*>(.*?)<\/figcaption>/i
+      );
+      const caption = captionMatch ? captionMatch[1].trim() : "";
+
+      // Replace old domain with current backend domain
+      const correctedUrl = src.replace(
+        "https://visarutsankham.com/",
+        "https://backend.visarutsankham.com/"
+      );
+
+      // Skip if already processed (avoid duplicates)
+      if (images.some((img) => img.url === correctedUrl)) continue;
+
+      images.push({
+        id: dataId || `content-img-${images.length}`,
+        type: "image",
+        url: correctedUrl,
+        alt: alt || "",
+        caption: caption,
+        // Extract dimensions from srcset if available
+        ...this.extractImageDimensions(imgMatch[0]),
+      });
+    }
+
+    // Also extract standalone images (not in figures) for backward compatibility
     const imgRegex =
       /<img[^>]*src="([^"]*)"[^>]*(?:data-id="([^"]*)")?[^>]*(?:alt="([^"]*)")?[^>]*>/gi;
     let match;
@@ -507,14 +550,14 @@ export class WordPressAPI {
     while ((match = imgRegex.exec(content)) !== null) {
       const [, src, dataId, alt] = match;
 
-      // Skip if already processed (avoid duplicates)
-      if (images.some((img) => img.url === src)) continue;
-
       // Replace old domain with current backend domain
       const correctedUrl = src.replace(
         "https://visarutsankham.com/",
         "https://backend.visarutsankham.com/"
       );
+
+      // Skip if already processed (avoid duplicates)
+      if (images.some((img) => img.url === correctedUrl)) continue;
 
       images.push({
         id: dataId || `content-img-${images.length}`,

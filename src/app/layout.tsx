@@ -117,7 +117,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th" data-scroll-behavior="smooth">
+    <html lang="th" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -174,7 +174,7 @@ export default function RootLayout({
         {/* Canonical URL will be set per page */}
         <link rel="canonical" href={siteConfig.url} />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

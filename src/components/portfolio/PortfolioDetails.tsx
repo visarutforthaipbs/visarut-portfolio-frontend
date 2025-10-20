@@ -328,7 +328,8 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
     // Add other category-specific renders here
     if (portfolio.category === "website") {
-      const webACF = acfData as WebsiteACF;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const webACF = acfData as any;
       return (
         <VStack gap={6} align="start" w="full">
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
@@ -359,9 +360,118 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 </Text>
               </VStack>
             )}
+
+            {webACF.website_type && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    ประเภทเว็บไซต์
+                  </Text>
+                </HStack>
+                <Badge colorScheme="teal" px={3} py={1} borderRadius="full">
+                  {webACF.website_type === "web_app"
+                    ? "Web Application"
+                    : webACF.website_type === "website"
+                    ? "Website"
+                    : webACF.website_type === "ecommerce"
+                    ? "E-commerce"
+                    : webACF.website_type === "cms"
+                    ? "CMS"
+                    : webACF.website_type}
+                </Badge>
+              </VStack>
+            )}
+
+            {webACF.project_role && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    บทบาทในโปรเจค
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700" className="thai-text">
+                  {webACF.project_role === "full_development"
+                    ? "Full Development"
+                    : webACF.project_role === "frontend"
+                    ? "Frontend Development"
+                    : webACF.project_role === "backend"
+                    ? "Backend Development"
+                    : webACF.project_role}
+                </Text>
+              </VStack>
+            )}
           </SimpleGrid>
 
-          {webACF.technologies && webACF.technologies.length > 0 && (
+          {/* Website URL */}
+          {webACF.website_url && (
+            <VStack align="start" gap={3} w="full">
+              <Text
+                fontSize="sm"
+                fontWeight="600"
+                color="accent.500"
+                className="thai-text"
+              >
+                เว็บไซต์
+              </Text>
+              <Box
+                as="a"
+                // @ts-expect-error - Chakra v3 polymorphic typing
+                href={webACF.website_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                bg="blue.50"
+                border="2px solid"
+                borderColor="blue.200"
+                borderRadius="lg"
+                p={4}
+                w="full"
+                cursor="pointer"
+                transition="all 0.2s ease"
+                _hover={{
+                  borderColor: "blue.400",
+                  bg: "blue.100",
+                  transform: "translateY(-2px)",
+                }}
+              >
+                <HStack gap={3}>
+                  <Box bg="blue.500" borderRadius="full" p={2} color="white">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </Box>
+                  <VStack align="start" gap={1}>
+                    <Text fontSize="md" fontWeight="600" color="blue.700">
+                      เยี่ยมชมเว็บไซต์
+                    </Text>
+                    <Text
+                      fontSize="sm"
+                      color="blue.600"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                      whiteSpace="nowrap"
+                      maxW="full"
+                    >
+                      {webACF.website_url}
+                    </Text>
+                  </VStack>
+                </HStack>
+              </Box>
+            </VStack>
+          )}
+
+          {/* Technologies */}
+          {webACF.technologies_used && (
             <VStack align="start" gap={2} w="full">
               <Text
                 fontSize="sm"
@@ -369,24 +479,27 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 color="accent.500"
                 className="thai-text"
               >
-                เทคโนโลยี
+                เทคโนโลยีที่ใช้
               </Text>
               <HStack gap={2} flexWrap="wrap">
-                {webACF.technologies.map((tech, index) => (
-                  <Badge
-                    key={index}
-                    colorScheme="green"
-                    px={3}
-                    py={1}
-                    borderRadius="full"
-                  >
-                    {tech}
-                  </Badge>
-                ))}
+                {webACF.technologies_used
+                  .split(",")
+                  .map((tech: string, index: number) => (
+                    <Badge
+                      key={index}
+                      colorScheme="green"
+                      px={3}
+                      py={1}
+                      borderRadius="full"
+                    >
+                      {tech.trim()}
+                    </Badge>
+                  ))}
               </HStack>
             </VStack>
           )}
 
+          {/* Project Description */}
           {webACF.project_description && (
             <VStack align="start" gap={2} w="full">
               <Text
@@ -400,10 +513,36 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="md"
                 color="gray.700"
+                _dark={{ color: "gray.300" }}
                 className="thai-text"
                 lineHeight="1.8"
+                whiteSpace="pre-wrap"
               >
                 {webACF.project_description}
+              </Text>
+            </VStack>
+          )}
+
+          {/* Development Notes / Features */}
+          {webACF.development_notes && (
+            <VStack align="start" gap={2} w="full">
+              <Text
+                fontSize="sm"
+                fontWeight="600"
+                color="accent.500"
+                className="thai-text"
+              >
+                ฟีเจอร์เด่น
+              </Text>
+              <Text
+                fontSize="md"
+                color="gray.700"
+                _dark={{ color: "gray.300" }}
+                className="thai-text"
+                lineHeight="1.8"
+                whiteSpace="pre-wrap"
+              >
+                {webACF.development_notes}
               </Text>
             </VStack>
           )}
@@ -454,9 +593,19 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                     ประเภทงานออกแบบ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700" className="thai-text">
-                  {designACF.design_type}
-                </Text>
+                <Badge colorScheme="purple" px={3} py={1} borderRadius="full">
+                  {designACF.design_type === "social_media"
+                    ? "Social Media"
+                    : designACF.design_type === "logo"
+                    ? "Logo"
+                    : designACF.design_type === "branding"
+                    ? "Branding"
+                    : designACF.design_type === "poster"
+                    ? "Poster"
+                    : designACF.design_type === "brochure"
+                    ? "Brochure"
+                    : designACF.design_type}
+                </Badge>
               </VStack>
             )}
 
@@ -473,9 +622,53 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 </Text>
               </VStack>
             )}
+
+            {designACF.print_specifications && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    ขนาดงานพิมพ์
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700" className="thai-text">
+                  {designACF.print_specifications}
+                </Text>
+              </VStack>
+            )}
+
+            {designACF.color_palette && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    Color Palette
+                  </Text>
+                </HStack>
+                <HStack gap={2} flexWrap="wrap">
+                  {designACF.color_palette
+                    .split(",")
+                    .map((color: string, index: number) => (
+                      <HStack key={index} gap={2}>
+                        <Box
+                          w="24px"
+                          h="24px"
+                          bg={color.trim()}
+                          borderRadius="md"
+                          border="1px solid"
+                          borderColor="gray.300"
+                        />
+                        <Text fontSize="sm" fontFamily="mono" color="gray.600">
+                          {color.trim()}
+                        </Text>
+                      </HStack>
+                    ))}
+                </HStack>
+              </VStack>
+            )}
           </SimpleGrid>
 
-          {designACF.design_concept && (
+          {(designACF.design_concept || designACF.project_description) && (
             <VStack align="start" gap={2} w="full">
               <Text
                 fontSize="sm"
@@ -483,7 +676,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 color="accent.500"
                 className="thai-text"
               >
-                แนวคิดการออกแบบ
+                รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
@@ -492,7 +685,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
-                {designACF.design_concept}
+                {designACF.project_description || designACF.design_concept}
               </Text>
             </VStack>
           )}
@@ -563,7 +756,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
             )}
           </SimpleGrid>
 
-          {printACF.printing_process && (
+          {(printACF.printing_process || printACF.project_description) && (
             <VStack align="start" gap={2} w="full">
               <Text
                 fontSize="sm"
@@ -571,15 +764,18 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 color="accent.500"
                 className="thai-text"
               >
-                กระบวนการพิมพ์
+                {printACF.printing_process
+                  ? "กระบวนการพิมพ์"
+                  : "รายละเอียดโปรเจค"}
               </Text>
               <Text
                 fontSize="md"
                 color="gray.700"
                 className="thai-text"
                 lineHeight="1.8"
+                whiteSpace="pre-wrap"
               >
-                {printACF.printing_process}
+                {printACF.printing_process || printACF.project_description}
               </Text>
             </VStack>
           )}
@@ -593,21 +789,21 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       return (
         <VStack gap={6} align="start" w="full">
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
-            {exhibitionACF.exhibition_name && (
+            {exhibitionACF.client_name && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600" className="thai-text">
-                    ชื่อนิทรรศการ
+                    ลูกค้า
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700" className="thai-text">
-                  {exhibitionACF.exhibition_name}
+                  {exhibitionACF.client_name}
                 </Text>
               </VStack>
             )}
 
-            {exhibitionACF.venue && (
+            {exhibitionACF.venue_name && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <MapPin size={18} />
@@ -616,12 +812,12 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700" className="thai-text">
-                  {exhibitionACF.venue}
+                  {exhibitionACF.venue_name}
                 </Text>
               </VStack>
             )}
 
-            {exhibitionACF.exhibition_date && (
+            {exhibitionACF.exhibition_dates && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <CalendarIcon size={18} />
@@ -630,27 +826,69 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700" className="thai-text">
-                  {exhibitionACF.exhibition_date}
+                  {exhibitionACF.exhibition_dates}
                 </Text>
               </VStack>
             )}
 
-            {exhibitionACF.role_in_exhibition && (
+            {exhibitionACF.project_date && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <CalendarIcon size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    วันที่โครงการ
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700" className="thai-text">
+                  {exhibitionACF.project_date}
+                </Text>
+              </VStack>
+            )}
+
+            {exhibitionACF.exhibition_type && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600" className="thai-text">
-                    บทบาทในนิทรรศการ
+                    ประเภทนิทรรศการ
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700" className="thai-text">
-                  {exhibitionACF.role_in_exhibition}
+                  {exhibitionACF.exhibition_type}
+                </Text>
+              </VStack>
+            )}
+
+            {exhibitionACF.number_of_artworks && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    จำนวนชิ้นงาน
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700" className="thai-text">
+                  {exhibitionACF.number_of_artworks}
+                </Text>
+              </VStack>
+            )}
+
+            {exhibitionACF.exhibition_medium && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600" className="thai-text">
+                    สื่อที่ใช้
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700" className="thai-text">
+                  {exhibitionACF.exhibition_medium}
                 </Text>
               </VStack>
             )}
           </SimpleGrid>
 
-          {exhibitionACF.exhibition_description && (
+          {exhibitionACF.project_description && (
             <VStack align="start" gap={2} w="full">
               <Text
                 fontSize="sm"
@@ -658,7 +896,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 color="accent.500"
                 className="thai-text"
               >
-                รายละเอียดนิทรรศการ
+                รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
@@ -667,7 +905,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
-                {exhibitionACF.exhibition_description}
+                {exhibitionACF.project_description}
               </Text>
             </VStack>
           )}
@@ -738,7 +976,8 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
             )}
           </SimpleGrid>
 
-          {campaignACF.campaign_objectives && (
+          {(campaignACF.campaign_objectives ||
+            campaignACF.project_description) && (
             <VStack align="start" gap={2} w="full">
               <Text
                 fontSize="sm"
@@ -746,7 +985,9 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 color="accent.500"
                 className="thai-text"
               >
-                วัตถุประสงค์แคมเปญ
+                {campaignACF.campaign_objectives
+                  ? "วัตถุประสงค์แคมเปญ"
+                  : "รายละเอียดโปรเจค"}
               </Text>
               <Text
                 fontSize="md"
@@ -755,7 +996,8 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
-                {campaignACF.campaign_objectives}
+                {campaignACF.campaign_objectives ||
+                  campaignACF.project_description}
               </Text>
             </VStack>
           )}
@@ -862,7 +1104,8 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
             )}
           </SimpleGrid>
 
-          {producerACF.producer_responsibilities && (
+          {(producerACF.producer_responsibilities ||
+            producerACF.project_description) && (
             <VStack align="start" gap={2} w="full">
               <Text
                 fontSize="sm"
@@ -870,7 +1113,9 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 color="accent.500"
                 className="thai-text"
               >
-                หน้าที่ความรับผิดชอบ
+                {producerACF.producer_responsibilities
+                  ? "หน้าที่ความรับผิดชอบ"
+                  : "รายละเอียดโปรเจค"}
               </Text>
               <Text
                 fontSize="md"
@@ -879,7 +1124,8 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
-                {producerACF.producer_responsibilities}
+                {producerACF.producer_responsibilities ||
+                  producerACF.project_description}
               </Text>
             </VStack>
           )}
@@ -1038,26 +1284,44 @@ export function PortfolioGallery({
         /* Photography-optimized layout with natural proportions */
         <VStack gap={8} w="full">
           {/* Hero Image - First image larger */}
-          <Box w="full">
-            <Image
-              src={images[0].url}
-              alt={images[0].alt || "Featured Photography"}
-              objectFit="contain"
+          <VStack w="full" gap={3}>
+            <Box
               w="full"
-              maxH="600px"
+              position="relative"
+              overflow="hidden"
               borderRadius="xl"
-              cursor="pointer"
-              _hover={{
-                transform: "scale(1.01)",
-                transition: "transform 0.3s ease",
-              }}
-              onClick={() => openLightbox(0)}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "/placeholder-image.svg";
-              }}
-            />
-          </Box>
+              boxShadow="lg"
+            >
+              <Image
+                src={images[0].url}
+                alt={images[0].alt || "Featured Photography"}
+                objectFit="contain"
+                w="full"
+                maxH="600px"
+                cursor="pointer"
+                transition="transform 0.3s ease"
+                _hover={{
+                  transform: "scale(1.02)",
+                }}
+                onClick={() => openLightbox(0)}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/placeholder-image.svg";
+                }}
+              />
+            </Box>
+            {images[0].caption && (
+              <Text
+                fontSize="sm"
+                color="gray.600"
+                className="thai-text"
+                fontStyle="italic"
+                textAlign="center"
+                px={4}
+                dangerouslySetInnerHTML={{ __html: images[0].caption }}
+              />
+            )}
+          </VStack>
 
           {/* Remaining images in responsive masonry */}
           {images.length > 1 && (
@@ -1068,26 +1332,47 @@ export function PortfolioGallery({
               alignItems="start"
             >
               {images.slice(1).map((image, index) => (
-                <Box key={image.id || index + 1}>
-                  <Image
-                    src={image.url}
-                    alt={image.alt || `Photography ${index + 2}`}
-                    objectFit="contain"
-                    w="full"
-                    maxH="400px"
+                <VStack
+                  key={image.id || index + 1}
+                  gap={3}
+                  align="stretch"
+                  w="full"
+                >
+                  <Box
+                    position="relative"
+                    overflow="hidden"
                     borderRadius="lg"
-                    cursor="pointer"
-                    _hover={{
-                      transform: "scale(1.02)",
-                      transition: "transform 0.2s ease",
-                    }}
-                    onClick={() => openLightbox(index + 1)}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/placeholder-image.svg";
-                    }}
-                  />
-                </Box>
+                    boxShadow="md"
+                  >
+                    <Image
+                      src={image.url}
+                      alt={image.alt || `Photography ${index + 2}`}
+                      objectFit="contain"
+                      w="full"
+                      maxH="400px"
+                      cursor="pointer"
+                      transition="transform 0.2s ease"
+                      _hover={{
+                        transform: "scale(1.05)",
+                      }}
+                      onClick={() => openLightbox(index + 1)}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder-image.svg";
+                      }}
+                    />
+                  </Box>
+                  {image.caption && (
+                    <Text
+                      fontSize="sm"
+                      color="gray.600"
+                      className="thai-text"
+                      fontStyle="italic"
+                      textAlign="center"
+                      dangerouslySetInnerHTML={{ __html: image.caption }}
+                    />
+                  )}
+                </VStack>
               ))}
             </SimpleGrid>
           )}
@@ -1225,29 +1510,58 @@ export function PortfolioGallery({
           )}
         </VStack>
       ) : (
-        /* Standard grid layout for other categories */
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
-          {images.map((image, index) => (
-            <AspectRatio key={image.id || index} ratio={4 / 3}>
-              <Image
-                src={image.url}
-                alt={image.alt || `Gallery image ${index + 1}`}
-                objectFit="cover"
-                borderRadius="lg"
-                cursor="pointer"
-                _hover={{
-                  transform: "scale(1.05)",
-                  transition: "transform 0.2s ease",
-                }}
-                onClick={() => openLightbox(index)}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/placeholder-image.svg";
-                }}
-              />
-            </AspectRatio>
-          ))}
-        </SimpleGrid>
+        /* Standard grid layout for other categories (including exhibition) */
+        <VStack gap={6} w="full">
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={8} w="full">
+            {images.map((image, index) => (
+              <VStack key={image.id || index} gap={3} align="stretch" w="full">
+                <Box
+                  position="relative"
+                  overflow="hidden"
+                  borderRadius="lg"
+                  boxShadow="lg"
+                  bg="white"
+                  _dark={{ bg: "gray.800" }}
+                >
+                  <Image
+                    src={image.url}
+                    alt={image.alt || `Gallery image ${index + 1}`}
+                    objectFit="contain"
+                    w="full"
+                    maxH="500px"
+                    cursor="pointer"
+                    transition="transform 0.3s ease"
+                    _hover={{
+                      transform: "scale(1.03)",
+                    }}
+                    onClick={() => openLightbox(index)}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/placeholder-image.svg";
+                    }}
+                  />
+                </Box>
+                {image.caption && (
+                  <Box
+                    bg="gray.50"
+                    _dark={{ bg: "gray.700" }}
+                    p={4}
+                    borderRadius="md"
+                  >
+                    <Text
+                      fontSize="sm"
+                      color="gray.700"
+                      _dark={{ color: "gray.200" }}
+                      className="thai-text"
+                      lineHeight="1.6"
+                      dangerouslySetInnerHTML={{ __html: image.caption }}
+                    />
+                  </Box>
+                )}
+              </VStack>
+            ))}
+          </SimpleGrid>
+        </VStack>
       )}
 
       {/* Lightbox Modal */}
