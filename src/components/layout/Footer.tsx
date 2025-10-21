@@ -21,8 +21,6 @@ import Link from "next/link";
 import { siteConfig, navigation } from "@/lib/config";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <Box
       bg={{ base: "gray.50", _dark: "gray.900" }}
@@ -35,20 +33,25 @@ export function Footer() {
     >
       <Container
         maxW="5xl"
-        py={{ base: 8, md: 12 }}
+        py={{ base: 6, md: 12 }}
         px={{ base: 4, md: 6, lg: 8 }}
       >
-        <VStack gap={{ base: 6, md: 8 }}>
+        <VStack gap={{ base: 4, md: 8 }}>
           {/* Main Footer Content */}
           <Flex
             direction={{ base: "column", md: "row" }}
             justify="space-between"
             align={{ base: "center", md: "start" }}
             w="full"
-            gap={{ base: 6, md: 8 }}
+            gap={{ base: 4, md: 8 }}
           >
-            {/* Brand & Description */}
-            <VStack align={{ base: "center", md: "start" }} gap={4} flex={1}>
+            {/* Brand & Description - Hidden on mobile */}
+            <VStack
+              align={{ base: "center", md: "start" }}
+              gap={4}
+              flex={1}
+              display={{ base: "none", md: "flex" }}
+            >
               <Text
                 fontSize="2xl"
                 fontWeight="bold"
@@ -67,8 +70,12 @@ export function Footer() {
               </Text>
             </VStack>
 
-            {/* Navigation Links */}
-            <VStack align={{ base: "center", md: "start" }} gap={4}>
+            {/* Navigation Links - Compact on mobile */}
+            <VStack
+              align={{ base: "center", md: "start" }}
+              gap={{ base: 2, md: 4 }}
+              display={{ base: "none", md: "flex" }}
+            >
               <Text
                 fontSize="lg"
                 fontWeight="semibold"
@@ -77,43 +84,81 @@ export function Footer() {
               >
                 เมนู
               </Text>
-              <VStack gap={2}>
+              <VStack gap={1} align="start">
                 {navigation.map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      color={{ base: "gray.600", _dark: "gray.300" }}
-                      _hover={{
-                        color: { base: "accent.500", _dark: "accent.300" },
-                      }}
-                      className={item.labelTh ? "thai-text" : ""}
-                    >
-                      {item.labelTh || item.label}
-                    </Button>
-                  </Link>
+                  <VStack key={item.href} gap={0.5} align="start" w="full">
+                    <Link href={item.href}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        color={{ base: "gray.600", _dark: "gray.300" }}
+                        _hover={{
+                          color: { base: "accent.500", _dark: "accent.300" },
+                        }}
+                        className={item.labelTh ? "thai-text" : ""}
+                        justifyContent="flex-start"
+                        width="full"
+                      >
+                        {item.labelTh || item.label}
+                      </Button>
+                    </Link>
+                    {/* Sub-items */}
+                    {item.subItems && item.subItems.length > 0 && (
+                      <VStack gap={0.5} align="start" pl={4} w="full">
+                        {item.subItems.map((subItem) => (
+                          <Link key={subItem.href} href={subItem.href}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              color={{ base: "gray.500", _dark: "gray.400" }}
+                              _hover={{
+                                color: {
+                                  base: "accent.500",
+                                  _dark: "accent.300",
+                                },
+                              }}
+                              className={subItem.labelTh ? "thai-text" : ""}
+                              justifyContent="flex-start"
+                              width="full"
+                              fontSize="xs"
+                            >
+                              {subItem.labelTh || subItem.label}
+                            </Button>
+                          </Link>
+                        ))}
+                      </VStack>
+                    )}
+                  </VStack>
                 ))}
               </VStack>
             </VStack>
 
             {/* Contact & Social */}
-            <VStack align={{ base: "center", md: "start" }} gap={4}>
+            <VStack
+              align={{ base: "center", md: "start" }}
+              gap={{ base: 3, md: 4 }}
+              w={{ base: "full", md: "auto" }}
+            >
               <Text
-                fontSize="lg"
+                fontSize={{ base: "md", md: "lg" }}
                 fontWeight="semibold"
                 color={{ base: "gray.800", _dark: "white" }}
                 className="thai-text"
+                display={{ base: "none", md: "block" }}
               >
                 ติดต่อ
               </Text>
 
-              {/* Contact Info */}
-              <VStack gap={2} align={{ base: "center", md: "start" }}>
+              {/* Contact Info - Compact on mobile */}
+              <VStack
+                gap={{ base: 1, md: 2 }}
+                align={{ base: "center", md: "start" }}
+              >
                 <HStack gap={2}>
                   <Mail size={16} />
                   <Link href={`mailto:${siteConfig.social.email}`}>
                     <Text
-                      fontSize="sm"
+                      fontSize={{ base: "xs", md: "sm" }}
                       _hover={{
                         color: { base: "accent.500", _dark: "accent.300" },
                       }}
@@ -128,7 +173,7 @@ export function Footer() {
                     <Phone size={16} />
                     <Link href={`tel:${siteConfig.social.phone}`}>
                       <Text
-                        fontSize="sm"
+                        fontSize={{ base: "xs", md: "sm" }}
                         _hover={{
                           color: { base: "accent.500", _dark: "accent.300" },
                         }}
@@ -141,13 +186,13 @@ export function Footer() {
               </VStack>
 
               {/* Social Links */}
-              <HStack gap={3} mt={2}>
+              <HStack gap={{ base: 2, md: 3 }} mt={{ base: 1, md: 2 }}>
                 {siteConfig.social.facebook && (
                   <Link href={siteConfig.social.facebook} target="_blank">
                     <Button
                       variant="ghost"
-                      size="sm"
-                      p={2}
+                      size={{ base: "xs", md: "sm" }}
+                      p={{ base: 1, md: 2 }}
                       _hover={{
                         color: { base: "accent.500", _dark: "accent.300" },
                       }}
@@ -161,8 +206,8 @@ export function Footer() {
                   <Link href={siteConfig.social.instagram} target="_blank">
                     <Button
                       variant="ghost"
-                      size="sm"
-                      p={2}
+                      size={{ base: "xs", md: "sm" }}
+                      p={{ base: 1, md: 2 }}
                       _hover={{
                         color: { base: "accent.500", _dark: "accent.300" },
                       }}
@@ -176,8 +221,8 @@ export function Footer() {
                   <Link href={siteConfig.social.youtube} target="_blank">
                     <Button
                       variant="ghost"
-                      size="sm"
-                      p={2}
+                      size={{ base: "xs", md: "sm" }}
+                      p={{ base: 1, md: 2 }}
                       _hover={{
                         color: { base: "accent.500", _dark: "accent.300" },
                       }}
@@ -191,8 +236,8 @@ export function Footer() {
                   <Link href={siteConfig.social.linkedin} target="_blank">
                     <Button
                       variant="ghost"
-                      size="sm"
-                      p={2}
+                      size={{ base: "xs", md: "sm" }}
+                      p={{ base: 1, md: 2 }}
                       _hover={{
                         color: { base: "accent.500", _dark: "accent.300" },
                       }}
@@ -203,24 +248,6 @@ export function Footer() {
                 )}
               </HStack>
             </VStack>
-          </Flex>
-
-          <Box w="full" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
-
-          {/* Copyright */}
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            justify="space-between"
-            align="center"
-            w="full"
-            gap={4}
-          >
-            <Text fontSize="sm" textAlign="center">
-              © {currentYear} {siteConfig.author}. สงวนลิขสิทธิ์
-            </Text>
-            <Text fontSize="sm" color={{ base: "gray.500", _dark: "gray.400" }}>
-              สร้างด้วย Next.js และ Chakra UI
-            </Text>
           </Flex>
         </VStack>
       </Container>

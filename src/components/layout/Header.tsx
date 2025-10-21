@@ -10,7 +10,7 @@ import {
   Container,
   Image,
 } from "@chakra-ui/react";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Menu, X, MessageCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -124,28 +124,113 @@ export function Header() {
 }
 
 const DesktopNav = ({ pathname }: { pathname: string }) => {
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
   return (
     <>
-      {navigation.map((navItem) => (
-        <Link key={navItem.label} href={navItem.href}>
-          <Button
-            variant="ghost"
-            fontSize="sm"
-            fontWeight={pathname === navItem.href ? 600 : 400}
-            color={
-              pathname === navItem.href
-                ? { base: "accent.500", _dark: "accent.300" }
-                : { base: "gray.600", _dark: "gray.200" }
-            }
-            _hover={{
-              color: { base: "gray.800", _dark: "white" },
-            }}
-            className={navItem.labelTh ? "thai-text" : ""}
-          >
-            {navItem.labelTh || navItem.label}
-          </Button>
-        </Link>
-      ))}
+      {navigation.map((navItem) => {
+        const hasSubItems = navItem.subItems && navItem.subItems.length > 0;
+        const isActive =
+          pathname === navItem.href ||
+          navItem.subItems?.some((sub) => pathname === sub.href);
+
+        if (hasSubItems) {
+          return (
+            <Box
+              key={navItem.label}
+              position="relative"
+              onMouseEnter={() => setOpenDropdown(navItem.label)}
+              onMouseLeave={() => setOpenDropdown(null)}
+            >
+              <Link href={navItem.href}>
+                <Button
+                  variant="ghost"
+                  fontSize="sm"
+                  fontWeight={isActive ? 600 : 400}
+                  color={
+                    isActive
+                      ? { base: "accent.500", _dark: "accent.300" }
+                      : { base: "gray.600", _dark: "gray.200" }
+                  }
+                  _hover={{
+                    color: { base: "gray.800", _dark: "white" },
+                  }}
+                  className={navItem.labelTh ? "thai-text" : ""}
+                >
+                  <HStack gap={1}>
+                    <Text>{navItem.labelTh || navItem.label}</Text>
+                    <ChevronDown size={16} />
+                  </HStack>
+                </Button>
+              </Link>
+
+              {/* Dropdown Menu */}
+              {openDropdown === navItem.label && (
+                <Box
+                  position="absolute"
+                  top="100%"
+                  left={0}
+                  mt={2}
+                  bg={{ base: "white", _dark: "gray.800" }}
+                  borderWidth="1px"
+                  borderColor={{ base: "gray.200", _dark: "gray.700" }}
+                  borderRadius="md"
+                  boxShadow="lg"
+                  minW="200px"
+                  py={2}
+                  zIndex={1000}
+                >
+                  {navItem.subItems?.map((subItem) => (
+                    <Link key={subItem.label} href={subItem.href}>
+                      <Button
+                        variant="ghost"
+                        w="full"
+                        justifyContent="flex-start"
+                        fontSize="sm"
+                        fontWeight={pathname === subItem.href ? 600 : 400}
+                        color={
+                          pathname === subItem.href
+                            ? { base: "accent.500", _dark: "accent.300" }
+                            : { base: "gray.600", _dark: "gray.200" }
+                        }
+                        _hover={{
+                          bg: { base: "gray.50", _dark: "gray.700" },
+                          color: { base: "gray.800", _dark: "white" },
+                        }}
+                        className={subItem.labelTh ? "thai-text" : ""}
+                        px={4}
+                      >
+                        {subItem.labelTh || subItem.label}
+                      </Button>
+                    </Link>
+                  ))}
+                </Box>
+              )}
+            </Box>
+          );
+        }
+
+        return (
+          <Link key={navItem.label} href={navItem.href}>
+            <Button
+              variant="ghost"
+              fontSize="sm"
+              fontWeight={isActive ? 600 : 400}
+              color={
+                isActive
+                  ? { base: "accent.500", _dark: "accent.300" }
+                  : { base: "gray.600", _dark: "gray.200" }
+              }
+              _hover={{
+                color: { base: "gray.800", _dark: "white" },
+              }}
+              className={navItem.labelTh ? "thai-text" : ""}
+            >
+              {navItem.labelTh || navItem.label}
+            </Button>
+          </Link>
+        );
+      })}
     </>
   );
 };
@@ -157,6 +242,8 @@ const MobileNav = ({
   pathname: string;
   onContactClick: () => void;
 }) => {
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
   return (
     <VStack
       bg={{ base: "white", _dark: "gray.800" }}
@@ -165,11 +252,47 @@ const MobileNav = ({
       gap={2}
     >
       {navigation.map((navItem) => (
-        <MobileNavItem
-          key={navItem.label}
-          {...navItem}
-          isActive={pathname === navItem.href}
-        />
+        <Box key={navItem.label}>
+          <MobileNavItem
+            {...navItem}
+            isActive={
+              pathname === navItem.href ||
+              navItem.subItems?.some((sub) => pathname === sub.href) ||
+              false
+            }
+            isExpanded={expandedItem === navItem.label}
+            onToggle={() =>
+              setExpandedItem(
+                expandedItem === navItem.label ? null : navItem.label
+              )
+            }
+          />
+          {/* Sub Items */}
+          {navItem.subItems &&
+            navItem.subItems.length > 0 &&
+            expandedItem === navItem.label && (
+              <VStack align="stretch" pl={4} mt={2} gap={1}>
+                {navItem.subItems.map((subItem) => (
+                  <Link key={subItem.label} href={subItem.href}>
+                    <Flex py={2} justify="space-between" align="center">
+                      <Text
+                        fontSize="sm"
+                        fontWeight={pathname === subItem.href ? 600 : 400}
+                        color={
+                          pathname === subItem.href
+                            ? { base: "accent.500", _dark: "accent.300" }
+                            : { base: "gray.500", _dark: "gray.400" }
+                        }
+                        className={subItem.labelTh ? "thai-text" : ""}
+                      >
+                        {subItem.labelTh || subItem.label}
+                      </Text>
+                    </Flex>
+                  </Link>
+                ))}
+              </VStack>
+            )}
+        </Box>
       ))}
 
       {/* Contact Button for Mobile */}
@@ -198,27 +321,54 @@ const MobileNavItem = ({
   labelTh,
   href,
   isActive,
+  subItems,
+  isExpanded,
+  onToggle,
 }: {
   label: string;
   labelTh: string;
   href: string;
   isActive: boolean;
+  subItems?: { label: string; labelTh: string; href: string }[];
+  isExpanded?: boolean;
+  onToggle?: () => void;
 }) => {
+  const hasSubItems = subItems && subItems.length > 0;
+
   return (
-    <Link href={href}>
+    <Box>
       <Flex py={2} justify="space-between" align="center">
-        <Text
-          fontWeight={isActive ? 600 : 400}
-          color={
-            isActive
-              ? { base: "accent.500", _dark: "accent.300" }
-              : { base: "gray.600", _dark: "gray.200" }
-          }
-          className={labelTh ? "thai-text" : ""}
-        >
-          {labelTh || label}
-        </Text>
+        <Link href={href}>
+          <Text
+            fontWeight={isActive ? 600 : 400}
+            color={
+              isActive
+                ? { base: "accent.500", _dark: "accent.300" }
+                : { base: "gray.600", _dark: "gray.200" }
+            }
+            className={labelTh ? "thai-text" : ""}
+          >
+            {labelTh || label}
+          </Text>
+        </Link>
+        {hasSubItems && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggle}
+            p={1}
+            minW="auto"
+          >
+            <ChevronDown
+              size={16}
+              style={{
+                transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.2s",
+              }}
+            />
+          </Button>
+        )}
       </Flex>
-    </Link>
+    </Box>
   );
 };

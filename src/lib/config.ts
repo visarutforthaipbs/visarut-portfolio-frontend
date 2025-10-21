@@ -41,6 +41,18 @@ export const navigation = [
     href: "/portfolio",
   },
   {
+    label: "Personal Projects",
+    labelTh: "โครงการส่วนตัว",
+    href: "/personal-projects",
+    subItems: [
+      {
+        label: "#PHOTOFORAIR",
+        labelTh: "#PHOTOFORAIR",
+        href: "/personal-projects",
+      },
+    ],
+  },
+  {
     label: "Blog",
     labelTh: "บล็อก",
     href: "/blog",

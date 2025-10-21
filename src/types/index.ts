@@ -25,6 +25,11 @@ export interface NavigationItem {
   labelTh: string;
   href: string;
   isExternal?: boolean;
+  subItems?: {
+    label: string;
+    labelTh: string;
+    href: string;
+  }[];
 }
 
 export interface ContactFormData {
