@@ -108,7 +108,7 @@ export function VideographyLayout({
                   fontSize="xl"
                   fontWeight="600"
                   color="gray.800"
-                  className="thai-text"
+
                   lineHeight="1.4"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -137,7 +137,7 @@ export function VideographyLayout({
                 <Text
                   fontSize="sm"
                   color="gray.600"
-                  className="thai-text"
+
                   lineHeight="1.6"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -157,7 +157,7 @@ export function VideographyLayout({
                   bg="accent.500"
                   color="white"
                   _hover={{ bg: "accent.600" }}
-                  className="thai-text"
+
                   px={4}
                   py={2}
                 >

@@ -70,7 +70,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
       <Box
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 20 }}
-        className="full-width"
+
         display="flex"
         justifyContent="center"
         w="100%"
@@ -92,7 +92,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
     <Box
       bg={{ base: "white", _dark: "gray.900" }}
       py={{ base: 16, md: 20 }}
-      className="full-width"
+
       display="flex"
       justifyContent="center"
       w="100%"
@@ -105,7 +105,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
               fontSize={{ base: "2xl", md: "4xl" }}
               fontWeight="bold"
               color={{ base: "gray.800", _dark: "white" }}
-              className="thai-text"
+
             >
               บทความล่าสุด
             </Heading>
@@ -113,7 +113,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
               fontSize={{ base: "md", md: "lg" }}
               color={{ base: "gray.600", _dark: "gray.300" }}
               maxW="600px"
-              className="thai-text"
+
             >
               ความคิดเห็น ประสบการณ์ และเทคนิคการทำงานจากมุมมองของนักสื่อ
             </Text>
@@ -134,7 +134,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
                 bg="accent.500"
                 color="white"
                 _hover={{ bg: "accent.600" }}
-                className="thai-text"
+
                 px={6}
                 py={3}
               >
@@ -274,7 +274,7 @@ function BlogPostCard({
               onError={() => setFeaturedImage(null)}
             />
           ) : (
-            <Text color="gray.500" fontSize="sm" className="thai-text">
+            <Text color="gray.500" fontSize="sm">
               {imageLoading ? "กำลังโหลด..." : "รูปภาพประกอบ"}
             </Text>
           )}
@@ -295,7 +295,7 @@ function BlogPostCard({
                     py={1}
                     borderRadius="md"
                     fontSize="xs"
-                    className="thai-text"
+
                   >
                     {category.name}
                   </Badge>
@@ -308,7 +308,6 @@ function BlogPostCard({
             fontSize="lg"
             fontWeight="600"
             color={{ base: "gray.800", _dark: "white" }}
-            className="thai-text"
             lineHeight="1.4"
             truncate
           >
@@ -320,7 +319,7 @@ function BlogPostCard({
             <Text
               fontSize="sm"
               color={{ base: "gray.600", _dark: "gray.300" }}
-              className="thai-text"
+
               lineHeight="1.6"
               css={{
                 display: "-webkit-box",
@@ -339,11 +338,11 @@ function BlogPostCard({
             <HStack gap={4} fontSize="xs" color="gray.500" justify="center">
               <HStack gap={1}>
                 <Calendar size={12} />
-                <Text className="thai-text">{formatDate(post.date)}</Text>
+                <Text>{formatDate(post.date)}</Text>
               </HStack>
               <HStack gap={1}>
                 <User size={12} />
-                <Text className="thai-text">{siteConfig.authorTh}</Text>
+                <Text>{siteConfig.authorTh}</Text>
               </HStack>
             </HStack>
 
@@ -353,7 +352,7 @@ function BlogPostCard({
                 variant="ghost"
                 color="accent.500"
                 _hover={{ bg: "accent.50" }}
-                className="thai-text"
+
                 px={4}
                 py={2}
                 w="full"

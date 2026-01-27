@@ -108,7 +108,7 @@ export function VideoEditingLayout({
                   fontSize="md"
                   fontWeight="600"
                   color="gray.800"
-                  className="thai-text"
+
                   lineHeight="1.4"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -137,7 +137,7 @@ export function VideoEditingLayout({
                 <Text
                   fontSize="sm"
                   color="gray.600"
-                  className="thai-text"
+
                   lineHeight="1.5"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -156,7 +156,7 @@ export function VideoEditingLayout({
                   size="sm"
                   variant="outline"
                   colorScheme="purple"
-                  className="thai-text"
+
                   px={4}
                   py={2}
                 >

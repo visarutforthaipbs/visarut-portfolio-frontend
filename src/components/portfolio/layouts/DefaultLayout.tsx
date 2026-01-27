@@ -83,7 +83,7 @@ export function DefaultLayout({
                     fontSize="lg"
                     fontWeight="600"
                     color="gray.800"
-                    className="thai-text"
+
                     lineHeight="1.4"
                     overflow="hidden"
                     textOverflow="ellipsis"
@@ -112,7 +112,7 @@ export function DefaultLayout({
                   <Text
                     fontSize="sm"
                     color="gray.600"
-                    className="thai-text"
+
                     lineHeight="1.5"
                     overflow="hidden"
                     textOverflow="ellipsis"
@@ -133,7 +133,7 @@ export function DefaultLayout({
                   py={1}
                   borderRadius="md"
                   fontSize="xs"
-                  className="thai-text"
+
                 >
                   {categoryName}
                 </Badge>

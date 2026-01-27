@@ -54,7 +54,7 @@ export default function PortfolioPage() {
       <Box
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 24 }}
-        className="full-width"
+
         display="flex"
         justifyContent="center"
         w="100%"
@@ -66,7 +66,7 @@ export default function PortfolioPage() {
                 fontSize={{ base: "3xl", md: "5xl" }}
                 fontWeight="bold"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
               >
                 ผลงานของเรา
               </Heading>
@@ -74,7 +74,7 @@ export default function PortfolioPage() {
                 fontSize={{ base: "lg", md: "xl" }}
                 color={{ base: "gray.600", _dark: "gray.300" }}
                 maxW="800px"
-                className="thai-text"
+
                 lineHeight="1.8"
               >
                 รวมผลงานที่ผ่านมา แสดงความเชี่ยวชาญในการถ่ายภาพ วิดีโอ
@@ -89,7 +89,7 @@ export default function PortfolioPage() {
       <Box
         bg={{ base: "gray.50", _dark: "gray.800" }}
         py={{ base: 16, md: 20 }}
-        className="full-width"
+
         display="flex"
         justifyContent="center"
         w="100%"
@@ -104,7 +104,7 @@ export default function PortfolioPage() {
                   fontSize="lg"
                   fontWeight="600"
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                 >
                   หมวดหมู่
                 </Text>
@@ -147,7 +147,7 @@ export default function PortfolioPage() {
                       size="sm"
                       px={6}
                       py={2}
-                      className="thai-text"
+
                     >
                       {option.label}
                     </Button>
@@ -162,12 +162,12 @@ export default function PortfolioPage() {
                         variant="outline"
                         colorScheme="blue"
                         size="sm"
-                        className="thai-text"
+
                       >
                         ดู
                         {
                           PORTFOLIO_CATEGORIES[
-                            selectedCategory as keyof typeof PORTFOLIO_CATEGORIES
+                          selectedCategory as keyof typeof PORTFOLIO_CATEGORIES
                           ]
                         }
                         ทั้งหมด
@@ -191,7 +191,7 @@ export default function PortfolioPage() {
                 <HStack gap={3} color="red.600" justify="center">
                   <AlertCircle size={24} />
                   <VStack align="center" gap={2}>
-                    <Text fontWeight="medium" className="thai-text">
+                    <Text fontWeight="medium">
                       เกิดข้อผิดพลาดในการโหลดผลงาน
                     </Text>
                     <Text fontSize="sm" color="red.500">
@@ -235,7 +235,7 @@ export default function PortfolioPage() {
                       disabled={currentPage === 1}
                       variant="outline"
                       size="md"
-                      className="thai-text"
+
                     >
                       ก่อนหน้า
                     </Button>
@@ -276,7 +276,7 @@ export default function PortfolioPage() {
                       disabled={currentPage === totalPages}
                       variant="outline"
                       size="md"
-                      className="thai-text"
+
                     >
                       ถัดไป
                     </Button>
@@ -288,7 +288,7 @@ export default function PortfolioPage() {
                   fontSize="sm"
                   color={{ base: "gray.600", _dark: "gray.400" }}
                   textAlign="center"
-                  className="thai-text"
+
                 >
                   แสดง {portfolios.length} จาก {total} ผลงาน
                 </Text>
@@ -299,7 +299,7 @@ export default function PortfolioPage() {
                   fontSize="lg"
                   color={{ base: "gray.600", _dark: "gray.400" }}
                   textAlign="center"
-                  className="thai-text"
+
                 >
                   ไม่พบผลงานในหมวดหมู่นี้
                 </Text>
@@ -309,7 +309,7 @@ export default function PortfolioPage() {
                   color="white"
                   _hover={{ bg: "accent.600" }}
                   size="md"
-                  className="thai-text"
+
                 >
                   ดูผลงานทั้งหมด
                 </Button>
@@ -360,7 +360,6 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
             py={1}
             borderRadius="full"
             fontSize="xs"
-            className="thai-text"
           >
             {PORTFOLIO_CATEGORIES[portfolio.category] || portfolio.category}
           </Badge>
@@ -369,7 +368,6 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
           <Heading
             fontSize="xl"
             color={{ base: "gray.800", _dark: "white" }}
-            className="thai-text"
             lineHeight="1.4"
             css={{
               display: "-webkit-box",
@@ -386,7 +384,6 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
             <Text
               fontSize="sm"
               color={{ base: "gray.600", _dark: "gray.300" }}
-              className="thai-text"
               css={{
                 display: "-webkit-box",
                 WebkitLineClamp: 3,
@@ -421,7 +418,7 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
                 variant="ghost"
                 color="accent.500"
                 _hover={{ color: "accent.600", bg: "accent.50" }}
-                className="thai-text"
+
               >
                 <HStack gap={1}>
                   <Text>ดูเพิ่มเติม</Text>

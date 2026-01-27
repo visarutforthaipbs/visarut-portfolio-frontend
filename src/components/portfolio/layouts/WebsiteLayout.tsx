@@ -93,7 +93,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                   fontSize="lg"
                   fontWeight="600"
                   color="gray.800"
-                  className="thai-text"
+
                   lineHeight="1.4"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -122,7 +122,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                 <Text
                   fontSize="sm"
                   color="gray.600"
-                  className="thai-text"
+
                   lineHeight="1.5"
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -143,7 +143,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                     variant="outline"
                     colorScheme="green"
                     flex={1}
-                    className="thai-text"
+
                     px={4}
                     py={2}
                   >

@@ -55,7 +55,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
         <Heading
           fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
           color={{ base: "gray.800", _dark: "white" }}
-          className="thai-text"
+
         >
           ผลงานล่าสุด
         </Heading>
@@ -63,7 +63,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
           fontSize={{ base: "md", md: "lg" }}
           color={{ base: "gray.600", _dark: "gray.300" }}
           maxW={{ base: "90%", md: "500px" }}
-          className="thai-text"
+
           px={{ base: 2, md: 0 }}
         >
           รวมผลงานที่ผ่านมาจากหลากหลายหมวดหมู่
@@ -114,7 +114,6 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
                 bg="accent.500"
                 color="white"
                 _hover={{ bg: "accent.600" }}
-                className="thai-text"
                 px={{ base: 4, md: 6 }}
                 py={{ base: 2, md: 3 }}
               >
@@ -138,14 +137,14 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
             <Text
               fontSize="lg"
               color={{ base: "gray.600", _dark: "gray.300" }}
-              className="thai-text"
+
             >
               ยังไม่มีผลงานที่จะแสดง
             </Text>
             <Text
               fontSize="sm"
               color={{ base: "gray.500", _dark: "gray.400" }}
-              className="thai-text"
+
             >
               กลับมาตรวจสอบใหม่ในภายหลัง
             </Text>
@@ -214,7 +213,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
                 fontSize={{ base: "xs", md: "sm" }}
                 color="accent.500"
                 fontWeight="medium"
-                className="thai-text"
+
                 textTransform="uppercase"
               >
                 {categoryLabel}
@@ -234,7 +233,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
             <Heading
               fontSize={{ base: "md", md: "lg" }}
               color={{ base: "gray.800", _dark: "white" }}
-              className="thai-text"
+
               lineHeight="1.4"
               textOverflow="ellipsis"
               overflow="hidden"
@@ -247,7 +246,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
               <Text
                 fontSize={{ base: "xs", md: "sm" }}
                 color={{ base: "gray.600", _dark: "gray.300" }}
-                className="thai-text"
+
                 lineHeight="1.5"
                 display="-webkit-box"
                 css={{

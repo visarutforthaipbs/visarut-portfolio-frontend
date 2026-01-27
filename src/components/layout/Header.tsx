@@ -32,7 +32,7 @@ export function Header() {
       top={0}
       zIndex={999}
       backdropFilter="blur(10px)"
-      className="full-width"
+
       display="flex"
       justifyContent="center"
       w="100%"
@@ -91,7 +91,7 @@ export function Header() {
               color="white"
               _hover={{ bg: "accent.600" }}
               size={{ base: "xs", md: "sm" }}
-              className="thai-text"
+
               display={{ base: "none", md: "flex" }}
               px={{ base: 3, md: 4 }}
               py={2}
@@ -155,7 +155,7 @@ const DesktopNav = ({ pathname }: { pathname: string }) => {
                   _hover={{
                     color: { base: "gray.800", _dark: "white" },
                   }}
-                  className={navItem.labelTh ? "thai-text" : ""}
+
                 >
                   <HStack gap={1}>
                     <Text>{navItem.labelTh || navItem.label}</Text>
@@ -197,7 +197,7 @@ const DesktopNav = ({ pathname }: { pathname: string }) => {
                           bg: { base: "gray.50", _dark: "gray.700" },
                           color: { base: "gray.800", _dark: "white" },
                         }}
-                        className={subItem.labelTh ? "thai-text" : ""}
+
                         px={4}
                       >
                         {subItem.labelTh || subItem.label}
@@ -224,7 +224,7 @@ const DesktopNav = ({ pathname }: { pathname: string }) => {
               _hover={{
                 color: { base: "gray.800", _dark: "white" },
               }}
-              className={navItem.labelTh ? "thai-text" : ""}
+
             >
               {navItem.labelTh || navItem.label}
             </Button>
@@ -283,7 +283,7 @@ const MobileNav = ({
                             ? { base: "accent.500", _dark: "accent.300" }
                             : { base: "gray.500", _dark: "gray.400" }
                         }
-                        className={subItem.labelTh ? "thai-text" : ""}
+
                       >
                         {subItem.labelTh || subItem.label}
                       </Text>
@@ -302,7 +302,7 @@ const MobileNav = ({
         color="white"
         _hover={{ bg: "accent.600" }}
         size="md"
-        className="thai-text"
+
         mt={2}
         px={4}
         py={2}
@@ -346,7 +346,7 @@ const MobileNavItem = ({
                 ? { base: "accent.500", _dark: "accent.300" }
                 : { base: "gray.600", _dark: "gray.200" }
             }
-            className={labelTh ? "thai-text" : ""}
+
           >
             {labelTh || label}
           </Text>

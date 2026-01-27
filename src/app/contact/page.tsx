@@ -124,7 +124,7 @@ export default function ContactPage() {
       <Box
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 20 }}
-        className="full-width"
+
         display="flex"
         justifyContent="center"
         w="100%"
@@ -136,7 +136,7 @@ export default function ContactPage() {
                 fontSize={{ base: "3xl", md: "5xl" }}
                 fontWeight="bold"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
               >
                 ติดต่อเรา
               </Heading>
@@ -144,7 +144,7 @@ export default function ContactPage() {
                 fontSize={{ base: "lg", md: "xl" }}
                 color={{ base: "gray.600", _dark: "gray.300" }}
                 maxW="600px"
-                className="thai-text"
+
                 lineHeight="1.7"
               >
                 พร้อมให้คำปรึกษาและรับฟังความต้องการของคุณ
@@ -159,7 +159,7 @@ export default function ContactPage() {
       <Box
         bg={{ base: "gray.50", _dark: "gray.800" }}
         py={{ base: 16, md: 20 }}
-        className="full-width"
+
         display="flex"
         justifyContent="center"
         w="100%"
@@ -172,14 +172,14 @@ export default function ContactPage() {
                 <Heading
                   fontSize={{ base: "2xl", md: "3xl" }}
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                 >
                   ข้อมูลการติดต่อ
                 </Heading>
                 <Text
                   fontSize="lg"
                   color={{ base: "gray.600", _dark: "gray.300" }}
-                  className="thai-text"
+
                   lineHeight="1.7"
                 >
                   ติดต่อเราผ่านช่องทางต่างๆ ด้านล่าง หรือส่งข้อความมาทางแบบฟอร์ม
@@ -200,9 +200,9 @@ export default function ContactPage() {
                     _hover={
                       info.link
                         ? {
-                            transform: "translateY(-2px)",
-                            shadow: "md",
-                          }
+                          transform: "translateY(-2px)",
+                          shadow: "md",
+                        }
                         : {}
                     }
                     transition="all 0.2s"
@@ -210,10 +210,10 @@ export default function ContactPage() {
                     onClick={
                       info.link
                         ? () => {
-                            if (typeof window !== "undefined") {
-                              window.open(info.link, "_self");
-                            }
+                          if (typeof window !== "undefined") {
+                            window.open(info.link, "_self");
                           }
+                        }
                         : undefined
                     }
                   >
@@ -228,7 +228,7 @@ export default function ContactPage() {
                         <Text
                           fontSize="sm"
                           color={{ base: "gray.500", _dark: "gray.400" }}
-                          className="thai-text"
+
                           fontWeight="500"
                         >
                           {info.title}
@@ -236,7 +236,7 @@ export default function ContactPage() {
                         <Text
                           fontSize="md"
                           color={{ base: "gray.800", _dark: "white" }}
-                          className="thai-text"
+
                           fontWeight="500"
                         >
                           {info.value}
@@ -252,7 +252,7 @@ export default function ContactPage() {
                 <Text
                   fontSize="lg"
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                   fontWeight="600"
                 >
                   ติดตามเราได้ที่
@@ -302,14 +302,14 @@ export default function ContactPage() {
                   <Heading
                     fontSize={{ base: "xl", md: "2xl" }}
                     color={{ base: "gray.800", _dark: "white" }}
-                    className="thai-text"
+
                   >
                     ส่งข้อความหาเรา
                   </Heading>
                   <Text
                     fontSize="md"
                     color={{ base: "gray.600", _dark: "gray.300" }}
-                    className="thai-text"
+
                   >
                     กรอกข้อมูลด้านล่าง เราจะติดต่อกลับภายใน 24 ชั่วโมง
                   </Text>
@@ -325,7 +325,7 @@ export default function ContactPage() {
                   >
                     <Text
                       color="green.700"
-                      className="thai-text"
+
                       fontWeight="500"
                     >
                       ✅ ส่งข้อความสำเร็จ! เราจะติดต่อกลับภายใน 24 ชั่วโมง
@@ -341,7 +341,7 @@ export default function ContactPage() {
                         fontSize="sm"
                         fontWeight="500"
                         color={{ base: "gray.700", _dark: "gray.200" }}
-                        className="thai-text"
+
                       >
                         ชื่อ-นามสกุล *
                       </Text>
@@ -350,7 +350,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="กรอกชื่อ-นามสกุลของคุณ"
-                        className="thai-text"
+
                         size="lg"
                         bg={{ base: "gray.50", _dark: "gray.600" }}
                         border="1px solid"
@@ -366,7 +366,7 @@ export default function ContactPage() {
                           fontSize="sm"
                           fontWeight="500"
                           color={{ base: "gray.700", _dark: "gray.200" }}
-                          className="thai-text"
+
                         >
                           อีเมล *
                         </Text>
@@ -390,7 +390,7 @@ export default function ContactPage() {
                           fontSize="sm"
                           fontWeight="500"
                           color={{ base: "gray.700", _dark: "gray.200" }}
-                          className="thai-text"
+
                         >
                           โทรศัพท์
                         </Text>
@@ -400,7 +400,7 @@ export default function ContactPage() {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="0X-XXX-XXXX"
-                          className="thai-text"
+
                           size="lg"
                           bg={{ base: "gray.50", _dark: "gray.600" }}
                           border="1px solid"
@@ -415,7 +415,7 @@ export default function ContactPage() {
                         fontSize="sm"
                         fontWeight="500"
                         color={{ base: "gray.700", _dark: "gray.200" }}
-                        className="thai-text"
+
                       >
                         หัวข้อ *
                       </Text>
@@ -424,7 +424,7 @@ export default function ContactPage() {
                         value={formData.subject}
                         onChange={handleInputChange}
                         placeholder="หัวข้อที่ต้องการสอบถาม"
-                        className="thai-text"
+
                         size="lg"
                         bg={{ base: "gray.50", _dark: "gray.600" }}
                         border="1px solid"
@@ -439,7 +439,7 @@ export default function ContactPage() {
                         fontSize="sm"
                         fontWeight="500"
                         color={{ base: "gray.700", _dark: "gray.200" }}
-                        className="thai-text"
+
                       >
                         ข้อความ *
                       </Text>
@@ -448,7 +448,7 @@ export default function ContactPage() {
                         value={formData.message}
                         onChange={handleInputChange}
                         placeholder="รายละเอียดที่ต้องการสอบถาม..."
-                        className="thai-text"
+
                         rows={5}
                         resize="vertical"
                         bg={{ base: "gray.50", _dark: "gray.600" }}
@@ -466,7 +466,7 @@ export default function ContactPage() {
                       _hover={{ bg: "accent.600" }}
                       loading={isSubmitting}
                       loadingText="กำลังส่ง..."
-                      className="thai-text"
+
                       w="full"
                       px={8}
                       py={6}

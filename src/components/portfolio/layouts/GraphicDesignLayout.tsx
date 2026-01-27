@@ -74,7 +74,7 @@ export function GraphicDesignLayout({
                   fontSize="sm"
                   fontWeight="600"
                   color="gray.800"
-                  className="thai-text"
+
                   lineHeight="1.3"
                   overflow="hidden"
                   textOverflow="ellipsis"

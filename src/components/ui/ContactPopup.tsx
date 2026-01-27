@@ -77,7 +77,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
             <Heading
               fontSize={{ base: "lg", md: "xl" }}
               color={{ base: "gray.800", _dark: "white" }}
-              className="thai-text"
+
             >
               ติดต่อ
             </Heading>
@@ -101,7 +101,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
                   fontSize="md"
                   fontWeight="600"
                   color={{ base: "gray.700", _dark: "gray.300" }}
-                  className="thai-text"
+
                 >
                   ส่งรายละเอียดโครงการ
                 </Text>
@@ -124,7 +124,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
                   fontSize="md"
                   fontWeight="600"
                   color={{ base: "gray.700", _dark: "gray.300" }}
-                  className="thai-text"
+
                 >
                   โทรติดต่อ
                 </Text>
@@ -153,7 +153,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
               _hover={{ bg: "accent.600" }}
               size={{ base: "md", md: "lg" }}
               w="full"
-              className="thai-text"
+
               fontSize={{ base: "sm", md: "md" }}
               py={{ base: 2, md: 3 }}
             >
@@ -177,7 +177,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
               }}
               size={{ base: "md", md: "lg" }}
               w="full"
-              className="thai-text"
+
               fontSize={{ base: "sm", md: "md" }}
               py={{ base: 2, md: 3 }}
             >

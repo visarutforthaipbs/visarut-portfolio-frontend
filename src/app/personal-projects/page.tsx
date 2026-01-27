@@ -53,7 +53,7 @@ const CTAButton = ({
       fontSize={{ base: "md", md: "lg" }}
       fontWeight="600"
       borderRadius="full"
-      className="thai-text"
+
       _focus={{ boxShadow: "outline" }}
     >
       โหลด Preset ได้ที่นี่
@@ -169,7 +169,7 @@ export default function PersonalProjectsPage() {
                 px={4}
                 py={2}
                 borderRadius="full"
-                className="thai-text"
+
                 fontSize="md"
               >
                 Social Campaign
@@ -180,7 +180,7 @@ export default function PersonalProjectsPage() {
                 px={4}
                 py={2}
                 borderRadius="full"
-                className="thai-text"
+
                 fontSize="md"
               >
                 Photography
@@ -190,7 +190,7 @@ export default function PersonalProjectsPage() {
               fontSize={{ base: "4xl", md: "6xl" }}
               fontWeight="bold"
               color="white"
-              className="thai-text"
+
               textShadow="0 2px 10px rgba(0,0,0,0.3)"
               textAlign="center"
             >
@@ -199,7 +199,7 @@ export default function PersonalProjectsPage() {
             <Text
               fontSize={{ base: "xl", md: "2xl" }}
               color="white"
-              className="thai-text"
+
               textShadow="0 2px 8px rgba(0,0,0,0.3)"
               textAlign="center"
             >
@@ -227,7 +227,7 @@ export default function PersonalProjectsPage() {
                   <Heading
                     fontSize="3xl"
                     color="gray.800"
-                    className="thai-text"
+
                   >
                     13,016 บาท
                   </Heading>
@@ -248,7 +248,7 @@ export default function PersonalProjectsPage() {
                   <Heading
                     fontSize="3xl"
                     color="gray.800"
-                    className="thai-text"
+
                   >
                     591 ชิ้น
                   </Heading>
@@ -277,7 +277,7 @@ export default function PersonalProjectsPage() {
           fontSize={{ base: "2xl", md: "3xl" }}
           fontWeight="bold"
           color={{ base: "gray.800", _dark: "white" }}
-          className="thai-text"
+
           textAlign="center"
           w="full"
           paddingTop={{ base: 12, md: 20 }}
@@ -288,7 +288,7 @@ export default function PersonalProjectsPage() {
         <Text
           fontSize={{ base: "sm", md: "lg" }}
           color={{ base: "gray.700", _dark: "gray.300" }}
-          className="thai-text"
+
           lineHeight="1.8"
           textAlign="left"
         >
@@ -303,7 +303,7 @@ export default function PersonalProjectsPage() {
         <Text
           fontSize={{ base: "sm", md: "lg" }}
           color={{ base: "gray.700", _dark: "gray.300" }}
-          className="thai-text"
+
           lineHeight="1.8"
           textAlign="left"
         >
@@ -318,7 +318,7 @@ export default function PersonalProjectsPage() {
         <Text
           fontSize={{ base: "sm", md: "lg" }}
           color={{ base: "gray.700", _dark: "gray.300" }}
-          className="thai-text"
+
           lineHeight="1.8"
           textAlign="left"
         >
@@ -340,7 +340,7 @@ export default function PersonalProjectsPage() {
           <Text
             fontSize={{ base: "md", md: "xl" }}
             color={{ base: "gray.800", _dark: "white" }}
-            className="thai-text"
+
             lineHeight="1.8"
             fontWeight="600"
             textAlign="left"
@@ -384,7 +384,7 @@ export default function PersonalProjectsPage() {
           fontSize={{ base: "2xl", md: "3xl" }}
           fontWeight="bold"
           color={{ base: "gray.800", _dark: "white" }}
-          className="thai-text"
+
           textAlign="center"
           w="full"
         >
@@ -405,7 +405,7 @@ export default function PersonalProjectsPage() {
                 fontSize={{ base: "lg", md: "xl" }}
                 fontWeight="600"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
                 mb={2}
               >
                 ร่วมมือกับ ตี่ต่าง
@@ -413,7 +413,7 @@ export default function PersonalProjectsPage() {
               <Text
                 fontSize={{ base: "sm", md: "lg" }}
                 color={{ base: "gray.700", _dark: "gray.300" }}
-                className="thai-text"
+
                 lineHeight="1.8"
                 mb={4}
               >
@@ -438,7 +438,7 @@ export default function PersonalProjectsPage() {
                     transform: "translateY(-1px)",
                   }}
                   transition="all 0.2s"
-                  className="thai-text"
+
                   w={{ base: "full", sm: "auto" }}
                 >
                   <HStack gap={2}>
@@ -460,7 +460,7 @@ export default function PersonalProjectsPage() {
               <Text
                 fontSize="sm"
                 color={{ base: "gray.600", _dark: "gray.400" }}
-                className="thai-text"
+
                 lineHeight="1.7"
                 fontStyle="italic"
               >
@@ -496,14 +496,14 @@ export default function PersonalProjectsPage() {
             fontSize={{ base: "2xl", md: "3xl" }}
             fontWeight="bold"
             color={{ base: "gray.800", _dark: "white" }}
-            className="thai-text"
+
           >
             ข่าวและการรายงาน
           </Heading>
           <Text
             fontSize={{ base: "sm", md: "lg" }}
             color={{ base: "gray.600", _dark: "gray.400" }}
-            className="thai-text"
+
           >
             แคมเปญนี้ได้เริ่มต้นตั้งแต่ปี 2564 และได้รับความสนใจจากสื่อหลายแห่ง
           </Text>
@@ -551,7 +551,7 @@ export default function PersonalProjectsPage() {
                   fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="600"
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                   lineHeight="1.4"
                 >
                   Prachatai
@@ -559,7 +559,7 @@ export default function PersonalProjectsPage() {
                 <Text
                   fontSize="sm"
                   color={{ base: "gray.600", _dark: "gray.400" }}
-                  className="thai-text"
+
                   lineHeight="1.6"
                 >
                   รายงานข่าวเกี่ยวกับแคมเปญ #PHOTOFORAIR
@@ -608,7 +608,7 @@ export default function PersonalProjectsPage() {
                   fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="600"
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                   lineHeight="1.4"
                 >
                   Urban Creature
@@ -616,7 +616,7 @@ export default function PersonalProjectsPage() {
                 <Text
                   fontSize="sm"
                   color={{ base: "gray.600", _dark: "gray.400" }}
-                  className="thai-text"
+
                   lineHeight="1.6"
                 >
                   What&apos;s Up #CNXPM2.5 -
@@ -637,7 +637,7 @@ export default function PersonalProjectsPage() {
           <Text
             fontSize={{ base: "sm", md: "md" }}
             color={{ base: "gray.700", _dark: "gray.300" }}
-            className="thai-text"
+
             lineHeight="1.8"
             textAlign="center"
           >
@@ -676,7 +676,7 @@ export default function PersonalProjectsPage() {
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
                     color={{ base: "gray.800", _dark: "white" }}
-                    className="thai-text"
+
                     mb={3}
                     textAlign="left"
                   >
@@ -686,7 +686,7 @@ export default function PersonalProjectsPage() {
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
                     color={{ base: "gray.700", _dark: "gray.300" }}
-                    className="thai-text"
+
                     lineHeight="1.8"
                     mb={4}
                     textAlign="left"
@@ -707,7 +707,7 @@ export default function PersonalProjectsPage() {
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
                     color={{ base: "gray.800", _dark: "white" }}
-                    className="thai-text"
+
                     mb={3}
                     textAlign="left"
                   >
@@ -717,7 +717,7 @@ export default function PersonalProjectsPage() {
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
                     color={{ base: "gray.700", _dark: "gray.300" }}
-                    className="thai-text"
+
                     lineHeight="1.8"
                     mb={4}
                     textAlign="left"
@@ -756,14 +756,14 @@ export default function PersonalProjectsPage() {
                       fontWeight="600"
                       color={{ base: "gray.700", _dark: "gray.300" }}
                       mb={2}
-                      className="thai-text"
+
                     >
                       Creative tip
                     </Text>
                     <Text
                       fontSize="sm"
                       color={{ base: "gray.700", _dark: "gray.300" }}
-                      className="thai-text"
+
                       lineHeight="1.7"
                     >
                       ลองปรับภาพถ่ายของคุณที่สดใสด้วยการลด saturation และ
@@ -780,7 +780,7 @@ export default function PersonalProjectsPage() {
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
                     color={{ base: "gray.800", _dark: "white" }}
-                    className="thai-text"
+
                     mb={3}
                     textAlign="left"
                   >
@@ -790,7 +790,7 @@ export default function PersonalProjectsPage() {
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
                     color={{ base: "gray.700", _dark: "gray.300" }}
-                    className="thai-text"
+
                     lineHeight="1.8"
                     mb={4}
                     textAlign="left"
@@ -824,14 +824,14 @@ export default function PersonalProjectsPage() {
                       fontWeight="600"
                       color={{ base: "gray.700", _dark: "gray.300" }}
                       mb={2}
-                      className="thai-text"
+
                     >
                       Creative tip
                     </Text>
                     <Text
                       fontSize="sm"
                       color={{ base: "gray.700", _dark: "gray.300" }}
-                      className="thai-text"
+
                       lineHeight="1.7"
                     >
                       เพื่อที่จะทำให้ได้โทนสีเหลืองปนส้มคล้ายกับท้องฟ้ายามเย็นช่วงไฟป่าดอยสุเทพ
@@ -847,7 +847,7 @@ export default function PersonalProjectsPage() {
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
                     color={{ base: "gray.800", _dark: "white" }}
-                    className="thai-text"
+
                     mb={3}
                     textAlign="left"
                   >
@@ -858,7 +858,7 @@ export default function PersonalProjectsPage() {
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
                     color={{ base: "gray.700", _dark: "gray.300" }}
-                    className="thai-text"
+
                     lineHeight="1.8"
                     mb={4}
                     textAlign="left"
@@ -897,14 +897,14 @@ export default function PersonalProjectsPage() {
                       fontWeight="600"
                       color="gray.700"
                       mb={2}
-                      className="thai-text"
+
                     >
                       Creative tip
                     </Text>
                     <Text
                       fontSize="sm"
                       color={{ base: "gray.700", _dark: "gray.300" }}
-                      className="thai-text"
+
                       lineHeight="1.7"
                     >
                       preset นี้จะเหมาะเจาะอย่างยิ่งกับภาพ Landscape
@@ -942,7 +942,7 @@ export default function PersonalProjectsPage() {
                   fontSize={{ base: "xl", md: "2xl" }}
                   fontWeight="600"
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                   textAlign="center"
                   w="full"
                 >
@@ -951,7 +951,7 @@ export default function PersonalProjectsPage() {
                 <Text
                   fontSize={{ base: "sm", md: "lg" }}
                   color={{ base: "gray.700", _dark: "gray.300" }}
-                  className="thai-text"
+
                   lineHeight="1.8"
                   textAlign="left"
                 >

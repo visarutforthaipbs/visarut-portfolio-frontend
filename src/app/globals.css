@@ -69,29 +69,22 @@ body {
   width: 100%;
 }
 
+
 /* Remove full-width complications and use simple centering */
-.full-width {
-  width: 100% !important;
-}
+/* .full-width removed - use Chakra Container/Box layout instead */
 
 /* Alternative constrained width method */
-.full-width-alt {
-  width: 90%;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-}
+/* .full-width-alt removed */
 
 /* Ensure main layout doesn't constrain width unnecessarily */
 main {
-  width: 100% !important;
-  max-width: none !important;
+  width: 100%;
   overflow-x: hidden;
 }
 
 /* Override any Chakra UI container constraints for better control */
 [data-theme] {
-  width: 100% !important;
+  width: 100%;
 }
 
 /* Additional utility for debugging */
@@ -100,10 +93,8 @@ main {
   width: 100vw;
 }
 
-/* Thai text styling */
-.thai-text {
-  font-family: var(--font-thai);
-}
+/* Thai text styling - removed as it's now the default body font */
+
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

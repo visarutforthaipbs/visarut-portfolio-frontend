@@ -104,7 +104,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
     <Layout>
       <Box
         py={{ base: 16, md: 24 }}
-        className="full-width"
+
         display="flex"
         justifyContent="center"
         w="100%"
@@ -134,7 +134,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                 fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
                 textAlign="center"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
                 lineHeight="1.2"
               >
                 {post.title.rendered}
@@ -173,7 +173,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                       colorScheme="accent"
                       variant="subtle"
                       fontSize="xs"
-                      className="thai-text"
+
                     >
                       {category.name}
                     </Badge>

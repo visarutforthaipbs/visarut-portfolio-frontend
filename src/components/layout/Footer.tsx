@@ -26,7 +26,7 @@ export function Footer() {
       bg={{ base: "gray.50", _dark: "gray.900" }}
       color={{ base: "gray.700", _dark: "gray.200" }}
       mt="auto"
-      className="full-width"
+
       display="flex"
       justifyContent="center"
       w="100%"
@@ -56,7 +56,7 @@ export function Footer() {
                 fontSize="2xl"
                 fontWeight="bold"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
               >
                 {siteConfig.authorTh}
               </Text>
@@ -64,7 +64,7 @@ export function Footer() {
                 fontSize="md"
                 textAlign={{ base: "center", md: "left" }}
                 maxW="300px"
-                className="thai-text"
+
               >
                 {siteConfig.descriptionTh}
               </Text>
@@ -80,7 +80,7 @@ export function Footer() {
                 fontSize="lg"
                 fontWeight="semibold"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
               >
                 เมนู
               </Text>
@@ -95,7 +95,7 @@ export function Footer() {
                         _hover={{
                           color: { base: "accent.500", _dark: "accent.300" },
                         }}
-                        className={item.labelTh ? "thai-text" : ""}
+
                         justifyContent="flex-start"
                         width="full"
                       >
@@ -117,7 +117,7 @@ export function Footer() {
                                   _dark: "accent.300",
                                 },
                               }}
-                              className={subItem.labelTh ? "thai-text" : ""}
+
                               justifyContent="flex-start"
                               width="full"
                               fontSize="xs"
@@ -143,7 +143,7 @@ export function Footer() {
                 fontSize={{ base: "md", md: "lg" }}
                 fontWeight="semibold"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
                 display={{ base: "none", md: "block" }}
               >
                 ติดต่อ

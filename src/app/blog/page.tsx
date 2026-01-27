@@ -70,12 +70,12 @@ export default function BlogPage() {
     selectedCategory === "all"
       ? posts
       : posts.filter((post) =>
-          post.categories.some(
-            (catId) =>
-              categories.find((cat) => cat.id === catId)?.slug ===
-              selectedCategory
-          )
-        );
+        post.categories.some(
+          (catId) =>
+            categories.find((cat) => cat.id === catId)?.slug ===
+            selectedCategory
+        )
+      );
 
   const filterOptions = [
     { value: "all", label: "ทั้งหมด" },
@@ -90,7 +90,7 @@ export default function BlogPage() {
       <Layout>
         <Box
           py={{ base: 16, md: 24 }}
-          className="full-width"
+
           display="flex"
           justifyContent="center"
           w="100%"
@@ -111,7 +111,7 @@ export default function BlogPage() {
       <Layout>
         <Box
           py={{ base: 16, md: 24 }}
-          className="full-width"
+
           display="flex"
           justifyContent="center"
           w="100%"
@@ -146,7 +146,7 @@ export default function BlogPage() {
                 fontSize={{ base: "3xl", md: "5xl" }}
                 fontWeight="bold"
                 color={{ base: "gray.800", _dark: "white" }}
-                className="thai-text"
+
               >
                 บล็อก
               </Heading>
@@ -154,7 +154,7 @@ export default function BlogPage() {
                 fontSize={{ base: "lg", md: "xl" }}
                 color={{ base: "gray.600", _dark: "gray.300" }}
                 maxW="600px"
-                className="thai-text"
+
                 lineHeight="1.8"
               >
                 บทความ ความคิดเห็น และประสบการณ์จากการทำงานด้านสื่อ
@@ -182,7 +182,7 @@ export default function BlogPage() {
                   fontSize="lg"
                   fontWeight="600"
                   color={{ base: "gray.800", _dark: "white" }}
-                  className="thai-text"
+
                 >
                   หมวดหมู่
                 </Text>
@@ -223,7 +223,7 @@ export default function BlogPage() {
                       size="sm"
                       px={6}
                       py={2}
-                      className="thai-text"
+
                     >
                       {option.label}
                     </Button>
@@ -245,14 +245,14 @@ export default function BlogPage() {
               </SimpleGrid>
             ) : (
               <VStack gap={4} py={12} textAlign="center">
-                <Text fontSize="lg" color="gray.500" className="thai-text">
+                <Text fontSize="lg" color="gray.500">
                   ไม่พบบทความในหมวดหมู่นี้
                 </Text>
                 <Button
                   onClick={() => setSelectedCategory("all")}
                   variant="outline"
                   colorScheme="gray"
-                  className="thai-text"
+
                 >
                   ดูบทความทั้งหมด
                 </Button>
@@ -261,7 +261,7 @@ export default function BlogPage() {
           </VStack>
         </Container>
       </Box>
-    </Layout>
+    </Layout >
   );
 }
 
@@ -335,13 +335,7 @@ function BlogPostCard({
     post.title.rendered,
   ]);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("th-TH", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+
 
   const getPostCategories = () => {
     return post.categories
@@ -385,7 +379,7 @@ function BlogPostCard({
               onError={() => setFeaturedImage(null)}
             />
           ) : (
-            <Text color="gray.500" fontSize="sm" className="thai-text">
+            <Text color="gray.500" fontSize="sm">
               {imageLoading ? "กำลังโหลด..." : "รูปภาพประกอบ"}
             </Text>
           )}
@@ -406,7 +400,7 @@ function BlogPostCard({
                     py={1}
                     borderRadius="md"
                     fontSize="xs"
-                    className="thai-text"
+
                   >
                     {category.name}
                   </Badge>
@@ -419,7 +413,6 @@ function BlogPostCard({
             fontSize="lg"
             fontWeight="600"
             color={{ base: "gray.800", _dark: "white" }}
-            className="thai-text"
             lineHeight="1.4"
             truncate
           >
@@ -431,7 +424,6 @@ function BlogPostCard({
             <Text
               fontSize="sm"
               color={{ base: "gray.600", _dark: "gray.300" }}
-              className="thai-text"
               lineHeight="1.6"
               css={{
                 display: "-webkit-box",
@@ -450,11 +442,11 @@ function BlogPostCard({
             <HStack gap={4} fontSize="xs" color="gray.500">
               <HStack gap={1}>
                 <Calendar size={12} />
-                <Text className="thai-text">{formatDate(post.date)}</Text>
+
               </HStack>
               <HStack gap={1}>
                 <User size={12} />
-                <Text className="thai-text">{siteConfig.authorTh}</Text>
+
               </HStack>
             </HStack>
 
@@ -464,7 +456,7 @@ function BlogPostCard({
                 variant="ghost"
                 color="accent.500"
                 _hover={{ bg: "accent.50" }}
-                className="thai-text"
+
                 px={4}
                 py={2}
                 w="full"
@@ -474,7 +466,7 @@ function BlogPostCard({
             </Link>
           </VStack>
         </VStack>
-      </VStack>
-    </Box>
+      </VStack >
+    </Box >
   );
 }

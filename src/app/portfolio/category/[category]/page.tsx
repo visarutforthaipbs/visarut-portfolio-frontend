@@ -68,7 +68,7 @@ export default function CategoryPage() {
     return (
       <Layout>
         <Box
-          className="full-width"
+
           display="flex"
           justifyContent="center"
           w="100%"
@@ -93,7 +93,7 @@ export default function CategoryPage() {
     return (
       <Layout>
         <Box
-          className="full-width"
+
           display="flex"
           justifyContent="center"
           w="100%"
@@ -106,7 +106,7 @@ export default function CategoryPage() {
             <VStack gap={8} textAlign="center">
               <Heading
                 fontSize={{ base: "2xl", md: "3xl" }}
-                className="thai-text"
+
               >
                 เกิดข้อผิดพลาด
               </Heading>
@@ -138,7 +138,7 @@ export default function CategoryPage() {
               <Text>/</Text>
               <Link
                 href="/portfolio"
-                className="thai-text hover:text-accent-500"
+
               >
                 ผลงาน
               </Link>
@@ -165,7 +165,7 @@ export default function CategoryPage() {
                 <Heading
                   fontSize={{ base: "2xl", md: "4xl" }}
                   color="gray.800"
-                  className="thai-text"
+
                 >
                   {categoryName}
                 </Heading>
@@ -176,7 +176,7 @@ export default function CategoryPage() {
                     px={3}
                     py={1}
                     borderRadius="full"
-                    className="thai-text"
+
                   >
                     {portfolios.length} ผลงาน
                   </Badge>
