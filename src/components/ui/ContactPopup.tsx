@@ -11,7 +11,7 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { Phone, Mail, X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 interface ContactPopupProps {
   isOpen: boolean;
@@ -19,24 +19,68 @@ interface ContactPopupProps {
 }
 
 export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Focus trap: cycle focus within modal
+  const handleTabKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!dialogRef.current) return;
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    },
+    []
+  );
+
   // Handle escape key to close modal
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
+      }
+      if (e.key === "Tab") {
+        handleTabKey(e);
       }
     };
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
+      // Save current focus to restore later
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
+
+      // Focus the dialog on open
+      requestAnimationFrame(() => {
+        dialogRef.current?.focus();
+      });
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
+
+      // Restore focus to triggering element
+      if (previousFocusRef.current && !isOpen) {
+        previousFocusRef.current.focus();
+      }
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, handleTabKey]);
 
   if (!isOpen) return null;
 
@@ -52,10 +96,16 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
         bg="blackAlpha.600"
         zIndex={1000}
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Content */}
       <Box
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="ช่องทางติดต่อ"
+        tabIndex={-1}
         position="fixed"
         top={{ base: "10%", md: "50%" }}
         left="50%"

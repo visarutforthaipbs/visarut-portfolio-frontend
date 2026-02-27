@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Providers } from "@/components/providers";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { WebVitals } from "@/components/WebVitals";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
 
@@ -43,10 +45,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: siteConfig.url,
-    languages: {
-      "en-US": "/en",
-      "th-TH": "/",
-    },
   },
   openGraph: {
     type: "website",
@@ -103,11 +101,11 @@ export const metadata: Metadata = {
   },
   manifest: `/site.webmanifest`,
   verification: {
-    google: "your-google-site-verification-code", // You'll need to add this
-    yandex: "your-yandex-verification-code", // Optional
-    other: {
-      "facebook-domain-verification": "your-facebook-verification-code", // Optional
-    },
+    // Set these in environment variables when ready:
+    // NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION, etc.
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
   },
 };
 
@@ -175,7 +173,18 @@ export default function RootLayout({
         <link rel="canonical" href={siteConfig.url} />
       </head>
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <GoogleAnalytics />
+        {/* Skip to main content link for accessibility */}
+        <a
+          href="#main-content"
+          className="skip-to-content"
+        >
+          ข้ามไปที่เนื้อหาหลัก (Skip to main content)
+        </a>
+        <Providers>
+          <WebVitals />
+          {children}
+        </Providers>
       </body>
     </html>
   );

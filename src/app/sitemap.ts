@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
+import type { PortfolioItem } from "@/types";
+import type { BlogPost } from "@/types/wordpress";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 
   // Static pages
@@ -36,7 +38,53 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily" as const,
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
   ];
+
+  // Fetch portfolio items
+  let portfolioPages: MetadataRoute.Sitemap = [];
+  try {
+    const portfolioResponse = await fetch(
+      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.postsEndpoint}?per_page=100`,
+      { next: { revalidate: 3600 } }
+    );
+    if (portfolioResponse.ok) {
+      const portfolios: PortfolioItem[] = await portfolioResponse.json();
+      portfolioPages = portfolios.map((item) => ({
+        url: `${baseUrl}/portfolio/${item.slug}`,
+        lastModified: new Date(item.modified),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      }));
+    }
+  } catch (error) {
+    console.error("Sitemap: Error fetching portfolios:", error);
+  }
+
+  // Fetch blog posts
+  let blogPages: MetadataRoute.Sitemap = [];
+  try {
+    const blogResponse = await fetch(
+      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}?per_page=100`,
+      { next: { revalidate: 3600 } }
+    );
+    if (blogResponse.ok) {
+      const posts: BlogPost[] = await blogResponse.json();
+      blogPages = posts.map((post) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(post.modified),
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+      }));
+    }
+  } catch (error) {
+    console.error("Sitemap: Error fetching blog posts:", error);
+  }
 
   // Portfolio categories
   const portfolioCategories = [
@@ -51,8 +99,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/portfolio/category/${category}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
-    priority: 0.6,
+    priority: 0.4,
   }));
 
-  return [...staticPages, ...categoryPages];
+  return [...staticPages, ...portfolioPages, ...blogPages, ...categoryPages];
 }

@@ -7,19 +7,14 @@ import {
   Text,
   VStack,
   HStack,
-  Badge,
   Image,
-  AspectRatio,
-  Button,
   Skeleton,
 } from "@chakra-ui/react";
-import { Calendar, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
-import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
+import { PORTFOLIO_CATEGORIES, PortfolioItem } from "@/types/portfolio";
 import { WordPressContent } from "@/components/WordPressContent";
 import PortfolioVideo from "@/components/PortfolioVideo";
-import PortfolioSEO from "@/components/PortfolioSEO";
 import {
   PortfolioACFDisplay,
   PortfolioGallery,
@@ -29,25 +24,22 @@ import { usePortfolioBySlug } from "@/hooks/useWordPress";
 
 interface PortfolioDetailClientProps {
   slug: string;
+  initialData?: PortfolioItem;
 }
 
 export default function PortfolioDetailClient({
   slug,
+  initialData,
 }: PortfolioDetailClientProps) {
-  const { portfolio, loading, error } = usePortfolioBySlug(slug);
+  const { portfolio, loading, error } = usePortfolioBySlug(slug, initialData);
 
   if (loading) {
     return (
       <Layout>
-        <Box
-          py={{ base: 16, md: 20 }}
-          display="flex"
-          justifyContent="center"
-          w="100%"
-        >
-          <Container maxW="3xl" px={{ base: 6, md: 8 }}>
-            <VStack gap={8} align="start">
-              <Skeleton height="60px" width="80%" />
+        <Box py={{ base: 20, md: 28 }} display="flex" justifyContent="center" w="100%">
+          <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
+            <VStack gap={6} align="start">
+              <Skeleton height="40px" width="60%" />
               <Skeleton height={{ base: "200px", md: "400px" }} w="full" />
             </VStack>
           </Container>
@@ -59,165 +51,160 @@ export default function PortfolioDetailClient({
   if (error || !portfolio) {
     return (
       <Layout>
-        <Box
-          py={{ base: 16, md: 20 }}
-          display="flex"
-          justifyContent="center"
-          w="100%"
-        >
-          <Container maxW="3xl" px={{ base: 6, md: 8 }}>
-            <Text>Portfolio not found</Text>
+        <Box py={{ base: 20, md: 28 }} display="flex" justifyContent="center" w="100%">
+          <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
+            <VStack gap={4} textAlign="center">
+              <Text fontSize="sm" color={{ base: "gray.500", _dark: "gray.400" }}>
+                ไม่พบผลงาน
+              </Text>
+              <Link href="/portfolio">
+                <Text fontSize="sm" color={{ base: "gray.400", _dark: "gray.500" }} _hover={{ color: { base: "gray.900", _dark: "white" } }}>
+                  ← กลับไปผลงาน
+                </Text>
+              </Link>
+            </VStack>
           </Container>
         </Box>
       </Layout>
     );
   }
-  // Extract videos from content
+
   const videos = WordPressAPI.extractVideoEmbeds(portfolio.content.rendered);
 
   return (
     <Layout>
-      <PortfolioSEO portfolio={portfolio} />
-
-      {/* Hero Section */}
+      {/* Hero */}
       <Box
         bg={{ base: "white", _dark: "gray.900" }}
-        py={{ base: 16, md: 20 }}
+        py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
         w="100%"
       >
-        <Container maxW="3xl" px={{ base: 6, md: 8 }}>
-          <VStack gap={8} align="start">
-            {/* Navigation */}
+        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
+          <VStack gap={6} align="start">
+            {/* Breadcrumb */}
             <HStack
               gap={2}
-              fontSize="sm"
-              color={{ base: "gray.600", _dark: "gray.400" }}
+              fontSize="xs"
+              color={{ base: "gray.400", _dark: "gray.500" }}
             >
-              <Link href="/" className="hover:text-accent-500">
-                หน้าหลัก
+              <Link href="/portfolio">
+                <Text _hover={{ color: { base: "gray.900", _dark: "white" } }} transition="color 0.15s">
+                  ผลงาน
+                </Text>
               </Link>
               <Text>/</Text>
-              <Link href="/portfolio">ผลงาน</Link>
-              <Text>/</Text>
-
               <Text>{PORTFOLIO_CATEGORIES[portfolio.category]}</Text>
             </HStack>
 
-            <VStack gap={6} align="start" w="full">
-              <VStack gap={4} align="start">
-                <HStack gap={3} wrap="wrap">
-                  <Badge
-                    bg="accent.500"
-                    color="white"
-                    px={3}
-                    py={1}
-                    borderRadius="full"
-                    fontSize="sm"
-                  >
-                    {PORTFOLIO_CATEGORIES[portfolio.category]}
-                  </Badge>
-                  <HStack
-                    gap={2}
-                    fontSize="sm"
-                    color={{ base: "gray.600", _dark: "gray.400" }}
-                  >
-                    <Calendar size={16} />
+            {/* Title & Meta */}
+            <VStack gap={3} align="start" w="full">
+              <Heading
+                fontSize={{ base: "2xl", md: "3xl" }}
+                fontWeight="bold"
+                color={{ base: "gray.900", _dark: "white" }}
+                lineHeight="1.3"
+                letterSpacing="-0.025em"
+              >
+                {portfolio.title.rendered}
+              </Heading>
 
-                    <Text>
-                      {new Date(portfolio.date).toLocaleDateString("th-TH", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </Text>
-                  </HStack>
-                </HStack>
-
-                <Heading
-                  fontSize={{ base: "2xl", md: "4xl" }}
-                  fontWeight="bold"
-                  color={{ base: "gray.900", _dark: "white" }}
-                  lineHeight="1.2"
-                >
-                  {portfolio.title.rendered}
-                </Heading>
-              </VStack>
-
-              {/* Featured Image - Hide for photography category as it's shown in gallery */}
-              {portfolio.featured_image &&
-                portfolio.category !== "photography" && (
-                  <AspectRatio ratio={16 / 9} w="full">
-                    <Image
-                      src={portfolio.featured_image.url}
-                      alt={portfolio.title.rendered}
-                      objectFit="cover"
-                      borderRadius="lg"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = "/placeholder-image.svg";
-                      }}
-                    />
-                  </AspectRatio>
-                )}
+              <HStack gap={3} fontSize="xs" color={{ base: "gray.400", _dark: "gray.500" }}>
+                <Text textTransform="uppercase" letterSpacing="0.05em">
+                  {PORTFOLIO_CATEGORIES[portfolio.category]}
+                </Text>
+                <Text>·</Text>
+                <Text>
+                  {new Date(portfolio.date).toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </Text>
+              </HStack>
             </VStack>
+
+            {/* Featured Image */}
+            {portfolio.featured_image && portfolio.category !== "photography" && (
+              <Box w="full" overflow="hidden" borderRadius="md">
+                <Image
+                  src={portfolio.featured_image.url}
+                  alt={portfolio.title.rendered}
+                  w="full"
+                  objectFit="cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder-image.svg";
+                  }}
+                />
+              </Box>
+            )}
           </VStack>
         </Container>
       </Box>
 
-      {/* Content Section */}
+      {/* Divider */}
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      </Box>
+
+      {/* Content */}
       <Box
-        bg={{ base: "gray.50", _dark: "gray.800" }}
-        py={{ base: 16, md: 20 }}
+        bg={{ base: "white", _dark: "gray.900" }}
+        py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
         w="100%"
       >
-        <Container maxW="3xl" px={{ base: 6, md: 8 }}>
-          <VStack gap={12} align="start">
+        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
+          <VStack gap={12} align="start" css={{
+            "& iframe": {
+              display: "block",
+              margin: "0 auto",
+              maxWidth: "100%",
+            },
+            "& .blog-content": {
+              width: "100%",
+            },
+          }}>
             {/* ACF Project Details */}
             <PortfolioACFDisplay portfolio={portfolio} />
 
-            {/* Conditional Content Display based on Category */}
+            {/* Content by Category */}
             {portfolio.category === "photography" ? (
-              /* Photography-focused display */
               <>
-                {/* Gallery Images - Primary focus for photography */}
                 <PortfolioGallery portfolio={portfolio} />
-
-                {/* Description */}
                 {portfolio.excerpt && (
                   <Box>
-                    <Heading
-                      fontSize="xl"
-                      fontWeight="600"
-                      color="gray.800"
+                    <Text
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      letterSpacing="0.1em"
+                      color={{ base: "gray.400", _dark: "gray.500" }}
                       mb={4}
                     >
-                      รายละเอียดโปรเจค
-                    </Heading>
-                    <Text fontSize="md" color="gray.700" lineHeight="1.8">
+                      รายละเอียด
+                    </Text>
+                    <Text fontSize="md" color={{ base: "gray.600", _dark: "gray.300" }} lineHeight="1.8">
                       <WordPressContent content={portfolio.excerpt.rendered} />
                     </Text>
                   </Box>
                 )}
               </>
-            ) : portfolio.category === "videography" ||
-              portfolio.category === "video-editing" ? (
-              /* Video-focused display */
+            ) : portfolio.category === "videography" || portfolio.category === "video-editing" ? (
               <>
-                {/* Videos - Primary focus for video work */}
                 {videos.length > 0 && (
                   <Box w="full">
-                    <Heading
-                      fontSize="xl"
-                      fontWeight="600"
-                      color="gray.800"
+                    <Text
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      letterSpacing="0.1em"
+                      color={{ base: "gray.400", _dark: "gray.500" }}
                       mb={6}
                     >
-                      วีดีโอ ({videos.length} วีดีโอ)
-                    </Heading>
+                      วีดีโอ ({videos.length})
+                    </Text>
                     <VStack gap={8} w="full">
                       {videos.map((video, index) => (
                         <PortfolioVideo key={index} video={video} />
@@ -225,21 +212,18 @@ export default function PortfolioDetailClient({
                     </VStack>
                   </Box>
                 )}
-
-                {/* Supporting Images */}
                 <PortfolioGallery portfolio={portfolio} />
-
-                {/* Description */}
                 {portfolio.content && (
                   <Box>
-                    <Heading
-                      fontSize="xl"
-                      fontWeight="600"
-                      color="gray.800"
+                    <Text
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      letterSpacing="0.1em"
+                      color={{ base: "gray.400", _dark: "gray.500" }}
                       mb={4}
                     >
-                      รายละเอียดโปรเจค
-                    </Heading>
+                      รายละเอียด
+                    </Text>
                     <Box className="blog-content">
                       <WordPressContent content={portfolio.content.rendered} />
                     </Box>
@@ -247,36 +231,34 @@ export default function PortfolioDetailClient({
                 )}
               </>
             ) : (
-              /* Default display for other categories */
               <>
-                {/* Content and Gallery */}
                 {portfolio.content && (
                   <Box>
-                    <Heading
-                      fontSize="xl"
-                      fontWeight="600"
-                      color="gray.800"
+                    <Text
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      letterSpacing="0.1em"
+                      color={{ base: "gray.400", _dark: "gray.500" }}
                       mb={4}
                     >
-                      รายละเอียดโปรเจค
-                    </Heading>
+                      รายละเอียด
+                    </Text>
                     <Box className="blog-content">
                       <WordPressContent content={portfolio.content.rendered} />
                     </Box>
                   </Box>
                 )}
-
-                {/* Videos if any */}
                 {videos.length > 0 && (
                   <Box w="full">
-                    <Heading
-                      fontSize="xl"
-                      fontWeight="600"
-                      color="gray.800"
+                    <Text
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      letterSpacing="0.1em"
+                      color={{ base: "gray.400", _dark: "gray.500" }}
                       mb={6}
                     >
-                      วีดีโอที่เกี่ยวข้อง
-                    </Heading>
+                      วีดีโอ
+                    </Text>
                     <VStack gap={6} w="full">
                       {videos.map((video, index) => (
                         <PortfolioVideo key={index} video={video} />
@@ -284,8 +266,6 @@ export default function PortfolioDetailClient({
                     </VStack>
                   </Box>
                 )}
-
-                {/* Gallery */}
                 <PortfolioGallery portfolio={portfolio} />
               </>
             )}
@@ -293,7 +273,11 @@ export default function PortfolioDetailClient({
         </Container>
       </Box>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Nav */}
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      </Box>
+
       <Box
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 12, md: 16 }}
@@ -301,42 +285,29 @@ export default function PortfolioDetailClient({
         justifyContent="center"
         w="100%"
       >
-        <Container maxW="3xl" px={{ base: 6, md: 8 }}>
-          <VStack gap={8}>
-            <HStack gap={{ base: 3, md: 4 }} justify="center" flexWrap="wrap">
-              <Link href="/portfolio">
-                <Button
-                  bg="accent.500"
-                  color="white"
-                  _hover={{ bg: "accent.600" }}
-                  size="lg"
-                >
-                  <HStack gap={2}>
-                    <ArrowLeft size={20} />
-                    <Text>ดูผลงานทั้งหมด</Text>
-                  </HStack>
-                </Button>
-              </Link>
-
-              <Link href={`/portfolio/category/${portfolio.category}`}>
-                <Button
-                  variant="outline"
-                  borderColor="accent.500"
-                  color="accent.500"
-                  _hover={{
-                    bg: "accent.50",
-                    borderColor: "accent.600",
-                    color: "accent.600",
-                  }}
-                  size="lg"
-                >
-                  ดูผลงาน{PORTFOLIO_CATEGORIES[portfolio.category]}อื่น ๆ
-                </Button>
-              </Link>
-            </HStack>
-
-            {/* Related or Next/Previous Portfolio Items could go here */}
-          </VStack>
+        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
+          <HStack gap={6} justify="center">
+            <Link href="/portfolio">
+              <Text
+                fontSize="sm"
+                color={{ base: "gray.400", _dark: "gray.500" }}
+                _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                transition="color 0.15s"
+              >
+                ← ผลงานทั้งหมด
+              </Text>
+            </Link>
+            <Link href={`/portfolio/category/${portfolio.category}`}>
+              <Text
+                fontSize="sm"
+                color={{ base: "gray.400", _dark: "gray.500" }}
+                _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                transition="color 0.15s"
+              >
+                {PORTFOLIO_CATEGORIES[portfolio.category]} →
+              </Text>
+            </Link>
+          </HStack>
         </Container>
       </Box>
     </Layout>

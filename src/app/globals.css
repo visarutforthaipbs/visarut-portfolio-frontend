@@ -191,6 +191,80 @@ img {
   }
 }
 
+/* Skip to content link - accessibility */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 0 0 8px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+  outline: 2px solid #6b7280;
+  outline-offset: 2px;
+}
+
+/* Loading skeleton pulse animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Respect prefers-contrast: more */
+@media (prefers-contrast: more) {
+  :root {
+    --focus-ring-color: #000000;
+  }
+
+  :focus-visible {
+    outline: 3px solid #000000;
+    outline-offset: 2px;
+  }
+
+  a, button {
+    text-decoration-thickness: 2px;
+  }
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   /* Improve touch targets */

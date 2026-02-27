@@ -7,12 +7,11 @@ import {
   Text,
   VStack,
   HStack,
-  Button,
   Image,
   AspectRatio,
   Skeleton,
 } from "@chakra-ui/react";
-import { ArrowRight, Calendar, Eye, AlertCircle } from "lucide-react";
+import { ArrowRight, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { usePortfolios } from "@/hooks/useWordPress";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
@@ -29,126 +28,68 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
 
   if (error) {
     return (
-      <Box
-        bg="red.50"
-        border="1px solid"
-        borderColor="red.200"
-        borderRadius="md"
-        p={4}
-      >
-        <HStack gap={2} color="red.600">
-          <AlertCircle size={20} />
-          <VStack align="start" gap={1}>
-            <Text fontWeight="medium">เกิดข้อผิดพลาดในการโหลดผลงาน</Text>
-            <Text fontSize="sm" color="red.500">
-              {error}
-            </Text>
-          </VStack>
+      <Box py={8} textAlign="center">
+        <HStack gap={2} justify="center" color={{ base: "gray.400", _dark: "gray.500" }}>
+          <AlertCircle size={16} />
+          <Text fontSize="sm">เกิดข้อผิดพลาดในการโหลดผลงาน</Text>
         </HStack>
       </Box>
     );
   }
 
   return (
-    <VStack gap={{ base: 6, md: 8 }} w="full">
-      <VStack gap={{ base: 3, md: 4 }} textAlign="center">
-        <Heading
-          fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
-          color={{ base: "gray.800", _dark: "white" }}
-
-        >
-          ผลงานล่าสุด
-        </Heading>
-        <Text
-          fontSize={{ base: "md", md: "lg" }}
-          color={{ base: "gray.600", _dark: "gray.300" }}
-          maxW={{ base: "90%", md: "500px" }}
-
-          px={{ base: 2, md: 0 }}
-        >
-          รวมผลงานที่ผ่านมาจากหลากหลายหมวดหมู่
-        </Text>
-      </VStack>
+    <VStack gap={{ base: 8, md: 10 }} w="full" aria-label="ผลงานล่าสุด" role="region">
+      <Heading
+        fontSize={{ base: "lg", md: "xl" }}
+        fontWeight="medium"
+        color={{ base: "gray.400", _dark: "gray.500" }}
+        textTransform="uppercase"
+        letterSpacing="wider"
+        textAlign="center"
+      >
+        ผลงานล่าสุด
+      </Heading>
 
       {loading ? (
-        <SimpleGrid
-          columns={{ base: 1, sm: 2, lg: 3 }}
-          gap={{ base: 4, md: 6 }}
-          w="full"
-        >
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 6, md: 8 }} w="full">
           {Array.from({ length: maxItems }).map((_, index) => (
             <Box key={index}>
-              <Skeleton
-                height={{ base: "200px", md: "250px" }}
-                borderRadius="lg"
-              />
-              <VStack gap={2} align="start" mt={4}>
-                <Skeleton height="20px" width="60%" />
-                <Skeleton height="16px" width="40%" />
-                <Skeleton height="14px" width="80%" />
+              <Skeleton height={{ base: "200px", md: "220px" }} borderRadius="md" />
+              <VStack gap={2} align="start" mt={3}>
+                <Skeleton height="14px" width="40%" />
+                <Skeleton height="16px" width="70%" />
               </VStack>
             </Box>
           ))}
         </SimpleGrid>
       ) : portfolios.length > 0 ? (
         <>
-          <SimpleGrid
-            columns={{ base: 1, sm: 2, lg: 3 }}
-            gap={{ base: 4, md: 6 }}
-            w="full"
-          >
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 6, md: 8 }} w="full">
             {portfolios.map((portfolio) => (
               <PortfolioCard key={portfolio.id} portfolio={portfolio} />
             ))}
           </SimpleGrid>
 
-          <HStack
-            gap={{ base: 3, md: 4 }}
-            mt={{ base: 6, md: 8 }}
-            justify="center"
-            flexWrap="wrap"
-          >
-            <Link href="/portfolio">
-              <Button
-                size={{ base: "md", md: "lg" }}
-                bg="accent.500"
-                color="white"
-                _hover={{ bg: "accent.600" }}
-                px={{ base: 4, md: 6 }}
-                py={{ base: 2, md: 3 }}
-              >
-                <HStack gap={2}>
-                  <Text>ดูผลงานทั้งหมด</Text>
-                  <ArrowRight size={20} />
-                </HStack>
-              </Button>
-            </Link>
-          </HStack>
+          <Link href="/portfolio">
+            <HStack
+              gap={2}
+              color={{ base: "gray.900", _dark: "white" }}
+              fontWeight="medium"
+              fontSize="sm"
+              _hover={{ gap: 3 }}
+              transition="all 0.2s"
+              cursor="pointer"
+            >
+              <Text>ดูผลงานทั้งหมด</Text>
+              <ArrowRight size={16} />
+            </HStack>
+          </Link>
         </>
       ) : (
-        <Box
-          textAlign="center"
-          py={12}
-          bg={{ base: "gray.50", _dark: "gray.700" }}
-          borderRadius="lg"
-        >
-          <VStack gap={3}>
-            <Eye size={48} color="#9CA3AF" />
-            <Text
-              fontSize="lg"
-              color={{ base: "gray.600", _dark: "gray.300" }}
-
-            >
-              ยังไม่มีผลงานที่จะแสดง
-            </Text>
-            <Text
-              fontSize="sm"
-              color={{ base: "gray.500", _dark: "gray.400" }}
-
-            >
-              กลับมาตรวจสอบใหม่ในภายหลัง
-            </Text>
-          </VStack>
+        <Box textAlign="center" py={12}>
+          <Text fontSize="sm" color={{ base: "gray.400", _dark: "gray.500" }}>
+            ยังไม่มีผลงานที่จะแสดง
+          </Text>
         </Box>
       )}
     </VStack>
@@ -163,7 +104,6 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   const categoryLabel =
     PORTFOLIO_CATEGORIES[portfolio.category] || portfolio.category;
 
-  // Handle featured image
   const getFeaturedImageUrl = (
     image: string | ImageMedia | undefined
   ): string => {
@@ -172,7 +112,6 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
     return image.url || "/placeholder-image.svg";
   };
 
-  // Handle text content
   const getTextContent = (content: { rendered: string } | string): string => {
     if (typeof content === "string") return content;
     return content.rendered || "";
@@ -181,24 +120,17 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   return (
     <Link href={`/portfolio/${portfolio.slug}`}>
       <Box
-        bg={{ base: "white", _dark: "gray.700" }}
-        borderRadius="lg"
-        overflow="hidden"
-        shadow="md"
-        _hover={{
-          transform: "translateY(-4px)",
-          shadow: "lg",
-        }}
-        transition="all 0.3s ease"
         cursor="pointer"
-        border="1px solid"
-        borderColor={{ base: "gray.200", _dark: "gray.600" }}
+        role="group"
       >
         <AspectRatio ratio={16 / 9}>
           <Image
             src={getFeaturedImageUrl(portfolio.featured_image)}
             alt={getTextContent(portfolio.title)}
             objectFit="cover"
+            borderRadius="md"
+            transition="opacity 0.2s"
+            _groupHover={{ opacity: 0.85 }}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = "/placeholder-image.svg";
@@ -206,60 +138,25 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
           />
         </AspectRatio>
 
-        <Box p={{ base: 4, md: 6 }}>
-          <VStack align="start" gap={{ base: 2, md: 3 }}>
-            <HStack justify="space-between" w="full">
-              <Text
-                fontSize={{ base: "xs", md: "sm" }}
-                color="accent.500"
-                fontWeight="medium"
-
-                textTransform="uppercase"
-              >
-                {categoryLabel}
-              </Text>
-              <HStack gap={1} color={{ base: "gray.500", _dark: "gray.400" }}>
-                <Calendar size={14} />
-                <Text fontSize="xs">
-                  {new Date(portfolio.date).toLocaleDateString("th-TH", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </Text>
-              </HStack>
-            </HStack>
-
-            <Heading
-              fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.800", _dark: "white" }}
-
-              lineHeight="1.4"
-              textOverflow="ellipsis"
-              overflow="hidden"
-              whiteSpace="nowrap"
-            >
-              {getTextContent(portfolio.title)}
-            </Heading>
-
-            {portfolio.excerpt && (
-              <Text
-                fontSize={{ base: "xs", md: "sm" }}
-                color={{ base: "gray.600", _dark: "gray.300" }}
-
-                lineHeight="1.5"
-                display="-webkit-box"
-                css={{
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }}
-              >
-                {getTextContent(portfolio.excerpt)}
-              </Text>
-            )}
-          </VStack>
-        </Box>
+        <VStack align="start" gap={1} mt={3}>
+          <Text
+            fontSize="xs"
+            color={{ base: "gray.400", _dark: "gray.500" }}
+            textTransform="uppercase"
+            letterSpacing="wider"
+          >
+            {categoryLabel}
+          </Text>
+          <Text
+            fontSize={{ base: "sm", md: "md" }}
+            fontWeight="medium"
+            color={{ base: "gray.800", _dark: "white" }}
+            lineHeight="1.5"
+            lineClamp={2}
+          >
+            {getTextContent(portfolio.title)}
+          </Text>
+        </VStack>
       </Box>
     </Link>
   );

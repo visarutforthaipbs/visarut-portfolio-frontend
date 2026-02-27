@@ -1033,16 +1033,16 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       return (
         <VStack gap={6} align="start" w="full">
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
-            {producerACF.production_title && (
+            {producerACF.client_name && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
-                    ชื่อผลงาน
+                    ลูกค้า
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700">
-                  {producerACF.production_title}
+                  {producerACF.client_name}
                 </Text>
               </VStack>
             )}
@@ -1050,7 +1050,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
             {producerACF.production_type && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
-                  <User size={18} />
+                  <Film size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทผลงาน
                   </Text>
@@ -1061,7 +1061,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               </VStack>
             )}
 
-            {producerACF.production_date && (
+            {producerACF.project_date && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <CalendarIcon size={18} />
@@ -1070,21 +1070,49 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700">
-                  {producerACF.production_date}
+                  {producerACF.project_date}
                 </Text>
               </VStack>
             )}
 
-            {producerACF.budget_range && (
+            {producerACF.production_role && (
               <VStack align="start" gap={2}>
                 <HStack gap={2} color="accent.500">
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
-                    ช่วงงบประมาณ
+                    บทบาท
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700">
-                  {producerACF.budget_range}
+                  {producerACF.production_role}
+                </Text>
+              </VStack>
+            )}
+
+            {producerACF.production_budget && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <User size={18} />
+                  <Text fontSize="sm" fontWeight="600">
+                    งบประมาณ
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700">
+                  {producerACF.production_budget}
+                </Text>
+              </VStack>
+            )}
+
+            {producerACF.production_timeline && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <Clock size={18} />
+                  <Text fontSize="sm" fontWeight="600">
+                    ระยะเวลา
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700">
+                  {producerACF.production_timeline}
                 </Text>
               </VStack>
             )}
@@ -1098,37 +1126,45 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   </Text>
                 </HStack>
                 <Text fontSize="md" color="gray.700">
-                  {producerACF.team_size}
+                  {producerACF.team_size} คน
+                </Text>
+              </VStack>
+            )}
+
+            {producerACF.distribution_platforms && (
+              <VStack align="start" gap={2}>
+                <HStack gap={2} color="accent.500">
+                  <Play size={18} />
+                  <Text fontSize="sm" fontWeight="600">
+                    ช่องทางเผยแพร่
+                  </Text>
+                </HStack>
+                <Text fontSize="md" color="gray.700">
+                  {producerACF.distribution_platforms}
                 </Text>
               </VStack>
             )}
           </SimpleGrid>
 
-          {(producerACF.producer_responsibilities ||
-            producerACF.project_description) && (
-              <VStack align="start" gap={2} w="full">
-                <Text
-                  fontSize="sm"
-                  fontWeight="600"
-                  color="accent.500"
-
-                >
-                  {producerACF.producer_responsibilities
-                    ? "หน้าที่ความรับผิดชอบ"
-                    : "รายละเอียดโปรเจค"}
-                </Text>
-                <Text
-                  fontSize="md"
-                  color="gray.700"
-
-                  lineHeight="1.8"
-                  whiteSpace="pre-wrap"
-                >
-                  {producerACF.producer_responsibilities ||
-                    producerACF.project_description}
-                </Text>
-              </VStack>
-            )}
+          {producerACF.project_description && (
+            <VStack align="start" gap={2} w="full">
+              <Text
+                fontSize="sm"
+                fontWeight="600"
+                color="accent.500"
+              >
+                รายละเอียดโปรเจค
+              </Text>
+              <Text
+                fontSize="md"
+                color="gray.700"
+                lineHeight="1.8"
+                whiteSpace="pre-wrap"
+              >
+                {producerACF.project_description}
+              </Text>
+            </VStack>
+          )}
         </VStack>
       );
     }

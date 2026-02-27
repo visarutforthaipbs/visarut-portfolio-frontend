@@ -57,14 +57,16 @@ export function usePortfolios(params?: {
 /**
  * Hook for fetching a single portfolio item by slug
  */
-export function usePortfolioBySlug(slug: string) {
-  const [portfolio, setPortfolio] = useState<PortfolioItem | null>(null);
-  const [loading, setLoading] = useState(true);
+export function usePortfolioBySlug(slug: string, initialData?: PortfolioItem) {
+  const [portfolio, setPortfolio] = useState<PortfolioItem | null>(
+    initialData || null
+  );
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPortfolio = async () => {
-      if (!slug) return;
+      if (!slug || initialData) return;
 
       try {
         setLoading(true);
@@ -83,7 +85,7 @@ export function usePortfolioBySlug(slug: string) {
     };
 
     fetchPortfolio();
-  }, [slug]);
+  }, [slug, initialData]);
 
   return {
     portfolio,

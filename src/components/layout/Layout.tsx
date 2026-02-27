@@ -12,7 +12,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" as="main">
+      <Box flex="1" as="main" id="main-content">
         {children}
       </Box>
       <Footer />

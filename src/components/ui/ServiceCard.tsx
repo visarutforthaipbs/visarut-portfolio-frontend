@@ -18,7 +18,7 @@ export function ServiceCard({
     category,
 }: ServiceCardProps) {
     return (
-        <Link href={`/portfolio/category/${category}`}>
+        <Link href={`/portfolio/category/${category}`} aria-label={`${title} - ${description}`}>
             <Box
                 bg={{ base: "white", _dark: "gray.700" }}
                 p={{ base: 4, md: 6 }}
@@ -38,6 +38,7 @@ export function ServiceCard({
                     <Box
                         color={{ base: "accent.500", _dark: "accent.300" }}
                         fontSize={{ base: "xl", md: "2xl" }}
+                        aria-hidden="true"
                     >
                         <Icon size={32} />
                     </Box>
