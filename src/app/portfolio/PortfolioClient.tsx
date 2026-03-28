@@ -7,7 +7,6 @@ import {
   Text,
   VStack,
   HStack,
-  SimpleGrid,
   Image,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -146,11 +145,19 @@ export default function PortfolioClient({
             {/* Portfolio Grid */}
             {displayPortfolios.length > 0 ? (
               <>
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={{ base: 6, md: 8 }} w="full">
+                <Box
+                  css={{
+                    columnCount: 1,
+                    columnGap: "1.5rem",
+                    "@media (min-width: 48em)": { columnCount: 2 },
+                    "@media (min-width: 62em)": { columnCount: 3 },
+                  }}
+                  w="full"
+                >
                   {displayPortfolios.map((portfolio) => (
                     <PortfolioCard key={portfolio.id} portfolio={portfolio} />
                   ))}
-                </SimpleGrid>
+                </Box>
 
                 {/* Pagination */}
                 {displayTotalPages > 1 && (
@@ -251,22 +258,18 @@ export default function PortfolioClient({
 function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
   return (
     <Link href={`/portfolio/${portfolio.slug}`} aria-label={portfolio.title.rendered.replace(/<[^>]*>/g, '')}>
-      <Box cursor="pointer" role="group" as="article">
+      <Box cursor="pointer" role="group" as="article" css={{ breakInside: "avoid" }} mb={6}>
         <Box
           overflow="hidden"
           borderRadius="md"
           bg={{ base: "gray.100", _dark: "gray.800" }}
-          position="relative"
-          paddingTop="62.5%"
         >
           <Image
             src={portfolio.featured_image?.url || "/placeholder-image.svg"}
             alt={portfolio.title.rendered}
-            position="absolute"
-            top={0}
-            left={0}
             w="full"
-            h="full"
+            h="auto"
+            display="block"
             objectFit="cover"
             loading="lazy"
             transition="opacity 0.2s"

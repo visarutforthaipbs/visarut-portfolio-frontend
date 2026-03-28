@@ -2,13 +2,11 @@
 
 import {
   Box,
-  SimpleGrid,
   Heading,
   Text,
   VStack,
   HStack,
   Image,
-  AspectRatio,
   Skeleton,
 } from "@chakra-ui/react";
 import { ArrowRight, AlertCircle } from "lucide-react";
@@ -52,9 +50,17 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
       </Heading>
 
       {loading ? (
-        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 4, md: 6 }} w="full">
+        <Box
+          css={{
+            columnCount: 1,
+            columnGap: "1rem",
+            "@media (min-width: 30em)": { columnCount: 2 },
+            "@media (min-width: 62em)": { columnCount: 3 },
+          }}
+          w="full"
+        >
           {Array.from({ length: maxItems }).map((_, index) => (
-            <Box key={index}>
+            <Box key={index} css={{ breakInside: "avoid" }} mb={4}>
               <Skeleton height={{ base: "200px", md: "220px" }} borderRadius="md" />
               <VStack gap={2} align="start" mt={3}>
                 <Skeleton height="14px" width="40%" />
@@ -62,14 +68,22 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
               </VStack>
             </Box>
           ))}
-        </SimpleGrid>
+        </Box>
       ) : portfolios.length > 0 ? (
         <>
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 4, md: 6 }} w="full">
+          <Box
+            css={{
+              columnCount: 1,
+              columnGap: "1rem",
+              "@media (min-width: 30em)": { columnCount: 2 },
+              "@media (min-width: 62em)": { columnCount: 3 },
+            }}
+            w="full"
+          >
             {portfolios.map((portfolio) => (
               <PortfolioCard key={portfolio.id} portfolio={portfolio} />
             ))}
-          </SimpleGrid>
+          </Box>
 
           <Link href="/portfolio" aria-label="ดูผลงานทั้งหมด">
             <HStack
@@ -124,13 +138,17 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
         as="article"
         cursor="pointer"
         role="group"
+        css={{ breakInside: "avoid" }}
+        mb={4}
       >
-        <AspectRatio ratio={16 / 9}>
+        <Box overflow="hidden" borderRadius="md" bg={{ base: "gray.100", _dark: "gray.800" }}>
           <Image
             src={getFeaturedImageUrl(portfolio.featured_image)}
             alt={getTextContent(portfolio.title)}
+            w="full"
+            h="auto"
+            display="block"
             objectFit="cover"
-            borderRadius="md"
             transition="opacity 0.2s"
             _groupHover={{ opacity: 0.85 }}
             onError={(e) => {
@@ -138,7 +156,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
               target.src = "/placeholder-image.svg";
             }}
           />
-        </AspectRatio>
+        </Box>
 
         <VStack align="start" gap={1} mt={3}>
           <Text
