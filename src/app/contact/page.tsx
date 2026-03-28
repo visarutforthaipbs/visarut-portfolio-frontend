@@ -51,11 +51,14 @@ export default function ContactPage() {
     <Layout>
       {/* Hero */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="ติดต่อ"
       >
         <Container maxW="2xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={5} textAlign="center">
@@ -103,21 +106,24 @@ export default function ContactPage() {
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
         <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
       </Box>
 
       {/* Form */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="แบบฟอร์มติดต่อ"
       >
         <Container maxW="xl" mx="auto" px={{ base: 5, md: 6 }}>
           {submitStatus === "success" && (
-            <Box mb={6} textAlign="center">
+            <Box mb={6} textAlign="center" role="alert" aria-live="polite">
               <Text fontSize="sm" color="green.500">
                 ส่งข้อความสำเร็จ — เราจะติดต่อกลับโดยเร็ว
               </Text>
@@ -131,6 +137,7 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="ชื่อ"
+                aria-label="ชื่อ"
                 size="lg"
                 variant="flushed"
                 borderColor={{ base: "gray.200", _dark: "gray.700" }}
@@ -145,6 +152,7 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="อีเมล"
+                aria-label="อีเมล"
                 size="lg"
                 variant="flushed"
                 borderColor={{ base: "gray.200", _dark: "gray.700" }}
@@ -158,6 +166,7 @@ export default function ContactPage() {
                 value={formData.subject}
                 onChange={handleInputChange}
                 placeholder="หัวข้อ"
+                aria-label="หัวข้อ"
                 size="lg"
                 variant="flushed"
                 borderColor={{ base: "gray.200", _dark: "gray.700" }}
@@ -171,6 +180,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="ข้อความ"
+                aria-label="ข้อความ"
                 rows={5}
                 resize="vertical"
                 variant="flushed"
@@ -197,7 +207,7 @@ export default function ContactPage() {
                     opacity={isSubmitting ? 0.5 : 1}
                   >
                     <Text>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</Text>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} aria-hidden="true" />
                   </HStack>
                 </button>
               </Box>

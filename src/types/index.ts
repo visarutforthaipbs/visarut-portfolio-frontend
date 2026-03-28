@@ -58,6 +58,7 @@ export interface SiteConfig {
   api: {
     wordpress: {
       baseUrl: string;
+      restBase: string;
       postsEndpoint: string;
       categoriesEndpoint: string;
       blogPostsEndpoint: string;

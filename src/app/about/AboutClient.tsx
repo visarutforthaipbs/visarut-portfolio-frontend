@@ -17,11 +17,14 @@ export default function AboutClient() {
     <Layout>
       {/* Hero */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="เกี่ยวกับ"
       >
         <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={5} textAlign="center">
@@ -51,17 +54,20 @@ export default function AboutClient() {
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
         <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
       </Box>
 
       {/* Experience */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="ประสบการณ์"
       >
         <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={8} align="stretch">
@@ -85,17 +91,20 @@ export default function AboutClient() {
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
         <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
       </Box>
 
       {/* Awards */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="รางวัล"
       >
         <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={8} align="stretch">

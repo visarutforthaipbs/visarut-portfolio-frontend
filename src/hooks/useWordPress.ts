@@ -18,32 +18,43 @@ export function usePortfolios(params?: {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
+  // Serialize params to a stable string to avoid infinite re-renders
+  const paramsKey = JSON.stringify(params);
+
   useEffect(() => {
+    const controller = new AbortController();
     const fetchPortfolios = async () => {
       try {
         setLoading(true);
         setError(null);
 
         const response: PortfolioResponse = await WordPressAPI.getPortfolios({
-          per_page: 6, // Default to 6 for homepage
+          per_page: 6,
           ...params,
         });
 
-        setPortfolios(response.items);
-        setTotal(response.total);
-        setTotalPages(response.totalPages);
+        if (!controller.signal.aborted) {
+          setPortfolios(response.items);
+          setTotal(response.total);
+          setTotalPages(response.totalPages);
+        }
       } catch (err) {
+        if (controller.signal.aborted) return;
         console.error("Error fetching portfolios:", err);
         setError(
           err instanceof Error ? err.message : "Failed to fetch portfolios"
         );
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchPortfolios();
-  }, [params]);
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paramsKey]);
 
   return {
     portfolios,
@@ -65,6 +76,7 @@ export function usePortfolioBySlug(slug: string, initialData?: PortfolioItem) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchPortfolio = async () => {
       if (!slug || initialData) return;
 
@@ -73,18 +85,24 @@ export function usePortfolioBySlug(slug: string, initialData?: PortfolioItem) {
         setError(null);
 
         const response = await WordPressAPI.getPortfolioBySlug(slug);
-        setPortfolio(response);
+        if (!controller.signal.aborted) {
+          setPortfolio(response);
+        }
       } catch (err) {
+        if (controller.signal.aborted) return;
         console.error("Error fetching portfolio:", err);
         setError(
           err instanceof Error ? err.message : "Failed to fetch portfolio"
         );
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchPortfolio();
+    return () => controller.abort();
   }, [slug, initialData]);
 
   return {
@@ -105,24 +123,31 @@ export function usePortfolioCategories() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchCategories = async () => {
       try {
         setLoading(true);
         setError(null);
 
         const response = await WordPressAPI.getPortfolioCategories();
-        setCategories(response.categories);
+        if (!controller.signal.aborted) {
+          setCategories(response.categories);
+        }
       } catch (err) {
+        if (controller.signal.aborted) return;
         console.error("Error fetching categories:", err);
         setError(
           err instanceof Error ? err.message : "Failed to fetch categories"
         );
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchCategories();
+    return () => controller.abort();
   }, []);
 
   return {

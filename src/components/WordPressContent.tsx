@@ -2,6 +2,7 @@
 
 import { Box, BoxProps } from "@chakra-ui/react";
 import { memo } from "react";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface WordPressContentProps extends BoxProps {
   content: string;
@@ -16,7 +17,7 @@ export const WordPressContent = memo(function WordPressContent({
   return (
     <Box
       className={`wordpress-content ${className}`}
-      dangerouslySetInnerHTML={{ __html: content }}
+      dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
       {...boxProps}
     />
   );

@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { PortfolioItem } from "@/types";
 import type { BlogPost } from "@/types/wordpress";
 
@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let portfolioPages: MetadataRoute.Sitemap = [];
   try {
     const portfolioResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.postsEndpoint}?per_page=100`,
+      wpApiUrl(siteConfig.api.wordpress.postsEndpoint, `per_page=100`),
       { next: { revalidate: 3600 } }
     );
     if (portfolioResponse.ok) {
@@ -70,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogPages: MetadataRoute.Sitemap = [];
   try {
     const blogResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}?per_page=100`,
+      wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, `per_page=100`),
       { next: { revalidate: 3600 } }
     );
     if (blogResponse.ok) {

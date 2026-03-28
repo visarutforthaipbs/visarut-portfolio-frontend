@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiCache } from "./cache";
+import { CATEGORY_IDS, categoryIdToSlug } from "./config";
 import type {
   WordPressPost,
   WordPressFeaturedMedia,
@@ -13,11 +14,11 @@ import type {
 } from "@/types";
 
 // WordPress API Configuration
-const WP_API_BASE = "https://backend.visarutsankham.com/wp-json/wp/v2";
+const WP_BASE = "https://api.sankham.cv";
 
 // Create axios instance with default config
 const wpApi = axios.create({
-  baseURL: WP_API_BASE,
+  baseURL: WP_BASE,
   timeout: 30000, // Increased timeout to 30 seconds
   headers: {
     "Content-Type": "application/json",
@@ -26,10 +27,18 @@ const wpApi = axios.create({
   withCredentials: false,
 });
 
-// Add request interceptor for debugging
+// Add request interceptor to use ?rest_route= format
 wpApi.interceptors.request.use(
   (config) => {
-    console.log("API Request:", config.url, config.params);
+    const originalUrl = config.url || '';
+    config.url = '/';
+    config.params = {
+      rest_route: `/wp/v2${originalUrl}`,
+      ...config.params,
+    };
+    if (process.env.NODE_ENV === 'development') {
+      console.log("API Request:", config.url, config.params);
+    }
     return config;
   },
   (error) => {
@@ -41,7 +50,9 @@ wpApi.interceptors.request.use(
 // Add response interceptor for debugging
 wpApi.interceptors.response.use(
   (response) => {
-    console.log("API Response:", response.status, response.config.url);
+    if (process.env.NODE_ENV === 'development') {
+      console.log("API Response:", response.status, response.config.url);
+    }
     return response;
   },
   (error) => {
@@ -76,35 +87,7 @@ export class WordPressAPI {
       // Map category names to IDs for the API
       let categoryId: number | undefined;
       if (params?.categories && params.categories !== "all") {
-        switch (params.categories) {
-          case "video-editing":
-            categoryId = 23;
-            break;
-          case "videography":
-            categoryId = 24;
-            break;
-          case "exhibition":
-            categoryId = 25;
-            break;
-          case "photography":
-            categoryId = 26;
-            break;
-          case "print":
-            categoryId = 27;
-            break;
-          case "graphic-design":
-            categoryId = 28;
-            break;
-          case "website":
-            categoryId = 29;
-            break;
-          case "campaign":
-            categoryId = 30;
-            break;
-          case "producer":
-            categoryId = 31;
-            break;
-        }
+        categoryId = CATEGORY_IDS[params.categories as keyof typeof CATEGORY_IDS];
       }
 
       const response = await wpApi.get("/portfolios", {
@@ -143,8 +126,8 @@ export class WordPressAPI {
     } catch (error) {
       console.error("Error fetching portfolios:", error);
 
-      // Log more detailed error information
-      if (axios.isAxiosError(error)) {
+      // Log more detailed error information in development
+      if (process.env.NODE_ENV === 'development' && axios.isAxiosError(error)) {
         console.error("API Error Details:", {
           message: error.message,
           code: error.code,
@@ -154,108 +137,15 @@ export class WordPressAPI {
           baseURL: error.config?.baseURL,
         });
 
-        // If it's a network error, try to provide helpful debugging info
         if (error.code === "ERR_NETWORK") {
           console.error(
             "Network Error - Check if WordPress API is accessible at:",
-            WP_API_BASE
-          );
-          console.error("Possible causes:");
-          console.error("1. WordPress server is down");
-          console.error("2. CORS policy blocking the request");
-          console.error("3. Network connectivity issues");
-          console.error(
-            "4. SSL certificate issues (check browser console for SSL errors)"
-          );
-          console.error("5. Incorrect API URL");
-        }
-
-        // Handle SSL/TLS certificate errors
-        if (
-          error.message.includes("ERR_CERT") ||
-          error.message.includes("SSL") ||
-          error.message.includes("certificate")
-        ) {
-          console.error(
-            "SSL Certificate Error - The admin subdomain may not have a valid SSL certificate"
-          );
-          console.error(
-            "Consider setting up a proper SSL certificate for admin.visarutsankham.com"
+            WP_BASE
           );
         }
       }
 
-      // For development, return mock data to prevent app crashes
-      if (process.env.NODE_ENV === "development") {
-        console.warn("Using mock portfolio data due to API error");
-        return {
-          items: [
-            {
-              id: 1,
-              date: new Date().toISOString(),
-              date_gmt: new Date().toISOString(),
-              guid: { rendered: "sample-guid" },
-              modified: new Date().toISOString(),
-              modified_gmt: new Date().toISOString(),
-              slug: "sample-portfolio",
-              status: "publish",
-              type: "portfolio",
-              link: "sample-link",
-              title: { rendered: "Sample Portfolio Item" },
-              content: {
-                rendered: "Sample content",
-                protected: false,
-              },
-              excerpt: {
-                rendered:
-                  "This is a sample portfolio item while the API is unavailable.",
-                protected: false,
-              },
-              author: 1,
-              featured_media: 0,
-              comment_status: "closed",
-              ping_status: "closed",
-              sticky: false,
-              template: "",
-              format: "standard",
-              meta: {},
-              categories: [],
-              tags: [],
-              portfolio_category: [],
-              category: "website" as const,
-              acf: {
-                gallery: [],
-                video_url: "",
-                client: "Sample Client",
-                year: new Date().getFullYear().toString(),
-                role: "Sample Role",
-                description: "Sample description",
-                skills: ["Sample Skill"],
-                project_type: "Sample Type",
-                duration: "1 month",
-                team_size: "1 person",
-                tools_used: ["Sample Tool"],
-                challenges: "Sample challenge",
-                results: "Sample result",
-                testimonial: {
-                  quote: "",
-                  author: "",
-                  position: "",
-                },
-              },
-              _links: {
-                self: [{ href: "sample-link" }],
-                collection: [{ href: "sample-collection" }],
-              },
-            },
-          ],
-          total: 1,
-          totalPages: 1,
-          currentPage: 1,
-        };
-      }
-
-      // Return empty result for production
+      // Return empty result — don't mask errors with mock data
       return {
         items: [],
         total: 0,
@@ -381,34 +271,10 @@ export class WordPressAPI {
   private static extractPortfolioCategory(
     post: WordPressPost
   ): PortfolioCategory {
-    // Extract category from portfolio_category field
     if (post.portfolio_category && post.portfolio_category.length > 0) {
-      // Map WordPress category IDs to our category types based on your API
-      const categoryId = post.portfolio_category[0];
-      switch (categoryId) {
-        case 23: // Video Editing (ตัดต่อวีดีโอ)
-          return "video-editing";
-        case 24: // Videography (ถ่ายวีดีโอ)
-          return "videography";
-        case 25: // Exhibition (นิทรรศการ)
-          return "exhibition";
-        case 26: // Photography (ภาพถ่าย)
-          return "photography";
-        case 27: // Print (สิ่งพิมพ์)
-          return "print";
-        case 28: // Graphic Design (ออกแบบกราฟิก)
-          return "graphic-design";
-        case 29: // Website (เว็บไซต์)
-          return "website";
-        case 30: // Campaign (แคมเปญ)
-          return "campaign";
-        case 31: // Producer (โปรดิวเซอร์)
-          return "producer";
-        default:
-          return "photography";
-      }
+      return categoryIdToSlug(post.portfolio_category[0]);
     }
-    return "photography"; // Default category
+    return "photography";
   }
 
   /**
@@ -525,7 +391,7 @@ export class WordPressAPI {
       // Replace old domain with current backend domain
       const correctedUrl = src.replace(
         "https://visarutsankham.com/",
-        "https://backend.visarutsankham.com/"
+        "https://api.sankham.cv/"
       );
 
       // Skip if already processed (avoid duplicates)
@@ -553,7 +419,7 @@ export class WordPressAPI {
       // Replace old domain with current backend domain
       const correctedUrl = src.replace(
         "https://visarutsankham.com/",
-        "https://backend.visarutsankham.com/"
+        "https://api.sankham.cv/"
       );
 
       // Skip if already processed (avoid duplicates)

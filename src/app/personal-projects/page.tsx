@@ -120,6 +120,9 @@ export default function PersonalProjectsPage() {
 
       {/* Hero Section with Background Image */}
       <Box
+        as="section"
+        role="region"
+        aria-label="#PHOTOFORAIR"
         position="relative"
         w="100vw"
         h={{ base: "60vh", md: "70vh" }}
@@ -266,6 +269,9 @@ export default function PersonalProjectsPage() {
 
       {/* Why We Do This - Rationale */}
       <VStack
+        as="section"
+        role="region"
+        aria-label="ที่มาของแคมเปญ"
         gap={6}
         align="start"
         w="full"
@@ -372,6 +378,9 @@ export default function PersonalProjectsPage() {
 
       {/* Collaboration Section */}
       <VStack
+        as="section"
+        role="region"
+        aria-label="ความร่วมมือ"
         gap={6}
         align="start"
         w="full"
@@ -442,8 +451,8 @@ export default function PersonalProjectsPage() {
                   w={{ base: "full", sm: "auto" }}
                 >
                   <HStack gap={2}>
-                    <Text fontSize={{ base: "md", md: "lg" }}>👥</Text>
-                    <Text>ดูโปรไฟล์ Facebook ของตี่ต่าง</Text>
+                    <Text fontSize={{ base: "md", md: "lg" }}></Text>
+                    <Text>ดูโปรไฟล์ Facebook ของตี่ต่าง </Text>
                   </HStack>
                 </Button>
               </Link>
@@ -483,6 +492,9 @@ export default function PersonalProjectsPage() {
 
       {/* Media Coverage Section */}
       <VStack
+        as="section"
+        role="region"
+        aria-label="ข่าวและการรายงาน"
         gap={6}
         align="start"
         w="full"
@@ -962,6 +974,7 @@ export default function PersonalProjectsPage() {
                 <Box w="full" mt={12}>
                   <iframe
                     src="https://app.mirror-app.com/feed-instagram/351ad4cb-df04-4add-b467-fbe826b8bf03/preview"
+                    title="Instagram feed #PHOTOFORAIR"
                     style={{
                       width: "100%",
                       border: "none",

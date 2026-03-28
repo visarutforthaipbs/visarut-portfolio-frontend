@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { BlogPost, WordPressFeaturedMedia } from "@/types/wordpress";
 
 export const runtime = "edge";
@@ -20,7 +20,7 @@ export default async function Image({
   try {
     // Fetch post data
     const postResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}?slug=${resolvedParams.slug}`,
+      wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, `slug=${resolvedParams.slug}`),
       { next: { revalidate: 3600 } }
     );
 
@@ -36,7 +36,7 @@ export default async function Image({
         if (post && post.featured_media) {
           try {
             const mediaResponse = await fetch(
-              `${siteConfig.api.wordpress.baseUrl}/media/${post.featured_media}`,
+              wpApiUrl(`/media/${post.featured_media}`),
               { next: { revalidate: 3600 } }
             );
             if (mediaResponse.ok) {

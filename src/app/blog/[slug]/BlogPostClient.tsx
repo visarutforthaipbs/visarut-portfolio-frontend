@@ -11,28 +11,29 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
-import { siteConfig } from "@/lib/config";
-import type { BlogPost, BlogCategory } from "@/types/wordpress";
+import { siteConfig, wpApiUrl } from "@/lib/config";
+import { sanitizeHtml } from "@/lib/sanitize";
+import type { BlogPost } from "@/types/wordpress";
 
 interface BlogPostClientProps {
   slug: string;
   initialPost?: BlogPost;
-  initialCategories?: BlogCategory[];
 }
 
-export default function BlogPostClient({ slug, initialPost, initialCategories }: BlogPostClientProps) {
+export default function BlogPostClient({ slug, initialPost }: BlogPostClientProps) {
   const [post, setPost] = useState<BlogPost | null>(initialPost || null);
-  const [, setCategories] = useState<BlogCategory[]>(initialCategories || []);
   const [loading, setLoading] = useState(!initialPost);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchBlogPost = async () => {
       if (!slug || initialPost) return;
       try {
         setLoading(true);
         const postResponse = await fetch(
-          `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}?slug=${slug}`
+          wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, `slug=${slug}`),
+          { signal: controller.signal }
         );
         if (!postResponse.ok) throw new Error("Failed to fetch post");
         const postData = await postResponse.json();
@@ -44,17 +45,8 @@ export default function BlogPostClient({ slug, initialPost, initialCategories }:
 
         const currentPost: BlogPost = postData[0];
         setPost(currentPost);
-
-        if (!initialCategories) {
-          const categoriesResponse = await fetch(
-            `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogCategoriesEndpoint}`
-          );
-          if (categoriesResponse.ok) {
-            const categoriesData = await categoriesResponse.json();
-            setCategories(categoriesData);
-          }
-        }
       } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
@@ -62,7 +54,8 @@ export default function BlogPostClient({ slug, initialPost, initialCategories }:
     };
 
     fetchBlogPost();
-  }, [slug, initialPost, initialCategories]);
+    return () => controller.abort();
+  }, [slug, initialPost]);
 
   if (loading) {
     return (
@@ -104,6 +97,7 @@ export default function BlogPostClient({ slug, initialPost, initialCategories }:
   return (
     <Layout>
       <Box
+        as="article"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 20, md: 28 }}
         display="flex"
@@ -246,7 +240,7 @@ export default function BlogPostClient({ slug, initialPost, initialCategories }:
                   fontFamily: "monospace",
                 },
               }}
-              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content.rendered) }}
             />
           </VStack>
         </Container>

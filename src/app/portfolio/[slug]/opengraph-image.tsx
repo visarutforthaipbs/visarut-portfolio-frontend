@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { PortfolioItem, WordPressFeaturedMedia } from "@/types";
 
 export const runtime = "edge";
@@ -20,7 +20,7 @@ export default async function Image({
   try {
     // Fetch portfolio data
     const portfolioResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.postsEndpoint}?slug=${resolvedParams.slug}`,
+      wpApiUrl(siteConfig.api.wordpress.postsEndpoint, `slug=${resolvedParams.slug}`),
       { next: { revalidate: 3600 } }
     );
 
@@ -36,7 +36,7 @@ export default async function Image({
         if (portfolio && portfolio.featured_media) {
           try {
             const mediaResponse = await fetch(
-              `${siteConfig.api.wordpress.baseUrl}/media/${portfolio.featured_media}`,
+              wpApiUrl(`/media/${portfolio.featured_media}`),
               { next: { revalidate: 3600 } }
             );
             if (mediaResponse.ok) {

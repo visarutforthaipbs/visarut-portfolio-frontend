@@ -28,9 +28,9 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
 
   if (error) {
     return (
-      <Box py={8} textAlign="center">
+      <Box py={8} textAlign="center" role="alert">
         <HStack gap={2} justify="center" color={{ base: "gray.400", _dark: "gray.500" }}>
-          <AlertCircle size={16} />
+          <AlertCircle size={16} aria-hidden="true" />
           <Text fontSize="sm">เกิดข้อผิดพลาดในการโหลดผลงาน</Text>
         </HStack>
       </Box>
@@ -40,7 +40,8 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
   return (
     <VStack gap={{ base: 8, md: 10 }} w="full" aria-label="ผลงานล่าสุด" role="region">
       <Heading
-        fontSize={{ base: "lg", md: "xl" }}
+        as="h2"
+        fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
         fontWeight="medium"
         color={{ base: "gray.400", _dark: "gray.500" }}
         textTransform="uppercase"
@@ -51,7 +52,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
       </Heading>
 
       {loading ? (
-        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 6, md: 8 }} w="full">
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 4, md: 6 }} w="full">
           {Array.from({ length: maxItems }).map((_, index) => (
             <Box key={index}>
               <Skeleton height={{ base: "200px", md: "220px" }} borderRadius="md" />
@@ -64,13 +65,13 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
         </SimpleGrid>
       ) : portfolios.length > 0 ? (
         <>
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 6, md: 8 }} w="full">
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 4, md: 6 }} w="full">
             {portfolios.map((portfolio) => (
               <PortfolioCard key={portfolio.id} portfolio={portfolio} />
             ))}
           </SimpleGrid>
 
-          <Link href="/portfolio">
+          <Link href="/portfolio" aria-label="ดูผลงานทั้งหมด">
             <HStack
               gap={2}
               color={{ base: "gray.900", _dark: "white" }}
@@ -81,7 +82,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
               cursor="pointer"
             >
               <Text>ดูผลงานทั้งหมด</Text>
-              <ArrowRight size={16} />
+              <ArrowRight size={16} aria-hidden="true" />
             </HStack>
           </Link>
         </>
@@ -118,8 +119,9 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   };
 
   return (
-    <Link href={`/portfolio/${portfolio.slug}`}>
+    <Link href={`/portfolio/${portfolio.slug}`} aria-label={getTextContent(portfolio.title)}>
       <Box
+        as="article"
         cursor="pointer"
         role="group"
       >
@@ -147,15 +149,16 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
           >
             {categoryLabel}
           </Text>
-          <Text
-            fontSize={{ base: "sm", md: "md" }}
+          <Heading
+            as="h3"
+            fontSize={{ base: "lg", md: "xl" }}
             fontWeight="medium"
             color={{ base: "gray.800", _dark: "white" }}
-            lineHeight="1.5"
+            lineHeight="1.2"
             lineClamp={2}
           >
             {getTextContent(portfolio.title)}
-          </Text>
+          </Heading>
         </VStack>
       </Box>
     </Link>

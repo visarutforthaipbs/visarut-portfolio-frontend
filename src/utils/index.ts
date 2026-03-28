@@ -46,9 +46,7 @@ export function slugify(text: string): string {
  * Get WordPress media URL for featured media API
  */
 export function getWordPressMediaUrl(baseUrl: string, mediaId: number): string {
-  // Remove any trailing /wp/v2 from baseUrl to avoid duplication
-  const cleanBaseUrl = baseUrl.replace(/\/wp\/v2$/, "");
-  return `${cleanBaseUrl}/wp/v2/media/${mediaId}`;
+  return `${baseUrl}/?rest_route=/wp/v2/media/${mediaId}`;
 }
 
 /**
@@ -104,15 +102,6 @@ export function getVimeoVideoId(url: string): string | null {
 export function extractFirstImage(htmlContent: string): string | null {
   if (!htmlContent) return null;
 
-  // Create a temporary DOM element to parse HTML safely
-  if (typeof window !== "undefined") {
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlContent;
-    const firstImg = tempDiv.querySelector("img");
-    return firstImg?.src || null;
-  }
-
-  // Server-side fallback using regex
   const imgRegex = /<img[^>]+src=["']([^"']+)["'][^>]*>/i;
   const match = htmlContent.match(imgRegex);
   return match ? match[1] : null;

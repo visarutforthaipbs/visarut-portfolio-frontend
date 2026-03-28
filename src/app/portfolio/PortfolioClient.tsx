@@ -70,11 +70,14 @@ export default function PortfolioClient({
     <Layout>
       {/* Hero */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="ผลงาน"
       >
         <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={5} textAlign="center">
@@ -98,28 +101,35 @@ export default function PortfolioClient({
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
         <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
       </Box>
 
       {/* Content */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="รายการผลงาน"
       >
         <Container maxW="5xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={8} w="full">
             {/* Category Filter */}
-            <HStack gap={3} justify="center" flexWrap="wrap">
+            <HStack gap={3} justify="center" flexWrap="wrap" role="tablist" aria-label="ตัวกรองหมวดหมู่">
               {filterOptions.map((option) => (
                 <Text
                   key={option.value}
                   onClick={() => handleCategoryChange(option.value)}
                   cursor="pointer"
                   fontSize="sm"
+                  role="tab"
+                  aria-selected={selectedCategory === option.value}
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCategoryChange(option.value); } }}
                   color={
                     selectedCategory === option.value
                       ? { base: "gray.900", _dark: "white" }
@@ -144,7 +154,7 @@ export default function PortfolioClient({
 
                 {/* Pagination */}
                 {displayTotalPages > 1 && (
-                  <HStack gap={6} justify="center" mt={4}>
+                  <HStack as="nav" aria-label="การแบ่งหน้า" gap={6} justify="center" mt={4}>
                     <Text
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       cursor={currentPage === 1 ? "default" : "pointer"}
@@ -240,8 +250,8 @@ export default function PortfolioClient({
 
 function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
   return (
-    <Link href={`/portfolio/${portfolio.slug}`}>
-      <Box cursor="pointer" role="group">
+    <Link href={`/portfolio/${portfolio.slug}`} aria-label={portfolio.title.rendered.replace(/<[^>]*>/g, '')}>
+      <Box cursor="pointer" role="group" as="article">
         <Box
           overflow="hidden"
           borderRadius="md"

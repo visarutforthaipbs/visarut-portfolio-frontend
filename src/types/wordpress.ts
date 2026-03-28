@@ -1,3 +1,16 @@
+import type {
+  PhotographyACF,
+  VideographyACF,
+  VideoEditingACF,
+  WebsiteACF,
+  GraphicDesignACF,
+  PrintACF,
+  ExhibitionACF,
+  CampaignACF,
+  ProducerACF,
+  BaseACFData,
+} from "./acf";
+
 // Base WordPress Types
 export interface WordPressLink {
   href: string;
@@ -23,9 +36,17 @@ export interface WordPressMeta {
   [key: string]: string | number | boolean | null;
 }
 
-export interface WordPressACF {
-  [key: string]: string | number | boolean | null | object | unknown[];
-}
+export type WordPressACF =
+  | PhotographyACF
+  | VideographyACF
+  | VideoEditingACF
+  | WebsiteACF
+  | GraphicDesignACF
+  | PrintACF
+  | ExhibitionACF
+  | CampaignACF
+  | ProducerACF
+  | BaseACFData;
 
 // WordPress API Types
 export interface WordPressPost {

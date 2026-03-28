@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "backend.visarutsankham.com",
+        hostname: "api.sankham.cv",
         port: "",
         pathname: "/wp-content/uploads/**",
       },

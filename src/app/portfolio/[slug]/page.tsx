@@ -1,33 +1,17 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, wpApiUrl, categoryIdToSlug } from "@/lib/config";
 import type { PortfolioItem, WordPressFeaturedMedia } from "@/types";
 import { getBlogPostImage } from "@/utils";
 import PortfolioDetailClient from "./PortfolioDetailClient";
 import { JsonLd } from "@/components/JsonLd";
 import { generateCreativeWorkSchema } from "@/lib/seo";
-import { PORTFOLIO_CATEGORIES, PortfolioCategory } from "@/types/portfolio";
+import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import { notFound } from "next/navigation";
-
-// Map WordPress category IDs to our portfolio category types
-function mapCategoryId(categoryId: number): PortfolioCategory {
-  const categoryMap: Record<number, PortfolioCategory> = {
-    23: "video-editing",
-    24: "videography",
-    25: "exhibition",
-    26: "photography",
-    27: "print",
-    28: "graphic-design",
-    29: "website",
-    30: "campaign",
-    31: "producer",
-  };
-  return categoryMap[categoryId] || "photography";
-}
 
 async function getPortfolio(slug: string): Promise<PortfolioItem | null> {
   try {
     const portfolioResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.postsEndpoint}?slug=${slug}&_embed=true`,
+      wpApiUrl(siteConfig.api.wordpress.postsEndpoint, `slug=${slug}&_embed=true`),
       { next: { revalidate: 3600 } }
     );
 
@@ -40,7 +24,7 @@ async function getPortfolio(slug: string): Promise<PortfolioItem | null> {
 
     // Map category from portfolio_category IDs
     const categoryId = post.portfolio_category?.[0];
-    const category = categoryId ? mapCategoryId(categoryId) : "photography";
+    const category = categoryId ? categoryIdToSlug(categoryId) : "photography";
 
     // Extract featured image from embedded data
     let featured_image = undefined;
@@ -76,7 +60,7 @@ async function getFeaturedImage(mediaId: number): Promise<string | null> {
   if (!mediaId) return null;
   try {
     const mediaResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}/media/${mediaId}`,
+      wpApiUrl(`/media/${mediaId}`),
       { next: { revalidate: 3600 } }
     );
     if (mediaResponse.ok) {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/config";
-import type { BlogPost, WordPressFeaturedMedia, BlogCategory } from "@/types/wordpress";
+import { siteConfig, wpApiUrl } from "@/lib/config";
+import type { BlogPost, WordPressFeaturedMedia } from "@/types/wordpress";
 import { getBlogPostImage } from "@/utils";
 import BlogPostClient from "./BlogPostClient";
 import { JsonLd } from "@/components/JsonLd";
@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 async function getPost(slug: string): Promise<BlogPost | null> {
   try {
     const postResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}?slug=${slug}`,
+      wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, `slug=${slug}`),
       { next: { revalidate: 3600 } }
     );
     if (!postResponse.ok) return null;
@@ -22,24 +22,11 @@ async function getPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
-async function getCategories(): Promise<BlogCategory[]> {
-  try {
-    const response = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogCategoriesEndpoint}`,
-      { next: { revalidate: 3600 } }
-    );
-    if (response.ok) return await response.json();
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-  return [];
-}
-
 async function getFeaturedImage(mediaId: number): Promise<string | null> {
   if (!mediaId) return null;
   try {
     const mediaResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}/media/${mediaId}`,
+      wpApiUrl(`/media/${mediaId}`),
       { next: { revalidate: 3600 } }
     );
     if (mediaResponse.ok) {
@@ -138,7 +125,6 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const categories = await getCategories();
   const featuredImageUrl = await getFeaturedImage(post.featured_media);
   
   const description = post.excerpt.rendered.replace(/<[^>]*>/g, "").substring(0, 160);
@@ -172,7 +158,6 @@ export default async function BlogPostPage({
       <BlogPostClient 
         slug={slug} 
         initialPost={post} 
-        initialCategories={categories} 
       />
     </>
   );

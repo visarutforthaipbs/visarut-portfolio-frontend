@@ -1,4 +1,28 @@
 import type { SiteConfig } from "@/types";
+import type { PortfolioCategory } from "@/types/portfolio";
+
+/**
+ * WordPress category IDs mapped to portfolio category slugs.
+ * Single source of truth — update here when IDs change.
+ */
+export const CATEGORY_IDS: Record<PortfolioCategory, number> = {
+  "video-editing": 23,
+  videography: 24,
+  exhibition: 25,
+  photography: 26,
+  print: 27,
+  "graphic-design": 28,
+  website: 29,
+  campaign: 30,
+  producer: 31,
+} as const;
+
+/** Reverse lookup: WordPress category ID → portfolio category slug */
+export function categoryIdToSlug(id: number): PortfolioCategory {
+  const entry = (Object.entries(CATEGORY_IDS) as [PortfolioCategory, number][])
+    .find(([, v]) => v === id);
+  return entry?.[0] ?? "photography";
+}
 
 export const siteConfig: SiteConfig = {
   title: "Visarut Sankham - Media Professional",
@@ -20,7 +44,8 @@ export const siteConfig: SiteConfig = {
   },
   api: {
     wordpress: {
-      baseUrl: "https://backend.visarutsankham.com/wp-json/wp/v2",
+      baseUrl: "https://api.sankham.cv",
+      restBase: "/wp/v2",
       postsEndpoint: "/portfolios",
       categoriesEndpoint: "/portfolio_category",
       blogPostsEndpoint: "/posts",
@@ -28,6 +53,15 @@ export const siteConfig: SiteConfig = {
     },
   },
 };
+
+/**
+ * Build a WordPress REST API URL using ?rest_route= format
+ */
+export function wpApiUrl(endpoint: string, params?: string): string {
+  const { baseUrl, restBase } = siteConfig.api.wordpress;
+  const url = `${baseUrl}/?rest_route=${restBase}${endpoint}`;
+  return params ? `${url}&${params}` : url;
+}
 
 export const navigation = [
   {

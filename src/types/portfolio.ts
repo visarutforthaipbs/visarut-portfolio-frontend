@@ -1,4 +1,13 @@
 import { WordPressPost, WordPressCategory } from "./wordpress";
+import type {
+  PhotographyACF,
+  VideographyACF,
+  WebsiteACF,
+  GraphicDesignACF,
+} from "./acf";
+
+// Re-export ACF types for convenience
+export type { PhotographyACF, VideographyACF, WebsiteACF, GraphicDesignACF };
 
 // Portfolio Categories
 export type PortfolioCategory =
@@ -57,54 +66,6 @@ export interface ImageMedia extends MediaItem {
 export interface GalleryMedia extends MediaItem {
   type: "gallery";
   images: ImageMedia[];
-}
-
-// ACF Field Types for different portfolio categories
-export interface PhotographyACF {
-  camera_equipment?: string;
-  photo_location?: string;
-  photography_style?: string;
-  technical_details?: string;
-  project_description?: string;
-  client_name?: string;
-  project_date?: string;
-  gallery?: ImageMedia[];
-}
-
-export interface VideographyACF {
-  video_url?: string;
-  video_type?: "youtube" | "vimeo" | "direct";
-  duration?: string;
-  resolution?: string;
-  frame_rate?: string;
-  equipment?: {
-    camera: string;
-    lenses: string[];
-    audio: string;
-  };
-  client_name?: string;
-  project_date?: string;
-  project_description?: string;
-}
-
-export interface WebsiteACF {
-  website_url?: string;
-  technologies?: string[];
-  project_type?: "frontend" | "fullstack" | "cms" | "ecommerce";
-  screenshots?: ImageMedia[];
-  client_name?: string;
-  project_date?: string;
-  project_description?: string;
-  features?: string[];
-}
-
-export interface GraphicDesignACF {
-  design_images?: ImageMedia[];
-  software_used?: string[];
-  project_type?: "logo" | "branding" | "poster" | "brochure" | "packaging";
-  client?: string;
-  dimensions?: string;
-  color_palette?: string[];
 }
 
 // Main Portfolio Item Interface

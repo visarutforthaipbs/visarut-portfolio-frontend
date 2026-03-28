@@ -1,12 +1,31 @@
-// Simple in-memory cache for WordPress API responses
+// Simple in-memory cache for WordPress API responses with LRU eviction
 class APICache {
   private cache = new Map<
     string,
     { data: unknown; timestamp: number; ttl: number }
   >();
+  private readonly maxSize: number;
+
+  constructor(maxSize = 100) {
+    this.maxSize = maxSize;
+  }
 
   set(key: string, data: unknown, ttlMinutes: number = 5): void {
-    const ttl = ttlMinutes * 60 * 1000; // Convert to milliseconds
+    const ttl = ttlMinutes * 60 * 1000;
+
+    // If key already exists, delete to refresh insertion order
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    }
+
+    // Evict oldest entries if at capacity
+    while (this.cache.size >= this.maxSize) {
+      const oldestKey = this.cache.keys().next().value;
+      if (oldestKey !== undefined) {
+        this.cache.delete(oldestKey);
+      }
+    }
+
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -23,6 +42,10 @@ class APICache {
       this.cache.delete(key);
       return null;
     }
+
+    // Move to end (most recently used)
+    this.cache.delete(key);
+    this.cache.set(key, cached);
 
     return cached.data as T;
   }

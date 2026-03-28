@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BlogClient from "./BlogClient";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, wpApiUrl } from "@/lib/config";
 import { generateSEO } from "@/lib/seo";
 import type { BlogPost, BlogCategory } from "@/types/wordpress";
 
@@ -12,16 +12,16 @@ export const metadata: Metadata = generateSEO({
 
 async function getBlogData() {
   try {
-    // Fetch posts
+    // Fetch posts with embedded media
     const postsResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}`,
+      wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, '_embed=true'),
       { next: { revalidate: 3600 } }
     );
     const posts: BlogPost[] = await postsResponse.json();
 
     // Fetch categories
     const categoriesResponse = await fetch(
-      `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogCategoriesEndpoint}`,
+      wpApiUrl(siteConfig.api.wordpress.blogCategoriesEndpoint),
       { next: { revalidate: 3600 } }
     );
     const categories: BlogCategory[] = await categoriesResponse.json();

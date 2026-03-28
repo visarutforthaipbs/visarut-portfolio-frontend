@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, wpApiUrl } from "@/lib/config";
+import { sanitizeHtml } from "@/lib/sanitize";
 import { getBlogPostImage } from "@/utils";
-import { getWordPressMediaUrl } from "@/utils";
 import type {
   BlogPost,
   BlogCategory,
@@ -34,11 +34,13 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchBlogPosts = async () => {
       try {
-        // Fetch recent posts
+        // Fetch recent posts with embedded media
         const postsResponse = await fetch(
-          `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogPostsEndpoint}?per_page=${maxPosts}&orderby=date&order=desc`
+          wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, `per_page=${maxPosts}&orderby=date&order=desc&_embed=true`),
+          { signal: controller.signal }
         );
         if (!postsResponse.ok) throw new Error("Failed to fetch posts");
         const postsData = await postsResponse.json();
@@ -46,7 +48,8 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
         // Fetch categories if we have posts
         if (postsData.length > 0) {
           const categoriesResponse = await fetch(
-            `${siteConfig.api.wordpress.baseUrl}${siteConfig.api.wordpress.blogCategoriesEndpoint}`
+            wpApiUrl(siteConfig.api.wordpress.blogCategoriesEndpoint),
+            { signal: controller.signal }
           );
           if (!categoriesResponse.ok)
             throw new Error("Failed to fetch categories");
@@ -56,6 +59,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
 
         setPosts(postsData);
       } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
         console.error("Failed to fetch blog posts:", err);
       } finally {
         setLoading(false);
@@ -63,6 +67,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
     };
 
     fetchBlogPosts();
+    return () => controller.abort();
   }, [maxPosts]);
 
   if (loading) {
@@ -163,66 +168,19 @@ function BlogPostCard({
   const [imageLoading, setImageLoading] = useState(true);
 
   useEffect(() => {
-    const fetchFeaturedImage = async () => {
-      console.log(
-        "BlogPreview: Fetching featured image for post:",
-        post.id,
-        post.title.rendered
-      );
-      setImageLoading(true);
-
-      if (post.featured_media && post.featured_media > 0) {
-        console.log(
-          "BlogPreview: Post has featured_media ID:",
-          post.featured_media
-        );
-        try {
-          // Fetch featured media details
-          const mediaResponse = await fetch(
-            getWordPressMediaUrl(
-              siteConfig.api.wordpress.baseUrl,
-              post.featured_media
-            )
-          );
-
-          if (mediaResponse.ok) {
-            const mediaData: WordPressFeaturedMedia =
-              await mediaResponse.json();
-            console.log(
-              "BlogPreview: Featured media data:",
-              mediaData.source_url
-            );
-            setFeaturedImage(mediaData.source_url);
-            setImageLoading(false);
-            return;
-          } else {
-            console.log(
-              "BlogPreview: Failed to fetch featured media:",
-              mediaResponse.status
-            );
-          }
-        } catch (error) {
-          console.error("BlogPreview: Failed to fetch featured media:", error);
-        }
-      } else {
-        console.log("BlogPreview: No featured_media for post:", post.id);
-      }
-
-      // Fallback to first image in content
-      console.log("BlogPreview: Trying to extract image from content...");
-      const contentImage = getBlogPostImage(null, post.content.rendered);
-      console.log("BlogPreview: Extracted content image:", contentImage);
-      setFeaturedImage(contentImage);
+    // Extract image from embedded data (no extra API call needed)
+    const embedded = (post as BlogPost & { _embedded?: { "wp:featuredmedia"?: WordPressFeaturedMedia[] } })._embedded;
+    if (embedded?.["wp:featuredmedia"]?.[0]) {
+      setFeaturedImage(embedded["wp:featuredmedia"][0].source_url);
       setImageLoading(false);
-    };
+      return;
+    }
 
-    fetchFeaturedImage();
-  }, [
-    post.featured_media,
-    post.content.rendered,
-    post.id,
-    post.title.rendered,
-  ]);
+    // Fallback to first image in content
+    const contentImage = getBlogPostImage(null, post.content.rendered);
+    setFeaturedImage(contentImage);
+    setImageLoading(false);
+  }, [post]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("th-TH", {
@@ -328,7 +286,7 @@ function BlogPostCard({
                 overflow: "hidden",
               }}
               dangerouslySetInnerHTML={{
-                __html: post.excerpt.rendered.replace(/<[^>]*>/g, ""),
+                __html: sanitizeHtml(post.excerpt.rendered.replace(/<[^>]*>/g, "")),
               }}
             />
           )}

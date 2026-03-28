@@ -13,10 +13,8 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
-import { siteConfig } from "@/lib/config";
+import { sanitizeHtml } from "@/lib/sanitize";
 import { getBlogPostImage } from "@/utils";
-import { getWordPressMediaUrl } from "@/utils";
-import { useEffect } from "react";
 import type {
   BlogPost,
   BlogCategory,
@@ -29,8 +27,8 @@ interface BlogClientProps {
 }
 
 export default function BlogClient({ initialPosts, initialCategories }: BlogClientProps) {
-  const [posts] = useState<BlogPost[]>(initialPosts);
-  const [categories] = useState<BlogCategory[]>(initialCategories);
+  const posts = initialPosts;
+  const categories = initialCategories;
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const filteredPosts =
@@ -56,11 +54,14 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
     <Layout>
       {/* Hero */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="บล็อก"
       >
         <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={5} textAlign="center">
@@ -84,29 +85,36 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
+      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
         <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
       </Box>
 
       {/* Content */}
       <Box
+        as="section"
         bg={{ base: "white", _dark: "gray.900" }}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
         w="100%"
+        role="region"
+        aria-label="รายการบทความ"
       >
         <Container maxW="5xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={8} align="stretch" w="full">
             {/* Category Filter */}
             {categories.length > 0 && (
-              <HStack gap={3} justify="center" flexWrap="wrap">
+              <HStack gap={3} justify="center" flexWrap="wrap" role="tablist" aria-label="ตัวกรองหมวดหมู่">
                 {filterOptions.map((option) => (
                   <Text
                     key={option.value}
                     onClick={() => setSelectedCategory(option.value)}
                     cursor="pointer"
                     fontSize="sm"
+                    role="tab"
+                    aria-selected={selectedCategory === option.value}
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedCategory(option.value); } }}
                     color={
                       selectedCategory === option.value
                         ? { base: "gray.900", _dark: "white" }
@@ -156,45 +164,14 @@ function BlogPostCard({
 }: {
   post: BlogPost;
 }) {
-  const [featuredImage, setFeaturedImage] = useState<string | null>(null);
-  const [imageLoading, setImageLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFeaturedImage = async () => {
-      setImageLoading(true);
-
-      if (post.featured_media && post.featured_media > 0) {
-        try {
-          const mediaResponse = await fetch(
-            getWordPressMediaUrl(
-              siteConfig.api.wordpress.baseUrl,
-              post.featured_media
-            )
-          );
-
-          if (mediaResponse.ok) {
-            const mediaData: WordPressFeaturedMedia =
-              await mediaResponse.json();
-            setFeaturedImage(mediaData.source_url);
-            setImageLoading(false);
-            return;
-          }
-        } catch (error) {
-          console.error("BlogPage: Failed to fetch featured media:", error);
-        }
-      }
-
-      const contentImage = getBlogPostImage(null, post.content.rendered);
-      setFeaturedImage(contentImage);
-      setImageLoading(false);
-    };
-
-    fetchFeaturedImage();
-  }, [post.featured_media, post.content.rendered, post.id]);
+  // Extract image from embedded data (no extra API call needed)
+  const embedded = (post as BlogPost & { _embedded?: { "wp:featuredmedia"?: WordPressFeaturedMedia[] } })._embedded;
+  const embeddedImage = embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? null;
+  const featuredImage = embeddedImage || getBlogPostImage(null, post.content.rendered);
 
   return (
-    <Link href={`/blog/${post.slug}`}>
-      <Box cursor="pointer" role="group">
+    <Link href={`/blog/${post.slug}`} aria-label={post.title.rendered.replace(/<[^>]*>/g, '')}>
+      <Box cursor="pointer" role="group" as="article">
         {/* Image */}
         <Box
           h="200px"
@@ -205,7 +182,7 @@ function BlogPostCard({
           alignItems="center"
           justifyContent="center"
         >
-          {featuredImage && !imageLoading ? (
+          {featuredImage ? (
             <Image
               src={featuredImage}
               alt={post.title.rendered}
@@ -215,11 +192,9 @@ function BlogPostCard({
               loading="lazy"
               transition="opacity 0.2s"
               _groupHover={{ opacity: 0.85 }}
-              onError={() => setFeaturedImage(null)}
             />
           ) : (
             <Text color={{ base: "gray.400", _dark: "gray.500" }} fontSize="xs">
-              {imageLoading ? "..." : ""}
             </Text>
           )}
         </Box>
@@ -257,7 +232,7 @@ function BlogPostCard({
                 overflow: "hidden",
               }}
               dangerouslySetInnerHTML={{
-                __html: post.excerpt.rendered.replace(/<[^>]*>/g, ""),
+                __html: sanitizeHtml(post.excerpt.rendered.replace(/<[^>]*>/g, "")),
               }}
             />
           )}

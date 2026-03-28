@@ -58,6 +58,19 @@ function track_simple_post_view($request) {
         return new WP_Error('post_not_found', 'Post not found', array('status' => 404));
     }
     
+    // Rate limit: one view per IP per post per hour
+    $ip = preg_replace('/[^a-fA-F0-9:.]/', '', $_SERVER['REMOTE_ADDR'] ?? '');
+    $transient_key = 'svt_' . md5($ip . '_' . $post_id);
+    if (get_transient($transient_key)) {
+        return array(
+            'success' => true,
+            'post_id' => $post_id,
+            'views' => intval(get_post_meta($post_id, 'simple_post_views', true)),
+            'message' => 'View already counted'
+        );
+    }
+    set_transient($transient_key, 1, HOUR_IN_SECONDS);
+    
     // Get current view count
     $current_views = get_post_meta($post_id, 'simple_post_views', true);
     $current_views = $current_views ? intval($current_views) : 0;
@@ -242,7 +255,7 @@ function simple_view_tracker_admin_page() {
 
 ?>
 # Clear WordPress cache with allow-root flag
-wp cache flush --path=/home/backend.visarutsankham.com/public_html/ --allow-root
+wp cache flush --path=/home/api.sankham.cv/public_html/ --allow-root
 
 # Or manually clear cache files
-rm -rf /home/backend.visarutsankham.com/public_html/wp-content/cache/*
+rm -rf /home/api.sankham.cv/public_html/wp-content/cache/*

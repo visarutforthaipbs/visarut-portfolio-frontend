@@ -31,6 +31,7 @@ import {
   VideographyACF,
   WebsiteACF,
 } from "@/types/portfolio";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface PortfolioACFDisplayProps {
   portfolio: PortfolioItem;
@@ -1354,7 +1355,7 @@ export function PortfolioGallery({
                 fontStyle="italic"
                 textAlign="center"
                 px={4}
-                dangerouslySetInnerHTML={{ __html: images[0].caption }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(images[0].caption) }}
               />
             )}
           </VStack>
@@ -1405,7 +1406,7 @@ export function PortfolioGallery({
 
                       fontStyle="italic"
                       textAlign="center"
-                      dangerouslySetInnerHTML={{ __html: image.caption }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(image.caption) }}
                     />
                   )}
                 </VStack>
@@ -1590,7 +1591,7 @@ export function PortfolioGallery({
                       _dark={{ color: "gray.200" }}
 
                       lineHeight="1.6"
-                      dangerouslySetInnerHTML={{ __html: image.caption }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(image.caption) }}
                     />
                   </Box>
                 )}
