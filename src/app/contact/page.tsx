@@ -1,220 +1,38 @@
-"use client";
+import type { Metadata } from "next";
+import { generateSEO } from "@/lib/seo";
+import { siteConfig } from "@/lib/config";
+import { JsonLd } from "@/components/JsonLd";
+import ContactClient from "./ContactClient";
 
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Input,
-  Textarea,
-} from "@chakra-ui/react";
-import { ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { Layout } from "@/components/layout";
-import Link from "next/link";
+export const metadata: Metadata = generateSEO({
+  title: "ติดต่อ / Contact",
+  description:
+    "ติดต่อวิศรุต แสนคำ สำหรับงานถ่ายภาพ วิดีโอ กราฟิกดีไซน์ และสื่อสร้างสรรค์ Contact Visarut Sankham for photography, videography, graphic design, and creative media.",
+  url: "/contact",
+});
+
+const contactJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "ติดต่อวิศรุต แสนคำ",
+  url: `${siteConfig.url}/contact`,
+  description:
+    "ติดต่อวิศรุต แสนคำ สำหรับงานถ่ายภาพ วิดีโอ กราฟิกดีไซน์ และสื่อสร้างสรรค์",
+  mainEntity: {
+    "@type": "Person",
+    name: siteConfig.authorTh,
+    alternateName: siteConfig.author,
+    email: siteConfig.social.email,
+    telephone: siteConfig.social.phone,
+    url: siteConfig.url,
+  },
+};
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-
-    setTimeout(() => {
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    }, 1500);
-  };
-
   return (
-    <Layout>
-      {/* Hero */}
-      <Box
-        as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
-        py={{ base: 20, md: 28 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
-        role="region"
-        aria-label="ติดต่อ"
-      >
-        <Container maxW="2xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={5} textAlign="center">
-            <Heading
-              fontSize={{ base: "3xl", md: "4xl" }}
-              fontWeight="bold"
-              color={{ base: "gray.900", _dark: "white" }}
-              letterSpacing="-0.025em"
-            >
-              ติดต่อ
-            </Heading>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.500", _dark: "gray.400" }}
-              lineHeight="1.8"
-            >
-              พร้อมให้คำปรึกษาและรับฟังความต้องการของคุณ
-            </Text>
-
-            {/* Quick contact */}
-            <VStack gap={1} pt={2}>
-              <Link href="mailto:visarut298@gmail.com">
-                <Text
-                  fontSize="sm"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
-                  transition="color 0.15s"
-                >
-                  visarut298@gmail.com
-                </Text>
-              </Link>
-              <Link href="tel:+66627283058">
-                <Text
-                  fontSize="sm"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
-                  transition="color 0.15s"
-                >
-                  062-728-3058
-                </Text>
-              </Link>
-            </VStack>
-          </VStack>
-        </Container>
-      </Box>
-
-      {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
-      </Box>
-
-      {/* Form */}
-      <Box
-        as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
-        role="region"
-        aria-label="แบบฟอร์มติดต่อ"
-      >
-        <Container maxW="xl" mx="auto" px={{ base: 5, md: 6 }}>
-          {submitStatus === "success" && (
-            <Box mb={6} textAlign="center" role="alert" aria-live="polite">
-              <Text fontSize="sm" color="green.500">
-                ส่งข้อความสำเร็จ — เราจะติดต่อกลับโดยเร็ว
-              </Text>
-            </Box>
-          )}
-
-          <form onSubmit={handleSubmit}>
-            <VStack gap={5}>
-              <Input
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="ชื่อ"
-                aria-label="ชื่อ"
-                size="lg"
-                variant="flushed"
-                borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
-                fontSize="sm"
-                required
-              />
-
-              <Input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="อีเมล"
-                aria-label="อีเมล"
-                size="lg"
-                variant="flushed"
-                borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
-                fontSize="sm"
-                required
-              />
-
-              <Input
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-                placeholder="หัวข้อ"
-                aria-label="หัวข้อ"
-                size="lg"
-                variant="flushed"
-                borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
-                fontSize="sm"
-                required
-              />
-
-              <Textarea
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                placeholder="ข้อความ"
-                aria-label="ข้อความ"
-                rows={5}
-                resize="vertical"
-                variant="flushed"
-                borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
-                fontSize="sm"
-                required
-              />
-
-              <Box pt={4} w="full" textAlign="center">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  style={{ background: "none", border: "none", cursor: "pointer" }}
-                >
-                  <HStack
-                    gap={2}
-                    justify="center"
-                    color={{ base: "gray.900", _dark: "white" }}
-                    fontWeight="medium"
-                    fontSize="sm"
-                    _hover={{ gap: 3 }}
-                    transition="all 0.2s"
-                    opacity={isSubmitting ? 0.5 : 1}
-                  >
-                    <Text>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</Text>
-                    <ArrowRight size={16} aria-hidden="true" />
-                  </HStack>
-                </button>
-              </Box>
-            </VStack>
-          </form>
-        </Container>
-      </Box>
-    </Layout>
+    <>
+      <JsonLd data={contactJsonLd} />
+      <ContactClient />
+    </>
   );
 }

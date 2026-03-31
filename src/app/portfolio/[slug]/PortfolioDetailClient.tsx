@@ -159,10 +159,20 @@ export default function PortfolioDetailClient({
       >
         <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
           <VStack gap={12} align="start" css={{
+            "& .wordpress-content": {
+              width: "100%",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "1rem",
+              justifyContent: "center",
+              alignItems: "flex-start",
+            },
+            "& .wordpress-content > p:empty": {
+              display: "none",
+            },
             "& iframe": {
-              display: "block",
-              margin: "0 auto",
               maxWidth: "100%",
+              borderRadius: "0.5rem",
             },
             "& .blog-content": {
               width: "100%",
@@ -266,7 +276,9 @@ export default function PortfolioDetailClient({
                     </VStack>
                   </Box>
                 )}
-                <PortfolioGallery portfolio={portfolio} />
+                {portfolio.category !== "producer" && (
+                  <PortfolioGallery portfolio={portfolio} />
+                )}
               </>
             )}
           </VStack>

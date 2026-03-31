@@ -16,7 +16,7 @@ interface SEOProps {
 export function generateSEO({
   title,
   description,
-  image = "/og-image.jpg",
+  image = "/image/profile.png",
   url,
   type = "website",
   publishedTime,
@@ -91,7 +91,7 @@ export function generatePersonSchema() {
     name: siteConfig.authorTh,
     alternateName: siteConfig.author,
     url: siteConfig.url,
-    image: `${siteConfig.url}/og-image.jpg`,
+    image: `${siteConfig.url}/image/profile.png`,
     sameAs: [
       siteConfig.social.facebook,
       siteConfig.social.instagram,
@@ -128,7 +128,7 @@ export function generateOrganizationSchema() {
     alternateName: siteConfig.title,
     url: siteConfig.url,
     logo: `${siteConfig.url}/logo/black-favicon.svg`,
-    image: `${siteConfig.url}/og-image.jpg`,
+    image: `${siteConfig.url}/image/profile.png`,
     description: siteConfig.descriptionTh,
     founder: {
       "@type": "Person",
@@ -164,11 +164,6 @@ export function generateWebsiteSchema() {
     url: siteConfig.url,
     description: siteConfig.descriptionTh,
     inLanguage: "th-TH",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteConfig.url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
     publisher: {
       "@type": "Person",
       name: siteConfig.authorTh,

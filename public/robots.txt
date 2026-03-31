@@ -12,6 +12,9 @@ Disallow: /admin/
 Disallow: /private/
 Disallow: /.env
 
+User-agent: Googlebot-Image
+Allow: /
+
 # Allow specific social media bots
 User-agent: facebookexternalhit/*
 Allow: /

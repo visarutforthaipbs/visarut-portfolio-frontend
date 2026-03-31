@@ -181,9 +181,41 @@ export default async function PortfolioDetailPage({
     url: `${siteConfig.url}/portfolio/${portfolio.slug}`,
   });
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "หน้าแรก",
+        item: siteConfig.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "ผลงาน",
+        item: `${siteConfig.url}/portfolio`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: PORTFOLIO_CATEGORIES[portfolio.category],
+        item: `${siteConfig.url}/portfolio/category/${portfolio.category}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: portfolio.title.rendered,
+        item: `${siteConfig.url}/portfolio/${portfolio.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <PortfolioDetailClient slug={slug} initialData={portfolio} />
     </>
   );

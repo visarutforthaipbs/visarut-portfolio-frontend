@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { siteConfig } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "#PHOTOFORAIR - เปลี่ยนภาพเพื่อออกาศที่เท่ากัน | Visarut Sankham",
@@ -20,22 +21,22 @@ export const metadata: Metadata = {
     "Air Pollution",
     "Migrant Workers",
   ],
-  authors: [{ name: "Visarut Sankham", url: "https://visarut.com" }],
+  authors: [{ name: "Visarut Sankham", url: siteConfig.url }],
   creator: "Visarut Sankham",
   openGraph: {
     title: "#PHOTOFORAIR - เปลี่ยนภาพเพื่ออากาศที่เท่ากัน",
     description:
       "แคมเปญสังคมที่ใช้ Photography Preset เพื่อระดมทุนช่วยเหลือแรงงานข้ามชาติในเชียงใหม่ให้เข้าถึงหน้ากาก N95 ระหว่างวิกฤตฝุ่นควัน PM2.5 ดำเนินการตั้งแต่ปี 2564",
-    url: "https://visarut.com/personal-projects",
+    url: `${siteConfig.url}/personal-projects`,
     siteName: "Visarut Sankham Portfolio",
     locale: "th_TH",
     type: "website",
     images: [
       {
-        url: "/image/pfa/x2-1-2.jpg",
+        url: "/image/pfa/facebook-thumnail.jpg",
         width: 1200,
-        height: 630,
-        alt: "#PHOTOFORAIR Campaign - เชียงใหม่ท่ามกลางฝุ่นควัน",
+        height: 628,
+        alt: "#PHOTOFORAIR - เปรียบเทียบภาพก่อนและหลัง Preset CNXPM2.5 ที่ดอยสุเทพ เชียงใหม่",
       },
     ],
   },
@@ -44,8 +45,8 @@ export const metadata: Metadata = {
     title: "#PHOTOFORAIR - เปลี่ยนภาพเพื่ออากาศที่เท่ากัน",
     description:
       "แคมเปญสังคมที่ใช้ Photography Preset ระดมทุนช่วยแรงงานข้ามชาติในเชียงใหม่ให้เข้าถึงหน้ากาก N95",
-    images: ["/image/pfa/x2-1-2.jpg"],
-    creator: "@visarut",
+    images: ["/image/pfa/facebook-thumnail.jpg"],
+    creator: "@visarutsankham",
   },
   robots: {
     index: true,
@@ -59,7 +60,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://visarut.com/personal-projects",
+    canonical: `${siteConfig.url}/personal-projects`,
   },
 };
 

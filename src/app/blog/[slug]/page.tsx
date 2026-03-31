@@ -102,6 +102,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: post.title.rendered,
+      description,
       images: featuredImageUrl
         ? [featuredImageUrl]
         : [`${siteConfig.url}/blog/${post.slug}/opengraph-image`],
@@ -134,6 +135,7 @@ export default async function BlogPostPage({
     "@type": "BlogPosting",
     headline: post.title.rendered,
     description: description,
+    url: `${siteConfig.url}/blog/${post.slug}`,
     image: featuredImageUrl || `${siteConfig.url}/placeholder-image.jpg`,
     datePublished: post.date,
     dateModified: post.modified,
@@ -152,9 +154,35 @@ export default async function BlogPostPage({
     },
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "หน้าแรก",
+        item: siteConfig.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "บล็อก",
+        item: `${siteConfig.url}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title.rendered,
+        item: `${siteConfig.url}/blog/${post.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <BlogPostClient 
         slug={slug} 
         initialPost={post} 
