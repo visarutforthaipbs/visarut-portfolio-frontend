@@ -33,7 +33,7 @@ export const siteConfig: SiteConfig = {
     "ผู้ผลิตสื่อหลายรูปแบบ โดยมีความเชี่ยวชาญเป็นพิเศษกับภาคประชาสังคม องค์กรพัฒนาเอกชน และสถาบันการศึกษา",
   author: "Visarut Sankham",
   authorTh: "วิศรุต แสนคำ",
-  url: "https://visarutsankham.com",
+  url: "https://www.sankham.cv",
   social: {
     facebook: "https://www.facebook.com/visarut.sankham/",
     instagram: "https://www.instagram.com/visarut_sankham/",
