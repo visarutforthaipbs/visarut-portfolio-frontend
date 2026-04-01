@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box } from "@chakra-ui/react";
 
 interface AdSenseProps {
@@ -28,6 +28,7 @@ export default function AdSense({
 }: AdSenseProps) {
   const adRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
+  const [filled, setFilled] = useState(false);
 
   useEffect(() => {
     if (pushed.current) return;
@@ -37,15 +38,24 @@ export default function AdSense({
     } catch {
       // AdSense not loaded (e.g. ad blocker)
     }
+
+    // Check if the ad actually rendered content
+    const timer = setTimeout(() => {
+      const el = adRef.current;
+      if (el && el.offsetHeight > 0) {
+        setFilled(true);
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <Box
       w="full"
       textAlign="center"
-      my={6}
+      my={filled ? 6 : 0}
       overflow="hidden"
-      minH="90px"
+      style={{ minHeight: 0 }}
     >
       <ins
         className="adsbygoogle"
