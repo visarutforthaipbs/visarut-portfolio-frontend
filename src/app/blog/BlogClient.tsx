@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { sanitizeHtml } from "@/lib/sanitize";
-import { getBlogPostImage } from "@/utils";
+import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
 import type {
   BlogPost,
   BlogCategory,
@@ -217,7 +217,7 @@ function BlogPostCard({
             lineHeight="1.4"
             lineClamp={2}
           >
-            {post.title.rendered}
+            {decodeHtmlEntities(post.title.rendered)}
           </Text>
 
           {post.excerpt.rendered && (

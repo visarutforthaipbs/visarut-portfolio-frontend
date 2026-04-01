@@ -16,7 +16,7 @@ import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { PortfolioPreview } from "@/components/portfolio";
 import { FeaturedSlider } from "@/components/portfolio/FeaturedSlider";
-import { getBlogPostImage } from "@/utils";
+import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
 import type { BlogPost, WordPressFeaturedMedia } from "@/types/wordpress";
 import type { PortfolioItem } from "@/types/portfolio";
 
@@ -134,7 +134,7 @@ function BlogCard({ post }: { post: BlogPost }) {
       day: "numeric",
     });
 
-  const titleText = post.title.rendered.replace(/<[^>]*>/g, "");
+  const titleText = decodeHtmlEntities(post.title.rendered.replace(/<[^>]*>/g, ""));
 
   const excerpt = post.excerpt.rendered
     .replace(/<[^>]*>/g, "")

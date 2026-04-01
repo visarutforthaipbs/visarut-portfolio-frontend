@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { decodeHtmlEntities } from "@/utils";
 import type { BlogPost } from "@/types/wordpress";
 
 interface BlogPostClientProps {
@@ -129,7 +130,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                 lineHeight="1.3"
                 letterSpacing="-0.025em"
               >
-                {post.title.rendered}
+                {decodeHtmlEntities(post.title.rendered)}
               </Heading>
 
               <Text

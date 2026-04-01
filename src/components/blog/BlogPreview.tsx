@@ -17,7 +17,7 @@ import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import { sanitizeHtml } from "@/lib/sanitize";
-import { getBlogPostImage } from "@/utils";
+import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
 import type {
   BlogPost,
   BlogCategory,
@@ -269,7 +269,7 @@ function BlogPostCard({
             lineHeight="1.4"
             truncate
           >
-            {post.title.rendered}
+            {decodeHtmlEntities(post.title.rendered)}
           </Heading>
 
           {/* Excerpt */}

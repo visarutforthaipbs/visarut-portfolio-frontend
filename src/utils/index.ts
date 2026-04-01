@@ -8,6 +8,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
+ * Decode HTML entities in a string (e.g. &#8220; → ", &amp; → &).
+ * Safe to use on both server and client.
+ */
+export function decodeHtmlEntities(str: string): string {
+  return str
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
+/**
  * Format date for display
  */
 export function formatDate(date: string | Date): string {
