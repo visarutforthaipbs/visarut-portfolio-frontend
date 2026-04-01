@@ -14,6 +14,7 @@ import { Layout } from "@/components/layout";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { decodeHtmlEntities } from "@/utils";
+import AdSense from "@/components/AdSense";
 import type { BlogPost } from "@/types/wordpress";
 
 interface BlogPostClientProps {
@@ -148,6 +149,9 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
             {/* Divider */}
             <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
 
+            {/* Ad — below title */}
+            <AdSense slot="REPLACE_WITH_AD_SLOT_1" format="auto" />
+
             {/* Content */}
             <Box
               w="full"
@@ -243,6 +247,9 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
               }}
               dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content.rendered) }}
             />
+
+            {/* Ad — after article */}
+            <AdSense slot="REPLACE_WITH_AD_SLOT_2" format="auto" />
           </VStack>
         </Container>
       </Box>

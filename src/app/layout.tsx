@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Providers } from "@/components/providers";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { WebVitals } from "@/components/WebVitals";
@@ -165,7 +166,8 @@ export default function RootLayout({
         />
 
         {/* DNS prefetch for external domains */}
-        <link rel="dns-prefetch" href="//visarutsankham.com" />
+        <link rel="dns-prefetch" href="//api.sankham.cv" />
+        <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
 
@@ -174,6 +176,12 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <GoogleAnalytics />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8948939937417308"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
         {/* Skip to main content link for accessibility */}
         <a
           href="#main-content"
