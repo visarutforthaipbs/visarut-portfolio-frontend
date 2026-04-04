@@ -8,6 +8,7 @@ import {
   Card,
 } from "@chakra-ui/react";
 import { Code, Globe } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { WebsiteACF } from "@/types/acf";
 
 interface WebsiteACFDisplayProps {
@@ -25,7 +26,7 @@ export function WebsiteACFDisplay({ acf }: WebsiteACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายโปรเจค
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.project_description}
           </Text>
         </Box>
@@ -38,7 +39,7 @@ export function WebsiteACFDisplay({ acf }: WebsiteACFDisplayProps) {
           </Heading>
           <HStack gap={3}>
             <Code size={20} />
-            <Text color="gray.600" _dark={{ color: "gray.300" }}>
+            <Text color={T.textMuted}>
               {acf.tech_stack}
             </Text>
           </HStack>
@@ -51,8 +52,7 @@ export function WebsiteACFDisplay({ acf }: WebsiteACFDisplayProps) {
             ฟีเจอร์หลัก
           </Heading>
           <Text
-            color="gray.600"
-            _dark={{ color: "gray.300" }}
+            color={T.textMuted}
             whiteSpace="pre-line"
           >
             {acf.features}

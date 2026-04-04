@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack, Flex } from "@chakra-ui/react";
 import { Palette, Type, Layers } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { GraphicDesignACF } from "@/types/acf";
 
 interface GraphicDesignACFDisplayProps {
@@ -22,7 +23,7 @@ export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายงานออกแบบ
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.design_description}
           </Text>
         </Box>
@@ -35,7 +36,7 @@ export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
           </Heading>
           <HStack gap={3}>
             <Palette size={20} />
-            <Text color="gray.600" _dark={{ color: "gray.300" }}>
+            <Text color={T.textMuted}>
               {acf.design_software}
             </Text>
           </HStack>
@@ -56,8 +57,7 @@ export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
                 bg={color}
                 borderRadius="md"
                 border="1px solid"
-                borderColor="gray.200"
-                _dark={{ borderColor: "gray.700" }}
+                borderColor={T.border}
                 title={color}
               />
             ))}
@@ -72,7 +72,7 @@ export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
           </Heading>
           <HStack gap={3}>
             <Type size={20} />
-            <Text color="gray.600" _dark={{ color: "gray.300" }}>
+            <Text color={T.textMuted}>
               {acf.typography}
             </Text>
           </HStack>
@@ -86,7 +86,7 @@ export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
           </Heading>
           <HStack gap={3}>
             <Layers size={20} />
-            <Text color="gray.600" _dark={{ color: "gray.300" }}>
+            <Text color={T.textMuted}>
               {acf.design_elements}
             </Text>
           </HStack>

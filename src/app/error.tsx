@@ -5,6 +5,7 @@ import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { reportError } from "@/lib/errorReporting";
+import { T } from "@/lib/tokens";
 
 export default function Error({
   error,
@@ -23,37 +24,37 @@ export default function Error({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      bg={{ base: "gray.50", _dark: "gray.900" }}
+      bg={T.bg}
     >
       <Container maxW="md" py={16}>
         <VStack gap={6} textAlign="center">
-          <Box color="red.500">
+          <Box color={T.accent}>
             <AlertTriangle size={64} />
           </Box>
           <Heading
             fontSize={{ base: "2xl", md: "3xl" }}
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
           >
             เกิดข้อผิดพลาด
           </Heading>
           <Text
             fontSize={{ base: "md", md: "lg" }}
-            color={{ base: "gray.600", _dark: "gray.400" }}
+            color={T.textMuted}
           >
             ขออภัย เกิดข้อผิดพลาดบางอย่าง กรุณาลองใหม่อีกครั้ง
           </Text>
           <Text
             fontSize="sm"
-            color={{ base: "gray.400", _dark: "gray.500" }}
+            color={T.textDim}
           >
             Something went wrong. Please try again.
           </Text>
           <VStack gap={3} w="full" maxW="xs">
             <Button
               onClick={reset}
-              bg="accent.500"
-              color="white"
-              _hover={{ bg: "accent.600" }}
+              bg={T.accent}
+              color={T.bg}
+              _hover={{ bg: "#d97706" }}
               size="lg"
               w="full"
             >
@@ -63,9 +64,9 @@ export default function Error({
             <Link href="/" style={{ width: "100%" }}>
               <Button
                 variant="outline"
-                borderColor="accent.500"
-                color="accent.500"
-                _hover={{ bg: "accent.50" }}
+                borderColor={T.border}
+                color={T.textMuted}
+                _hover={{ bg: T.surface }}
                 size="lg"
                 w="full"
               >

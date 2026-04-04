@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Phone, Mail, X } from "lucide-react";
 import { useEffect, useRef, useCallback } from "react";
+import { T } from "@/lib/tokens";
 
 interface ContactPopupProps {
   isOpen: boolean;
@@ -110,9 +111,10 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
         top={{ base: "10%", md: "50%" }}
         left="50%"
         transform={{ base: "translate(-50%, 0)", md: "translate(-50%, -50%)" }}
-        bg={{ base: "white", _dark: "gray.800" }}
+        bg={T.surface}
         borderRadius="lg"
-        shadow="xl"
+        border="1px solid"
+        borderColor={T.border}
         p={{ base: 4, md: 6 }}
         maxW={{ base: "90vw", md: "400px" }}
         w="full"
@@ -126,7 +128,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
           <HStack justify="space-between" align="center">
             <Heading
               fontSize={{ base: "lg", md: "xl" }}
-              color={{ base: "gray.800", _dark: "white" }}
+              color={T.text}
 
             >
               ติดต่อ
@@ -146,11 +148,11 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
             {/* Email Section */}
             <Box>
               <HStack gap={3} mb={2}>
-                <Mail size={20} color="#6b7280" />
+                <Mail size={20} color={T.textDim} />
                 <Text
                   fontSize="md"
                   fontWeight="600"
-                  color={{ base: "gray.700", _dark: "gray.300" }}
+                  color={T.textMuted}
 
                 >
                   ส่งรายละเอียดโครงการ
@@ -158,7 +160,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
               </HStack>
               <Text
                 fontSize="lg"
-                color={{ base: "gray.800", _dark: "white" }}
+                color={T.text}
                 fontWeight="500"
                 pl={8}
               >
@@ -169,11 +171,11 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
             {/* Phone Section */}
             <Box>
               <HStack gap={3} mb={2}>
-                <Phone size={20} color="#6b7280" />
+                <Phone size={20} color={T.textDim} />
                 <Text
                   fontSize="md"
                   fontWeight="600"
-                  color={{ base: "gray.700", _dark: "gray.300" }}
+                  color={T.textMuted}
 
                 >
                   โทรติดต่อ
@@ -181,7 +183,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
               </HStack>
               <Text
                 fontSize="lg"
-                color={{ base: "gray.800", _dark: "white" }}
+                color={T.text}
                 fontWeight="500"
                 pl={8}
               >
@@ -198,9 +200,9 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
                   window.open("mailto:visarut298@gmail.com", "_blank");
                 }
               }}
-              bg="accent.500"
-              color="white"
-              _hover={{ bg: "accent.600" }}
+              bg={T.accent}
+              color={T.bg}
+              _hover={{ bg: "#d97706" }}
               size={{ base: "md", md: "lg" }}
               w="full"
 
@@ -220,10 +222,10 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
                 }
               }}
               variant="outline"
-              borderColor={{ base: "accent.500", _dark: "accent.300" }}
-              color={{ base: "accent.500", _dark: "accent.300" }}
+              borderColor={T.border}
+              color={T.textMuted}
               _hover={{
-                bg: { base: "accent.50", _dark: "accent.900" },
+                bg: T.surfaceHover,
               }}
               size={{ base: "md", md: "lg" }}
               w="full"

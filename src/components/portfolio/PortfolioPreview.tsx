@@ -14,6 +14,7 @@ import Link from "next/link";
 import { usePortfolios } from "@/hooks/useWordPress";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface PortfolioPreviewProps {
   maxItems?: number;
@@ -27,7 +28,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
   if (error) {
     return (
       <Box py={8} textAlign="center" role="alert">
-        <HStack gap={2} justify="center" color={{ base: "gray.400", _dark: "gray.500" }}>
+        <HStack gap={2} justify="center" color={T.textDim}>
           <AlertCircle size={16} aria-hidden="true" />
           <Text fontSize="sm">เกิดข้อผิดพลาดในการโหลดผลงาน</Text>
         </HStack>
@@ -41,7 +42,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
         as="h2"
         fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
         fontWeight="medium"
-        color={{ base: "gray.400", _dark: "gray.500" }}
+        color={T.textDim}
         textTransform="uppercase"
         letterSpacing="wider"
         textAlign="center"
@@ -88,7 +89,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
           <Link href="/portfolio" aria-label="ดูผลงานทั้งหมด">
             <HStack
               gap={2}
-              color={{ base: "gray.900", _dark: "white" }}
+              color={T.text}
               fontWeight="medium"
               fontSize="sm"
               _hover={{ gap: 3 }}
@@ -102,7 +103,7 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
         </>
       ) : (
         <Box textAlign="center" py={12}>
-          <Text fontSize="sm" color={{ base: "gray.400", _dark: "gray.500" }}>
+          <Text fontSize="sm" color={T.textDim}>
             ยังไม่มีผลงานที่จะแสดง
           </Text>
         </Box>
@@ -141,7 +142,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
         css={{ breakInside: "avoid" }}
         mb={4}
       >
-        <Box overflow="hidden" borderRadius="md" bg={{ base: "gray.100", _dark: "gray.800" }}>
+        <Box overflow="hidden" borderRadius="md" bg={T.surface}>
           <Image
             src={getFeaturedImageUrl(portfolio.featured_image)}
             alt={getTextContent(portfolio.title)}
@@ -161,7 +162,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
         <VStack align="start" gap={1} mt={3}>
           <Text
             fontSize="xs"
-            color={{ base: "gray.400", _dark: "gray.500" }}
+            color={T.textDim}
             textTransform="uppercase"
             letterSpacing="wider"
           >
@@ -171,7 +172,7 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
             as="h3"
             fontSize={{ base: "lg", md: "xl" }}
             fontWeight="medium"
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
             lineHeight="1.2"
             lineClamp={2}
           >

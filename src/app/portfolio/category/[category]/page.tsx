@@ -22,6 +22,7 @@ import { VideoEditingLayout } from "@/components/portfolio/layouts/VideoEditingL
 import { WebsiteLayout } from "@/components/portfolio/layouts/WebsiteLayout";
 import { GraphicDesignLayout } from "@/components/portfolio/layouts/GraphicDesignLayout";
 import { DefaultLayout } from "@/components/portfolio/layouts/DefaultLayout";
+import { T } from "@/lib/tokens";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -110,7 +111,7 @@ export default function CategoryPage() {
               >
                 เกิดข้อผิดพลาด
               </Heading>
-              <Text color="gray.600" className="thai-text">
+              <Text color={T.textDim} className="thai-text">
                 {error}
               </Text>
             </VStack>
@@ -131,7 +132,7 @@ export default function CategoryPage() {
         <Container maxW="5xl" py={{ base: 16, md: 20 }} px={{ base: 6, md: 8 }}>
           <VStack gap={8} align="start" w="full">
             {/* Navigation */}
-            <HStack gap={2} fontSize="sm" color="gray.600">
+            <HStack gap={2} fontSize="sm" color={T.textDim}>
               <Link href="/" className="thai-text hover:text-accent-500">
                 หน้าหลัก
               </Link>
@@ -152,8 +153,8 @@ export default function CategoryPage() {
                 <Link href="/portfolio">
                   <HStack
                     gap={2}
-                    color="gray.600"
-                    _hover={{ color: "accent.500" }}
+                    color={T.textDim}
+                    _hover={{ color: T.accent }}
                   >
                     <ArrowLeft size={20} />
                     <Text className="thai-text">กลับไปดูผลงานทั้งหมด</Text>
@@ -164,15 +165,15 @@ export default function CategoryPage() {
               <VStack gap={2} align="start">
                 <Heading
                   fontSize={{ base: "2xl", md: "4xl" }}
-                  color="gray.800"
+                  color={T.text}
 
                 >
                   {categoryName}
                 </Heading>
                 <HStack gap={4}>
                   <Badge
-                    bg="accent.500"
-                    color="white"
+                    bg={T.accentDim}
+                    color={T.accent}
                     px={3}
                     py={1}
                     borderRadius="full"

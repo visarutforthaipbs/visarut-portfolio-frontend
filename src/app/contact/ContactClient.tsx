@@ -14,6 +14,7 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
+import { T } from "@/lib/tokens";
 
 export default function ContactClient() {
   const [formData, setFormData] = useState({
@@ -52,7 +53,7 @@ export default function ContactClient() {
       {/* Hero */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
@@ -65,14 +66,14 @@ export default function ContactClient() {
             <Heading
               fontSize={{ base: "3xl", md: "4xl" }}
               fontWeight="bold"
-              color={{ base: "gray.900", _dark: "white" }}
+              color={T.text}
               letterSpacing="-0.025em"
             >
               ติดต่อ
             </Heading>
             <Text
               fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.500", _dark: "gray.400" }}
+              color={T.textMuted}
               lineHeight="1.8"
               maxW="560px"
             >
@@ -87,16 +88,16 @@ export default function ContactClient() {
         w="100%"
         display="flex"
         justifyContent="center"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         aria-hidden="true"
       >
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Form Section */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -109,7 +110,7 @@ export default function ContactClient() {
             <Heading
               fontSize={{ base: "lg", md: "xl" }}
               fontWeight="medium"
-              color={{ base: "gray.400", _dark: "gray.500" }}
+              color={T.textDim}
               textTransform="uppercase"
               letterSpacing="wider"
               textAlign="center"
@@ -143,10 +144,11 @@ export default function ContactClient() {
                   aria-label="ชื่อ"
                   size="lg"
                   variant="flushed"
-                  borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                  _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
+                  borderColor={T.border}
+                  _focus={{ borderColor: T.text }}
                   fontSize="sm"
                   required
+                  color={T.text}
                 />
 
                 <Input
@@ -158,10 +160,11 @@ export default function ContactClient() {
                   aria-label="อีเมล"
                   size="lg"
                   variant="flushed"
-                  borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                  _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
+                  borderColor={T.border}
+                  _focus={{ borderColor: T.text }}
                   fontSize="sm"
                   required
+                  color={T.text}
                 />
 
                 <Input
@@ -172,10 +175,11 @@ export default function ContactClient() {
                   aria-label="หัวข้อ"
                   size="lg"
                   variant="flushed"
-                  borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                  _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
+                  borderColor={T.border}
+                  _focus={{ borderColor: T.text }}
                   fontSize="sm"
                   required
+                  color={T.text}
                 />
 
                 <Textarea
@@ -187,10 +191,11 @@ export default function ContactClient() {
                   rows={5}
                   resize="vertical"
                   variant="flushed"
-                  borderColor={{ base: "gray.200", _dark: "gray.700" }}
-                  _focus={{ borderColor: { base: "gray.900", _dark: "white" } }}
+                  borderColor={T.border}
+                  _focus={{ borderColor: T.text }}
                   fontSize="sm"
                   required
+                  color={T.text}
                 />
 
                 <Box pt={4} w="full" textAlign="center">
@@ -206,7 +211,7 @@ export default function ContactClient() {
                     <HStack
                       gap={2}
                       justify="center"
-                      color={{ base: "gray.900", _dark: "white" }}
+                      color={T.text}
                       fontWeight="medium"
                       fontSize="sm"
                       transition="gap 0.2s"
@@ -228,16 +233,16 @@ export default function ContactClient() {
         w="100%"
         display="flex"
         justifyContent="center"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         aria-hidden="true"
       >
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Contact Info Section */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -250,7 +255,7 @@ export default function ContactClient() {
             <Heading
               fontSize={{ base: "lg", md: "xl" }}
               fontWeight="medium"
-              color={{ base: "gray.400", _dark: "gray.500" }}
+              color={T.textDim}
               textTransform="uppercase"
               letterSpacing="wider"
               textAlign="center"
@@ -264,11 +269,11 @@ export default function ContactClient() {
                 align="center"
                 py={2}
                 borderBottom="1px solid"
-                borderColor={{ base: "gray.100", _dark: "gray.800" }}
+                borderColor={T.border}
               >
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.500", _dark: "gray.400" }}
+                  color={T.textMuted}
                 >
                   อีเมล
                 </Text>
@@ -276,8 +281,8 @@ export default function ContactClient() {
                   <Text
                     fontSize={{ base: "sm", md: "md" }}
                     fontWeight="medium"
-                    color={{ base: "gray.800", _dark: "white" }}
-                    _hover={{ color: { base: "gray.500", _dark: "gray.400" } }}
+                    color={T.text}
+                    _hover={{ color: T.textMuted }}
                     transition="color 0.2s"
                   >
                     visarut298@gmail.com
@@ -290,11 +295,11 @@ export default function ContactClient() {
                 align="center"
                 py={2}
                 borderBottom="1px solid"
-                borderColor={{ base: "gray.100", _dark: "gray.800" }}
+                borderColor={T.border}
               >
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.500", _dark: "gray.400" }}
+                  color={T.textMuted}
                 >
                   โทรศัพท์
                 </Text>
@@ -302,8 +307,8 @@ export default function ContactClient() {
                   <Text
                     fontSize={{ base: "sm", md: "md" }}
                     fontWeight="medium"
-                    color={{ base: "gray.800", _dark: "white" }}
-                    _hover={{ color: { base: "gray.500", _dark: "gray.400" } }}
+                    color={T.text}
+                    _hover={{ color: T.textMuted }}
                     transition="color 0.2s"
                   >
                     062-728-3058

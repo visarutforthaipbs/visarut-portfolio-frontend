@@ -8,13 +8,16 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config";
+import { T } from "@/lib/tokens";
 
 export function Footer() {
   return (
     <Box
       as="footer"
       role="contentinfo"
-      bg={{ base: "white", _dark: "gray.900" }}
+      bg={T.bg}
+      borderTop="1px solid"
+      borderColor={T.border}
       mt="auto"
       display="flex"
       justifyContent="center"
@@ -30,7 +33,7 @@ export function Footer() {
         >
           <Text
             fontSize="xs"
-            color={{ base: "gray.400", _dark: "gray.500" }}
+            color={T.textDim}
           >
             © {new Date().getFullYear()} {siteConfig.authorTh}
           </Text>
@@ -39,8 +42,8 @@ export function Footer() {
             <Link href={`mailto:${siteConfig.social.email}`}>
               <Text
                 fontSize="xs"
-                color={{ base: "gray.400", _dark: "gray.500" }}
-                _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                color={T.textDim}
+                _hover={{ color: T.text }}
                 transition="color 0.15s"
               >
                 Email
@@ -50,8 +53,8 @@ export function Footer() {
               <Link href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer">
                 <Text
                   fontSize="xs"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  color={T.textDim}
+                  _hover={{ color: T.text }}
                   transition="color 0.15s"
                 >
                   Instagram
@@ -62,8 +65,8 @@ export function Footer() {
               <Link href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer">
                 <Text
                   fontSize="xs"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  color={T.textDim}
+                  _hover={{ color: T.text }}
                   transition="color 0.15s"
                 >
                   Facebook
@@ -74,8 +77,8 @@ export function Footer() {
               <Link href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">
                 <Text
                   fontSize="xs"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  color={T.textDim}
+                  _hover={{ color: T.text }}
                   transition="color 0.15s"
                 >
                   LinkedIn

@@ -1,6 +1,7 @@
 import { Box, Container, Heading, Text, Button, VStack } from "@chakra-ui/react";
 import { FileQuestion, Home, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { T } from "@/lib/tokens";
 
 export default function NotFound() {
   return (
@@ -9,46 +10,46 @@ export default function NotFound() {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      bg={{ base: "white", _dark: "gray.900" }}
+      bg={T.bg}
     >
       <Container maxW="md" py={16}>
         <VStack gap={6} textAlign="center">
-          <Box color={{ base: "gray.400", _dark: "gray.500" }}>
+          <Box color={T.textDim}>
             <FileQuestion size={80} />
           </Box>
           <Heading
             fontSize={{ base: "6xl", md: "8xl" }}
             fontWeight="bold"
-            color={{ base: "gray.200", _dark: "gray.700" }}
+            color={T.border}
             lineHeight="1"
           >
             404
           </Heading>
           <Heading
             fontSize={{ base: "xl", md: "2xl" }}
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
           >
             ไม่พบหน้าที่ต้องการ
           </Heading>
           <Text
             fontSize={{ base: "md", md: "lg" }}
-            color={{ base: "gray.600", _dark: "gray.400" }}
+            color={T.textMuted}
             maxW="sm"
           >
             หน้าที่คุณกำลังมองหาอาจถูกย้าย ลบ หรือไม่มีอยู่
           </Text>
           <Text
             fontSize="sm"
-            color={{ base: "gray.400", _dark: "gray.500" }}
+            color={T.textDim}
           >
             The page you&apos;re looking for doesn&apos;t exist.
           </Text>
           <VStack gap={3} w="full" maxW="xs" pt={4}>
             <Link href="/" style={{ width: "100%" }}>
               <Button
-                bg="accent.500"
-                color="white"
-                _hover={{ bg: "accent.600" }}
+                bg={T.accent}
+                color={T.bg}
+                _hover={{ bg: "#d97706" }}
                 size="lg"
                 w="full"
               >
@@ -59,9 +60,9 @@ export default function NotFound() {
             <Link href="/portfolio" style={{ width: "100%" }}>
               <Button
                 variant="outline"
-                borderColor="accent.500"
-                color="accent.500"
-                _hover={{ bg: "accent.50" }}
+                borderColor={T.border}
+                color={T.textMuted}
+                _hover={{ bg: T.surface }}
                 size="lg"
                 w="full"
               >

@@ -21,6 +21,7 @@ import {
 } from "@/components/portfolio/PortfolioDetails";
 import { WordPressAPI } from "@/lib/wordpress";
 import { usePortfolioBySlug } from "@/hooks/useWordPress";
+import { T } from "@/lib/tokens";
 
 interface PortfolioDetailClientProps {
   slug: string;
@@ -54,11 +55,11 @@ export default function PortfolioDetailClient({
         <Box py={{ base: 20, md: 28 }} display="flex" justifyContent="center" w="100%">
           <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
             <VStack gap={4} textAlign="center">
-              <Text fontSize="sm" color={{ base: "gray.500", _dark: "gray.400" }}>
+              <Text fontSize="sm" color={T.textMuted}>
                 ไม่พบผลงาน
               </Text>
               <Link href="/portfolio">
-                <Text fontSize="sm" color={{ base: "gray.400", _dark: "gray.500" }} _hover={{ color: { base: "gray.900", _dark: "white" } }}>
+                <Text fontSize="sm" color={T.textDim} _hover={{ color: T.text }}>
                   ← กลับไปผลงาน
                 </Text>
               </Link>
@@ -75,7 +76,7 @@ export default function PortfolioDetailClient({
     <Layout>
       {/* Hero */}
       <Box
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
@@ -87,10 +88,10 @@ export default function PortfolioDetailClient({
             <HStack
               gap={2}
               fontSize="xs"
-              color={{ base: "gray.400", _dark: "gray.500" }}
+              color={T.textDim}
             >
               <Link href="/portfolio">
-                <Text _hover={{ color: { base: "gray.900", _dark: "white" } }} transition="color 0.15s">
+                <Text _hover={{ color: T.text }} transition="color 0.15s">
                   ผลงาน
                 </Text>
               </Link>
@@ -103,14 +104,14 @@ export default function PortfolioDetailClient({
               <Heading
                 fontSize={{ base: "2xl", md: "3xl" }}
                 fontWeight="bold"
-                color={{ base: "gray.900", _dark: "white" }}
+                color={T.text}
                 lineHeight="1.3"
                 letterSpacing="-0.025em"
               >
                 {portfolio.title.rendered}
               </Heading>
 
-              <HStack gap={3} fontSize="xs" color={{ base: "gray.400", _dark: "gray.500" }}>
+              <HStack gap={3} fontSize="xs" color={T.textDim}>
                 <Text textTransform="uppercase" letterSpacing="0.05em">
                   {PORTFOLIO_CATEGORIES[portfolio.category]}
                 </Text>
@@ -145,13 +146,13 @@ export default function PortfolioDetailClient({
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      <Box w="100%" display="flex" justifyContent="center" bg={T.bg}>
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Content */}
       <Box
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -191,12 +192,12 @@ export default function PortfolioDetailClient({
                       fontSize="xs"
                       textTransform="uppercase"
                       letterSpacing="0.1em"
-                      color={{ base: "gray.400", _dark: "gray.500" }}
+                      color={T.textDim}
                       mb={4}
                     >
                       รายละเอียด
                     </Text>
-                    <Text fontSize="md" color={{ base: "gray.600", _dark: "gray.300" }} lineHeight="1.8">
+                    <Text fontSize="md" color={T.textMuted} lineHeight="1.8">
                       <WordPressContent content={portfolio.excerpt.rendered} />
                     </Text>
                   </Box>
@@ -210,7 +211,7 @@ export default function PortfolioDetailClient({
                       fontSize="xs"
                       textTransform="uppercase"
                       letterSpacing="0.1em"
-                      color={{ base: "gray.400", _dark: "gray.500" }}
+                      color={T.textDim}
                       mb={6}
                     >
                       วีดีโอ ({videos.length})
@@ -229,7 +230,7 @@ export default function PortfolioDetailClient({
                       fontSize="xs"
                       textTransform="uppercase"
                       letterSpacing="0.1em"
-                      color={{ base: "gray.400", _dark: "gray.500" }}
+                      color={T.textDim}
                       mb={4}
                     >
                       รายละเอียด
@@ -248,7 +249,7 @@ export default function PortfolioDetailClient({
                       fontSize="xs"
                       textTransform="uppercase"
                       letterSpacing="0.1em"
-                      color={{ base: "gray.400", _dark: "gray.500" }}
+                      color={T.textDim}
                       mb={4}
                     >
                       รายละเอียด
@@ -264,7 +265,7 @@ export default function PortfolioDetailClient({
                       fontSize="xs"
                       textTransform="uppercase"
                       letterSpacing="0.1em"
-                      color={{ base: "gray.400", _dark: "gray.500" }}
+                      color={T.textDim}
                       mb={6}
                     >
                       วีดีโอ
@@ -286,12 +287,12 @@ export default function PortfolioDetailClient({
       </Box>
 
       {/* Bottom Nav */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }}>
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      <Box w="100%" display="flex" justifyContent="center" bg={T.bg}>
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       <Box
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 12, md: 16 }}
         display="flex"
         justifyContent="center"
@@ -302,8 +303,8 @@ export default function PortfolioDetailClient({
             <Link href="/portfolio">
               <Text
                 fontSize="sm"
-                color={{ base: "gray.400", _dark: "gray.500" }}
-                _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                color={T.textDim}
+                _hover={{ color: T.text }}
                 transition="color 0.15s"
               >
                 ← ผลงานทั้งหมด
@@ -312,8 +313,8 @@ export default function PortfolioDetailClient({
             <Link href={`/portfolio/category/${portfolio.category}`}>
               <Text
                 fontSize="sm"
-                color={{ base: "gray.400", _dark: "gray.500" }}
-                _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                color={T.textDim}
+                _hover={{ color: T.text }}
                 transition="color 0.15s"
               >
                 {PORTFOLIO_CATEGORIES[portfolio.category]} →

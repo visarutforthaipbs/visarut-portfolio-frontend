@@ -14,6 +14,7 @@ import {
 import { Calendar, Scissors, Play } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface VideoEditingLayoutProps {
   portfolios: PortfolioItem[];
@@ -48,13 +49,13 @@ export function VideoEditingLayout({
         {portfolios.map((portfolio) => (
           <Box
             key={portfolio.id}
-            bg="white"
+            bg={T.surface}
             borderRadius="lg"
             overflow="hidden"
-            shadow="md"
+            border="1px solid"
+            borderColor={T.border}
             _hover={{
               transform: "translateY(-2px)",
-              shadow: "lg",
             }}
             transition="all 0.3s ease"
           >
@@ -107,7 +108,7 @@ export function VideoEditingLayout({
                 <Text
                   fontSize="md"
                   fontWeight="600"
-                  color="gray.800"
+                  color={T.text}
 
                   lineHeight="1.4"
                   overflow="hidden"
@@ -121,7 +122,7 @@ export function VideoEditingLayout({
                   {portfolio.title.rendered}
                 </Text>
 
-                <HStack gap={4} fontSize="sm" color="gray.500">
+                <HStack gap={4} fontSize="sm" color={T.textDim}>
                   <HStack gap={1}>
                     <Scissors size={14} />
                     <Text>ตัดต่อวีดีโอ</Text>
@@ -136,7 +137,7 @@ export function VideoEditingLayout({
               {portfolio.excerpt && (
                 <Text
                   fontSize="sm"
-                  color="gray.600"
+                  color={T.textMuted}
 
                   lineHeight="1.5"
                   overflow="hidden"
@@ -155,7 +156,8 @@ export function VideoEditingLayout({
                 <Button
                   size="sm"
                   variant="outline"
-                  colorScheme="purple"
+                  borderColor={T.accent}
+                  color={T.accent}
 
                   px={4}
                   py={2}
@@ -172,10 +174,10 @@ export function VideoEditingLayout({
         <VStack gap={4} py={12} textAlign="center">
           <Scissors size={48} color="#CBD5E0" />
           <VStack gap={2}>
-            <Heading fontSize="xl" color="gray.600" className="thai-text">
+            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
               ยังไม่มีผลงานตัดต่อวีดีโอ
             </Heading>
-            <Text color="gray.500" className="thai-text">
+            <Text color={T.textDim} className="thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
             </Text>
           </VStack>

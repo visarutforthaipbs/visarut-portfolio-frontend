@@ -14,6 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navigation } from "@/lib/config";
+import { T } from "@/lib/tokens";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,10 +24,12 @@ export function Header() {
     <Box
       as="header"
       role="banner"
-      bg={{ base: "white", _dark: "gray.900" }}
+      bg={T.bg}
       position="sticky"
       top={0}
       zIndex={999}
+      borderBottom="1px solid"
+      borderColor={T.border}
       backdropFilter="blur(12px)"
       display="flex"
       justifyContent="center"
@@ -41,7 +44,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/">
             <Image
-              src="/logo/black-favicon.svg"
+              src="/logo/white-favicon.svg"
               alt="วิศรุต แสนคำ"
               height="24px"
               width="auto"
@@ -68,10 +71,10 @@ export function Header() {
                     py={1}
                     color={
                       isActive
-                        ? { base: "gray.900", _dark: "white" }
-                        : { base: "gray.400", _dark: "gray.500" }
+                        ? T.text
+                        : T.textDim
                     }
-                    _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                    _hover={{ color: T.text }}
                     transition="color 0.15s"
                   >
                     {item.labelTh || item.label}
@@ -88,7 +91,7 @@ export function Header() {
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "ปิดเมนู" : "เปิดเมนู"}
             aria-expanded={isOpen}
-            color={{ base: "gray.600", _dark: "gray.400" }}
+            color={T.textMuted}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </Box>
@@ -121,8 +124,8 @@ export function Header() {
                     py={2}
                     color={
                       isActive
-                        ? { base: "gray.900", _dark: "white" }
-                        : { base: "gray.400", _dark: "gray.500" }
+                        ? T.text
+                        : T.textDim
                     }
                   >
                     {item.labelTh || item.label}

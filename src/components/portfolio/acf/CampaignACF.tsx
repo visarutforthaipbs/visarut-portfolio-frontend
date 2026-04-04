@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { User, Calendar, TrendingUp, Radio } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { CampaignACF } from "@/types/acf";
 
 interface CampaignACFDisplayProps {
@@ -23,7 +24,7 @@ export function CampaignACFDisplay({ acf }: CampaignACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายแคมเปญ
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.campaign_description}
           </Text>
         </Box>
@@ -39,7 +40,7 @@ export function CampaignACFDisplay({ acf }: CampaignACFDisplayProps) {
               <HStack key={label} gap={3}>
                 <Icon size={20} />
                 <Text fontWeight="medium">{label}:</Text>
-                <Text color="gray.600" _dark={{ color: "gray.300" }}>
+                <Text color={T.textMuted}>
                   {value}
                 </Text>
               </HStack>
@@ -56,8 +57,7 @@ export function CampaignACFDisplay({ acf }: CampaignACFDisplayProps) {
           <HStack gap={3} alignItems="flex-start">
             <TrendingUp size={20} />
             <Text
-              color="gray.600"
-              _dark={{ color: "gray.300" }}
+              color={T.textMuted}
               whiteSpace="pre-line"
             >
               {acf.results}

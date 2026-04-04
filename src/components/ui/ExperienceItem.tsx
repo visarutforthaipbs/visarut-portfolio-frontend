@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Badge, Text, VStack, HStack } from "@chakra-ui/react";
+import { T } from "@/lib/tokens";
 
 interface ExperienceItemProps {
     year: string;
@@ -21,12 +22,11 @@ export function ExperienceItem({
 }: ExperienceItemProps) {
     return (
         <Box
-            bg={{ base: "white", _dark: "gray.700" }}
+            bg={T.surface}
             p={6}
             borderRadius="lg"
-            shadow="sm"
             border="1px solid"
-            borderColor={{ base: "gray.200", _dark: "gray.600" }}
+            borderColor={T.border}
         >
             <VStack align="stretch" gap={4}>
                 <HStack justify="space-between" wrap="wrap" gap={2}>
@@ -35,26 +35,26 @@ export function ExperienceItem({
                             <Text
                                 fontSize="lg"
                                 fontWeight="600"
-                                color={{ base: "gray.800", _dark: "white" }}
+                                color={T.text}
                             >
                                 {company}
                             </Text>
                             {current && (
-                                <Badge colorScheme="green">
+                                <Badge bg={T.accentDim} color={T.accent}>
                                     ปัจจุบัน
                                 </Badge>
                             )}
                         </HStack>
                         <Text
                             fontSize="md"
-                            color={{ base: "gray.600", _dark: "gray.300" }}
+                            color={T.textMuted}
                         >
                             {position}
                         </Text>
                     </VStack>
                     <Text
                         fontSize="sm"
-                        color={{ base: "gray.500", _dark: "gray.400" }}
+                        color={T.textDim}
                         fontWeight="500"
                     >
                         {year}
@@ -64,7 +64,7 @@ export function ExperienceItem({
                 {/* Job Description */}
                 <Text
                     fontSize="md"
-                    color={{ base: "gray.700", _dark: "gray.300" }}
+                    color={T.textMuted}
                     lineHeight="1.6"
                 >
                     {description}
@@ -75,7 +75,7 @@ export function ExperienceItem({
                     <Text
                         fontSize="sm"
                         fontWeight="600"
-                        color={{ base: "gray.800", _dark: "white" }}
+                        color={T.text}
                         mb={2}
                     >
                         หน้าที่ความรับผิดชอบ:
@@ -85,14 +85,14 @@ export function ExperienceItem({
                             <Text
                                 key={idx}
                                 fontSize="sm"
-                                color={{ base: "gray.600", _dark: "gray.300" }}
+                                color={T.textMuted}
                                 pl={4}
                                 position="relative"
                                 _before={{
                                     content: '"•"',
                                     position: "absolute",
                                     left: 0,
-                                    color: "accent.500",
+                                    color: T.accent,
                                     fontWeight: "bold",
                                 }}
                             >

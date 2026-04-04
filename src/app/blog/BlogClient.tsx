@@ -20,6 +20,7 @@ import type {
   BlogCategory,
   WordPressFeaturedMedia,
 } from "@/types/wordpress";
+import { T } from "@/lib/tokens";
 
 interface BlogClientProps {
   initialPosts: BlogPost[];
@@ -55,7 +56,7 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
       {/* Hero */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
@@ -68,14 +69,14 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
             <Heading
               fontSize={{ base: "3xl", md: "4xl" }}
               fontWeight="bold"
-              color={{ base: "gray.900", _dark: "white" }}
+              color={T.text}
               letterSpacing="-0.025em"
             >
               บล็อก
             </Heading>
             <Text
               fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.500", _dark: "gray.400" }}
+              color={T.textMuted}
               lineHeight="1.8"
             >
               บทความ ความคิดเห็น และประสบการณ์จากการทำงานด้านสื่อ
@@ -85,14 +86,14 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Content */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -117,10 +118,10 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedCategory(option.value); } }}
                     color={
                       selectedCategory === option.value
-                        ? { base: "gray.900", _dark: "white" }
-                        : { base: "gray.400", _dark: "gray.500" }
+                        ? T.text
+                        : T.textDim
                     }
-                    _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                    _hover={{ color: T.text }}
                     transition="color 0.15s"
                   >
                     {option.label}
@@ -143,10 +144,10 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
               <Box textAlign="center" py={12}>
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
+                  color={T.textDim}
                   cursor="pointer"
                   onClick={() => setSelectedCategory("all")}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  _hover={{ color: T.text }}
                 >
                   ไม่พบบทความ — ดูทั้งหมด
                 </Text>
@@ -175,7 +176,7 @@ function BlogPostCard({
         {/* Image */}
         <Box
           h="200px"
-          bg={{ base: "gray.100", _dark: "gray.800" }}
+          bg={T.surface}
           overflow="hidden"
           borderRadius="md"
           display="flex"
@@ -194,13 +195,13 @@ function BlogPostCard({
               _groupHover={{ opacity: 0.85 }}
             />
           ) : (
-            <Text color={{ base: "gray.400", _dark: "gray.500" }} fontSize="xs">
+            <Text color={T.textDim} fontSize="xs">
             </Text>
           )}
         </Box>
 
         <VStack align="start" gap={1.5} mt={3}>
-          <HStack gap={2} fontSize="xs" color={{ base: "gray.400", _dark: "gray.500" }}>
+          <HStack gap={2} fontSize="xs" color={T.textDim}>
             <Text>
               {new Date(post.date).toLocaleDateString("th-TH", {
                 year: "numeric",
@@ -213,7 +214,7 @@ function BlogPostCard({
           <Text
             fontSize={{ base: "sm", md: "md" }}
             fontWeight="medium"
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
             lineHeight="1.4"
             lineClamp={2}
           >
@@ -223,7 +224,7 @@ function BlogPostCard({
           {post.excerpt.rendered && (
             <Text
               fontSize="xs"
-              color={{ base: "gray.500", _dark: "gray.400" }}
+              color={T.textMuted}
               lineHeight="1.6"
               css={{
                 display: "-webkit-box",

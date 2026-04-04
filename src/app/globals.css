@@ -54,6 +54,8 @@ body {
   overflow-x: hidden;
   scroll-behavior: smooth;
   width: 100%;
+  background-color: #0F1117;
+  color: #E8E8ED;
 }
 
 /* Ensure root elements don't constrain width */
@@ -102,28 +104,28 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0F1117;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: #23273A;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: #565B73;
 }
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid #6b7280;
+  outline: 2px solid #ED8936;
   outline-offset: 2px;
 }
 
 /* Selection styles */
 ::selection {
-  background-color: #6b7280;
-  color: white;
+  background-color: #ED8936;
+  color: #0F1117;
 }
 
 /* Image optimization */
@@ -302,7 +304,7 @@ img {
 /* Better focus states for accessibility */
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #6b7280;
+  outline: 2px solid #ED8936;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -326,7 +328,7 @@ a:focus-visible {
   margin-bottom: 2.5rem;
   line-height: 1.8;
   font-size: 1.25rem;
-  color: #374151;
+  color: #8B8FA3;
   text-align: justify;
 }
 
@@ -340,7 +342,7 @@ a:focus-visible {
   margin-bottom: 2rem;
   font-weight: bold;
   text-align: left;
-  color: #1f2937;
+  color: #E8E8ED;
 }
 
 .blog-content h1 {
@@ -374,12 +376,12 @@ a:focus-visible {
 }
 
 .blog-content blockquote {
-  border-left: 4px solid #6b7280;
-  background: #f9fafb;
+  border-left: 4px solid #ED8936;
+  background: #161922;
   padding: 2rem 2.5rem;
   margin: 3rem 0;
   font-style: italic;
-  color: #4b5563;
+  color: #8B8FA3;
   border-radius: 0.75rem;
   font-size: 1.125rem;
   line-height: 1.7;
@@ -415,7 +417,7 @@ a:focus-visible {
 .blog-content li {
   margin-bottom: 0.75rem;
   font-size: 1.125rem;
-  color: #374151;
+  color: #8B8FA3;
   padding-left: 0.5rem;
 }
 
@@ -450,46 +452,46 @@ a:focus-visible {
 .wordpress-content li {
   margin-bottom: 0.75rem;
   font-size: 1rem;
-  color: #374151;
+  color: #8B8FA3;
   padding-left: 0.5rem;
   line-height: 1.7;
 }
 
 .blog-content a {
-  color: #6b7280;
+  color: #ED8936;
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .blog-content a:hover {
-  color: #4b5563;
+  color: #E8E8ED;
 }
 
 .blog-content strong {
   font-weight: 600;
-  color: #1f2937;
+  color: #E8E8ED;
 }
 
 .blog-content em {
   font-style: italic;
-  color: #4b5563;
+  color: #8B8FA3;
 }
 
 .blog-content code {
-  background: #f3f4f6;
+  background: #161922;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-family: monospace;
   font-size: 0.875rem;
-  color: #1f2937;
+  color: #E8E8ED;
 }
 
 /* Additional WordPress Content Styles */
 .wordpress-content p {
   margin-bottom: 1.5rem;
   line-height: 1.7;
-  color: #374151;
+  color: #8B8FA3;
 }
 
 .wordpress-content h1,
@@ -501,46 +503,46 @@ a:focus-visible {
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: bold;
-  color: #1f2937;
+  color: #E8E8ED;
 }
 
 .wordpress-content a {
-  color: #6b7280;
+  color: #ED8936;
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .wordpress-content a:hover {
-  color: #4b5563;
+  color: #E8E8ED;
 }
 
 .wordpress-content strong {
   font-weight: 600;
-  color: #1f2937;
+  color: #E8E8ED;
 }
 
 .wordpress-content em {
   font-style: italic;
-  color: #4b5563;
+  color: #8B8FA3;
 }
 
 /* Ensure bullets show in all contexts */
 .blog-content ul li::marker,
 .wordpress-content ul li::marker {
-  color: #6b7280;
+  color: #565B73;
   font-size: 1.2em;
 }
 
 .blog-content ol li::marker,
 .wordpress-content ol li::marker {
-  color: #6b7280;
+  color: #565B73;
   font-weight: 600;
 }
 
 .blog-content pre {
-  background: #1f2937;
-  color: #f9fafb;
+  background: #161922;
+  color: #E8E8ED;
   padding: 2rem;
   border-radius: 1rem;
   overflow-x: auto;

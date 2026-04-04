@@ -7,6 +7,7 @@ import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface FeaturedSliderProps {
   items: PortfolioItem[];
@@ -58,7 +59,7 @@ export function FeaturedSlider({ items }: FeaturedSliderProps) {
       aria-label="ผลงานแนะนำ"
       aria-roledescription="carousel"
       w="100%"
-      bg={{ base: "gray.900", _dark: "gray.950" }}
+      bg={T.bg}
       position="relative"
       overflow="hidden"
     >

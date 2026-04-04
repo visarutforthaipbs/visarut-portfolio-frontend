@@ -17,6 +17,7 @@ import {
   PortfolioCategory,
   PORTFOLIO_CATEGORIES,
 } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface DefaultLayoutProps {
   portfolios: PortfolioItem[];
@@ -54,13 +55,13 @@ export function DefaultLayout({
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
             <Box
-              bg="white"
+              bg={T.surface}
               borderRadius="lg"
               overflow="hidden"
-              shadow="md"
+              border="1px solid"
+              borderColor={T.border}
               _hover={{
                 transform: "translateY(-4px)",
-                shadow: "lg",
               }}
               transition="all 0.3s ease"
               cursor="pointer"
@@ -82,7 +83,7 @@ export function DefaultLayout({
                   <Text
                     fontSize="lg"
                     fontWeight="600"
-                    color="gray.800"
+                    color={T.text}
 
                     lineHeight="1.4"
                     overflow="hidden"
@@ -96,7 +97,7 @@ export function DefaultLayout({
                     {portfolio.title.rendered}
                   </Text>
 
-                  <HStack gap={4} fontSize="sm" color="gray.500">
+                  <HStack gap={4} fontSize="sm" color={T.textDim}>
                     <HStack gap={1}>
                       <FileText size={14} />
                       <Text>{categoryName}</Text>
@@ -111,7 +112,7 @@ export function DefaultLayout({
                 {portfolio.excerpt && (
                   <Text
                     fontSize="sm"
-                    color="gray.600"
+                    color={T.textMuted}
 
                     lineHeight="1.5"
                     overflow="hidden"
@@ -127,8 +128,8 @@ export function DefaultLayout({
                 )}
 
                 <Badge
-                  bg="gray.100"
-                  color="gray.600"
+                  bg={T.accentDim}
+                  color={T.accent}
                   px={2}
                   py={1}
                   borderRadius="md"
@@ -147,10 +148,10 @@ export function DefaultLayout({
         <VStack gap={4} py={12} textAlign="center">
           <FileText size={48} color="#CBD5E0" />
           <VStack gap={2}>
-            <Heading fontSize="xl" color="gray.600" className="thai-text">
+            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
               ยังไม่มีผลงาน{categoryName}
             </Heading>
-            <Text color="gray.500" className="thai-text">
+            <Text color={T.textDim} className="thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
             </Text>
           </VStack>

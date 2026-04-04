@@ -23,6 +23,7 @@ import type {
   BlogCategory,
   WordPressFeaturedMedia,
 } from "@/types/wordpress";
+import { T } from "@/lib/tokens";
 
 interface BlogPreviewProps {
   maxPosts?: number;
@@ -73,7 +74,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
   if (loading) {
     return (
       <Box
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 20 }}
 
         display="flex"
@@ -95,7 +96,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
 
   return (
     <Box
-      bg={{ base: "white", _dark: "gray.900" }}
+      bg={T.bg}
       py={{ base: 16, md: 20 }}
 
       display="flex"
@@ -109,14 +110,14 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
             <Heading
               fontSize={{ base: "2xl", md: "4xl" }}
               fontWeight="bold"
-              color={{ base: "gray.800", _dark: "white" }}
+              color={T.text}
 
             >
               บทความล่าสุด
             </Heading>
             <Text
               fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.600", _dark: "gray.300" }}
+              color={T.textMuted}
               maxW="600px"
 
             >
@@ -136,9 +137,9 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
             <Link href="/blog">
               <Button
                 size="lg"
-                bg="accent.500"
-                color="white"
-                _hover={{ bg: "accent.600" }}
+                bg={T.accent}
+                color={T.bg}
+                _hover={{ bg: "#d97706" }}
 
                 px={6}
                 py={3}
@@ -198,15 +199,14 @@ function BlogPostCard({
 
   return (
     <Box
-      bg={{ base: "white", _dark: "gray.700" }}
+      bg={T.surface}
       borderRadius="lg"
-      shadow="sm"
       border="1px solid"
-      borderColor={{ base: "gray.200", _dark: "gray.600" }}
+      borderColor={T.border}
       overflow="hidden"
       _hover={{
         transform: "translateY(-2px)",
-        shadow: "md",
+        bg: T.surfaceHover,
       }}
       transition="all 0.3s ease"
     >
@@ -214,7 +214,7 @@ function BlogPostCard({
         {/* Featured Image */}
         <Box
           h="180px"
-          bg="gray.100"
+          bg={T.surface}
           position="relative"
           overflow="hidden"
           display="flex"
@@ -232,7 +232,7 @@ function BlogPostCard({
               onError={() => setFeaturedImage(null)}
             />
           ) : (
-            <Text color="gray.500" fontSize="sm">
+            <Text color={T.textDim} fontSize="sm">
               {imageLoading ? "กำลังโหลด..." : "รูปภาพประกอบ"}
             </Text>
           )}
@@ -247,8 +247,8 @@ function BlogPostCard({
                 .map((category) => (
                   <Badge
                     key={category.id}
-                    bg="accent.100"
-                    color="accent.700"
+                    bg={T.accentDim}
+                    color={T.accent}
                     px={2}
                     py={1}
                     borderRadius="md"
@@ -265,7 +265,7 @@ function BlogPostCard({
           <Heading
             fontSize="lg"
             fontWeight="600"
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
             lineHeight="1.4"
             truncate
           >
@@ -276,7 +276,7 @@ function BlogPostCard({
           {post.excerpt.rendered && (
             <Text
               fontSize="sm"
-              color={{ base: "gray.600", _dark: "gray.300" }}
+              color={T.textMuted}
 
               lineHeight="1.6"
               css={{
@@ -293,7 +293,7 @@ function BlogPostCard({
 
           {/* Meta - One Line Layout */}
           <VStack align="stretch" gap={2}>
-            <HStack gap={4} fontSize="xs" color="gray.500" justify="center">
+            <HStack gap={4} fontSize="xs" color={T.textDim} justify="center">
               <HStack gap={1}>
                 <Calendar size={12} />
                 <Text>{formatDate(post.date)}</Text>
@@ -308,8 +308,8 @@ function BlogPostCard({
               <Button
                 size="sm"
                 variant="ghost"
-                color="accent.500"
-                _hover={{ bg: "accent.50" }}
+                color={T.accent}
+                _hover={{ bg: T.accentDim }}
 
                 px={4}
                 py={2}

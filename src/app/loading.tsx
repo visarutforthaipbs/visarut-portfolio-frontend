@@ -1,4 +1,5 @@
 import { Box, Container, VStack } from "@chakra-ui/react";
+import { T } from "@/lib/tokens";
 
 export default function Loading() {
   return (
@@ -7,7 +8,7 @@ export default function Loading() {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      bg={{ base: "white", _dark: "gray.900" }}
+      bg={T.bg}
     >
       <Container maxW="md" py={16}>
         <VStack gap={8}>
@@ -18,7 +19,7 @@ export default function Loading() {
               w="64px"
               h="64px"
               borderRadius="full"
-              bg={{ base: "gray.200", _dark: "gray.700" }}
+              bg={T.surface}
               className="animate-pulse"
             />
             {/* Title placeholder */}
@@ -26,7 +27,7 @@ export default function Loading() {
               w="200px"
               h="24px"
               borderRadius="md"
-              bg={{ base: "gray.200", _dark: "gray.700" }}
+              bg={T.surface}
               className="animate-pulse"
             />
             {/* Subtitle placeholder */}
@@ -34,7 +35,7 @@ export default function Loading() {
               w="300px"
               h="16px"
               borderRadius="md"
-              bg={{ base: "gray.100", _dark: "gray.800" }}
+              bg={T.surfaceHover}
               className="animate-pulse"
             />
           </VStack>
@@ -47,7 +48,7 @@ export default function Loading() {
                 w="full"
                 h="120px"
                 borderRadius="lg"
-                bg={{ base: "gray.100", _dark: "gray.800" }}
+                bg={T.surface}
                 className="animate-pulse"
                 style={{ animationDelay: `${i * 150}ms` }}
               />

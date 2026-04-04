@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack, Link } from "@chakra-ui/react";
 import { Camera, Aperture, Lightbulb, MapPin, Video } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { VideographyACF } from "@/types/acf";
 
 interface VideographyACFDisplayProps {
@@ -24,7 +25,7 @@ export function VideographyACFDisplay({ acf }: VideographyACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายวิดีโอ
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.video_description}
           </Text>
         </Box>
@@ -60,7 +61,7 @@ export function VideographyACFDisplay({ acf }: VideographyACFDisplayProps) {
               <HStack key={label} gap={3}>
                 <Icon size={20} />
                 <Text fontWeight="medium">{label}:</Text>
-                <Text color="gray.600" _dark={{ color: "gray.300" }}>
+                <Text color={T.textMuted}>
                   {value}
                 </Text>
               </HStack>

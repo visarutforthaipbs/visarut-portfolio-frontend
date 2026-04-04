@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack, Link } from "@chakra-ui/react";
 import { Film, Video } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { VideoEditingACF } from "@/types/acf";
 
 interface VideoEditingACFDisplayProps {
@@ -17,7 +18,7 @@ export function VideoEditingACFDisplay({ acf }: VideoEditingACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายการตัดต่อ
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.editing_description}
           </Text>
         </Box>
@@ -30,7 +31,7 @@ export function VideoEditingACFDisplay({ acf }: VideoEditingACFDisplayProps) {
           </Heading>
           <HStack gap={3}>
             <Film size={20} />
-            <Text color="gray.600" _dark={{ color: "gray.300" }}>
+            <Text color={T.textMuted}>
               {acf.software}
             </Text>
           </HStack>

@@ -14,6 +14,7 @@ import {
 import { Calendar, Video, Play } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface VideographyLayoutProps {
   portfolios: PortfolioItem[];
@@ -48,13 +49,13 @@ export function VideographyLayout({
         {portfolios.map((portfolio) => (
           <Box
             key={portfolio.id}
-            bg="white"
+            bg={T.surface}
             borderRadius="xl"
             overflow="hidden"
-            shadow="lg"
+            border="1px solid"
+            borderColor={T.border}
             _hover={{
               transform: "translateY(-4px)",
-              shadow: "2xl",
             }}
             transition="all 0.3s ease"
           >
@@ -107,7 +108,7 @@ export function VideographyLayout({
                 <Text
                   fontSize="xl"
                   fontWeight="600"
-                  color="gray.800"
+                  color={T.text}
 
                   lineHeight="1.4"
                   overflow="hidden"
@@ -121,7 +122,7 @@ export function VideographyLayout({
                   {portfolio.title.rendered}
                 </Text>
 
-                <HStack gap={4} fontSize="sm" color="gray.500">
+                <HStack gap={4} fontSize="sm" color={T.textDim}>
                   <HStack gap={1}>
                     <Video size={14} />
                     <Text>วีดีโอกราฟี</Text>
@@ -136,7 +137,7 @@ export function VideographyLayout({
               {portfolio.excerpt && (
                 <Text
                   fontSize="sm"
-                  color="gray.600"
+                  color={T.textMuted}
 
                   lineHeight="1.6"
                   overflow="hidden"
@@ -173,10 +174,10 @@ export function VideographyLayout({
         <VStack gap={4} py={12} textAlign="center">
           <Video size={48} color="#CBD5E0" />
           <VStack gap={2}>
-            <Heading fontSize="xl" color="gray.600" className="thai-text">
+            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
               ยังไม่มีผลงานวีดีโอกราฟี
             </Heading>
-            <Text color="gray.500" className="thai-text">
+            <Text color={T.textDim} className="thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
             </Text>
           </VStack>

@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { FileText, Ruler, Package } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { PrintACF } from "@/types/acf";
 
 interface PrintACFDisplayProps {
@@ -23,7 +24,7 @@ export function PrintACFDisplay({ acf }: PrintACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายงานพิมพ์
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.print_description}
           </Text>
         </Box>
@@ -39,7 +40,7 @@ export function PrintACFDisplay({ acf }: PrintACFDisplayProps) {
               <HStack key={label} gap={3}>
                 <Icon size={20} />
                 <Text fontWeight="medium">{label}:</Text>
-                <Text color="gray.600" _dark={{ color: "gray.300" }}>
+                <Text color={T.textMuted}>
                   {value}
                 </Text>
               </HStack>

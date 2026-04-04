@@ -16,6 +16,7 @@ import { Layout } from "@/components/layout";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { JsonLd } from "@/components/JsonLd";
+import { T } from "@/lib/tokens";
 
 // Dynamically import ReactCompareImage to avoid SSR issues
 const ReactCompareImage = dynamic(() => import("react-compare-image"), {
@@ -36,15 +37,15 @@ const CTAButton = ({
   >
     <Button
       size={size}
-      bg="gray.800"
-      color="white"
+      bg={T.accent}
+      color={T.bg}
       _hover={{
-        bg: "gray.700",
+        bg: "#d97706",
         transform: "translateY(-2px)",
         boxShadow: "lg",
       }}
       _active={{
-        bg: "gray.900",
+        bg: "#c2680a",
         transform: "translateY(0)",
       }}
       transition="all 0.2s"
@@ -167,8 +168,8 @@ export default function PersonalProjectsPage() {
           <VStack gap={4} align="center" w="full" maxW="1200px">
             <HStack gap={3} justify="center">
               <Badge
-                bg="gray.600"
-                color="white"
+                bg={T.surface}
+                color={T.text}
                 px={4}
                 py={2}
                 borderRadius="full"
@@ -178,8 +179,8 @@ export default function PersonalProjectsPage() {
                 Social Campaign
               </Badge>
               <Badge
-                bg="gray.500"
-                color="white"
+                bg={T.surfaceHover}
+                color={T.text}
                 px={4}
                 py={2}
                 borderRadius="full"
@@ -216,20 +217,20 @@ export default function PersonalProjectsPage() {
               maxW="2xl"
             >
               <Box
-                bg={{ base: "white", _dark: "gray.800" }}
+                bg={T.surface}
                 p={6}
                 borderRadius="lg"
                 borderWidth="1px"
-                borderColor={{ base: "gray.200", _dark: "gray.700" }}
+                borderColor={T.border}
                 boxShadow="sm"
               >
                 <VStack gap={2} align="center">
-                  <Text fontSize="sm" color="gray.600" className="thai-text">
+                  <Text fontSize="sm" color={T.textDim} className="thai-text">
                     จำนวนเงินที่ได้แล้ว
                   </Text>
                   <Heading
                     fontSize="3xl"
-                    color="gray.800"
+                    color={T.text}
 
                   >
                     13,016 บาท
@@ -237,20 +238,20 @@ export default function PersonalProjectsPage() {
                 </VStack>
               </Box>
               <Box
-                bg={{ base: "white", _dark: "gray.800" }}
+                bg={T.surface}
                 p={6}
                 borderRadius="lg"
                 borderWidth="1px"
-                borderColor={{ base: "gray.200", _dark: "gray.700" }}
+                borderColor={T.border}
                 boxShadow="sm"
               >
                 <VStack gap={2} align="center">
-                  <Text fontSize="sm" color="gray.600" className="thai-text">
+                  <Text fontSize="sm" color={T.textDim} className="thai-text">
                     จำนวนหน้ากาก N95
                   </Text>
                   <Heading
                     fontSize="3xl"
-                    color="gray.800"
+                    color={T.text}
 
                   >
                     591 ชิ้น
@@ -282,7 +283,7 @@ export default function PersonalProjectsPage() {
         <Heading
           fontSize={{ base: "2xl", md: "3xl" }}
           fontWeight="bold"
-          color={{ base: "gray.800", _dark: "white" }}
+          color={T.text}
 
           textAlign="center"
           w="full"
@@ -293,7 +294,7 @@ export default function PersonalProjectsPage() {
 
         <Text
           fontSize={{ base: "sm", md: "lg" }}
-          color={{ base: "gray.700", _dark: "gray.300" }}
+          color={T.textMuted}
 
           lineHeight="1.8"
           textAlign="left"
@@ -308,7 +309,7 @@ export default function PersonalProjectsPage() {
 
         <Text
           fontSize={{ base: "sm", md: "lg" }}
-          color={{ base: "gray.700", _dark: "gray.300" }}
+          color={T.textMuted}
 
           lineHeight="1.8"
           textAlign="left"
@@ -323,7 +324,7 @@ export default function PersonalProjectsPage() {
 
         <Text
           fontSize={{ base: "sm", md: "lg" }}
-          color={{ base: "gray.700", _dark: "gray.300" }}
+          color={T.textMuted}
 
           lineHeight="1.8"
           textAlign="left"
@@ -336,16 +337,16 @@ export default function PersonalProjectsPage() {
         </Text>
 
         <Box
-          bg={{ base: "gray.100", _dark: "gray.800" }}
+          bg={T.surface}
           p={{ base: 4, md: 6 }}
           borderRadius="lg"
           borderLeft="6px"
-          borderColor="gray.600"
+          borderColor={T.accent}
           w="full"
         >
           <Text
             fontSize={{ base: "md", md: "xl" }}
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
 
             lineHeight="1.8"
             fontWeight="600"
@@ -392,7 +393,7 @@ export default function PersonalProjectsPage() {
         <Heading
           fontSize={{ base: "2xl", md: "3xl" }}
           fontWeight="bold"
-          color={{ base: "gray.800", _dark: "white" }}
+          color={T.text}
 
           textAlign="center"
           w="full"
@@ -401,11 +402,11 @@ export default function PersonalProjectsPage() {
         </Heading>
 
         <Box
-          bg={{ base: "gray.50", _dark: "gray.800" }}
+          bg={T.surface}
           p={{ base: 4, sm: 6, md: 8 }}
           borderRadius="xl"
           borderWidth="1px"
-          borderColor={{ base: "gray.200", _dark: "gray.700" }}
+          borderColor={T.border}
           w="full"
         >
           <VStack gap={4} align="start">
@@ -413,7 +414,7 @@ export default function PersonalProjectsPage() {
               <Heading
                 fontSize={{ base: "lg", md: "xl" }}
                 fontWeight="600"
-                color={{ base: "gray.800", _dark: "white" }}
+                color={T.text}
 
                 mb={2}
               >
@@ -421,7 +422,7 @@ export default function PersonalProjectsPage() {
               </Heading>
               <Text
                 fontSize={{ base: "sm", md: "lg" }}
-                color={{ base: "gray.700", _dark: "gray.300" }}
+                color={T.textMuted}
 
                 lineHeight="1.8"
                 mb={4}
@@ -440,10 +441,10 @@ export default function PersonalProjectsPage() {
               >
                 <Button
                   size={{ base: "sm", md: "md" }}
-                  bg="gray.700"
-                  color="white"
+                  bg={T.accent}
+                  color={T.bg}
                   _hover={{
-                    bg: "gray.600",
+                    bg: "#d97706",
                     transform: "translateY(-1px)",
                   }}
                   transition="all 0.2s"
@@ -459,16 +460,16 @@ export default function PersonalProjectsPage() {
             </Box>
 
             <Box
-              bg={{ base: "white", _dark: "gray.900" }}
+              bg={T.bg}
               p={4}
               borderRadius="md"
               borderLeft="4px"
-              borderColor="gray.500"
+              borderColor={T.accent}
               w="full"
             >
               <Text
                 fontSize="sm"
-                color={{ base: "gray.600", _dark: "gray.400" }}
+                color={T.textDim}
 
                 lineHeight="1.7"
                 fontStyle="italic"
@@ -507,14 +508,14 @@ export default function PersonalProjectsPage() {
           <Heading
             fontSize={{ base: "2xl", md: "3xl" }}
             fontWeight="bold"
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
 
           >
             ข่าวและการรายงาน
           </Heading>
           <Text
             fontSize={{ base: "sm", md: "lg" }}
-            color={{ base: "gray.600", _dark: "gray.400" }}
+            color={T.textDim}
 
           >
             แคมเปญนี้ได้เริ่มต้นตั้งแต่ปี 2564 และได้รับความสนใจจากสื่อหลายแห่ง
@@ -535,23 +536,23 @@ export default function PersonalProjectsPage() {
             _hover={{ textDecoration: "none" }}
           >
             <Box
-              bg={{ base: "white", _dark: "gray.800" }}
+              bg={T.surface}
               p={{ base: 5, md: 6 }}
               borderRadius="lg"
               borderWidth="1px"
-              borderColor={{ base: "gray.200", _dark: "gray.700" }}
+              borderColor={T.border}
               h="full"
               transition="all 0.2s"
               _hover={{
                 transform: { base: "none", md: "translateY(-4px)" },
-                boxShadow: "lg",
-                borderColor: "gray.400",
+                bg: T.surfaceHover,
+                borderColor: T.accent,
               }}
             >
               <VStack gap={3} align="start">
                 <Badge
-                  bg="gray.700"
-                  color="white"
+                  bg={T.accentDim}
+                  color={T.accent}
                   px={3}
                   py={1}
                   borderRadius="full"
@@ -562,7 +563,7 @@ export default function PersonalProjectsPage() {
                 <Heading
                   fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="600"
-                  color={{ base: "gray.800", _dark: "white" }}
+                  color={T.text}
 
                   lineHeight="1.4"
                 >
@@ -570,14 +571,14 @@ export default function PersonalProjectsPage() {
                 </Heading>
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.600", _dark: "gray.400" }}
+                  color={T.textDim}
 
                   lineHeight="1.6"
                 >
                   รายงานข่าวเกี่ยวกับแคมเปญ #PHOTOFORAIR
                   และการช่วยเหลือแรงงานข้ามชาติ
                 </Text>
-                <Text fontSize="xs" color="gray.500" className="thai-text">
+                <Text fontSize="xs" color={T.textDim} className="thai-text">
                   กุมภาพันธ์ 2564
                 </Text>
               </VStack>
@@ -592,23 +593,23 @@ export default function PersonalProjectsPage() {
             _hover={{ textDecoration: "none" }}
           >
             <Box
-              bg={{ base: "white", _dark: "gray.800" }}
+              bg={T.surface}
               p={{ base: 5, md: 6 }}
               borderRadius="lg"
               borderWidth="1px"
-              borderColor={{ base: "gray.200", _dark: "gray.700" }}
+              borderColor={T.border}
               h="full"
               transition="all 0.2s"
               _hover={{
                 transform: { base: "none", md: "translateY(-4px)" },
-                boxShadow: "lg",
-                borderColor: "gray.400",
+                bg: T.surfaceHover,
+                borderColor: T.accent,
               }}
             >
               <VStack gap={3} align="start">
                 <Badge
-                  bg="gray.700"
-                  color="white"
+                  bg={T.accentDim}
+                  color={T.accent}
                   px={3}
                   py={1}
                   borderRadius="full"
@@ -619,7 +620,7 @@ export default function PersonalProjectsPage() {
                 <Heading
                   fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="600"
-                  color={{ base: "gray.800", _dark: "white" }}
+                  color={T.text}
 
                   lineHeight="1.4"
                 >
@@ -627,7 +628,7 @@ export default function PersonalProjectsPage() {
                 </Heading>
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.600", _dark: "gray.400" }}
+                  color={T.textDim}
 
                   lineHeight="1.6"
                 >
@@ -640,7 +641,7 @@ export default function PersonalProjectsPage() {
         </SimpleGrid>
 
         <Box
-          bg={{ base: "gray.50", _dark: "gray.800" }}
+          bg={T.surface}
           p={6}
           borderRadius="lg"
           w="full"
@@ -648,7 +649,7 @@ export default function PersonalProjectsPage() {
         >
           <Text
             fontSize={{ base: "sm", md: "md" }}
-            color={{ base: "gray.700", _dark: "gray.300" }}
+            color={T.textMuted}
 
             lineHeight="1.8"
             textAlign="center"
@@ -671,7 +672,7 @@ export default function PersonalProjectsPage() {
 
       {/* Main Content */}
       <Box
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 20 }}
         w="full"
         display="flex"
@@ -687,7 +688,7 @@ export default function PersonalProjectsPage() {
                   <Heading
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
-                    color={{ base: "gray.800", _dark: "white" }}
+                    color={T.text}
 
                     mb={3}
                     textAlign="left"
@@ -697,7 +698,7 @@ export default function PersonalProjectsPage() {
 
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
-                    color={{ base: "gray.700", _dark: "gray.300" }}
+                    color={T.textMuted}
 
                     lineHeight="1.8"
                     mb={4}
@@ -718,7 +719,7 @@ export default function PersonalProjectsPage() {
                   <Heading
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
-                    color={{ base: "gray.800", _dark: "white" }}
+                    color={T.text}
 
                     mb={3}
                     textAlign="left"
@@ -728,7 +729,7 @@ export default function PersonalProjectsPage() {
 
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
-                    color={{ base: "gray.700", _dark: "gray.300" }}
+                    color={T.textMuted}
 
                     lineHeight="1.8"
                     mb={4}
@@ -757,16 +758,16 @@ export default function PersonalProjectsPage() {
                   </Box>
 
                   <Box
-                    bg={{ base: "gray.100", _dark: "gray.800" }}
+                    bg={T.surface}
                     p={4}
                     borderRadius="md"
                     borderLeft="4px"
-                    borderColor="gray.400"
+                    borderColor={T.border}
                   >
                     <Text
                       fontSize="sm"
                       fontWeight="600"
-                      color={{ base: "gray.700", _dark: "gray.300" }}
+                      color={T.textMuted}
                       mb={2}
 
                     >
@@ -774,7 +775,7 @@ export default function PersonalProjectsPage() {
                     </Text>
                     <Text
                       fontSize="sm"
-                      color={{ base: "gray.700", _dark: "gray.300" }}
+                      color={T.textMuted}
 
                       lineHeight="1.7"
                     >
@@ -791,7 +792,7 @@ export default function PersonalProjectsPage() {
                   <Heading
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
-                    color={{ base: "gray.800", _dark: "white" }}
+                    color={T.text}
 
                     mb={3}
                     textAlign="left"
@@ -801,7 +802,7 @@ export default function PersonalProjectsPage() {
 
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
-                    color={{ base: "gray.700", _dark: "gray.300" }}
+                    color={T.textMuted}
 
                     lineHeight="1.8"
                     mb={4}
@@ -825,16 +826,16 @@ export default function PersonalProjectsPage() {
                     />
                   </Box>
                   <Box
-                    bg={{ base: "gray.100", _dark: "gray.800" }}
+                    bg={T.surface}
                     p={4}
                     borderRadius="md"
                     borderLeft="4px"
-                    borderColor="gray.400"
+                    borderColor={T.border}
                   >
                     <Text
                       fontSize="sm"
                       fontWeight="600"
-                      color={{ base: "gray.700", _dark: "gray.300" }}
+                      color={T.textMuted}
                       mb={2}
 
                     >
@@ -842,7 +843,7 @@ export default function PersonalProjectsPage() {
                     </Text>
                     <Text
                       fontSize="sm"
-                      color={{ base: "gray.700", _dark: "gray.300" }}
+                      color={T.textMuted}
 
                       lineHeight="1.7"
                     >
@@ -858,7 +859,7 @@ export default function PersonalProjectsPage() {
                   <Heading
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight="600"
-                    color={{ base: "gray.800", _dark: "white" }}
+                    color={T.text}
 
                     mb={3}
                     textAlign="left"
@@ -869,7 +870,7 @@ export default function PersonalProjectsPage() {
 
                   <Text
                     fontSize={{ base: "sm", md: "lg" }}
-                    color={{ base: "gray.700", _dark: "gray.300" }}
+                    color={T.textMuted}
 
                     lineHeight="1.8"
                     mb={4}
@@ -898,16 +899,16 @@ export default function PersonalProjectsPage() {
                     />
                   </Box>
                   <Box
-                    bg={{ base: "gray.100", _dark: "gray.800" }}
+                    bg={T.surface}
                     p={4}
                     borderRadius="md"
                     borderLeft="4px"
-                    borderColor="gray.500"
+                    borderColor={T.border}
                   >
                     <Text
                       fontSize="sm"
                       fontWeight="600"
-                      color="gray.700"
+                      color={T.textMuted}
                       mb={2}
 
                     >
@@ -915,7 +916,7 @@ export default function PersonalProjectsPage() {
                     </Text>
                     <Text
                       fontSize="sm"
-                      color={{ base: "gray.700", _dark: "gray.300" }}
+                      color={T.textMuted}
 
                       lineHeight="1.7"
                     >
@@ -953,7 +954,7 @@ export default function PersonalProjectsPage() {
                 <Heading
                   fontSize={{ base: "xl", md: "2xl" }}
                   fontWeight="600"
-                  color={{ base: "gray.800", _dark: "white" }}
+                  color={T.text}
 
                   textAlign="center"
                   w="full"
@@ -962,7 +963,7 @@ export default function PersonalProjectsPage() {
                 </Heading>
                 <Text
                   fontSize={{ base: "sm", md: "lg" }}
-                  color={{ base: "gray.700", _dark: "gray.300" }}
+                  color={T.textMuted}
 
                   lineHeight="1.8"
                   textAlign="left"

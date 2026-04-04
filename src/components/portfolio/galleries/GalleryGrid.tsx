@@ -1,6 +1,7 @@
 import { Box, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import { GalleryImage } from "@/types/acf";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { T } from "@/lib/tokens";
 
 interface GalleryGridProps {
   images: GalleryImage[];
@@ -43,14 +44,12 @@ export function GalleryGrid({
             <Box
               mt={3}
               p={4}
-              bg="gray.50"
-              _dark={{ bg: "gray.800" }}
+              bg={T.surface}
               borderRadius="md"
             >
               <Text
                 fontSize="sm"
-                color="gray.600"
-                _dark={{ color: "gray.300" }}
+                color={T.textMuted}
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(image.caption) }}
               />
             </Box>

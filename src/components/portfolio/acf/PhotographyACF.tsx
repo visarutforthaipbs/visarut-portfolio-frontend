@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { Camera, Aperture, Lightbulb, MapPin } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { PhotographyACF } from "@/types/acf";
 
 interface PhotographyACFDisplayProps {
@@ -24,7 +25,7 @@ export function PhotographyACFDisplay({ acf }: PhotographyACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายภาพถ่าย
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.photo_description}
           </Text>
         </Box>
@@ -40,7 +41,7 @@ export function PhotographyACFDisplay({ acf }: PhotographyACFDisplayProps) {
               <HStack key={label} gap={3}>
                 <Icon size={20} />
                 <Text fontWeight="medium">{label}:</Text>
-                <Text color="gray.600" _dark={{ color: "gray.300" }}>
+                <Text color={T.textMuted}>
                   {value}
                 </Text>
               </HStack>

@@ -1,3 +1,4 @@
+import { T } from "@/lib/tokens";
 import {
   Box,
   VStack,
@@ -73,13 +74,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {photoACF.camera_equipment && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Camera size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     อุปกรณ์ถ่ายภาพ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {photoACF.camera_equipment}
                 </Text>
               </VStack>
@@ -87,13 +88,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {photoACF.photo_location && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <MapPin size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     สถานที่ถ่ายภาพ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {photoACF.photo_location}
                 </Text>
               </VStack>
@@ -101,13 +102,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {photoACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {photoACF.client_name}
                 </Text>
               </VStack>
@@ -115,13 +116,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {photoACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่ถ่ายภาพ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {photoACF.project_date}
                 </Text>
               </VStack>
@@ -133,12 +134,12 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 รูปแบบการถ่ายภาพ
               </Text>
-              <Badge colorScheme="blue" px={3} py={1} borderRadius="full">
+              <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
                 {photoACF.photography_style}
               </Badge>
             </VStack>
@@ -149,14 +150,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
 
                 lineHeight="1.8"
               >
@@ -181,13 +182,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {videoACF.video_type && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Film size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทวีดีโอ
                   </Text>
                 </HStack>
-                <Badge colorScheme="purple" px={3} py={1} borderRadius="full">
+                <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
                   {videoACF.video_type === "documentary"
                     ? "สารคดี"
                     : videoACF.video_type === "commercial"
@@ -201,13 +202,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {videoACF.video_duration && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Clock size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ระยะเวลา
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {videoACF.video_duration}
                 </Text>
               </VStack>
@@ -215,13 +216,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {videoACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {videoACF.client_name}
                 </Text>
               </VStack>
@@ -229,13 +230,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {videoACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่ผลิต
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {videoACF.project_date}
                 </Text>
               </VStack>
@@ -243,13 +244,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {videoACF.video_equipment && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Video size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     อุปกรณ์ถ่ายทำ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {videoACF.video_equipment}
                 </Text>
               </VStack>
@@ -259,22 +260,22 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           {/* Video URL */}
           {videoACF.video_url && (
             <VStack align="start" gap={3} w="full">
-              <HStack gap={2} color="accent.500">
+              <HStack gap={2} color={T.accent}>
                 <Play size={18} />
                 <Text fontSize="sm" fontWeight="600">
                   ดูวีดีโอ
                 </Text>
               </HStack>
               <Box
-                bg="accent.50"
+                bg={T.surface}
                 border="2px solid"
-                borderColor="accent.200"
+                borderColor={T.border}
                 borderRadius="lg"
                 p={4}
                 w="full"
                 _hover={{
-                  borderColor: "accent.400",
-                  bg: "accent.100",
+                  borderColor: T.accent,
+                  bg: T.surfaceHover,
                   transform: "translateY(-2px)",
                   transition: "all 0.2s ease",
                 }}
@@ -286,14 +287,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 }}
               >
                 <HStack gap={3}>
-                  <Box bg="accent.500" borderRadius="full" p={2} color="white">
+                  <Box bg={T.accent} borderRadius="full" p={2} color={T.bg}>
                     <Play size={16} fill="white" />
                   </Box>
                   <VStack align="start" gap={1}>
                     <Text fontSize="md" fontWeight="600">
                       เปิดดูวีดีโอ
                     </Text>
-                    <Text fontSize="sm" color="gray.600">
+                    <Text fontSize="sm" color={T.textDim}>
                       คลิกเพื่อดูใน YouTube
                     </Text>
                   </VStack>
@@ -308,14 +309,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
 
                 lineHeight="1.8"
               >
@@ -336,13 +337,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {webACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {webACF.client_name}
                 </Text>
               </VStack>
@@ -350,13 +351,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {webACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่เสร็จสิ้น
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {webACF.project_date}
                 </Text>
               </VStack>
@@ -364,13 +365,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {webACF.website_type && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทเว็บไซต์
                   </Text>
                 </HStack>
-                <Badge colorScheme="teal" px={3} py={1} borderRadius="full">
+                <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
                   {webACF.website_type === "web_app"
                     ? "Web Application"
                     : webACF.website_type === "website"
@@ -386,13 +387,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {webACF.project_role && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     บทบาทในโปรเจค
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {webACF.project_role === "full_development"
                     ? "Full Development"
                     : webACF.project_role === "frontend"
@@ -411,7 +412,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 เว็บไซต์
@@ -422,22 +423,22 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 href={webACF.website_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                bg="blue.50"
+                bg={T.surface}
                 border="2px solid"
-                borderColor="blue.200"
+                borderColor={T.border}
                 borderRadius="lg"
                 p={4}
                 w="full"
                 cursor="pointer"
                 transition="all 0.2s ease"
                 _hover={{
-                  borderColor: "blue.400",
-                  bg: "blue.100",
+                  borderColor: T.accent,
+                  bg: T.surfaceHover,
                   transform: "translateY(-2px)",
                 }}
               >
                 <HStack gap={3}>
-                  <Box bg="blue.500" borderRadius="full" p={2} color="white">
+                  <Box bg={T.accent} borderRadius="full" p={2} color={T.bg}>
                     <svg
                       width="16"
                       height="16"
@@ -452,12 +453,12 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                     </svg>
                   </Box>
                   <VStack align="start" gap={1}>
-                    <Text fontSize="md" fontWeight="600" color="blue.700">
+                    <Text fontSize="md" fontWeight="600" color={T.text}>
                       เยี่ยมชมเว็บไซต์
                     </Text>
                     <Text
                       fontSize="sm"
-                      color="blue.600"
+                      color={T.textMuted}
                       overflow="hidden"
                       textOverflow="ellipsis"
                       whiteSpace="nowrap"
@@ -477,7 +478,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 เทคโนโลยีที่ใช้
@@ -488,7 +489,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   .map((tech: string, index: number) => (
                     <Badge
                       key={index}
-                      colorScheme="green"
+                      bg={T.accentDim} color={T.accent}
                       px={3}
                       py={1}
                       borderRadius="full"
@@ -506,16 +507,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
-                _dark={{ color: "gray.300" }}
-
+                color={T.textMuted}
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
@@ -530,16 +529,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 ฟีเจอร์เด่น
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
-                _dark={{ color: "gray.300" }}
-
+                color={T.textMuted}
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
@@ -560,13 +557,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {designACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {designACF.client_name}
                 </Text>
               </VStack>
@@ -574,13 +571,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {designACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่โครงการ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {designACF.project_date}
                 </Text>
               </VStack>
@@ -588,13 +585,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {designACF.design_type && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทงานออกแบบ
                   </Text>
                 </HStack>
-                <Badge colorScheme="purple" px={3} py={1} borderRadius="full">
+                <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
                   {designACF.design_type === "social_media"
                     ? "Social Media"
                     : designACF.design_type === "logo"
@@ -612,13 +609,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {designACF.software_used && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ซอฟต์แวร์ที่ใช้
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {designACF.software_used}
                 </Text>
               </VStack>
@@ -626,13 +623,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {designACF.print_specifications && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ขนาดงานพิมพ์
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {designACF.print_specifications}
                 </Text>
               </VStack>
@@ -640,7 +637,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {designACF.color_palette && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     Color Palette
@@ -657,9 +654,9 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                           bg={color.trim()}
                           borderRadius="md"
                           border="1px solid"
-                          borderColor="gray.300"
+                          borderColor={T.border}
                         />
-                        <Text fontSize="sm" fontFamily="mono" color="gray.600">
+                        <Text fontSize="sm" fontFamily="mono" color={T.textDim}>
                           {color.trim()}
                         </Text>
                       </HStack>
@@ -674,14 +671,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
 
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
@@ -702,13 +699,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {printACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {printACF.client_name}
                 </Text>
               </VStack>
@@ -716,13 +713,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {printACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่โครงการ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {printACF.project_date}
                 </Text>
               </VStack>
@@ -730,13 +727,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {printACF.print_type && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทงานพิมพ์
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {printACF.print_type}
                 </Text>
               </VStack>
@@ -744,13 +741,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {printACF.print_specifications && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ข้อมูลจำเพาะ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {printACF.print_specifications}
                 </Text>
               </VStack>
@@ -762,7 +759,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 {printACF.printing_process
@@ -771,7 +768,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
 
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
@@ -792,13 +789,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {exhibitionACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.client_name}
                 </Text>
               </VStack>
@@ -806,13 +803,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {exhibitionACF.venue_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <MapPin size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     สถานที่
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.venue_name}
                 </Text>
               </VStack>
@@ -820,13 +817,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {exhibitionACF.exhibition_dates && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่จัดแสดง
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.exhibition_dates}
                 </Text>
               </VStack>
@@ -834,13 +831,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {exhibitionACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่โครงการ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.project_date}
                 </Text>
               </VStack>
@@ -848,13 +845,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {exhibitionACF.exhibition_type && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทนิทรรศการ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.exhibition_type}
                 </Text>
               </VStack>
@@ -862,13 +859,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {exhibitionACF.number_of_artworks && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     จำนวนชิ้นงาน
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.number_of_artworks}
                 </Text>
               </VStack>
@@ -876,13 +873,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {exhibitionACF.exhibition_medium && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     สื่อที่ใช้
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {exhibitionACF.exhibition_medium}
                 </Text>
               </VStack>
@@ -894,14 +891,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
 
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
@@ -922,13 +919,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {campaignACF.campaign_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ชื่อแคมเปญ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {campaignACF.campaign_name}
                 </Text>
               </VStack>
@@ -936,13 +933,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {campaignACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {campaignACF.client_name}
                 </Text>
               </VStack>
@@ -950,13 +947,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {campaignACF.campaign_duration && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Clock size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ระยะเวลาแคมเปญ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {campaignACF.campaign_duration}
                 </Text>
               </VStack>
@@ -964,13 +961,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {campaignACF.target_audience && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     กลุ่มเป้าหมาย
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {campaignACF.target_audience}
                 </Text>
               </VStack>
@@ -983,7 +980,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 <Text
                   fontSize="sm"
                   fontWeight="600"
-                  color="accent.500"
+                  color={T.accent}
 
                 >
                   {campaignACF.campaign_objectives
@@ -992,7 +989,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 </Text>
                 <Text
                   fontSize="md"
-                  color="gray.700"
+                  color={T.textMuted}
 
                   lineHeight="1.8"
                   whiteSpace="pre-wrap"
@@ -1008,14 +1005,14 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
 
               >
                 ผลลัพธ์แคมเปญ
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
 
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
@@ -1036,13 +1033,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
             {producerACF.client_name && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ลูกค้า
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.client_name}
                 </Text>
               </VStack>
@@ -1050,13 +1047,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.production_type && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Film size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ประเภทผลงาน
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.production_type}
                 </Text>
               </VStack>
@@ -1064,13 +1061,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.project_date && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <CalendarIcon size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     วันที่ผลิต
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.project_date}
                 </Text>
               </VStack>
@@ -1078,13 +1075,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.production_role && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     บทบาท
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.production_role}
                 </Text>
               </VStack>
@@ -1092,13 +1089,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.production_budget && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     งบประมาณ
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.production_budget}
                 </Text>
               </VStack>
@@ -1106,13 +1103,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.production_timeline && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Clock size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ระยะเวลา
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.production_timeline}
                 </Text>
               </VStack>
@@ -1120,13 +1117,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.team_size && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <User size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ขนาดทีม
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.team_size} คน
                 </Text>
               </VStack>
@@ -1134,13 +1131,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
 
             {producerACF.distribution_platforms && (
               <VStack align="start" gap={2}>
-                <HStack gap={2} color="accent.500">
+                <HStack gap={2} color={T.accent}>
                   <Play size={18} />
                   <Text fontSize="sm" fontWeight="600">
                     ช่องทางเผยแพร่
                   </Text>
                 </HStack>
-                <Text fontSize="md" color="gray.700">
+                <Text fontSize="md" color={T.textMuted}>
                   {producerACF.distribution_platforms}
                 </Text>
               </VStack>
@@ -1152,13 +1149,13 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <Text
                 fontSize="sm"
                 fontWeight="600"
-                color="accent.500"
+                color={T.accent}
               >
                 รายละเอียดโปรเจค
               </Text>
               <Text
                 fontSize="md"
-                color="gray.700"
+                color={T.textMuted}
                 lineHeight="1.8"
                 whiteSpace="pre-wrap"
               >
@@ -1183,7 +1180,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       <Heading
         fontSize="xl"
         fontWeight="600"
-        color="gray.800"
+        color={T.text}
 
         mb={6}
       >
@@ -1292,7 +1289,7 @@ export function PortfolioGallery({
       <Heading
         fontSize="xl"
         fontWeight="600"
-        color="gray.800"
+        color={T.text}
 
         mb={6}
       >
@@ -1327,7 +1324,6 @@ export function PortfolioGallery({
               position="relative"
               overflow="hidden"
               borderRadius="xl"
-              boxShadow="lg"
             >
               <Image
                 src={images[0].url}
@@ -1350,7 +1346,7 @@ export function PortfolioGallery({
             {images[0].caption && (
               <Text
                 fontSize="sm"
-                color="gray.600"
+                color={T.textDim}
 
                 fontStyle="italic"
                 textAlign="center"
@@ -1379,7 +1375,6 @@ export function PortfolioGallery({
                     position="relative"
                     overflow="hidden"
                     borderRadius="lg"
-                    boxShadow="md"
                   >
                     <Image
                       src={image.url}
@@ -1402,7 +1397,7 @@ export function PortfolioGallery({
                   {image.caption && (
                     <Text
                       fontSize="sm"
-                      color="gray.600"
+                      color={T.textDim}
 
                       fontStyle="italic"
                       textAlign="center"
@@ -1454,12 +1449,12 @@ export function PortfolioGallery({
                   objectFit="cover"
                   borderRadius="md"
                   border="1px solid"
-                  borderColor="gray.200"
+                  borderColor={T.border}
                   cursor="pointer"
                   _hover={{
                     transform: "scale(1.02)",
                     transition: "transform 0.3s ease",
-                    borderColor: "brand.300",
+                    borderColor: T.accent,
                   }}
                   onClick={() => openLightbox(index)}
                   onError={(e) => {
@@ -1556,9 +1551,7 @@ export function PortfolioGallery({
                   position="relative"
                   overflow="hidden"
                   borderRadius="lg"
-                  boxShadow="lg"
-                  bg="white"
-                  _dark={{ bg: "gray.800" }}
+                  bg={T.surface}
                 >
                   <Image
                     src={image.url}
@@ -1580,15 +1573,14 @@ export function PortfolioGallery({
                 </Box>
                 {image.caption && (
                   <Box
-                    bg="gray.50"
-                    _dark={{ bg: "gray.700" }}
+                    bg={T.surface}
                     p={4}
                     borderRadius="md"
                   >
                     <Text
                       fontSize="sm"
-                      color="gray.700"
-                      _dark={{ color: "gray.200" }}
+                      color={T.textMuted}
+
 
                       lineHeight="1.6"
                       dangerouslySetInnerHTML={{ __html: sanitizeHtml(image.caption) }}

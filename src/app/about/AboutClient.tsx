@@ -11,6 +11,7 @@ import {
 import { Layout } from "@/components/layout";
 import { workExperience, awards } from "@/constants/data";
 import { ExperienceItem } from "@/components/ui/ExperienceItem";
+import { T } from "@/lib/tokens";
 
 export default function AboutClient() {
   return (
@@ -18,7 +19,7 @@ export default function AboutClient() {
       {/* Hero */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
@@ -31,14 +32,14 @@ export default function AboutClient() {
             <Heading
               fontSize={{ base: "3xl", md: "4xl" }}
               fontWeight="bold"
-              color={{ base: "gray.900", _dark: "white" }}
+              color={T.text}
               letterSpacing="-0.025em"
             >
               เกี่ยวกับ
             </Heading>
             <Text
               fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.500", _dark: "gray.400" }}
+              color={T.textMuted}
               lineHeight="1.8"
               maxW="560px"
             >
@@ -54,14 +55,14 @@ export default function AboutClient() {
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Experience */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -74,7 +75,7 @@ export default function AboutClient() {
             <Heading
               fontSize={{ base: "lg", md: "xl" }}
               fontWeight="medium"
-              color={{ base: "gray.400", _dark: "gray.500" }}
+              color={T.textDim}
               textTransform="uppercase"
               letterSpacing="wider"
               textAlign="center"
@@ -91,14 +92,14 @@ export default function AboutClient() {
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Awards */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -111,7 +112,7 @@ export default function AboutClient() {
             <Heading
               fontSize={{ base: "lg", md: "xl" }}
               fontWeight="medium"
-              color={{ base: "gray.400", _dark: "gray.500" }}
+              color={T.textDim}
               textTransform="uppercase"
               letterSpacing="wider"
               textAlign="center"
@@ -132,13 +133,13 @@ export default function AboutClient() {
                     <Text
                       fontSize={{ base: "sm", md: "md" }}
                       fontWeight="medium"
-                      color={{ base: "gray.800", _dark: "white" }}
+                      color={T.text}
                     >
                       {award.title}
                     </Text>
                     <Text
                       fontSize="sm"
-                      color={{ base: "gray.500", _dark: "gray.400" }}
+                      color={T.textMuted}
                     >
                       {award.organization}
                       {award.category && ` — ${award.category}`}
@@ -146,7 +147,7 @@ export default function AboutClient() {
                   </VStack>
                   <Text
                     fontSize="sm"
-                    color={{ base: "gray.400", _dark: "gray.500" }}
+                    color={T.textDim}
                     flexShrink={0}
                   >
                     {award.year}

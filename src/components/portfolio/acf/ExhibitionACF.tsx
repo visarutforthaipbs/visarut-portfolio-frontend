@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { MapPin, Calendar, Briefcase } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { ExhibitionACF } from "@/types/acf";
 
 interface ExhibitionACFDisplayProps {
@@ -23,7 +24,7 @@ export function ExhibitionACFDisplay({ acf }: ExhibitionACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายนิทรรศการ
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.exhibition_description}
           </Text>
         </Box>
@@ -39,7 +40,7 @@ export function ExhibitionACFDisplay({ acf }: ExhibitionACFDisplayProps) {
               <HStack key={label} gap={3}>
                 <Icon size={20} />
                 <Text fontWeight="medium">{label}:</Text>
-                <Text color="gray.600" _dark={{ color: "gray.300" }}>
+                <Text color={T.textMuted}>
                   {value}
                 </Text>
               </HStack>

@@ -13,6 +13,7 @@ import {
 import { Calendar, Palette } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface GraphicDesignLayoutProps {
   portfolios: PortfolioItem[];
@@ -46,13 +47,13 @@ export function GraphicDesignLayout({
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
             <Box
-              bg="white"
+              bg={T.surface}
               borderRadius="lg"
               overflow="hidden"
-              shadow="sm"
+              border="1px solid"
+              borderColor={T.border}
               _hover={{
                 transform: "translateY(-2px)",
-                shadow: "md",
               }}
               transition="all 0.3s ease"
               cursor="pointer"
@@ -73,7 +74,7 @@ export function GraphicDesignLayout({
                 <Text
                   fontSize="sm"
                   fontWeight="600"
-                  color="gray.800"
+                  color={T.text}
 
                   lineHeight="1.3"
                   overflow="hidden"
@@ -87,7 +88,7 @@ export function GraphicDesignLayout({
                   {portfolio.title.rendered}
                 </Text>
 
-                <HStack gap={3} fontSize="xs" color="gray.500">
+                <HStack gap={3} fontSize="xs" color={T.textDim}>
                   <HStack gap={1}>
                     <Palette size={12} />
                     <Text>กราฟิก</Text>
@@ -118,10 +119,10 @@ export function GraphicDesignLayout({
         <VStack gap={4} py={12} textAlign="center">
           <Palette size={48} color="#CBD5E0" />
           <VStack gap={2}>
-            <Heading fontSize="xl" color="gray.600" className="thai-text">
+            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
               ยังไม่มีผลงานออกแบบกราฟิก
             </Heading>
-            <Text color="gray.500" className="thai-text">
+            <Text color={T.textDim} className="thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
             </Text>
           </VStack>

@@ -3,6 +3,7 @@
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { T } from "@/lib/tokens";
 
 interface ServiceCardProps {
     icon: LucideIcon;
@@ -20,23 +21,22 @@ export function ServiceCard({
     return (
         <Link href={`/portfolio/category/${category}`} aria-label={`${title} - ${description}`}>
             <Box
-                bg={{ base: "white", _dark: "gray.700" }}
+                bg={T.surface}
                 p={{ base: 4, md: 6 }}
                 borderRadius="lg"
-                shadow="md"
                 textAlign="center"
                 _hover={{
                     transform: "translateY(-4px)",
-                    shadow: "lg",
+                    bg: T.surfaceHover,
                 }}
                 transition="all 0.3s ease"
                 cursor="pointer"
                 border="1px solid"
-                borderColor={{ base: "gray.200", _dark: "gray.600" }}
+                borderColor={T.border}
             >
                 <VStack gap={{ base: 3, md: 4 }}>
                     <Box
-                        color={{ base: "accent.500", _dark: "accent.300" }}
+                        color={T.accent}
                         fontSize={{ base: "xl", md: "2xl" }}
                         aria-hidden="true"
                     >
@@ -45,13 +45,13 @@ export function ServiceCard({
                     <VStack gap={2}>
                         <Heading
                             fontSize={{ base: "lg", md: "xl" }}
-                            color={{ base: "gray.800", _dark: "white" }}
+                            color={T.text}
                         >
                             {title}
                         </Heading>
                         <Text
                             fontSize={{ base: "xs", md: "sm" }}
-                            color={{ base: "gray.600", _dark: "gray.300" }}
+                            color={T.textMuted}
                             lineHeight="1.5"
                         >
                             {description}

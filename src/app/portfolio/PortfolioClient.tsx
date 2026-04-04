@@ -15,6 +15,7 @@ import { Layout } from "@/components/layout";
 import { usePortfolios } from "@/hooks/useWordPress";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface PortfolioClientProps {
   initialPortfolios: PortfolioItem[];
@@ -70,7 +71,7 @@ export default function PortfolioClient({
       {/* Hero */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
@@ -83,14 +84,14 @@ export default function PortfolioClient({
             <Heading
               fontSize={{ base: "3xl", md: "4xl" }}
               fontWeight="bold"
-              color={{ base: "gray.900", _dark: "white" }}
+              color={T.text}
               letterSpacing="-0.025em"
             >
               ผลงาน
             </Heading>
             <Text
               fontSize={{ base: "md", md: "lg" }}
-              color={{ base: "gray.500", _dark: "gray.400" }}
+              color={T.textMuted}
               lineHeight="1.8"
             >
               รวมผลงานถ่ายภาพ วิดีโอ เว็บไซต์ และการออกแบบ
@@ -100,14 +101,14 @@ export default function PortfolioClient({
       </Box>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={{ base: "white", _dark: "gray.900" }} aria-hidden="true">
-        <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
+        <Box w="60px" h="1px" bg={T.border} />
       </Box>
 
       {/* Content */}
       <Box
         as="section"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 16, md: 24 }}
         display="flex"
         justifyContent="center"
@@ -131,10 +132,10 @@ export default function PortfolioClient({
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCategoryChange(option.value); } }}
                   color={
                     selectedCategory === option.value
-                      ? { base: "gray.900", _dark: "white" }
-                      : { base: "gray.400", _dark: "gray.500" }
+                      ? T.text
+                      : T.textDim
                   }
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  _hover={{ color: T.text }}
                   transition="color 0.15s"
                 >
                   {option.label}
@@ -168,13 +169,13 @@ export default function PortfolioClient({
                       fontSize="sm"
                       color={
                         currentPage === 1
-                          ? { base: "gray.300", _dark: "gray.600" }
-                          : { base: "gray.500", _dark: "gray.400" }
+                          ? T.border
+                          : T.textMuted
                       }
                       _hover={
                         currentPage === 1
                           ? {}
-                          : { color: { base: "gray.900", _dark: "white" } }
+                          : { color: T.text }
                       }
                       transition="color 0.15s"
                     >
@@ -193,10 +194,10 @@ export default function PortfolioClient({
                             fontWeight={currentPage === page ? "medium" : "normal"}
                             color={
                               currentPage === page
-                                ? { base: "gray.900", _dark: "white" }
-                                : { base: "gray.400", _dark: "gray.500" }
+                                ? T.text
+                                : T.textDim
                             }
-                            _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                            _hover={{ color: T.text }}
                             transition="color 0.15s"
                           >
                             {page}
@@ -211,13 +212,13 @@ export default function PortfolioClient({
                       fontSize="sm"
                       color={
                         currentPage === displayTotalPages
-                          ? { base: "gray.300", _dark: "gray.600" }
-                          : { base: "gray.500", _dark: "gray.400" }
+                          ? T.border
+                          : T.textMuted
                       }
                       _hover={
                         currentPage === displayTotalPages
                           ? {}
-                          : { color: { base: "gray.900", _dark: "white" } }
+                          : { color: T.text }
                       }
                       transition="color 0.15s"
                     >
@@ -229,7 +230,7 @@ export default function PortfolioClient({
                 {/* Results Info */}
                 <Text
                   fontSize="xs"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
+                  color={T.textDim}
                   textAlign="center"
                 >
                   {displayPortfolios.length} / {displayTotal}
@@ -239,10 +240,10 @@ export default function PortfolioClient({
               <Box textAlign="center" py={12}>
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
+                  color={T.textDim}
                   cursor="pointer"
                   onClick={() => handleCategoryChange("all")}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  _hover={{ color: T.text }}
                 >
                   ไม่พบผลงาน — ดูทั้งหมด
                 </Text>
@@ -262,7 +263,7 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
         <Box
           overflow="hidden"
           borderRadius="md"
-          bg={{ base: "gray.100", _dark: "gray.800" }}
+          bg={T.surface}
         >
           <Image
             src={portfolio.featured_image?.url || "/placeholder-image.svg"}
@@ -284,7 +285,7 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
         <VStack align="start" gap={1} mt={3}>
           <Text
             fontSize="xs"
-            color={{ base: "gray.400", _dark: "gray.500" }}
+            color={T.textDim}
             textTransform="uppercase"
             letterSpacing="0.05em"
           >
@@ -293,7 +294,7 @@ function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
           <Text
             fontSize={{ base: "sm", md: "md" }}
             fontWeight="medium"
-            color={{ base: "gray.800", _dark: "white" }}
+            color={T.text}
             lineHeight="1.4"
             lineClamp={2}
           >

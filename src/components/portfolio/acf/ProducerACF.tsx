@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { Users, Clock, ListChecks } from "lucide-react";
+import { T } from "@/lib/tokens";
 import { ProducerACF } from "@/types/acf";
 
 interface ProducerACFDisplayProps {
@@ -22,7 +23,7 @@ export function ProducerACFDisplay({ acf }: ProducerACFDisplayProps) {
           <Heading size="md" mb={3}>
             คำอธิบายงานโปรดิวเซอร์
           </Heading>
-          <Text color="gray.600" _dark={{ color: "gray.300" }}>
+          <Text color={T.textMuted}>
             {acf.producer_description}
           </Text>
         </Box>
@@ -38,7 +39,7 @@ export function ProducerACFDisplay({ acf }: ProducerACFDisplayProps) {
               <HStack key={label} gap={3}>
                 <Icon size={20} />
                 <Text fontWeight="medium">{label}:</Text>
-                <Text color="gray.600" _dark={{ color: "gray.300" }}>
+                <Text color={T.textMuted}>
                   {value}
                 </Text>
               </HStack>
@@ -55,8 +56,7 @@ export function ProducerACFDisplay({ acf }: ProducerACFDisplayProps) {
           <HStack gap={3} alignItems="flex-start">
             <ListChecks size={20} />
             <Text
-              color="gray.600"
-              _dark={{ color: "gray.300" }}
+              color={T.textMuted}
               whiteSpace="pre-line"
             >
               {acf.responsibilities}

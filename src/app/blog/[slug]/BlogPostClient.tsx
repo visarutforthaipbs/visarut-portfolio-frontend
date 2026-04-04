@@ -16,6 +16,7 @@ import { sanitizeHtml } from "@/lib/sanitize";
 import { decodeHtmlEntities } from "@/utils";
 import AdSense from "@/components/AdSense";
 import type { BlogPost } from "@/types/wordpress";
+import { T } from "@/lib/tokens";
 
 interface BlogPostClientProps {
   slug: string;
@@ -81,11 +82,11 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
         <Box py={{ base: 20, md: 28 }} display="flex" justifyContent="center" w="100%">
           <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
             <VStack gap={4} textAlign="center">
-              <Text fontSize="sm" color={{ base: "gray.500", _dark: "gray.400" }}>
+              <Text fontSize="sm" color={T.textMuted}>
                 {error || "ไม่พบบทความ"}
               </Text>
               <Link href="/blog">
-                <Text fontSize="sm" color={{ base: "gray.400", _dark: "gray.500" }} _hover={{ color: { base: "gray.900", _dark: "white" } }}>
+                <Text fontSize="sm" color={T.textDim} _hover={{ color: T.text }}>
                   ← กลับไปบล็อก
                 </Text>
               </Link>
@@ -100,7 +101,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
     <Layout>
       <Box
         as="article"
-        bg={{ base: "white", _dark: "gray.900" }}
+        bg={T.bg}
         py={{ base: 20, md: 28 }}
         display="flex"
         justifyContent="center"
@@ -113,8 +114,8 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
               <Link href="/blog">
                 <Text
                   fontSize="sm"
-                  color={{ base: "gray.400", _dark: "gray.500" }}
-                  _hover={{ color: { base: "gray.900", _dark: "white" } }}
+                  color={T.textDim}
+                  _hover={{ color: T.text }}
                   transition="color 0.15s"
                 >
                   ← บล็อก
@@ -127,7 +128,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
               <Heading
                 fontSize={{ base: "2xl", md: "3xl" }}
                 fontWeight="bold"
-                color={{ base: "gray.900", _dark: "white" }}
+                color={T.text}
                 lineHeight="1.3"
                 letterSpacing="-0.025em"
               >
@@ -136,7 +137,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
 
               <Text
                 fontSize="xs"
-                color={{ base: "gray.400", _dark: "gray.500" }}
+                color={T.textDim}
               >
                 {new Date(post.date).toLocaleDateString("th-TH", {
                   year: "numeric",
@@ -147,7 +148,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
             </VStack>
 
             {/* Divider */}
-            <Box w="60px" h="1px" bg={{ base: "gray.200", _dark: "gray.700" }} />
+            <Box w="60px" h="1px" bg={T.border} />
 
             {/* Ad — below title */}
             <AdSense slot="REPLACE_WITH_AD_SLOT_1" format="auto" />
@@ -184,11 +185,11 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                 },
                 "& blockquote": {
                   borderLeft: "2px solid",
-                  borderColor: "#d1d5db",
+                  borderColor: T.border,
                   paddingLeft: "1.25rem",
                   margin: "2rem 0",
                   fontStyle: "italic",
-                  color: "#6b7280",
+                  color: T.textMuted,
                 },
                 "& img": {
                   display: "block",
@@ -200,7 +201,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                 "& .wp-caption, & figcaption, & .wp-caption-text": {
                   textAlign: "center",
                   fontSize: "0.75rem",
-                  color: "#9ca3af",
+                  color: T.textDim,
                   marginTop: "0.5rem",
                   marginBottom: "2rem",
                 },
@@ -211,10 +212,10 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                   borderRadius: "0.375rem",
                 },
                 "& a": {
-                  color: "#6b7280",
+                  color: T.accent,
                   textDecoration: "underline",
                   "&:hover": {
-                    color: "#111827",
+                    color: T.text,
                   },
                 },
                 "& table": {
@@ -226,10 +227,10 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                 "& th, & td": {
                   padding: "0.5rem",
                   textAlign: "left",
-                  borderBottom: "1px solid #e5e7eb",
+                  borderBottom: `1px solid ${T.border}`,
                 },
                 "& pre": {
-                  backgroundColor: "#f9fafb",
+                  backgroundColor: T.surface,
                   padding: "1.25rem",
                   borderRadius: "0.375rem",
                   overflow: "auto",
@@ -238,7 +239,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                   lineHeight: "1.5",
                 },
                 "& code": {
-                  backgroundColor: "#f3f4f6",
+                  backgroundColor: T.surface,
                   padding: "0.125rem 0.375rem",
                   borderRadius: "0.25rem",
                   fontSize: "0.8125rem",

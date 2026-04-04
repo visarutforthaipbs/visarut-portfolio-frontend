@@ -14,6 +14,7 @@ import {
 import { Calendar, Globe, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { T } from "@/lib/tokens";
 
 interface WebsiteLayoutProps {
   portfolios: PortfolioItem[];
@@ -45,16 +46,14 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
         {portfolios.map((portfolio) => (
           <Box
             key={portfolio.id}
-            bg="white"
+            bg={T.surface}
             borderRadius="lg"
             overflow="hidden"
-            shadow="md"
             border="1px solid"
-            borderColor="gray.200"
+            borderColor={T.border}
             _hover={{
               transform: "translateY(-4px)",
-              shadow: "xl",
-              borderColor: "accent.300",
+              borderColor: T.accent,
             }}
             transition="all 0.3s ease"
           >
@@ -92,7 +91,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                 <Text
                   fontSize="lg"
                   fontWeight="600"
-                  color="gray.800"
+                  color={T.text}
 
                   lineHeight="1.4"
                   overflow="hidden"
@@ -106,7 +105,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                   {portfolio.title.rendered}
                 </Text>
 
-                <HStack gap={4} fontSize="sm" color="gray.500">
+                <HStack gap={4} fontSize="sm" color={T.textDim}>
                   <HStack gap={1}>
                     <Globe size={14} />
                     <Text>เว็บไซต์</Text>
@@ -121,7 +120,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
               {portfolio.excerpt && (
                 <Text
                   fontSize="sm"
-                  color="gray.600"
+                  color={T.textMuted}
 
                   lineHeight="1.5"
                   overflow="hidden"
@@ -141,7 +140,8 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                   <Button
                     size="sm"
                     variant="outline"
-                    colorScheme="green"
+                    borderColor={T.accent}
+                    color={T.accent}
                     flex={1}
 
                     px={4}
@@ -184,10 +184,10 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
         <VStack gap={4} py={12} textAlign="center">
           <Globe size={48} color="#CBD5E0" />
           <VStack gap={2}>
-            <Heading fontSize="xl" color="gray.600" className="thai-text">
+            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
               ยังไม่มีผลงานเว็บไซต์
             </Heading>
-            <Text color="gray.500" className="thai-text">
+            <Text color={T.textDim} className="thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
             </Text>
           </VStack>
