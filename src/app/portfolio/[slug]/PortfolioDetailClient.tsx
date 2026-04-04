@@ -1,15 +1,5 @@
 "use client";
 
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Image,
-  Skeleton,
-} from "@chakra-ui/react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { PORTFOLIO_CATEGORIES, PortfolioItem } from "@/types/portfolio";
@@ -21,7 +11,6 @@ import {
 } from "@/components/portfolio/PortfolioDetails";
 import { WordPressAPI } from "@/lib/wordpress";
 import { usePortfolioBySlug } from "@/hooks/useWordPress";
-import { T } from "@/lib/tokens";
 
 interface PortfolioDetailClientProps {
   slug: string;
@@ -37,14 +26,14 @@ export default function PortfolioDetailClient({
   if (loading) {
     return (
       <Layout>
-        <Box py={{ base: 20, md: 28 }} display="flex" justifyContent="center" w="100%">
-          <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-            <VStack gap={6} align="start">
-              <Skeleton height="40px" width="60%" />
-              <Skeleton height={{ base: "200px", md: "400px" }} w="full" />
-            </VStack>
-          </Container>
-        </Box>
+        <div className="py-20 md:py-28 flex justify-center w-full">
+          <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
+            <div className="flex flex-col gap-6 items-start">
+              <div className="h-10 w-3/5 animate-pulse bg-surface rounded" />
+              <div className="h-[200px] md:h-[400px] w-full animate-pulse bg-surface rounded" />
+            </div>
+          </div>
+        </div>
       </Layout>
     );
   }
@@ -52,20 +41,20 @@ export default function PortfolioDetailClient({
   if (error || !portfolio) {
     return (
       <Layout>
-        <Box py={{ base: 20, md: 28 }} display="flex" justifyContent="center" w="100%">
-          <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-            <VStack gap={4} textAlign="center">
-              <Text fontSize="sm" color={T.textMuted}>
+        <div className="py-20 md:py-28 flex justify-center w-full">
+          <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
+            <div className="flex flex-col gap-4 text-center">
+              <p className="text-sm text-muted">
                 ไม่พบผลงาน
-              </Text>
+              </p>
               <Link href="/portfolio">
-                <Text fontSize="sm" color={T.textDim} _hover={{ color: T.text }}>
+                <span className="text-sm text-dim hover:text-content transition-colors">
                   ← กลับไปผลงาน
-                </Text>
+                </span>
               </Link>
-            </VStack>
-          </Container>
-        </Box>
+            </div>
+          </div>
+        </div>
       </Layout>
     );
   }
@@ -75,110 +64,68 @@ export default function PortfolioDetailClient({
   return (
     <Layout>
       {/* Hero */}
-      <Box
-        bg={T.bg}
-        py={{ base: 20, md: 28 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
-      >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={6} align="start">
+      <article className="bg-base py-20 md:py-28 flex justify-center w-full">
+        <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
+          <div className="flex flex-col gap-6 items-start">
             {/* Breadcrumb */}
-            <HStack
-              gap={2}
-              fontSize="xs"
-              color={T.textDim}
-            >
+            <div className="flex items-center gap-2 text-xs text-dim">
               <Link href="/portfolio">
-                <Text _hover={{ color: T.text }} transition="color 0.15s">
+                <span className="hover:text-content transition-colors duration-150">
                   ผลงาน
-                </Text>
+                </span>
               </Link>
-              <Text>/</Text>
-              <Text>{PORTFOLIO_CATEGORIES[portfolio.category]}</Text>
-            </HStack>
+              <span>/</span>
+              <span>{PORTFOLIO_CATEGORIES[portfolio.category]}</span>
+            </div>
 
             {/* Title & Meta */}
-            <VStack gap={3} align="start" w="full">
-              <Heading
-                fontSize={{ base: "2xl", md: "3xl" }}
-                fontWeight="bold"
-                color={T.text}
-                lineHeight="1.3"
-                letterSpacing="-0.025em"
-              >
+            <div className="flex flex-col gap-3 items-start w-full">
+              <h1 className="text-2xl md:text-3xl font-bold text-content leading-[1.3] tracking-tight">
                 {portfolio.title.rendered}
-              </Heading>
+              </h1>
 
-              <HStack gap={3} fontSize="xs" color={T.textDim}>
-                <Text textTransform="uppercase" letterSpacing="0.05em">
+              <div className="flex items-center gap-3 text-xs text-dim">
+                <span className="uppercase tracking-widest">
                   {PORTFOLIO_CATEGORIES[portfolio.category]}
-                </Text>
-                <Text>·</Text>
-                <Text>
+                </span>
+                <span>·</span>
+                <span>
                   {new Date(portfolio.date).toLocaleDateString("th-TH", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
-                </Text>
-              </HStack>
-            </VStack>
+                </span>
+              </div>
+            </div>
 
             {/* Featured Image */}
             {portfolio.featured_image && portfolio.category !== "photography" && (
-              <Box w="full" overflow="hidden" borderRadius="md">
-                <Image
+              <div className="w-full overflow-hidden rounded-md">
+                <img
                   src={portfolio.featured_image.url}
                   alt={portfolio.title.rendered}
-                  w="full"
-                  objectFit="cover"
+                  className="w-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "/placeholder-image.svg";
                   }}
                 />
-              </Box>
+              </div>
             )}
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </article>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={T.bg}>
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
       {/* Content */}
-      <Box
-        bg={T.bg}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
-      >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={12} align="start" css={{
-            "& .wordpress-content": {
-              width: "100%",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              justifyContent: "center",
-              alignItems: "flex-start",
-            },
-            "& .wordpress-content > p:empty": {
-              display: "none",
-            },
-            "& iframe": {
-              maxWidth: "100%",
-              borderRadius: "0.5rem",
-            },
-            "& .blog-content": {
-              width: "100%",
-            },
-          }}>
+      <div className="bg-base py-16 md:py-24 flex justify-center w-full">
+        <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
+          <div className="flex flex-col gap-12 items-start [&_.wordpress-content]:w-full [&_.wordpress-content]:flex [&_.wordpress-content]:flex-wrap [&_.wordpress-content]:gap-4 [&_.wordpress-content]:justify-center [&_.wordpress-content]:items-start [&_.wordpress-content>p:empty]:hidden [&_iframe]:max-w-full [&_iframe]:rounded-lg [&_.blog-content]:w-full">
             {/* ACF Project Details */}
             <PortfolioACFDisplay portfolio={portfolio} />
 
@@ -187,142 +134,96 @@ export default function PortfolioDetailClient({
               <>
                 <PortfolioGallery portfolio={portfolio} />
                 {portfolio.excerpt && (
-                  <Box>
-                    <Text
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      letterSpacing="0.1em"
-                      color={T.textDim}
-                      mb={4}
-                    >
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
                       รายละเอียด
-                    </Text>
-                    <Text fontSize="md" color={T.textMuted} lineHeight="1.8">
+                    </p>
+                    <p className="text-base text-muted leading-[1.8]">
                       <WordPressContent content={portfolio.excerpt.rendered} />
-                    </Text>
-                  </Box>
+                    </p>
+                  </div>
                 )}
               </>
             ) : portfolio.category === "videography" || portfolio.category === "video-editing" ? (
               <>
                 {videos.length > 0 && (
-                  <Box w="full">
-                    <Text
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      letterSpacing="0.1em"
-                      color={T.textDim}
-                      mb={6}
-                    >
+                  <div className="w-full">
+                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-6">
                       วีดีโอ ({videos.length})
-                    </Text>
-                    <VStack gap={8} w="full">
+                    </p>
+                    <div className="flex flex-col gap-8 w-full">
                       {videos.map((video, index) => (
                         <PortfolioVideo key={index} video={video} />
                       ))}
-                    </VStack>
-                  </Box>
+                    </div>
+                  </div>
                 )}
                 <PortfolioGallery portfolio={portfolio} />
                 {portfolio.content && (
-                  <Box>
-                    <Text
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      letterSpacing="0.1em"
-                      color={T.textDim}
-                      mb={4}
-                    >
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
                       รายละเอียด
-                    </Text>
-                    <Box className="blog-content">
+                    </p>
+                    <div className="blog-content">
                       <WordPressContent content={portfolio.content.rendered} />
-                    </Box>
-                  </Box>
+                    </div>
+                  </div>
                 )}
               </>
             ) : (
               <>
                 {portfolio.content && (
-                  <Box>
-                    <Text
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      letterSpacing="0.1em"
-                      color={T.textDim}
-                      mb={4}
-                    >
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
                       รายละเอียด
-                    </Text>
-                    <Box className="blog-content">
+                    </p>
+                    <div className="blog-content">
                       <WordPressContent content={portfolio.content.rendered} />
-                    </Box>
-                  </Box>
+                    </div>
+                  </div>
                 )}
                 {videos.length > 0 && (
-                  <Box w="full">
-                    <Text
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      letterSpacing="0.1em"
-                      color={T.textDim}
-                      mb={6}
-                    >
+                  <div className="w-full">
+                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-6">
                       วีดีโอ
-                    </Text>
-                    <VStack gap={6} w="full">
+                    </p>
+                    <div className="flex flex-col gap-6 w-full">
                       {videos.map((video, index) => (
                         <PortfolioVideo key={index} video={video} />
                       ))}
-                    </VStack>
-                  </Box>
+                    </div>
+                  </div>
                 )}
                 {portfolio.category !== "producer" && (
                   <PortfolioGallery portfolio={portfolio} />
                 )}
               </>
             )}
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </div>
 
       {/* Bottom Nav */}
-      <Box w="100%" display="flex" justifyContent="center" bg={T.bg}>
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
-      <Box
-        bg={T.bg}
-        py={{ base: 12, md: 16 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
-      >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <HStack gap={6} justify="center">
+      <div className="bg-base py-12 md:py-16 flex justify-center w-full">
+        <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
+          <div className="flex items-center gap-6 justify-center">
             <Link href="/portfolio">
-              <Text
-                fontSize="sm"
-                color={T.textDim}
-                _hover={{ color: T.text }}
-                transition="color 0.15s"
-              >
+              <span className="text-sm text-dim hover:text-content transition-colors duration-150">
                 ← ผลงานทั้งหมด
-              </Text>
+              </span>
             </Link>
             <Link href={`/portfolio/category/${portfolio.category}`}>
-              <Text
-                fontSize="sm"
-                color={T.textDim}
-                _hover={{ color: T.text }}
-                transition="color 0.15s"
-              >
+              <span className="text-sm text-dim hover:text-content transition-colors duration-150">
                 {PORTFOLIO_CATEGORIES[portfolio.category]} →
-              </Text>
+              </span>
             </Link>
-          </HStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }

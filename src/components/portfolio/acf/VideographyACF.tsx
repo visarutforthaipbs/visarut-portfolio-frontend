@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack, Link } from "@chakra-ui/react";
 import { Camera, Aperture, Lightbulb, MapPin, Video } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { VideographyACF } from "@/types/acf";
 
 interface VideographyACFDisplayProps {
   acf: VideographyACF;
 }
 
-/**
- * ACF display component for Videography portfolio items
- */
 export function VideographyACFDisplay({ acf }: VideographyACFDisplayProps) {
   const items = [
     { icon: Camera, label: "กล้อง", value: acf.camera },
@@ -19,56 +14,45 @@ export function VideographyACFDisplay({ acf }: VideographyACFDisplayProps) {
   ];
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.video_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายวิดีโอ
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.video_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายวิดีโอ</h3>
+          <p className="text-muted">{acf.video_description}</p>
+        </div>
       )}
 
       {acf.video_link && (
-        <Box>
-          <Heading size="md" mb={3}>
-            วิดีโอ
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">วิดีโอ</h3>
+          <div className="flex items-center gap-3">
             <Video size={20} />
-            <Link
+            <a
               href={acf.video_link}
               target="_blank"
               rel="noopener noreferrer"
-              color="blue.500"
-              _hover={{ textDecoration: "underline" }}
+              className="text-blue-500 hover:underline"
             >
               ดูวิดีโอเต็ม
-            </Link>
-          </HStack>
-        </Box>
+            </a>
+          </div>
+        </div>
       )}
 
-      <Box>
-        <Heading size="md" mb={4}>
-          ข้อมูลการถ่ายทำ
-        </Heading>
-        <Stack gap={3}>
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลการถ่ายทำ</h3>
+        <div className="flex flex-col gap-3">
           {items.map(({ icon: Icon, label, value }) =>
             value ? (
-              <HStack key={label} gap={3}>
+              <div key={label} className="flex items-center gap-3">
                 <Icon size={20} />
-                <Text fontWeight="medium">{label}:</Text>
-                <Text color={T.textMuted}>
-                  {value}
-                </Text>
-              </HStack>
+                <span className="font-medium">{label}:</span>
+                <span className="text-muted">{value}</span>
+              </div>
             ) : null
           )}
-        </Stack>
-      </Box>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }

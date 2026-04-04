@@ -1,4 +1,3 @@
-import { Box, Image } from "@chakra-ui/react";
 import { GalleryImage } from "@/types/acf";
 
 interface LightboxProps {
@@ -10,9 +9,6 @@ interface LightboxProps {
   onPrev: () => void;
 }
 
-/**
- * Lightbox component for viewing images in fullscreen
- */
 export function Lightbox({
   isOpen,
   images,
@@ -26,96 +22,57 @@ export function Lightbox({
   const currentImage = images[currentIndex];
 
   return (
-    <Box
-      position="fixed"
-      top={0}
-      left={0}
-      w="100vw"
-      h="100vh"
-      bg="rgba(0, 0, 0, 0.95)"
-      zIndex={9999}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
+    <div
+      className="fixed top-0 left-0 w-screen h-screen bg-black/95 z-[9999] flex items-center justify-center"
       onClick={onClose}
     >
-      <Box
-        position="absolute"
-        top={4}
-        right={4}
-        fontSize="2xl"
-        color="white"
-        cursor="pointer"
-        _hover={{ color: "gray.400" }}
+      <div
+        className="absolute top-4 right-4 text-2xl text-white cursor-pointer hover:text-gray-400 z-[10000]"
         onClick={onClose}
-        zIndex={10000}
       >
         ✕
-      </Box>
+      </div>
 
       {images.length > 1 && (
         <>
-          <Box
-            position="absolute"
-            left={4}
-            fontSize="3xl"
-            color="white"
-            cursor="pointer"
-            _hover={{ color: "gray.400" }}
+          <div
+            className="absolute left-4 text-3xl text-white cursor-pointer hover:text-gray-400 z-[10000]"
             onClick={(e) => {
               e.stopPropagation();
               onPrev();
             }}
-            zIndex={10000}
           >
             ‹
-          </Box>
+          </div>
 
-          <Box
-            position="absolute"
-            right={4}
-            fontSize="3xl"
-            color="white"
-            cursor="pointer"
-            _hover={{ color: "gray.400" }}
+          <div
+            className="absolute right-4 text-3xl text-white cursor-pointer hover:text-gray-400 z-[10000]"
             onClick={(e) => {
               e.stopPropagation();
               onNext();
             }}
-            zIndex={10000}
           >
             ›
-          </Box>
+          </div>
         </>
       )}
 
-      <Box
-        maxW="90vw"
-        maxH="90vh"
-        position="relative"
+      <div
+        className="max-w-[90vw] max-h-[90vh] relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <Image
+        <img
           src={currentImage.url}
           alt={currentImage.alt}
-          maxW="100%"
-          maxH="90vh"
-          objectFit="contain"
+          className="max-w-full max-h-[90vh] object-contain"
         />
 
         {currentImage.caption && (
-          <Box
-            mt={4}
-            p={4}
-            bg="rgba(0, 0, 0, 0.8)"
-            color="white"
-            borderRadius="md"
-            textAlign="center"
-          >
+          <div className="mt-4 p-4 bg-black/80 text-white rounded-md text-center">
             {currentImage.caption}
-          </Box>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

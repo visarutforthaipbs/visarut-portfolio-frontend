@@ -1,13 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Box, Heading, Text, VStack, HStack } from "@chakra-ui/react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
-import { T } from "@/lib/tokens";
 
 interface FeaturedSliderProps {
   items: PortfolioItem[];
@@ -53,19 +51,15 @@ export function FeaturedSlider({ items }: FeaturedSliderProps) {
   if (items.length === 0) return null;
 
   return (
-    <Box
-      as="section"
+    <section
       role="region"
       aria-label="ผลงานแนะนำ"
       aria-roledescription="carousel"
-      w="100%"
-      bg={T.bg}
-      position="relative"
-      overflow="hidden"
+      className="w-full bg-base relative overflow-hidden"
     >
       {/* Embla viewport */}
-      <Box ref={emblaRef} overflow="hidden">
-        <Box display="flex">
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex">
           {items.map((item, index) => {
             const imageUrl = getFeaturedImageUrl(item.featured_image);
             const title = getTextContent(item.title);
@@ -73,119 +67,66 @@ export function FeaturedSlider({ items }: FeaturedSliderProps) {
               PORTFOLIO_CATEGORIES[item.category] || item.category;
 
             return (
-              <Box
+              <div
                 key={item.id}
-                flex="0 0 100%"
-                minW="0"
-                position="relative"
+                className="flex-[0_0_100%] min-w-0 relative group"
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} จาก ${items.length}: ${title}`}
               >
                 <Link href={`/portfolio/${item.slug}`} aria-label={title}>
-                  <Box
-                    position="relative"
-                    h={{ base: "50vh", md: "65vh" }}
-                    w="100%"
-                    cursor="pointer"
-                  >
+                  <div className="relative h-[40vh] md:h-[65vh] w-full cursor-pointer">
                     {/* Background image */}
                     {imageUrl && (
-                      <Box
-                        position="absolute"
-                        top={0}
-                        left={0}
-                        right={0}
-                        bottom={0}
-                        backgroundImage={`url(${imageUrl})`}
-                        backgroundSize="cover"
-                        backgroundPosition="center"
-                        backgroundRepeat="no-repeat"
-                        transition="transform 6s ease-out"
-                        _groupHover={{ transform: "scale(1.03)" }}
+                      <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[6s] ease-out group-hover:scale-[1.03]"
+                        style={{ backgroundImage: `url(${imageUrl})` }}
                       />
                     )}
 
                     {/* Gradient overlay */}
-                    <Box
-                      position="absolute"
-                      top={0}
-                      left={0}
-                      right={0}
-                      bottom={0}
-                      bgGradient="to-t"
-                      gradientFrom="blackAlpha.700"
-                      gradientVia="blackAlpha.300"
-                      gradientTo="transparent"
-                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
                     {/* Content overlay */}
-                    <VStack
-                      position="absolute"
-                      bottom={0}
-                      left={0}
-                      right={0}
-                      p={{ base: 6, md: 12 }}
-                      align="start"
-                      gap={2}
-                    >
-                      <Text
-                        fontSize={{ base: "xs", md: "sm" }}
-                        color="whiteAlpha.700"
-                        textTransform="uppercase"
-                        letterSpacing="wider"
-                        fontWeight="medium"
-                      >
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 flex flex-col items-start gap-2">
+                      <span className="text-xs md:text-sm text-white/70 uppercase tracking-wider font-medium">
                         {category}
-                      </Text>
-                      <Heading
-                        as="h2"
-                        fontSize={{ base: "2xl", md: "4xl", lg: "5xl" }}
-                        fontWeight="bold"
-                        color="white"
-                        lineHeight="1.1"
-                        maxW="700px"
-                      >
+                      </span>
+                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.1] max-w-[700px]">
                         {title}
-                      </Heading>
-                    </VStack>
-                  </Box>
+                      </h2>
+                    </div>
+                  </div>
                 </Link>
-              </Box>
+              </div>
             );
           })}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
       {/* Dots */}
       {items.length > 1 && (
-        <HStack
-          position="absolute"
-          bottom={{ base: 3, md: 5 }}
-          right={{ base: 4, md: 12 }}
-          gap={2}
+        <div
+          className="absolute bottom-3 md:bottom-5 right-4 md:right-12 flex items-center gap-2"
           aria-label="เลือกสไลด์"
           role="tablist"
         >
           {items.map((_, index) => (
-            <Box
+            <button
               key={index}
-              as="button"
               role="tab"
               aria-selected={index === selectedIndex}
               aria-label={`สไลด์ ${index + 1}`}
-              w={index === selectedIndex ? "24px" : "8px"}
-              h="8px"
-              borderRadius="full"
-              bg={index === selectedIndex ? "white" : "whiteAlpha.500"}
-              transition="all 0.3s"
-              cursor="pointer"
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer hover:bg-white ${
+                index === selectedIndex
+                  ? "w-6 bg-white"
+                  : "w-2 bg-white/50"
+              }`}
               onClick={() => scrollTo(index)}
-              _hover={{ bg: "white" }}
             />
           ))}
-        </HStack>
+        </div>
       )}
-    </Box>
+    </section>
   );
 }

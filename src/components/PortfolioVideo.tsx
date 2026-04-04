@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, AspectRatio, Image } from "@chakra-ui/react";
 import { useState } from "react";
 import { Play } from "lucide-react";
 import type { VideoMedia } from "@/types/portfolio";
@@ -74,48 +73,28 @@ export function PortfolioVideo({
 
   if (!isPlaying && video.thumbnail) {
     return (
-      <AspectRatio ratio={16 / 9}>
-        <Box
-          position="relative"
-          cursor="pointer"
+      <div className="aspect-video relative">
+        <div
+          className="relative cursor-pointer hover:scale-[1.02] transition-transform duration-200 w-full h-full"
           onClick={handlePlay}
-          _hover={{ transform: "scale(1.02)" }}
-          transition="transform 0.2s ease"
         >
-          <Image
+          <img
             src={video.thumbnail}
             alt={video.alt || "Video thumbnail"}
-            objectFit="cover"
-            width="100%"
-            height="100%"
-            borderRadius="md"
+            className="object-cover w-full h-full rounded-md"
           />
-          <Box
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            bg="rgba(0, 0, 0, 0.7)"
-            color="white"
-            p={4}
-            borderRadius="full"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            _hover={{ bg: "rgba(0, 0, 0, 0.8)" }}
-            transition="background-color 0.2s ease"
-          >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/70 text-white p-4 rounded-full flex items-center justify-center hover:bg-black/80 transition-colors duration-200">
             <Play size={24} fill="currentColor" />
-          </Box>
-        </Box>
-      </AspectRatio>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <AspectRatio ratio={16 / 9}>
-      <Box>{renderVideoEmbed()}</Box>
-    </AspectRatio>
+    <div className="aspect-video">
+      <div className="w-full h-full">{renderVideoEmbed()}</div>
+    </div>
   );
 }
 

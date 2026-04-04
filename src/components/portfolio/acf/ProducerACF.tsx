@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { Users, Clock, ListChecks } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { ProducerACF } from "@/types/acf";
 
 interface ProducerACFDisplayProps {
   acf: ProducerACF;
 }
 
-/**
- * ACF display component for Producer portfolio items
- */
 export function ProducerACFDisplay({ acf }: ProducerACFDisplayProps) {
   const items = [
     { icon: Users, label: "ขนาดทีม", value: acf.team_size },
@@ -17,53 +12,38 @@ export function ProducerACFDisplay({ acf }: ProducerACFDisplayProps) {
   ];
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.producer_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายงานโปรดิวเซอร์
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.producer_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายงานโปรดิวเซอร์</h3>
+          <p className="text-muted">{acf.producer_description}</p>
+        </div>
       )}
 
-      <Box>
-        <Heading size="md" mb={4}>
-          ข้อมูลโปรเจค
-        </Heading>
-        <Stack gap={3}>
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลโปรเจค</h3>
+        <div className="flex flex-col gap-3">
           {items.map(({ icon: Icon, label, value }) =>
             value ? (
-              <HStack key={label} gap={3}>
+              <div key={label} className="flex items-center gap-3">
                 <Icon size={20} />
-                <Text fontWeight="medium">{label}:</Text>
-                <Text color={T.textMuted}>
-                  {value}
-                </Text>
-              </HStack>
+                <span className="font-medium">{label}:</span>
+                <span className="text-muted">{value}</span>
+              </div>
             ) : null
           )}
-        </Stack>
-      </Box>
+        </div>
+      </div>
 
       {acf.responsibilities && (
-        <Box>
-          <Heading size="md" mb={3}>
-            หน้าที่รับผิดชอบ
-          </Heading>
-          <HStack gap={3} alignItems="flex-start">
+        <div>
+          <h3 className="text-lg font-semibold mb-3">หน้าที่รับผิดชอบ</h3>
+          <div className="flex items-start gap-3">
             <ListChecks size={20} />
-            <Text
-              color={T.textMuted}
-              whiteSpace="pre-line"
-            >
-              {acf.responsibilities}
-            </Text>
-          </HStack>
-        </Box>
+            <p className="text-muted whitespace-pre-line">{acf.responsibilities}</p>
+          </div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }

@@ -1,17 +1,3 @@
-import { T } from "@/lib/tokens";
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Heading,
-  SimpleGrid,
-  Image,
-  AspectRatio,
-  Badge,
-  Skeleton,
-  IconButton,
-} from "@chakra-ui/react";
 import {
   Camera,
   MapPin,
@@ -69,103 +55,60 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
     if (portfolio.category === "photography") {
       const photoACF = acfData as PhotographyACF;
       return (
-        <VStack gap={6} align="start" w="full">
-          {/* Photography Details */}
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
             {photoACF.camera_equipment && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <Camera size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    อุปกรณ์ถ่ายภาพ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {photoACF.camera_equipment}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">อุปกรณ์ถ่ายภาพ</span>
+                </div>
+                <p className="text-base text-muted">{photoACF.camera_equipment}</p>
+              </div>
             )}
-
             {photoACF.photo_location && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <MapPin size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    สถานที่ถ่ายภาพ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {photoACF.photo_location}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">สถานที่ถ่ายภาพ</span>
+                </div>
+                <p className="text-base text-muted">{photoACF.photo_location}</p>
+              </div>
             )}
-
             {photoACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {photoACF.client_name}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ลูกค้า</span>
+                </div>
+                <p className="text-base text-muted">{photoACF.client_name}</p>
+              </div>
             )}
-
             {photoACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่ถ่ายภาพ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {photoACF.project_date}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">วันที่ถ่ายภาพ</span>
+                </div>
+                <p className="text-base text-muted">{photoACF.project_date}</p>
+              </div>
             )}
-          </SimpleGrid>
+          </div>
 
           {photoACF.photography_style && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                รูปแบบการถ่ายภาพ
-              </Text>
-              <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
-                {photoACF.photography_style}
-              </Badge>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รูปแบบการถ่ายภาพ</span>
+              <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">{photoACF.photography_style}</span>
+            </div>
           )}
 
           {photoACF.project_description && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                รายละเอียดโปรเจค
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-
-                lineHeight="1.8"
-              >
-                {photoACF.project_description}
-              </Text>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รายละเอียดโปรเจค</span>
+              <p className="text-base text-muted leading-[1.8]">{photoACF.project_description}</p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
@@ -175,156 +118,96 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       portfolio.category === "video-editing"
     ) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const videoACF = acfData as any; // Use any since API fields don't match type exactly
+      const videoACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          {/* Video Details Grid */}
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {videoACF.video_type && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <Film size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ประเภทวีดีโอ
-                  </Text>
-                </HStack>
-                <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
-                  {videoACF.video_type === "documentary"
-                    ? "สารคดี"
-                    : videoACF.video_type === "commercial"
-                      ? "โฆษณา"
-                      : videoACF.video_type === "music-video"
-                        ? "มิวสิควิดีโอ"
-                        : videoACF.video_type}
-                </Badge>
-              </VStack>
+                  <span className="text-sm font-semibold">ประเภทวีดีโอ</span>
+                </div>
+                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">
+                  {videoACF.video_type === "documentary" ? "สารคดี"
+                    : videoACF.video_type === "commercial" ? "โฆษณา"
+                    : videoACF.video_type === "music-video" ? "มิวสิควิดีโอ"
+                    : videoACF.video_type}
+                </span>
+              </div>
             )}
-
             {videoACF.video_duration && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <Clock size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ระยะเวลา
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {videoACF.video_duration}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ระยะเวลา</span>
+                </div>
+                <p className="text-base text-muted">{videoACF.video_duration}</p>
+              </div>
             )}
-
             {videoACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {videoACF.client_name}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ลูกค้า</span>
+                </div>
+                <p className="text-base text-muted">{videoACF.client_name}</p>
+              </div>
             )}
-
             {videoACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่ผลิต
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {videoACF.project_date}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">วันที่ผลิต</span>
+                </div>
+                <p className="text-base text-muted">{videoACF.project_date}</p>
+              </div>
             )}
-
             {videoACF.video_equipment && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <Video size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    อุปกรณ์ถ่ายทำ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {videoACF.video_equipment}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">อุปกรณ์ถ่ายทำ</span>
+                </div>
+                <p className="text-base text-muted">{videoACF.video_equipment}</p>
+              </div>
             )}
-          </SimpleGrid>
+          </div>
 
-          {/* Video URL */}
           {videoACF.video_url && (
-            <VStack align="start" gap={3} w="full">
-              <HStack gap={2} color={T.accent}>
+            <div className="flex flex-col items-start gap-3 w-full">
+              <div className="flex items-center gap-2 text-accent">
                 <Play size={18} />
-                <Text fontSize="sm" fontWeight="600">
-                  ดูวีดีโอ
-                </Text>
-              </HStack>
-              <Box
-                bg={T.surface}
-                border="2px solid"
-                borderColor={T.border}
-                borderRadius="lg"
-                p={4}
-                w="full"
-                _hover={{
-                  borderColor: T.accent,
-                  bg: T.surfaceHover,
-                  transform: "translateY(-2px)",
-                  transition: "all 0.2s ease",
-                }}
-                cursor="pointer"
+                <span className="text-sm font-semibold">ดูวีดีโอ</span>
+              </div>
+              <div
+                className="bg-surface border-2 border-edge rounded-lg p-4 w-full cursor-pointer hover:border-accent hover:bg-surface-hover hover:-translate-y-0.5 transition-all duration-200"
                 onClick={() => {
                   if (typeof window !== "undefined") {
                     window.open(videoACF.video_url, "_blank");
                   }
                 }}
               >
-                <HStack gap={3}>
-                  <Box bg={T.accent} borderRadius="full" p={2} color={T.bg}>
+                <div className="flex items-center gap-3">
+                  <div className="bg-accent rounded-full p-2 text-base">
                     <Play size={16} fill="white" />
-                  </Box>
-                  <VStack align="start" gap={1}>
-                    <Text fontSize="md" fontWeight="600">
-                      เปิดดูวีดีโอ
-                    </Text>
-                    <Text fontSize="sm" color={T.textDim}>
-                      คลิกเพื่อดูใน YouTube
-                    </Text>
-                  </VStack>
-                </HStack>
-              </Box>
-            </VStack>
+                  </div>
+                  <div className="flex flex-col items-start gap-1">
+                    <span className="text-base font-semibold">เปิดดูวีดีโอ</span>
+                    <span className="text-sm text-dim">คลิกเพื่อดูใน YouTube</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
-          {/* Project Description */}
           {videoACF.project_description && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                รายละเอียดโปรเจค
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-
-                lineHeight="1.8"
-              >
-                {videoACF.project_description}
-              </Text>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รายละเอียดโปรเจค</span>
+              <p className="text-base text-muted leading-[1.8]">{videoACF.project_description}</p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
@@ -333,218 +216,108 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const webACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {webACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {webACF.client_name}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ลูกค้า</span>
+                </div>
+                <p className="text-base text-muted">{webACF.client_name}</p>
+              </div>
             )}
-
             {webACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่เสร็จสิ้น
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {webACF.project_date}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">วันที่เสร็จสิ้น</span>
+                </div>
+                <p className="text-base text-muted">{webACF.project_date}</p>
+              </div>
             )}
-
             {webACF.website_type && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ประเภทเว็บไซต์
-                  </Text>
-                </HStack>
-                <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
-                  {webACF.website_type === "web_app"
-                    ? "Web Application"
-                    : webACF.website_type === "website"
-                      ? "Website"
-                      : webACF.website_type === "ecommerce"
-                        ? "E-commerce"
-                        : webACF.website_type === "cms"
-                          ? "CMS"
-                          : webACF.website_type}
-                </Badge>
-              </VStack>
+                  <span className="text-sm font-semibold">ประเภทเว็บไซต์</span>
+                </div>
+                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">
+                  {webACF.website_type === "web_app" ? "Web Application"
+                    : webACF.website_type === "website" ? "Website"
+                    : webACF.website_type === "ecommerce" ? "E-commerce"
+                    : webACF.website_type === "cms" ? "CMS"
+                    : webACF.website_type}
+                </span>
+              </div>
             )}
-
             {webACF.project_role && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    บทบาทในโปรเจค
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {webACF.project_role === "full_development"
-                    ? "Full Development"
-                    : webACF.project_role === "frontend"
-                      ? "Frontend Development"
-                      : webACF.project_role === "backend"
-                        ? "Backend Development"
-                        : webACF.project_role}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">บทบาทในโปรเจค</span>
+                </div>
+                <p className="text-base text-muted">
+                  {webACF.project_role === "full_development" ? "Full Development"
+                    : webACF.project_role === "frontend" ? "Frontend Development"
+                    : webACF.project_role === "backend" ? "Backend Development"
+                    : webACF.project_role}
+                </p>
+              </div>
             )}
-          </SimpleGrid>
+          </div>
 
-          {/* Website URL */}
           {webACF.website_url && (
-            <VStack align="start" gap={3} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                เว็บไซต์
-              </Text>
-              <Box
-                as="a"
-                // @ts-expect-error - Chakra v3 polymorphic typing
+            <div className="flex flex-col items-start gap-3 w-full">
+              <span className="text-sm font-semibold text-accent">เว็บไซต์</span>
+              <a
                 href={webACF.website_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                bg={T.surface}
-                border="2px solid"
-                borderColor={T.border}
-                borderRadius="lg"
-                p={4}
-                w="full"
-                cursor="pointer"
-                transition="all 0.2s ease"
-                _hover={{
-                  borderColor: T.accent,
-                  bg: T.surfaceHover,
-                  transform: "translateY(-2px)",
-                }}
+                className="bg-surface border-2 border-edge rounded-lg p-4 w-full cursor-pointer hover:border-accent hover:bg-surface-hover hover:-translate-y-0.5 transition-all duration-200 block"
               >
-                <HStack gap={3}>
-                  <Box bg={T.accent} borderRadius="full" p={2} color={T.bg}>
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
+                <div className="flex items-center gap-3">
+                  <div className="bg-accent rounded-full p-2 text-base">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                       <polyline points="15 3 21 3 21 9" />
                       <line x1="10" y1="14" x2="21" y2="3" />
                     </svg>
-                  </Box>
-                  <VStack align="start" gap={1}>
-                    <Text fontSize="md" fontWeight="600" color={T.text}>
-                      เยี่ยมชมเว็บไซต์
-                    </Text>
-                    <Text
-                      fontSize="sm"
-                      color={T.textMuted}
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      whiteSpace="nowrap"
-                      maxW="full"
-                    >
-                      {webACF.website_url}
-                    </Text>
-                  </VStack>
-                </HStack>
-              </Box>
-            </VStack>
+                  </div>
+                  <div className="flex flex-col items-start gap-1">
+                    <span className="text-base font-semibold text-content">เยี่ยมชมเว็บไซต์</span>
+                    <span className="text-sm text-muted overflow-hidden text-ellipsis whitespace-nowrap max-w-full">{webACF.website_url}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
           )}
 
-          {/* Technologies */}
           {webACF.technologies_used && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                เทคโนโลยีที่ใช้
-              </Text>
-              <HStack gap={2} flexWrap="wrap">
-                {webACF.technologies_used
-                  .split(",")
-                  .map((tech: string, index: number) => (
-                    <Badge
-                      key={index}
-                      bg={T.accentDim} color={T.accent}
-                      px={3}
-                      py={1}
-                      borderRadius="full"
-                    >
-                      {tech.trim()}
-                    </Badge>
-                  ))}
-              </HStack>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">เทคโนโลยีที่ใช้</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                {webACF.technologies_used.split(",").map((tech: string, index: number) => (
+                  <span key={index} className="bg-accent-dim text-accent px-3 py-1 rounded-full">{tech.trim()}</span>
+                ))}
+              </div>
+            </div>
           )}
 
-          {/* Project Description */}
           {webACF.project_description && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                รายละเอียดโปรเจค
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
-                {webACF.project_description}
-              </Text>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รายละเอียดโปรเจค</span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">{webACF.project_description}</p>
+            </div>
           )}
 
-          {/* Development Notes / Features */}
           {webACF.development_notes && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                ฟีเจอร์เด่น
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
-                {webACF.development_notes}
-              </Text>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">ฟีเจอร์เด่น</span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">{webACF.development_notes}</p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
@@ -553,141 +326,87 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const designACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {designACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {designACF.client_name}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ลูกค้า</span>
+                </div>
+                <p className="text-base text-muted">{designACF.client_name}</p>
+              </div>
             )}
-
             {designACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่โครงการ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {designACF.project_date}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">วันที่โครงการ</span>
+                </div>
+                <p className="text-base text-muted">{designACF.project_date}</p>
+              </div>
             )}
-
             {designACF.design_type && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ประเภทงานออกแบบ
-                  </Text>
-                </HStack>
-                <Badge bg={T.accentDim} color={T.accent} px={3} py={1} borderRadius="full">
-                  {designACF.design_type === "social_media"
-                    ? "Social Media"
-                    : designACF.design_type === "logo"
-                      ? "Logo"
-                      : designACF.design_type === "branding"
-                        ? "Branding"
-                        : designACF.design_type === "poster"
-                          ? "Poster"
-                          : designACF.design_type === "brochure"
-                            ? "Brochure"
-                            : designACF.design_type}
-                </Badge>
-              </VStack>
+                  <span className="text-sm font-semibold">ประเภทงานออกแบบ</span>
+                </div>
+                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">
+                  {designACF.design_type === "social_media" ? "Social Media"
+                    : designACF.design_type === "logo" ? "Logo"
+                    : designACF.design_type === "branding" ? "Branding"
+                    : designACF.design_type === "poster" ? "Poster"
+                    : designACF.design_type === "brochure" ? "Brochure"
+                    : designACF.design_type}
+                </span>
+              </div>
             )}
-
             {designACF.software_used && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ซอฟต์แวร์ที่ใช้
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {designACF.software_used}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ซอฟต์แวร์ที่ใช้</span>
+                </div>
+                <p className="text-base text-muted">{designACF.software_used}</p>
+              </div>
             )}
-
             {designACF.print_specifications && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ขนาดงานพิมพ์
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {designACF.print_specifications}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ขนาดงานพิมพ์</span>
+                </div>
+                <p className="text-base text-muted">{designACF.print_specifications}</p>
+              </div>
             )}
-
             {designACF.color_palette && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    Color Palette
-                  </Text>
-                </HStack>
-                <HStack gap={2} flexWrap="wrap">
-                  {designACF.color_palette
-                    .split(",")
-                    .map((color: string, index: number) => (
-                      <HStack key={index} gap={2}>
-                        <Box
-                          w="24px"
-                          h="24px"
-                          bg={color.trim()}
-                          borderRadius="md"
-                          border="1px solid"
-                          borderColor={T.border}
-                        />
-                        <Text fontSize="sm" fontFamily="mono" color={T.textDim}>
-                          {color.trim()}
-                        </Text>
-                      </HStack>
-                    ))}
-                </HStack>
-              </VStack>
+                  <span className="text-sm font-semibold">Color Palette</span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {designACF.color_palette.split(",").map((color: string, index: number) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-md border border-edge" style={{ backgroundColor: color.trim() }} />
+                      <span className="text-sm font-mono text-dim">{color.trim()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
-          </SimpleGrid>
+          </div>
 
           {(designACF.design_concept || designACF.project_description) && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                รายละเอียดโปรเจค
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รายละเอียดโปรเจค</span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">
                 {designACF.project_description || designACF.design_concept}
-              </Text>
-            </VStack>
+              </p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
@@ -695,89 +414,56 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const printACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {printACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {printACF.client_name}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ลูกค้า</span>
+                </div>
+                <p className="text-base text-muted">{printACF.client_name}</p>
+              </div>
             )}
-
             {printACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่โครงการ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {printACF.project_date}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">วันที่โครงการ</span>
+                </div>
+                <p className="text-base text-muted">{printACF.project_date}</p>
+              </div>
             )}
-
             {printACF.print_type && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ประเภทงานพิมพ์
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {printACF.print_type}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ประเภทงานพิมพ์</span>
+                </div>
+                <p className="text-base text-muted">{printACF.print_type}</p>
+              </div>
             )}
-
             {printACF.print_specifications && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent">
                   <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ข้อมูลจำเพาะ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {printACF.print_specifications}
-                </Text>
-              </VStack>
+                  <span className="text-sm font-semibold">ข้อมูลจำเพาะ</span>
+                </div>
+                <p className="text-base text-muted">{printACF.print_specifications}</p>
+              </div>
             )}
-          </SimpleGrid>
-
+          </div>
           {(printACF.printing_process || printACF.project_description) && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                {printACF.printing_process
-                  ? "กระบวนการพิมพ์"
-                  : "รายละเอียดโปรเจค"}
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">
+                {printACF.printing_process ? "กระบวนการพิมพ์" : "รายละเอียดโปรเจค"}
+              </span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">
                 {printACF.printing_process || printACF.project_description}
-              </Text>
-            </VStack>
+              </p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
@@ -785,129 +471,58 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const exhibitionACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {exhibitionACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.client_name}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">ลูกค้า</span></div>
+                <p className="text-base text-muted">{exhibitionACF.client_name}</p>
+              </div>
             )}
-
             {exhibitionACF.venue_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <MapPin size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    สถานที่
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.venue_name}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><MapPin size={18} /><span className="text-sm font-semibold">สถานที่</span></div>
+                <p className="text-base text-muted">{exhibitionACF.venue_name}</p>
+              </div>
             )}
-
             {exhibitionACF.exhibition_dates && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่จัดแสดง
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.exhibition_dates}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><CalendarIcon size={18} /><span className="text-sm font-semibold">วันที่จัดแสดง</span></div>
+                <p className="text-base text-muted">{exhibitionACF.exhibition_dates}</p>
+              </div>
             )}
-
             {exhibitionACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่โครงการ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.project_date}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><CalendarIcon size={18} /><span className="text-sm font-semibold">วันที่โครงการ</span></div>
+                <p className="text-base text-muted">{exhibitionACF.project_date}</p>
+              </div>
             )}
-
             {exhibitionACF.exhibition_type && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ประเภทนิทรรศการ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.exhibition_type}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">ประเภทนิทรรศการ</span></div>
+                <p className="text-base text-muted">{exhibitionACF.exhibition_type}</p>
+              </div>
             )}
-
             {exhibitionACF.number_of_artworks && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    จำนวนชิ้นงาน
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.number_of_artworks}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">จำนวนชิ้นงาน</span></div>
+                <p className="text-base text-muted">{exhibitionACF.number_of_artworks}</p>
+              </div>
             )}
-
             {exhibitionACF.exhibition_medium && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    สื่อที่ใช้
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {exhibitionACF.exhibition_medium}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">สื่อที่ใช้</span></div>
+                <p className="text-base text-muted">{exhibitionACF.exhibition_medium}</p>
+              </div>
             )}
-          </SimpleGrid>
-
+          </div>
           {exhibitionACF.project_description && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                รายละเอียดโปรเจค
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
-                {exhibitionACF.project_description}
-              </Text>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รายละเอียดโปรเจค</span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">{exhibitionACF.project_description}</p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
@@ -915,113 +530,50 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const campaignACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {campaignACF.campaign_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ชื่อแคมเปญ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {campaignACF.campaign_name}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">ชื่อแคมเปญ</span></div>
+                <p className="text-base text-muted">{campaignACF.campaign_name}</p>
+              </div>
             )}
-
             {campaignACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {campaignACF.client_name}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">ลูกค้า</span></div>
+                <p className="text-base text-muted">{campaignACF.client_name}</p>
+              </div>
             )}
-
             {campaignACF.campaign_duration && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <Clock size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ระยะเวลาแคมเปญ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {campaignACF.campaign_duration}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><Clock size={18} /><span className="text-sm font-semibold">ระยะเวลาแคมเปญ</span></div>
+                <p className="text-base text-muted">{campaignACF.campaign_duration}</p>
+              </div>
             )}
-
             {campaignACF.target_audience && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    กลุ่มเป้าหมาย
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {campaignACF.target_audience}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">กลุ่มเป้าหมาย</span></div>
+                <p className="text-base text-muted">{campaignACF.target_audience}</p>
+              </div>
             )}
-          </SimpleGrid>
-
-          {(campaignACF.campaign_objectives ||
-            campaignACF.project_description) && (
-              <VStack align="start" gap={2} w="full">
-                <Text
-                  fontSize="sm"
-                  fontWeight="600"
-                  color={T.accent}
-
-                >
-                  {campaignACF.campaign_objectives
-                    ? "วัตถุประสงค์แคมเปญ"
-                    : "รายละเอียดโปรเจค"}
-                </Text>
-                <Text
-                  fontSize="md"
-                  color={T.textMuted}
-
-                  lineHeight="1.8"
-                  whiteSpace="pre-wrap"
-                >
-                  {campaignACF.campaign_objectives ||
-                    campaignACF.project_description}
-                </Text>
-              </VStack>
-            )}
-
-          {campaignACF.campaign_results && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-
-              >
-                ผลลัพธ์แคมเปญ
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
-                {campaignACF.campaign_results}
-              </Text>
-            </VStack>
+          </div>
+          {(campaignACF.campaign_objectives || campaignACF.project_description) && (
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">
+                {campaignACF.campaign_objectives ? "วัตถุประสงค์แคมเปญ" : "รายละเอียดโปรเจค"}
+              </span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">
+                {campaignACF.campaign_objectives || campaignACF.project_description}
+              </p>
+            </div>
           )}
-        </VStack>
+          {campaignACF.campaign_results && (
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">ผลลัพธ์แคมเปญ</span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">{campaignACF.campaign_results}</p>
+            </div>
+          )}
+        </div>
       );
     }
 
@@ -1029,165 +581,79 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const producerACF = acfData as any;
       return (
-        <VStack gap={6} align="start" w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 items-start w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {producerACF.client_name && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ลูกค้า
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.client_name}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">ลูกค้า</span></div>
+                <p className="text-base text-muted">{producerACF.client_name}</p>
+              </div>
             )}
-
             {producerACF.production_type && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <Film size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ประเภทผลงาน
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.production_type}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><Film size={18} /><span className="text-sm font-semibold">ประเภทผลงาน</span></div>
+                <p className="text-base text-muted">{producerACF.production_type}</p>
+              </div>
             )}
-
             {producerACF.project_date && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <CalendarIcon size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    วันที่ผลิต
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.project_date}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><CalendarIcon size={18} /><span className="text-sm font-semibold">วันที่ผลิต</span></div>
+                <p className="text-base text-muted">{producerACF.project_date}</p>
+              </div>
             )}
-
             {producerACF.production_role && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    บทบาท
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.production_role}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">บทบาท</span></div>
+                <p className="text-base text-muted">{producerACF.production_role}</p>
+              </div>
             )}
-
             {producerACF.production_budget && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    งบประมาณ
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.production_budget}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">งบประมาณ</span></div>
+                <p className="text-base text-muted">{producerACF.production_budget}</p>
+              </div>
             )}
-
             {producerACF.production_timeline && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <Clock size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ระยะเวลา
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.production_timeline}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><Clock size={18} /><span className="text-sm font-semibold">ระยะเวลา</span></div>
+                <p className="text-base text-muted">{producerACF.production_timeline}</p>
+              </div>
             )}
-
             {producerACF.team_size && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <User size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ขนาดทีม
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.team_size} คน
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><User size={18} /><span className="text-sm font-semibold">ขนาดทีม</span></div>
+                <p className="text-base text-muted">{producerACF.team_size} คน</p>
+              </div>
             )}
-
             {producerACF.distribution_platforms && (
-              <VStack align="start" gap={2}>
-                <HStack gap={2} color={T.accent}>
-                  <Play size={18} />
-                  <Text fontSize="sm" fontWeight="600">
-                    ช่องทางเผยแพร่
-                  </Text>
-                </HStack>
-                <Text fontSize="md" color={T.textMuted}>
-                  {producerACF.distribution_platforms}
-                </Text>
-              </VStack>
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 text-accent"><Play size={18} /><span className="text-sm font-semibold">ช่องทางเผยแพร่</span></div>
+                <p className="text-base text-muted">{producerACF.distribution_platforms}</p>
+              </div>
             )}
-          </SimpleGrid>
-
+          </div>
           {producerACF.project_description && (
-            <VStack align="start" gap={2} w="full">
-              <Text
-                fontSize="sm"
-                fontWeight="600"
-                color={T.accent}
-              >
-                รายละเอียดโปรเจค
-              </Text>
-              <Text
-                fontSize="md"
-                color={T.textMuted}
-                lineHeight="1.8"
-                whiteSpace="pre-wrap"
-              >
-                {producerACF.project_description}
-              </Text>
-            </VStack>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <span className="text-sm font-semibold text-accent">รายละเอียดโปรเจค</span>
+              <p className="text-base text-muted leading-[1.8] whitespace-pre-wrap">{producerACF.project_description}</p>
+            </div>
           )}
-        </VStack>
+        </div>
       );
     }
 
     return null;
   };
 
-  // Don't render if no ACF data
   if (!acf || Object.keys(acf).length === 0) {
     return null;
   }
 
   return (
-    <Box>
-      <Heading
-        fontSize="xl"
-        fontWeight="600"
-        color={T.text}
-
-        mb={6}
-      >
-        ข้อมูลโปรเจค
-      </Heading>
+    <div>
+      <h2 className="text-xl font-semibold text-content mb-6">ข้อมูลโปรเจค</h2>
       {renderACFFields()}
-    </Box>
+    </div>
   );
 }
 
@@ -1258,14 +724,14 @@ export function PortfolioGallery({
 
   if (loading) {
     return (
-      <Box>
-        <Skeleton height="24px" width="200px" mb={6} />
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
+      <div>
+        <div className="animate-pulse bg-surface rounded h-6 w-[200px] mb-6" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, index) => (
-            <Skeleton key={index} height="200px" borderRadius="lg" />
+            <div key={index} className="animate-pulse bg-surface rounded-lg h-[200px]" />
           ))}
-        </SimpleGrid>
-      </Box>
+        </div>
+      </div>
     );
   }
 
@@ -1285,14 +751,8 @@ export function PortfolioGallery({
   const isProducer = portfolio.category === "producer";
 
   return (
-    <Box>
-      <Heading
-        fontSize="xl"
-        fontWeight="600"
-        color={T.text}
-
-        mb={6}
-      >
+    <div>
+      <h2 className="text-xl font-semibold text-content mb-6">
         {isPhotography
           ? `ภาพถ่าย (${images.length} ภาพ)`
           : isVideography
@@ -1312,393 +772,204 @@ export function PortfolioGallery({
                         : isProducer
                           ? `ภาพจากการผลิต (${images.length} ภาพ)`
                           : `แกลเลอรี่ (${images.length} ภาพ)`}
-      </Heading>
+      </h2>
 
       {isPhotography ? (
-        /* Photography-optimized layout with natural proportions */
-        <VStack gap={8} w="full">
-          {/* Hero Image - First image larger */}
-          <VStack w="full" gap={3}>
-            <Box
-              w="full"
-              position="relative"
-              overflow="hidden"
-              borderRadius="xl"
-            >
-              <Image
+        <div className="flex flex-col gap-8 w-full">
+          <div className="flex flex-col w-full gap-3">
+            <div className="w-full relative overflow-hidden rounded-xl">
+              <img
                 src={images[0].url}
                 alt={images[0].alt || "Featured Photography"}
-                objectFit="contain"
-                w="full"
-                maxH="600px"
-                cursor="pointer"
-                transition="transform 0.3s ease"
-                _hover={{
-                  transform: "scale(1.02)",
-                }}
+                className="object-contain w-full max-h-[600px] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
                 onClick={() => openLightbox(0)}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/placeholder-image.svg";
-                }}
+                onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
               />
-            </Box>
+            </div>
             {images[0].caption && (
-              <Text
-                fontSize="sm"
-                color={T.textDim}
-
-                fontStyle="italic"
-                textAlign="center"
-                px={4}
+              <p
+                className="text-sm text-dim italic text-center px-4"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(images[0].caption) }}
               />
             )}
-          </VStack>
-
-          {/* Remaining images in responsive masonry */}
+          </div>
           {images.length > 1 && (
-            <SimpleGrid
-              columns={{ base: 1, md: 2, lg: 3 }}
-              gap={6}
-              w="full"
-              alignItems="start"
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full items-start">
               {images.slice(1).map((image, index) => (
-                <VStack
-                  key={image.id || index + 1}
-                  gap={3}
-                  align="stretch"
-                  w="full"
-                >
-                  <Box
-                    position="relative"
-                    overflow="hidden"
-                    borderRadius="lg"
-                  >
-                    <Image
+                <div key={image.id || index + 1} className="flex flex-col gap-3 w-full">
+                  <div className="relative overflow-hidden rounded-lg">
+                    <img
                       src={image.url}
                       alt={image.alt || `Photography ${index + 2}`}
-                      objectFit="contain"
-                      w="full"
-                      maxH="400px"
-                      cursor="pointer"
-                      transition="transform 0.2s ease"
-                      _hover={{
-                        transform: "scale(1.05)",
-                      }}
+                      className="object-contain w-full max-h-[400px] cursor-pointer transition-transform duration-200 hover:scale-105"
                       onClick={() => openLightbox(index + 1)}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = "/placeholder-image.svg";
-                      }}
+                      onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                     />
-                  </Box>
+                  </div>
                   {image.caption && (
-                    <Text
-                      fontSize="sm"
-                      color={T.textDim}
-
-                      fontStyle="italic"
-                      textAlign="center"
+                    <p
+                      className="text-sm text-dim italic text-center"
                       dangerouslySetInnerHTML={{ __html: sanitizeHtml(image.caption) }}
                     />
                   )}
-                </VStack>
+                </div>
               ))}
-            </SimpleGrid>
+            </div>
           )}
-        </VStack>
+        </div>
       ) : isVideography ? (
-        /* Video-optimized layout */
-        <VStack gap={6} w="full">
-          {/* Video stills in cinematic layout */}
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {images.map((image, index) => (
-              <AspectRatio key={image.id || index} ratio={16 / 9}>
-                <Image
+              <div key={image.id || index} className="aspect-video">
+                <img
                   src={image.url}
                   alt={image.alt || `Video still ${index + 1}`}
-                  objectFit="cover"
-                  borderRadius="lg"
-                  cursor="pointer"
-                  _hover={{
-                    transform: "scale(1.02)",
-                    transition: "transform 0.3s ease",
-                    filter: "brightness(1.1)",
-                  }}
+                  className="object-cover rounded-lg cursor-pointer w-full h-full hover:scale-[1.02] hover:brightness-110 transition-all duration-300"
                   onClick={() => openLightbox(index)}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder-image.svg";
-                  }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                 />
-              </AspectRatio>
+              </div>
             ))}
-          </SimpleGrid>
-        </VStack>
+          </div>
+        </div>
       ) : isWebsite ? (
-        /* Website-optimized layout - screenshot style */
-        <VStack gap={6} w="full">
-          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
             {images.map((image, index) => (
-              <AspectRatio key={image.id || index} ratio={16 / 10}>
-                <Image
+              <div key={image.id || index} className="aspect-[16/10]">
+                <img
                   src={image.url}
                   alt={image.alt || `Website screenshot ${index + 1}`}
-                  objectFit="cover"
-                  borderRadius="md"
-                  border="1px solid"
-                  borderColor={T.border}
-                  cursor="pointer"
-                  _hover={{
-                    transform: "scale(1.02)",
-                    transition: "transform 0.3s ease",
-                    borderColor: T.accent,
-                  }}
+                  className="object-cover rounded-md border border-edge cursor-pointer w-full h-full hover:scale-[1.02] hover:border-accent transition-all duration-300"
                   onClick={() => openLightbox(index)}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder-image.svg";
-                  }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                 />
-              </AspectRatio>
+              </div>
             ))}
-          </SimpleGrid>
-        </VStack>
+          </div>
+        </div>
       ) : isVideoEditing ? (
-        /* Video editing layout - cinematic stills */
-        <VStack gap={6} w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} w="full">
+        <div className="flex flex-col gap-6 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {images.map((image, index) => (
-              <AspectRatio key={image.id || index} ratio={16 / 9}>
-                <Image
+              <div key={image.id || index} className="aspect-video">
+                <img
                   src={image.url}
                   alt={image.alt || `Video editing still ${index + 1}`}
-                  objectFit="cover"
-                  borderRadius="lg"
-                  cursor="pointer"
-                  _hover={{
-                    transform: "scale(1.02)",
-                    transition: "transform 0.3s ease",
-                    filter: "brightness(1.1)",
-                  }}
+                  className="object-cover rounded-lg cursor-pointer w-full h-full hover:scale-[1.02] hover:brightness-110 transition-all duration-300"
                   onClick={() => openLightbox(index)}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder-image.svg";
-                  }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                 />
-              </AspectRatio>
+              </div>
             ))}
-          </SimpleGrid>
-        </VStack>
+          </div>
+        </div>
       ) : isGraphicDesign || isPrint ? (
-        /* Design/Print-optimized layout - focused on visual work */
-        <VStack gap={6} w="full">
-          {/* Featured design - first image larger */}
+        <div className="flex flex-col gap-6 w-full">
           {images.length > 0 && (
-            <Box w="full" maxW="600px" mx="auto">
-              <Image
+            <div className="w-full max-w-[600px] mx-auto">
+              <img
                 src={images[0].url}
                 alt={images[0].alt || "Featured Design"}
-                objectFit="contain"
-                borderRadius="lg"
-                cursor="pointer"
-                maxH="500px"
+                className="object-contain rounded-lg cursor-pointer max-h-[500px]"
                 onClick={() => openLightbox(0)}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/placeholder-image.svg";
-                }}
+                onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
               />
-            </Box>
+            </div>
           )}
-
-          {/* Additional designs */}
           {images.length > 1 && (
-            <SimpleGrid columns={{ base: 2, md: 3 }} gap={4} w="full">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
               {images.slice(1).map((image, index) => (
-                <AspectRatio key={image.id || index} ratio={1}>
-                  <Image
+                <div key={image.id || index} className="aspect-square">
+                  <img
                     src={image.url}
                     alt={image.alt || `Design ${index + 2}`}
-                    objectFit="cover"
-                    borderRadius="md"
-                    cursor="pointer"
-                    _hover={{
-                      transform: "scale(1.05)",
-                      transition: "transform 0.2s ease",
-                    }}
+                    className="object-cover rounded-md cursor-pointer w-full h-full hover:scale-105 transition-transform duration-200"
                     onClick={() => openLightbox(index + 1)}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/placeholder-image.svg";
-                    }}
+                    onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                   />
-                </AspectRatio>
+                </div>
               ))}
-            </SimpleGrid>
+            </div>
           )}
-        </VStack>
+        </div>
       ) : (
-        /* Standard grid layout for other categories (including exhibition) */
-        <VStack gap={6} w="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={8} w="full">
+        <div className="flex flex-col gap-6 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
             {images.map((image, index) => (
-              <VStack key={image.id || index} gap={3} align="stretch" w="full">
-                <Box
-                  position="relative"
-                  overflow="hidden"
-                  borderRadius="lg"
-                  bg={T.surface}
-                >
-                  <Image
+              <div key={image.id || index} className="flex flex-col gap-3 w-full">
+                <div className="relative overflow-hidden rounded-lg bg-surface">
+                  <img
                     src={image.url}
                     alt={image.alt || `Gallery image ${index + 1}`}
-                    objectFit="contain"
-                    w="full"
-                    maxH="500px"
-                    cursor="pointer"
-                    transition="transform 0.3s ease"
-                    _hover={{
-                      transform: "scale(1.03)",
-                    }}
+                    className="object-contain w-full max-h-[500px] cursor-pointer transition-transform duration-300 hover:scale-[1.03]"
                     onClick={() => openLightbox(index)}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/placeholder-image.svg";
-                    }}
+                    onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                   />
-                </Box>
+                </div>
                 {image.caption && (
-                  <Box
-                    bg={T.surface}
-                    p={4}
-                    borderRadius="md"
-                  >
-                    <Text
-                      fontSize="sm"
-                      color={T.textMuted}
-
-
-                      lineHeight="1.6"
+                  <div className="bg-surface p-4 rounded-md">
+                    <p
+                      className="text-sm text-muted leading-[1.6]"
                       dangerouslySetInnerHTML={{ __html: sanitizeHtml(image.caption) }}
                     />
-                  </Box>
+                  </div>
                 )}
-              </VStack>
+              </div>
             ))}
-          </SimpleGrid>
-        </VStack>
+          </div>
+        </div>
       )}
 
-      {/* Lightbox Modal */}
       {lightboxOpen && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          w="100vw"
-          h="100vh"
-          bg="rgba(0, 0, 0, 0.9)"
-          zIndex="9999"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+        <div
+          className="fixed top-0 left-0 w-screen h-screen bg-black/90 z-[9999] flex items-center justify-center"
           onClick={closeLightbox}
         >
-          {/* Close Button */}
-          <IconButton
-            position="absolute"
-            top="20px"
-            right="20px"
+          <button
+            className="absolute top-5 right-5 bg-white/20 text-white hover:bg-white/30 p-2 rounded-full"
             aria-label="Close lightbox"
-            bg="whiteAlpha.200"
-            color="white"
-            _hover={{ bg: "whiteAlpha.300" }}
             onClick={closeLightbox}
-            size="lg"
-            borderRadius="full"
           >
             <X size={24} />
-          </IconButton>
+          </button>
 
-          {/* Previous Button */}
           {images.length > 1 && (
-            <IconButton
-              position="absolute"
-              left="20px"
-              top="50%"
-              transform="translateY(-50%)"
+            <button
+              className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 text-white hover:bg-white/30 p-2 rounded-full"
               aria-label="Previous image"
-              bg="whiteAlpha.200"
-              color="white"
-              _hover={{ bg: "whiteAlpha.300" }}
-              onClick={(e) => {
-                e.stopPropagation();
-                prevImage();
-              }}
-              size="lg"
-              borderRadius="full"
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
             >
               <ChevronLeft size={24} />
-            </IconButton>
+            </button>
           )}
 
-          {/* Next Button */}
           {images.length > 1 && (
-            <IconButton
-              position="absolute"
-              right="20px"
-              top="50%"
-              transform="translateY(-50%)"
+            <button
+              className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 text-white hover:bg-white/30 p-2 rounded-full"
               aria-label="Next image"
-              bg="whiteAlpha.200"
-              color="white"
-              _hover={{ bg: "whiteAlpha.300" }}
-              onClick={(e) => {
-                e.stopPropagation();
-                nextImage();
-              }}
-              size="lg"
-              borderRadius="full"
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
             >
               <ChevronRight size={24} />
-            </IconButton>
+            </button>
           )}
 
-          {/* Main Image */}
-          <Box maxW="90vw" maxH="90vh" onClick={(e) => e.stopPropagation()}>
-            <Image
+          <div className="max-w-[90vw] max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+            <img
               src={images[currentImageIndex]?.url}
               alt={images[currentImageIndex]?.alt || "Lightbox image"}
-              objectFit="contain"
-              maxW="90vw"
-              maxH="90vh"
-              borderRadius="lg"
+              className="object-contain max-w-[90vw] max-h-[90vh] rounded-lg"
             />
-          </Box>
+          </div>
 
-          {/* Image Counter */}
           {images.length > 1 && (
-            <Box
-              position="absolute"
-              bottom="20px"
-              left="50%"
-              transform="translateX(-50%)"
-              bg="whiteAlpha.200"
-              color="white"
-              px={4}
-              py={2}
-              borderRadius="full"
-              fontSize="sm"
-            >
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-white/20 text-white px-4 py-2 rounded-full text-sm">
               {currentImageIndex + 1} / {images.length}
-            </Box>
+            </div>
           )}
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }

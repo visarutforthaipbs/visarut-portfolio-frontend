@@ -1,93 +1,50 @@
 "use client";
 
-import {
-  Box,
-  Container,
-  Text,
-  HStack,
-} from "@chakra-ui/react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config";
-import { T } from "@/lib/tokens";
 
 export function Footer() {
   return (
-    <Box
-      as="footer"
+    <footer
       role="contentinfo"
-      bg={T.bg}
-      borderTop="1px solid"
-      borderColor={T.border}
-      mt="auto"
-      display="flex"
-      justifyContent="center"
-      w="100%"
+      className="mt-auto flex justify-center w-full border-t border-edge bg-base"
     >
-      <Container maxW="5xl" px={{ base: 5, md: 6 }}>
-        <HStack
-          justify="space-between"
-          align="center"
-          py={6}
-          flexWrap="wrap"
-          gap={3}
-        >
-          <Text
-            fontSize="xs"
-            color={T.textDim}
-          >
+      <div className="max-w-5xl w-full mx-auto px-5 md:px-6">
+        <div className="flex justify-between items-center py-6 flex-wrap gap-3">
+          <span className="text-xs text-dim">
             © {new Date().getFullYear()} {siteConfig.authorTh}
-          </Text>
+          </span>
 
-          <HStack gap={4}>
+          <div className="flex items-center gap-4">
             <Link href={`mailto:${siteConfig.social.email}`}>
-              <Text
-                fontSize="xs"
-                color={T.textDim}
-                _hover={{ color: T.text }}
-                transition="color 0.15s"
-              >
+              <span className="text-xs text-dim hover:text-content transition-colors duration-150">
                 Email
-              </Text>
+              </span>
             </Link>
             {siteConfig.social.instagram && (
               <Link href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer">
-                <Text
-                  fontSize="xs"
-                  color={T.textDim}
-                  _hover={{ color: T.text }}
-                  transition="color 0.15s"
-                >
+                <span className="text-xs text-dim hover:text-content transition-colors duration-150">
                   Instagram
-                </Text>
+                </span>
               </Link>
             )}
             {siteConfig.social.facebook && (
               <Link href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer">
-                <Text
-                  fontSize="xs"
-                  color={T.textDim}
-                  _hover={{ color: T.text }}
-                  transition="color 0.15s"
-                >
+                <span className="text-xs text-dim hover:text-content transition-colors duration-150">
                   Facebook
-                </Text>
+                </span>
               </Link>
             )}
             {siteConfig.social.linkedin && (
               <Link href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">
-                <Text
-                  fontSize="xs"
-                  color={T.textDim}
-                  _hover={{ color: T.text }}
-                  transition="color 0.15s"
-                >
+                <span className="text-xs text-dim hover:text-content transition-colors duration-150">
                   LinkedIn
-                </Text>
+                </span>
               </Link>
             )}
-          </HStack>
-        </HStack>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }

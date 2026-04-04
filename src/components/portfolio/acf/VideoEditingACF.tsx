@@ -1,62 +1,46 @@
-import { Box, Heading, Text, Stack, HStack, Link } from "@chakra-ui/react";
 import { Film, Video } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { VideoEditingACF } from "@/types/acf";
 
 interface VideoEditingACFDisplayProps {
   acf: VideoEditingACF;
 }
 
-/**
- * ACF display component for Video Editing portfolio items
- */
 export function VideoEditingACFDisplay({ acf }: VideoEditingACFDisplayProps) {
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.editing_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายการตัดต่อ
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.editing_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายการตัดต่อ</h3>
+          <p className="text-muted">{acf.editing_description}</p>
+        </div>
       )}
 
       {acf.software && (
-        <Box>
-          <Heading size="md" mb={3}>
-            ซอฟต์แวร์ที่ใช้
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">ซอฟต์แวร์ที่ใช้</h3>
+          <div className="flex items-center gap-3">
             <Film size={20} />
-            <Text color={T.textMuted}>
-              {acf.software}
-            </Text>
-          </HStack>
-        </Box>
+            <span className="text-muted">{acf.software}</span>
+          </div>
+        </div>
       )}
 
       {acf.video_link && (
-        <Box>
-          <Heading size="md" mb={3}>
-            วิดีโอ
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">วิดีโอ</h3>
+          <div className="flex items-center gap-3">
             <Video size={20} />
-            <Link
+            <a
               href={acf.video_link}
               target="_blank"
               rel="noopener noreferrer"
-              color="blue.500"
-              _hover={{ textDecoration: "underline" }}
+              className="text-blue-500 hover:underline"
             >
               ดูวิดีโอเต็ม
-            </Link>
-          </HStack>
-        </Box>
+            </a>
+          </div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }

@@ -1,163 +1,100 @@
 "use client";
 
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-} from "@chakra-ui/react";
 import { Layout } from "@/components/layout";
 import { workExperience, awards } from "@/constants/data";
 import { ExperienceItem } from "@/components/ui/ExperienceItem";
-import { T } from "@/lib/tokens";
 
 export default function AboutClient() {
   return (
     <Layout>
       {/* Hero */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 20, md: 28 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-20 md:py-28 flex justify-center w-full"
         role="region"
         aria-label="เกี่ยวกับ"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={5} textAlign="center">
-            <Heading
-              fontSize={{ base: "3xl", md: "4xl" }}
-              fontWeight="bold"
-              color={T.text}
-              letterSpacing="-0.025em"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-5 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-content tracking-tight">
               เกี่ยวกับ
-            </Heading>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color={T.textMuted}
-              lineHeight="1.8"
-              maxW="560px"
-            >
+            </h1>
+            <p className="text-base md:text-lg text-muted leading-[1.8] max-w-[560px] mx-auto">
               วิศรุต แสนคำ ผู้ผลิตสื่อหลายรูปแบบ
               โดยมีความเชี่ยวชาญเป็นพิเศษกับภาคประชาสังคม องค์กรพัฒนาเอกชน
               และสถาบันการศึกษามากกว่า ซึ่งเขาได้ร่วมทำงานมายาวนานกว่า 10 ปี
               (ตั้งแต่ปี พ.ศ. 2560)
               โดยการทำงานของวิศรุตมุ่งมั่นในการเล่าเรื่องประเด็นทางสังคมผ่านงานสื่อที่เหมาะสมกับเนื้อหา
               เพื่อส่งเสริมการรับรู้และขับเคลื่อนการเปลี่ยนแปลงเชิงสังคม
-            </Text>
-          </VStack>
-        </Container>
-      </Box>
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
       {/* Experience */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="ประสบการณ์"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={8} align="stretch">
-            <Heading
-              fontSize={{ base: "lg", md: "xl" }}
-              fontWeight="medium"
-              color={T.textDim}
-              textTransform="uppercase"
-              letterSpacing="wider"
-              textAlign="center"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-8">
+            <h2 className="text-lg md:text-xl font-medium text-dim uppercase tracking-wider text-center">
               ประสบการณ์
-            </Heading>
-            <VStack gap={4} align="stretch">
+            </h2>
+            <div className="flex flex-col gap-4">
               {workExperience.map((job, index) => (
                 <ExperienceItem key={index} {...job} />
               ))}
-            </VStack>
-          </VStack>
-        </Container>
-      </Box>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
       {/* Awards */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="รางวัล"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={8} align="stretch">
-            <Heading
-              fontSize={{ base: "lg", md: "xl" }}
-              fontWeight="medium"
-              color={T.textDim}
-              textTransform="uppercase"
-              letterSpacing="wider"
-              textAlign="center"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-8">
+            <h2 className="text-lg md:text-xl font-medium text-dim uppercase tracking-wider text-center">
               รางวัล
-            </Heading>
-            <VStack gap={6} align="stretch">
+            </h2>
+            <div className="flex flex-col gap-6">
               {awards.map((award, index) => (
-                <HStack
+                <div
                   key={index}
-                  justify="space-between"
-                  align="start"
-                  py={2}
-                  flexWrap="wrap"
-                  gap={2}
+                  className="flex justify-between items-start py-2 flex-wrap gap-2"
                 >
-                  <VStack align="start" gap={0.5}>
-                    <Text
-                      fontSize={{ base: "sm", md: "md" }}
-                      fontWeight="medium"
-                      color={T.text}
-                    >
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-sm md:text-base font-medium text-content">
                       {award.title}
-                    </Text>
-                    <Text
-                      fontSize="sm"
-                      color={T.textMuted}
-                    >
+                    </span>
+                    <span className="text-sm text-muted">
                       {award.organization}
                       {award.category && ` — ${award.category}`}
-                    </Text>
-                  </VStack>
-                  <Text
-                    fontSize="sm"
-                    color={T.textDim}
-                    flexShrink={0}
-                  >
+                    </span>
+                  </div>
+                  <span className="text-sm text-dim shrink-0">
                     {award.year}
-                  </Text>
-                </HStack>
+                  </span>
+                </div>
               ))}
-            </VStack>
-          </VStack>
-        </Container>
-      </Box>
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }

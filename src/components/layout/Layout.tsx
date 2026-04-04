@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, Flex } from "@chakra-ui/react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 
@@ -10,34 +9,18 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <Flex direction="column" minH="100vh">
+    <div className="flex flex-col min-h-screen">
       <a
         href="#main-content"
-        style={{
-          position: "absolute",
-          top: "-100px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          backgroundColor: "#161922",
-          color: "#E8E8ED",
-          padding: "8px 16px",
-          borderRadius: "6px",
-          fontSize: "14px",
-          fontWeight: 500,
-          zIndex: 1000,
-          transition: "top 0.2s",
-          textDecoration: "none",
-        }}
-        onFocus={(e) => { e.currentTarget.style.top = "12px"; }}
-        onBlur={(e) => { e.currentTarget.style.top = "-100px"; }}
+        className="absolute -top-[100px] left-1/2 -translate-x-1/2 bg-surface text-content px-4 py-2 rounded-md text-sm font-medium z-[1000] transition-[top] duration-200 no-underline focus:top-3"
       >
         ข้ามไปยังเนื้อหาหลัก
       </a>
       <Header />
-      <Box flex="1" as="main" id="main-content">
+      <main className="flex-1" id="main-content">
         {children}
-      </Box>
+      </main>
       <Footer />
-    </Flex>
+    </div>
   );
 }

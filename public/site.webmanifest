@@ -11,7 +11,7 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/logo/black-favicon.svg",
+      "src": "/logo/logo-1.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

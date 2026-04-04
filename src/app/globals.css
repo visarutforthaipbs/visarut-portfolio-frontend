@@ -1,3 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-base: #0F1117;
+  --color-surface: #161922;
+  --color-surface-hover: #1C1F2B;
+  --color-edge: #23273A;
+  --color-content: #E8E8ED;
+  --color-muted: #8B8FA3;
+  --color-dim: #565B73;
+  --color-accent: #ED8936;
+  --color-accent-dim: rgba(237,137,54,0.12);
+  --color-signal: #22C55E;
+  --color-signal-dim: rgba(34,197,94,0.12);
+}
+
 /* DB Helvethaica Font Definitions */
 @font-face {
   font-family: "DB Helvethaica";
@@ -34,8 +50,6 @@
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 /* Restore list styles for content areas */
@@ -46,6 +60,44 @@
   list-style: revert;
   margin: revert;
   padding: revert;
+}
+
+/* WordPress content image centering */
+.wordpress-content img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.wordpress-content figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+
+/* WordPress content mobile overflow protection */
+.wordpress-content iframe,
+.wordpress-content video,
+.wordpress-content embed,
+.wordpress-content object {
+  max-width: 100%;
+}
+
+.wordpress-content pre,
+.wordpress-content code {
+  overflow-x: auto;
+  word-break: break-word;
+}
+
+.wordpress-content table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 html,
@@ -72,27 +124,9 @@ body {
 }
 
 
-/* Remove full-width complications and use simple centering */
-/* .full-width removed - use Chakra Container/Box layout instead */
-
-/* Alternative constrained width method */
-/* .full-width-alt removed */
-
-/* Ensure main layout doesn't constrain width unnecessarily */
 main {
   width: 100%;
   overflow-x: hidden;
-}
-
-/* Override any Chakra UI container constraints for better control */
-[data-theme] {
-  width: 100%;
-}
-
-/* Additional utility for debugging */
-.debug-width {
-  outline: 2px solid red;
-  width: 100vw;
 }
 
 /* Thai text styling - removed as it's now the default body font */
@@ -268,7 +302,7 @@ img {
 }
 
 /* Mobile optimizations */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   /* Improve touch targets */
   button,
   a {
@@ -281,23 +315,10 @@ img {
     line-height: 1.6;
   }
 
-  /* Ensure content doesn't get too close to edges */
-  .chakra-container {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-}
-
-/* Tablet optimizations */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .chakra-container {
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-  }
 }
 
 /* Improve loading performance */
-.chakra-image {
+img {
   transition: opacity 0.3s ease;
 }
 
@@ -314,13 +335,6 @@ a:focus-visible {
   html {
     scroll-padding-top: 80px;
   }
-}
-
-/* Ensure images are responsive */
-.chakra-aspect-ratio img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
 }
 
 /* Blog Content Styles */

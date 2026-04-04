@@ -1,20 +1,9 @@
 "use client";
 
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Input,
-  Textarea,
-} from "@chakra-ui/react";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
-import { T } from "@/lib/tokens";
 
 export default function ContactClient() {
   const [formData, setFormData] = useState({
@@ -48,278 +37,183 @@ export default function ContactClient() {
     }, 1500);
   };
 
+  const inputClass =
+    "w-full bg-transparent border-b border-edge focus:border-content outline-none text-sm text-content py-3 placeholder:text-dim transition-colors";
+
   return (
     <Layout>
       {/* Hero */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 20, md: 28 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-20 md:py-28 flex justify-center w-full"
         role="region"
         aria-label="ติดต่อ"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={5} textAlign="center">
-            <Heading
-              fontSize={{ base: "3xl", md: "4xl" }}
-              fontWeight="bold"
-              color={T.text}
-              letterSpacing="-0.025em"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-5 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-content tracking-tight">
               ติดต่อ
-            </Heading>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color={T.textMuted}
-              lineHeight="1.8"
-              maxW="560px"
-            >
+            </h1>
+            <p className="text-base md:text-lg text-muted leading-[1.8] max-w-[560px] mx-auto">
               พร้อมให้คำปรึกษาและรับฟังความต้องการของคุณ
-            </Text>
-          </VStack>
-        </Container>
-      </Box>
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Divider */}
-      <Box
-        w="100%"
-        display="flex"
-        justifyContent="center"
-        bg={T.bg}
-        aria-hidden="true"
-      >
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
       {/* Form Section */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="ส่งข้อความ"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={8} align="stretch">
-            <Heading
-              fontSize={{ base: "lg", md: "xl" }}
-              fontWeight="medium"
-              color={T.textDim}
-              textTransform="uppercase"
-              letterSpacing="wider"
-              textAlign="center"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-8">
+            <h2 className="text-lg md:text-xl font-medium text-dim uppercase tracking-wider text-center">
               ส่งข้อความ
-            </Heading>
+            </h2>
 
             {submitStatus === "success" && (
-              <Box textAlign="center" role="alert" aria-live="polite">
-                <Text fontSize="sm" color="green.500">
+              <div className="text-center" role="alert" aria-live="polite">
+                <span className="text-sm text-green-500">
                   ส่งข้อความสำเร็จ — เราจะติดต่อกลับโดยเร็ว
-                </Text>
-              </Box>
+                </span>
+              </div>
             )}
 
             {submitStatus === "error" && (
-              <Box textAlign="center" role="alert" aria-live="polite">
-                <Text fontSize="sm" color="red.500">
+              <div className="text-center" role="alert" aria-live="polite">
+                <span className="text-sm text-red-500">
                   เกิดข้อผิดพลาด — กรุณาลองใหม่อีกครั้ง
-                </Text>
-              </Box>
+                </span>
+              </div>
             )}
 
             <form onSubmit={handleSubmit}>
-              <VStack gap={5}>
-                <Input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="ชื่อ"
-                  aria-label="ชื่อ"
-                  size="lg"
-                  variant="flushed"
-                  borderColor={T.border}
-                  _focus={{ borderColor: T.text }}
-                  fontSize="sm"
-                  required
-                  color={T.text}
-                />
+              <div className="flex flex-col gap-5">
+                <div>
+                  <label htmlFor="name" className="sr-only">ชื่อ</label>
+                  <input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="ชื่อ"
+                    aria-label="ชื่อ"
+                    className={inputClass}
+                    required
+                  />
+                </div>
 
-                <Input
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="อีเมล"
-                  aria-label="อีเมล"
-                  size="lg"
-                  variant="flushed"
-                  borderColor={T.border}
-                  _focus={{ borderColor: T.text }}
-                  fontSize="sm"
-                  required
-                  color={T.text}
-                />
+                <div>
+                  <label htmlFor="email" className="sr-only">อีเมล</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="อีเมล"
+                    aria-label="อีเมล"
+                    className={inputClass}
+                    required
+                  />
+                </div>
 
-                <Input
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  placeholder="หัวข้อ"
-                  aria-label="หัวข้อ"
-                  size="lg"
-                  variant="flushed"
-                  borderColor={T.border}
-                  _focus={{ borderColor: T.text }}
-                  fontSize="sm"
-                  required
-                  color={T.text}
-                />
+                <div>
+                  <label htmlFor="subject" className="sr-only">หัวข้อ</label>
+                  <input
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="หัวข้อ"
+                    aria-label="หัวข้อ"
+                    className={inputClass}
+                    required
+                  />
+                </div>
 
-                <Textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  placeholder="ข้อความ"
-                  aria-label="ข้อความ"
-                  rows={5}
-                  resize="vertical"
-                  variant="flushed"
-                  borderColor={T.border}
-                  _focus={{ borderColor: T.text }}
-                  fontSize="sm"
-                  required
-                  color={T.text}
-                />
+                <div>
+                  <label htmlFor="message" className="sr-only">ข้อความ</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="ข้อความ"
+                    aria-label="ข้อความ"
+                    rows={5}
+                    className={`${inputClass} resize-y`}
+                    required
+                  />
+                </div>
 
-                <Box pt={4} w="full" textAlign="center">
+                <div className="pt-4 w-full text-center">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: isSubmitting ? "not-allowed" : "pointer",
-                    }}
+                    className="bg-transparent border-none cursor-pointer disabled:cursor-not-allowed"
                   >
-                    <HStack
-                      gap={2}
-                      justify="center"
-                      color={T.text}
-                      fontWeight="medium"
-                      fontSize="sm"
-                      transition="gap 0.2s"
-                      opacity={isSubmitting ? 0.5 : 1}
+                    <div
+                      className={`flex items-center gap-2 justify-center text-content font-medium text-sm transition-[gap] duration-200 ${
+                        isSubmitting ? "opacity-50" : ""
+                      }`}
                     >
-                      <Text>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</Text>
+                      <span>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</span>
                       <ArrowRight size={16} aria-hidden="true" />
-                    </HStack>
+                    </div>
                   </button>
-                </Box>
-              </VStack>
+                </div>
+              </div>
             </form>
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </section>
 
       {/* Divider */}
-      <Box
-        w="100%"
-        display="flex"
-        justifyContent="center"
-        bg={T.bg}
-        aria-hidden="true"
-      >
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
       {/* Contact Info Section */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="ช่องทางติดต่อ"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={8} align="stretch">
-            <Heading
-              fontSize={{ base: "lg", md: "xl" }}
-              fontWeight="medium"
-              color={T.textDim}
-              textTransform="uppercase"
-              letterSpacing="wider"
-              textAlign="center"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-8">
+            <h2 className="text-lg md:text-xl font-medium text-dim uppercase tracking-wider text-center">
               ช่องทางติดต่อ
-            </Heading>
+            </h2>
 
-            <VStack gap={4} align="stretch">
-              <HStack
-                justify="space-between"
-                align="center"
-                py={2}
-                borderBottom="1px solid"
-                borderColor={T.border}
-              >
-                <Text
-                  fontSize="sm"
-                  color={T.textMuted}
-                >
-                  อีเมล
-                </Text>
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-between items-center py-2 border-b border-edge">
+                <span className="text-sm text-muted">อีเมล</span>
                 <Link href="mailto:visarut298@gmail.com">
-                  <Text
-                    fontSize={{ base: "sm", md: "md" }}
-                    fontWeight="medium"
-                    color={T.text}
-                    _hover={{ color: T.textMuted }}
-                    transition="color 0.2s"
-                  >
+                  <span className="text-sm md:text-base font-medium text-content hover:text-muted transition-colors duration-200">
                     visarut298@gmail.com
-                  </Text>
+                  </span>
                 </Link>
-              </HStack>
+              </div>
 
-              <HStack
-                justify="space-between"
-                align="center"
-                py={2}
-                borderBottom="1px solid"
-                borderColor={T.border}
-              >
-                <Text
-                  fontSize="sm"
-                  color={T.textMuted}
-                >
-                  โทรศัพท์
-                </Text>
+              <div className="flex justify-between items-center py-2 border-b border-edge">
+                <span className="text-sm text-muted">โทรศัพท์</span>
                 <Link href="tel:+66627283058">
-                  <Text
-                    fontSize={{ base: "sm", md: "md" }}
-                    fontWeight="medium"
-                    color={T.text}
-                    _hover={{ color: T.textMuted }}
-                    transition="color 0.2s"
-                  >
+                  <span className="text-sm md:text-base font-medium text-content hover:text-muted transition-colors duration-200">
                     062-728-3058
-                  </Text>
+                  </span>
                 </Link>
-              </HStack>
-            </VStack>
-          </VStack>
-        </Container>
-      </Box>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }
-

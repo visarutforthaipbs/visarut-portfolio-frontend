@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { Camera, Aperture, Lightbulb, MapPin } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { PhotographyACF } from "@/types/acf";
 
 interface PhotographyACFDisplayProps {
   acf: PhotographyACF;
 }
 
-/**
- * ACF display component for Photography portfolio items
- */
 export function PhotographyACFDisplay({ acf }: PhotographyACFDisplayProps) {
   const items = [
     { icon: Camera, label: "กล้อง", value: acf.camera },
@@ -19,36 +14,28 @@ export function PhotographyACFDisplay({ acf }: PhotographyACFDisplayProps) {
   ];
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.photo_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายภาพถ่าย
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.photo_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายภาพถ่าย</h3>
+          <p className="text-muted">{acf.photo_description}</p>
+        </div>
       )}
 
-      <Box>
-        <Heading size="md" mb={4}>
-          ข้อมูลการถ่ายภาพ
-        </Heading>
-        <Stack gap={3}>
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลการถ่ายภาพ</h3>
+        <div className="flex flex-col gap-3">
           {items.map(({ icon: Icon, label, value }) =>
             value ? (
-              <HStack key={label} gap={3}>
+              <div key={label} className="flex items-center gap-3">
                 <Icon size={20} />
-                <Text fontWeight="medium">{label}:</Text>
-                <Text color={T.textMuted}>
-                  {value}
-                </Text>
-              </HStack>
+                <span className="font-medium">{label}:</span>
+                <span className="text-muted">{value}</span>
+              </div>
             ) : null
           )}
-        </Stack>
-      </Box>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,18 +1,8 @@
 "use client";
 
-import {
-  Button,
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Heading,
-  IconButton,
-  Portal,
-} from "@chakra-ui/react";
 import { Phone, Mail, X } from "lucide-react";
 import { useEffect, useRef, useCallback } from "react";
-import { T } from "@/lib/tokens";
+import { createPortal } from "react-dom";
 
 interface ContactPopupProps {
   isOpen: boolean;
@@ -23,7 +13,6 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  // Focus trap: cycle focus within modal
   const handleTabKey = useCallback(
     (e: KeyboardEvent) => {
       if (!dialogRef.current) return;
@@ -49,7 +38,6 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
     []
   );
 
-  // Handle escape key to close modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -61,12 +49,10 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
     };
 
     if (isOpen) {
-      // Save current focus to restore later
       previousFocusRef.current = document.activeElement as HTMLElement;
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
 
-      // Focus the dialog on open
       requestAnimationFrame(() => {
         dialogRef.current?.focus();
       });
@@ -76,7 +62,6 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
 
-      // Restore focus to triggering element
       if (previousFocusRef.current && !isOpen) {
         previousFocusRef.current.focus();
       }
@@ -85,162 +70,98 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
 
   if (!isOpen) return null;
 
-  return (
-    <Portal>
+  return createPortal(
+    <>
       {/* Backdrop */}
-      <Box
-        position="fixed"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        bg="blackAlpha.600"
-        zIndex={1000}
+      <div
+        className="fixed inset-0 bg-black/60 z-[1000]"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Content */}
-      <Box
+      <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label="ช่องทางติดต่อ"
         tabIndex={-1}
-        position="fixed"
-        top={{ base: "10%", md: "50%" }}
-        left="50%"
-        transform={{ base: "translate(-50%, 0)", md: "translate(-50%, -50%)" }}
-        bg={T.surface}
-        borderRadius="lg"
-        border="1px solid"
-        borderColor={T.border}
-        p={{ base: 4, md: 6 }}
-        maxW={{ base: "90vw", md: "400px" }}
-        w="full"
-        maxH={{ base: "80vh", md: "auto" }}
-        overflowY="auto"
-        zIndex={1001}
+        className="fixed top-4 md:top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-1/2 bg-surface rounded-lg border border-edge p-4 md:p-6 max-w-[90vw] md:max-w-[400px] w-full max-h-[85vh] md:max-h-[90vh] overflow-y-auto z-[1001]"
         onClick={(e) => e.stopPropagation()}
       >
-        <VStack gap={{ base: 4, md: 6 }} align="stretch">
+        <div className="flex flex-col gap-4 md:gap-6">
           {/* Header */}
-          <HStack justify="space-between" align="center">
-            <Heading
-              fontSize={{ base: "lg", md: "xl" }}
-              color={T.text}
-
-            >
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg md:text-xl font-bold text-content">
               ติดต่อ
-            </Heading>
-            <IconButton
-              variant="ghost"
-              aria-label="Close contact popup"
+            </h2>
+            <button
+              aria-label="ปิดหน้าต่างติดต่อ"
               onClick={onClose}
-              size={{ base: "sm", md: "md" }}
+              className="p-1 md:p-2 rounded hover:bg-surface-hover text-muted"
             >
               <X size={20} />
-            </IconButton>
-          </HStack>
+            </button>
+          </div>
 
           {/* Contact Information */}
-          <VStack gap={{ base: 3, md: 4 }} align="stretch">
+          <div className="flex flex-col gap-3 md:gap-4">
             {/* Email Section */}
-            <Box>
-              <HStack gap={3} mb={2}>
-                <Mail size={20} color={T.textDim} />
-                <Text
-                  fontSize="md"
-                  fontWeight="600"
-                  color={T.textMuted}
-
-                >
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Mail size={20} className="text-dim" />
+                <span className="text-base font-semibold text-muted">
                   ส่งรายละเอียดโครงการ
-                </Text>
-              </HStack>
-              <Text
-                fontSize="lg"
-                color={T.text}
-                fontWeight="500"
-                pl={8}
-              >
+                </span>
+              </div>
+              <p className="text-lg text-content font-medium pl-8">
                 visarut298@gmail.com
-              </Text>
-            </Box>
+              </p>
+            </div>
 
             {/* Phone Section */}
-            <Box>
-              <HStack gap={3} mb={2}>
-                <Phone size={20} color={T.textDim} />
-                <Text
-                  fontSize="md"
-                  fontWeight="600"
-                  color={T.textMuted}
-
-                >
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Phone size={20} className="text-dim" />
+                <span className="text-base font-semibold text-muted">
                   โทรติดต่อ
-                </Text>
-              </HStack>
-              <Text
-                fontSize="lg"
-                color={T.text}
-                fontWeight="500"
-                pl={8}
-              >
+                </span>
+              </div>
+              <p className="text-lg text-content font-medium pl-8">
                 062-7283058
-              </Text>
-            </Box>
-          </VStack>
+              </p>
+            </div>
+          </div>
 
           {/* Action Buttons */}
-          <VStack gap={{ base: 2, md: 3 }} pt={2}>
-            <Button
+          <div className="flex flex-col gap-2 md:gap-3 pt-2">
+            <button
               onClick={() => {
                 if (typeof window !== "undefined") {
                   window.open("mailto:visarut298@gmail.com", "_blank");
                 }
               }}
-              bg={T.accent}
-              color={T.bg}
-              _hover={{ bg: "#d97706" }}
-              size={{ base: "md", md: "lg" }}
-              w="full"
-
-              fontSize={{ base: "sm", md: "md" }}
-              py={{ base: 2, md: 3 }}
+              className="w-full bg-accent text-base hover:bg-[#d97706] text-sm md:text-base py-2 md:py-3 rounded-md flex items-center justify-center gap-2 transition-colors"
             >
-              <HStack gap={2}>
-                <Mail size={16} />
-                <Text>ส่งอีเมล</Text>
-              </HStack>
-            </Button>
+              <Mail size={16} />
+              <span>ส่งอีเมล</span>
+            </button>
 
-            <Button
+            <button
               onClick={() => {
                 if (typeof window !== "undefined") {
                   window.open("tel:0627283058", "_self");
                 }
               }}
-              variant="outline"
-              borderColor={T.border}
-              color={T.textMuted}
-              _hover={{
-                bg: T.surfaceHover,
-              }}
-              size={{ base: "md", md: "lg" }}
-              w="full"
-
-              fontSize={{ base: "sm", md: "md" }}
-              py={{ base: 2, md: 3 }}
+              className="w-full border border-edge text-muted hover:bg-surface-hover text-sm md:text-base py-2 md:py-3 rounded-md flex items-center justify-center gap-2 transition-colors"
             >
-              <HStack gap={2}>
-                <Phone size={16} />
-                <Text>โทรเลย</Text>
-              </HStack>
-            </Button>
-          </VStack>
-        </VStack>
-      </Box>
-    </Portal>
+              <Phone size={16} />
+              <span>โทรเลย</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>,
+    document.body
   );
 }

@@ -1,16 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  SimpleGrid,
-  Image,
-} from "@chakra-ui/react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -20,7 +10,6 @@ import type {
   BlogCategory,
   WordPressFeaturedMedia,
 } from "@/types/wordpress";
-import { T } from "@/lib/tokens";
 
 interface BlogClientProps {
   initialPosts: BlogPost[];
@@ -54,191 +43,128 @@ export default function BlogClient({ initialPosts, initialCategories }: BlogClie
   return (
     <Layout>
       {/* Hero */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 20, md: 28 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-20 md:py-28 flex justify-center w-full"
         role="region"
         aria-label="บล็อก"
       >
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={5} textAlign="center">
-            <Heading
-              fontSize={{ base: "3xl", md: "4xl" }}
-              fontWeight="bold"
-              color={T.text}
-              letterSpacing="-0.025em"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-5 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-content tracking-tight">
               บล็อก
-            </Heading>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color={T.textMuted}
-              lineHeight="1.8"
-            >
+            </h1>
+            <p className="text-base md:text-lg text-muted leading-[1.8]">
               บทความ ความคิดเห็น และประสบการณ์จากการทำงานด้านสื่อ
-            </Text>
-          </VStack>
-        </Container>
-      </Box>
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Divider */}
-      <Box w="100%" display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
-        <Box w="60px" h="1px" bg={T.border} />
-      </Box>
+      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+        <div className="w-[60px] h-px bg-edge" />
+      </div>
 
       {/* Content */}
-      <Box
-        as="section"
-        bg={T.bg}
-        py={{ base: 16, md: 24 }}
-        display="flex"
-        justifyContent="center"
-        w="100%"
+      <section
+        className="bg-base py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="รายการบทความ"
       >
-        <Container maxW="5xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={8} align="stretch" w="full">
+        <div className="max-w-5xl mx-auto px-5 md:px-6 w-full">
+          <div className="flex flex-col gap-8 w-full">
             {/* Category Filter */}
             {categories.length > 0 && (
-              <HStack gap={3} justify="center" flexWrap="wrap" role="tablist" aria-label="ตัวกรองหมวดหมู่">
+              <div className="flex items-center gap-3 justify-center flex-wrap" role="tablist" aria-label="ตัวกรองหมวดหมู่">
                 {filterOptions.map((option) => (
-                  <Text
+                  <button
                     key={option.value}
                     onClick={() => setSelectedCategory(option.value)}
-                    cursor="pointer"
-                    fontSize="sm"
+                    className={`text-sm transition-colors duration-150 bg-transparent border-none cursor-pointer ${
+                      selectedCategory === option.value
+                        ? "text-content"
+                        : "text-dim hover:text-content"
+                    }`}
                     role="tab"
                     aria-selected={selectedCategory === option.value}
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedCategory(option.value); } }}
-                    color={
-                      selectedCategory === option.value
-                        ? T.text
-                        : T.textDim
-                    }
-                    _hover={{ color: T.text }}
-                    transition="color 0.15s"
                   >
                     {option.label}
-                  </Text>
+                  </button>
                 ))}
-              </HStack>
+              </div>
             )}
 
             {/* Blog Grid */}
             {filteredPosts.length > 0 ? (
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={{ base: 6, md: 8 }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {filteredPosts.map((post) => (
-                  <BlogPostCard
-                    key={post.id}
-                    post={post}
-                  />
+                  <BlogPostCard key={post.id} post={post} />
                 ))}
-              </SimpleGrid>
+              </div>
             ) : (
-              <Box textAlign="center" py={12}>
-                <Text
-                  fontSize="sm"
-                  color={T.textDim}
-                  cursor="pointer"
+              <div className="text-center py-12">
+                <button
+                  className="text-sm text-dim hover:text-content cursor-pointer bg-transparent border-none transition-colors"
                   onClick={() => setSelectedCategory("all")}
-                  _hover={{ color: T.text }}
                 >
                   ไม่พบบทความ — ดูทั้งหมด
-                </Text>
-              </Box>
+                </button>
+              </div>
             )}
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }
 
-function BlogPostCard({
-  post,
-}: {
-  post: BlogPost;
-}) {
-  // Extract image from embedded data (no extra API call needed)
+function BlogPostCard({ post }: { post: BlogPost }) {
   const embedded = (post as BlogPost & { _embedded?: { "wp:featuredmedia"?: WordPressFeaturedMedia[] } })._embedded;
   const embeddedImage = embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? null;
   const featuredImage = embeddedImage || getBlogPostImage(null, post.content.rendered);
 
   return (
     <Link href={`/blog/${post.slug}`} aria-label={post.title.rendered.replace(/<[^>]*>/g, '')}>
-      <Box cursor="pointer" role="group" as="article">
+      <article className="cursor-pointer group">
         {/* Image */}
-        <Box
-          h="200px"
-          bg={T.surface}
-          overflow="hidden"
-          borderRadius="md"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+        <div className="h-[200px] bg-surface overflow-hidden rounded-md flex items-center justify-center">
           {featuredImage ? (
-            <Image
+            <img
               src={featuredImage}
-              alt={post.title.rendered}
-              w="full"
-              h="full"
-              objectFit="cover"
+              alt={decodeHtmlEntities(post.title.rendered)}
+              className="w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-85"
               loading="lazy"
-              transition="opacity 0.2s"
-              _groupHover={{ opacity: 0.85 }}
             />
           ) : (
-            <Text color={T.textDim} fontSize="xs">
-            </Text>
+            <span className="text-dim text-xs" />
           )}
-        </Box>
+        </div>
 
-        <VStack align="start" gap={1.5} mt={3}>
-          <HStack gap={2} fontSize="xs" color={T.textDim}>
-            <Text>
+        <div className="flex flex-col items-start gap-1.5 mt-3">
+          <h2 className="text-base md:text-lg font-semibold text-content leading-[1.4] line-clamp-2">
+            {decodeHtmlEntities(post.title.rendered)}
+          </h2>
+
+          <div className="flex items-center gap-2 text-xs text-dim">
+            <span>
               {new Date(post.date).toLocaleDateString("th-TH", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
               })}
-            </Text>
-          </HStack>
-
-          <Text
-            fontSize={{ base: "sm", md: "md" }}
-            fontWeight="medium"
-            color={T.text}
-            lineHeight="1.4"
-            lineClamp={2}
-          >
-            {decodeHtmlEntities(post.title.rendered)}
-          </Text>
+            </span>
+          </div>
 
           {post.excerpt.rendered && (
-            <Text
-              fontSize="xs"
-              color={T.textMuted}
-              lineHeight="1.6"
-              css={{
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
+            <span
+              className="text-xs text-muted leading-[1.6] line-clamp-2"
               dangerouslySetInnerHTML={{
                 __html: sanitizeHtml(post.excerpt.rendered.replace(/<[^>]*>/g, "")),
               }}
             />
           )}
-        </VStack>
-      </Box>
+        </div>
+      </article>
     </Link>
   );
 }

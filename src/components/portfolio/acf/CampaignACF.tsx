@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { User, Calendar, TrendingUp, Radio } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { CampaignACF } from "@/types/acf";
 
 interface CampaignACFDisplayProps {
   acf: CampaignACF;
 }
 
-/**
- * ACF display component for Campaign portfolio items
- */
 export function CampaignACFDisplay({ acf }: CampaignACFDisplayProps) {
   const items = [
     { icon: User, label: "ลูกค้า", value: acf.client },
@@ -18,53 +13,38 @@ export function CampaignACFDisplay({ acf }: CampaignACFDisplayProps) {
   ];
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.campaign_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายแคมเปญ
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.campaign_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายแคมเปญ</h3>
+          <p className="text-muted">{acf.campaign_description}</p>
+        </div>
       )}
 
-      <Box>
-        <Heading size="md" mb={4}>
-          ข้อมูลแคมเปญ
-        </Heading>
-        <Stack gap={3}>
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลแคมเปญ</h3>
+        <div className="flex flex-col gap-3">
           {items.map(({ icon: Icon, label, value }) =>
             value ? (
-              <HStack key={label} gap={3}>
+              <div key={label} className="flex items-center gap-3">
                 <Icon size={20} />
-                <Text fontWeight="medium">{label}:</Text>
-                <Text color={T.textMuted}>
-                  {value}
-                </Text>
-              </HStack>
+                <span className="font-medium">{label}:</span>
+                <span className="text-muted">{value}</span>
+              </div>
             ) : null
           )}
-        </Stack>
-      </Box>
+        </div>
+      </div>
 
       {acf.results && (
-        <Box>
-          <Heading size="md" mb={3}>
-            ผลลัพธ์
-          </Heading>
-          <HStack gap={3} alignItems="flex-start">
+        <div>
+          <h3 className="text-lg font-semibold mb-3">ผลลัพธ์</h3>
+          <div className="flex items-start gap-3">
             <TrendingUp size={20} />
-            <Text
-              color={T.textMuted}
-              whiteSpace="pre-line"
-            >
-              {acf.results}
-            </Text>
-          </HStack>
-        </Box>
+            <p className="text-muted whitespace-pre-line">{acf.results}</p>
+          </div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }

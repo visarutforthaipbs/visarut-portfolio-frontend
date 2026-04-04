@@ -25,4 +25,6 @@ export const T = {
   textDim: "#565B73",
   accent: "#ED8936",
   accentDim: "rgba(237,137,54,0.12)",
+  signal: "#22C55E",
+  signalDim: "rgba(34,197,94,0.12)",
 } as const;

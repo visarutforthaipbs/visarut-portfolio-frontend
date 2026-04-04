@@ -1,88 +1,57 @@
-import {
-  Box,
-  Heading,
-  Text,
-  Stack,
-  HStack,
-  Link,
-  Card,
-} from "@chakra-ui/react";
 import { Code, Globe } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { WebsiteACF } from "@/types/acf";
 
 interface WebsiteACFDisplayProps {
   acf: WebsiteACF;
 }
 
-/**
- * ACF display component for Website portfolio items
- */
 export function WebsiteACFDisplay({ acf }: WebsiteACFDisplayProps) {
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.project_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายโปรเจค
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.project_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายโปรเจค</h3>
+          <p className="text-muted">{acf.project_description}</p>
+        </div>
       )}
 
       {acf.tech_stack && (
-        <Box>
-          <Heading size="md" mb={3}>
-            เทคโนโลยีที่ใช้
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">เทคโนโลยีที่ใช้</h3>
+          <div className="flex items-center gap-3">
             <Code size={20} />
-            <Text color={T.textMuted}>
-              {acf.tech_stack}
-            </Text>
-          </HStack>
-        </Box>
+            <span className="text-muted">{acf.tech_stack}</span>
+          </div>
+        </div>
       )}
 
       {acf.features && (
-        <Box>
-          <Heading size="md" mb={3}>
-            ฟีเจอร์หลัก
-          </Heading>
-          <Text
-            color={T.textMuted}
-            whiteSpace="pre-line"
-          >
-            {acf.features}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">ฟีเจอร์หลัก</h3>
+          <p className="text-muted whitespace-pre-line">{acf.features}</p>
+        </div>
       )}
 
       {acf.website_url && (
-        <Card.Root>
-          <Card.Body>
-            <HStack gap={3}>
+        <div className="border border-edge rounded-lg">
+          <div className="p-4">
+            <div className="flex items-center gap-3">
               <Globe size={24} />
-              <Box flex={1}>
-                <Text fontWeight="bold" mb={1}>
-                  เว็บไซต์
-                </Text>
-                <Link
+              <div className="flex-1">
+                <p className="font-bold mb-1">เว็บไซต์</p>
+                <a
                   href={acf.website_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  color="blue.500"
-                  _hover={{ textDecoration: "underline" }}
+                  className="text-blue-500 hover:underline"
                 >
                   {acf.website_url}
-                </Link>
-              </Box>
-            </HStack>
-          </Card.Body>
-        </Card.Root>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }

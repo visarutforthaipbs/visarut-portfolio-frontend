@@ -1,63 +1,35 @@
 "use client";
 
-import {
-  Box,
-  Flex,
-  Text,
-  HStack,
-  VStack,
-  Container,
-  Image,
-} from "@chakra-ui/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navigation } from "@/lib/config";
-import { T } from "@/lib/tokens";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   return (
-    <Box
-      as="header"
+    <header
       role="banner"
-      bg={T.bg}
-      position="sticky"
-      top={0}
-      zIndex={999}
-      borderBottom="1px solid"
-      borderColor={T.border}
-      backdropFilter="blur(12px)"
-      display="flex"
-      justifyContent="center"
-      w="100%"
+      className="sticky top-0 z-[999] flex justify-center w-full border-b border-edge bg-base backdrop-blur-[12px]"
     >
-      <Container maxW="5xl" px={{ base: 5, md: 6 }}>
-        <Flex
-          h={{ base: "52px", md: "56px" }}
-          align="center"
-          justify="space-between"
-        >
+      <div className="max-w-5xl w-full mx-auto px-5 md:px-6">
+        <div className="flex items-center justify-between h-[52px] md:h-[56px]">
           {/* Logo */}
           <Link href="/">
-            <Image
-              src="/logo/white-favicon.svg"
+            <img
+              src="/logo/logo-1.svg"
               alt="วิศรุต แสนคำ"
-              height="24px"
-              width="auto"
-              objectFit="contain"
+              className="h-6 w-auto object-contain"
             />
           </Link>
 
           {/* Desktop Nav */}
-          <HStack
-            as="nav"
+          <nav
             aria-label="เมนูหลัก"
-            gap={1}
-            display={{ base: "none", md: "flex" }}
+            className="hidden md:flex items-center gap-1"
           >
             {navigation.map((item) => {
               const isActive =
@@ -65,48 +37,35 @@ export function Header() {
                 item.subItems?.some((sub) => pathname === sub.href);
               return (
                 <Link key={item.href} href={item.href} aria-current={isActive ? "page" : undefined}>
-                  <Text
-                    fontSize="sm"
-                    px={3}
-                    py={1}
-                    color={
-                      isActive
-                        ? T.text
-                        : T.textDim
-                    }
-                    _hover={{ color: T.text }}
-                    transition="color 0.15s"
+                  <span
+                    className={`text-sm px-3 py-1 transition-colors duration-150 ${
+                      isActive ? "text-content" : "text-dim hover:text-content"
+                    }`}
                   >
                     {item.labelTh || item.label}
-                  </Text>
+                  </span>
                 </Link>
               );
             })}
-          </HStack>
+          </nav>
 
           {/* Mobile toggle */}
-          <Box
-            display={{ base: "block", md: "none" }}
-            cursor="pointer"
+          <button
+            className="block md:hidden text-muted cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "ปิดเมนู" : "เปิดเมนู"}
             aria-expanded={isOpen}
-            color={T.textMuted}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
-          </Box>
-        </Flex>
+          </button>
+        </div>
 
         {/* Mobile Nav */}
         {isOpen && (
-          <VStack
-            as="nav"
+          <nav
             aria-label="เมนูมือถือ"
             id="mobile-nav"
-            align="start"
-            gap={0}
-            pb={4}
-            display={{ md: "none" }}
+            className="flex flex-col items-start gap-0 pb-4 md:hidden"
           >
             {navigation.map((item) => {
               const isActive =
@@ -119,23 +78,19 @@ export function Header() {
                   aria-current={isActive ? "page" : undefined}
                   onClick={() => setIsOpen(false)}
                 >
-                  <Text
-                    fontSize="sm"
-                    py={2}
-                    color={
-                      isActive
-                        ? T.text
-                        : T.textDim
-                    }
+                  <span
+                    className={`text-sm py-2 ${
+                      isActive ? "text-content" : "text-dim"
+                    }`}
                   >
                     {item.labelTh || item.label}
-                  </Text>
+                  </span>
                 </Link>
               );
             })}
-          </VStack>
+          </nav>
         )}
-      </Container>
-    </Box>
+      </div>
+    </header>
   );
 }

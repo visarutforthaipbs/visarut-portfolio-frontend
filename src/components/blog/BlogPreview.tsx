@@ -1,18 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  SimpleGrid,
-  Button,
-  Badge,
-  Image,
-} from "@chakra-ui/react";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { siteConfig, wpApiUrl } from "@/lib/config";
@@ -23,7 +11,6 @@ import type {
   BlogCategory,
   WordPressFeaturedMedia,
 } from "@/types/wordpress";
-import { T } from "@/lib/tokens";
 
 interface BlogPreviewProps {
   maxPosts?: number;
@@ -38,7 +25,6 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
     const controller = new AbortController();
     const fetchBlogPosts = async () => {
       try {
-        // Fetch recent posts with embedded media
         const postsResponse = await fetch(
           wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, `per_page=${maxPosts}&orderby=date&order=desc&_embed=true`),
           { signal: controller.signal }
@@ -46,7 +32,6 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
         if (!postsResponse.ok) throw new Error("Failed to fetch posts");
         const postsData = await postsResponse.json();
 
-        // Fetch categories if we have posts
         if (postsData.length > 0) {
           const categoriesResponse = await fetch(
             wpApiUrl(siteConfig.api.wordpress.blogCategoriesEndpoint),
@@ -73,91 +58,56 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
 
   if (loading) {
     return (
-      <Box
-        bg={T.bg}
-        py={{ base: 16, md: 20 }}
-
-        display="flex"
-        justifyContent="center"
-        w="100%"
-      >
-        <Container maxW="5xl" px={{ base: 6, md: 8 }}>
-          <VStack gap={8}>
-            <Text>กำลังโหลดบทความ...</Text>
-          </VStack>
-        </Container>
-      </Box>
+      <section className="bg-base py-16 md:py-20 flex justify-center w-full">
+        <div className="max-w-5xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col items-center gap-8">
+            <p className="text-content">กำลังโหลดบทความ...</p>
+          </div>
+        </div>
+      </section>
     );
   }
 
   if (posts.length === 0) {
-    return null; // Don't show anything if no posts
+    return null;
   }
 
   return (
-    <Box
-      bg={T.bg}
-      py={{ base: 16, md: 20 }}
-
-      display="flex"
-      justifyContent="center"
-      w="100%"
-    >
-      <Container maxW="5xl" px={{ base: 6, md: 8 }}>
-        <VStack gap={12}>
+    <section className="bg-base py-16 md:py-20 flex justify-center w-full">
+      <div className="max-w-5xl mx-auto px-5 md:px-6">
+        <div className="flex flex-col items-center gap-12">
           {/* Section Header */}
-          <VStack gap={4} textAlign="center">
-            <Heading
-              fontSize={{ base: "2xl", md: "4xl" }}
-              fontWeight="bold"
-              color={T.text}
-
-            >
+          <div className="flex flex-col items-center gap-4 text-center">
+            <h2 className="text-2xl md:text-4xl font-bold text-content">
               บทความล่าสุด
-            </Heading>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color={T.textMuted}
-              maxW="600px"
-
-            >
+            </h2>
+            <p className="text-base md:text-lg text-muted max-w-[600px]">
               ความคิดเห็น ประสบการณ์ และเทคนิคการทำงานจากมุมมองของนักสื่อ
-            </Text>
-          </VStack>
+            </p>
+          </div>
 
           {/* Blog Posts Grid */}
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6} w="full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
             {posts.map((post) => (
               <BlogPostCard key={post.id} post={post} categories={categories} />
             ))}
-          </SimpleGrid>
+          </div>
 
           {/* View All Button */}
-          <HStack gap={4} mt={8}>
+          <div className="flex items-center gap-4 mt-8">
             <Link href="/blog">
-              <Button
-                size="lg"
-                bg={T.accent}
-                color={T.bg}
-                _hover={{ bg: "#d97706" }}
-
-                px={6}
-                py={3}
-              >
-                <HStack gap={2}>
-                  <Text>ดูบทความทั้งหมด</Text>
-                  <ArrowRight size={20} />
-                </HStack>
-              </Button>
+              <button className="text-lg bg-accent text-base hover:bg-[#d97706] px-6 py-3 rounded flex items-center gap-2 transition-colors">
+                <span>ดูบทความทั้งหมด</span>
+                <ArrowRight size={20} />
+              </button>
             </Link>
-          </HStack>
-        </VStack>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
-// Blog Post Card Component
 function BlogPostCard({
   post,
   categories,
@@ -169,7 +119,6 @@ function BlogPostCard({
   const [imageLoading, setImageLoading] = useState(true);
 
   useEffect(() => {
-    // Extract image from embedded data (no extra API call needed)
     const embedded = (post as BlogPost & { _embedded?: { "wp:featuredmedia"?: WordPressFeaturedMedia[] } })._embedded;
     if (embedded?.["wp:featuredmedia"]?.[0]) {
       setFeaturedImage(embedded["wp:featuredmedia"][0].source_url);
@@ -177,7 +126,6 @@ function BlogPostCard({
       return;
     }
 
-    // Fallback to first image in content
     const contentImage = getBlogPostImage(null, post.content.rendered);
     setFeaturedImage(contentImage);
     setImageLoading(false);
@@ -198,129 +146,78 @@ function BlogPostCard({
   };
 
   return (
-    <Box
-      bg={T.surface}
-      borderRadius="lg"
-      border="1px solid"
-      borderColor={T.border}
-      overflow="hidden"
-      _hover={{
-        transform: "translateY(-2px)",
-        bg: T.surfaceHover,
-      }}
-      transition="all 0.3s ease"
-    >
-      <VStack align="stretch" gap={0}>
+    <article className="bg-surface rounded-lg border border-edge overflow-hidden hover:-translate-y-0.5 hover:bg-surface-hover transition-all">
+      <div className="flex flex-col">
         {/* Featured Image */}
-        <Box
-          h="180px"
-          bg={T.surface}
-          position="relative"
-          overflow="hidden"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+        <div className="h-[180px] bg-surface relative overflow-hidden flex items-center justify-center">
           {featuredImage && !imageLoading ? (
-            <Image
+            <img
               src={featuredImage}
-              alt={post.title.rendered}
-              w="full"
-              h="full"
-              objectFit="cover"
+              alt={decodeHtmlEntities(post.title.rendered)}
+              className="w-full h-full object-cover"
               loading="lazy"
               onError={() => setFeaturedImage(null)}
             />
           ) : (
-            <Text color={T.textDim} fontSize="sm">
+            <span className="text-dim text-sm">
               {imageLoading ? "กำลังโหลด..." : "รูปภาพประกอบ"}
-            </Text>
+            </span>
           )}
-        </Box>
+        </div>
 
-        <VStack align="stretch" gap={4} p={6}>
+        <div className="flex flex-col gap-4 p-6">
           {/* Categories */}
           {getPostCategories().length > 0 && (
-            <HStack gap={2} wrap="wrap">
+            <div className="flex items-center gap-2 flex-wrap">
               {getPostCategories()
                 .slice(0, 2)
                 .map((category) => (
-                  <Badge
+                  <span
                     key={category.id}
-                    bg={T.accentDim}
-                    color={T.accent}
-                    px={2}
-                    py={1}
-                    borderRadius="md"
-                    fontSize="xs"
-
+                    className="bg-accent-dim text-accent px-2 py-1 rounded-md text-xs"
                   >
                     {category.name}
-                  </Badge>
+                  </span>
                 ))}
-            </HStack>
+            </div>
           )}
 
           {/* Title */}
-          <Heading
-            fontSize="lg"
-            fontWeight="600"
-            color={T.text}
-            lineHeight="1.4"
-            truncate
-          >
+          <h3 className="text-lg font-semibold text-content leading-[1.4] truncate">
             {decodeHtmlEntities(post.title.rendered)}
-          </Heading>
+          </h3>
 
           {/* Excerpt */}
           {post.excerpt.rendered && (
-            <Text
-              fontSize="sm"
-              color={T.textMuted}
-
-              lineHeight="1.6"
-              css={{
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-              }}
+            <p
+              className="text-sm text-muted leading-[1.6] line-clamp-2"
               dangerouslySetInnerHTML={{
                 __html: sanitizeHtml(post.excerpt.rendered.replace(/<[^>]*>/g, "")),
               }}
             />
           )}
 
-          {/* Meta - One Line Layout */}
-          <VStack align="stretch" gap={2}>
-            <HStack gap={4} fontSize="xs" color={T.textDim} justify="center">
-              <HStack gap={1}>
+          {/* Meta */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-center gap-4 text-xs text-dim">
+              <span className="flex items-center gap-1">
                 <Calendar size={12} />
-                <Text>{formatDate(post.date)}</Text>
-              </HStack>
-              <HStack gap={1}>
+                <span>{formatDate(post.date)}</span>
+              </span>
+              <span className="flex items-center gap-1">
                 <User size={12} />
-                <Text>{siteConfig.authorTh}</Text>
-              </HStack>
-            </HStack>
+                <span>{siteConfig.authorTh}</span>
+              </span>
+            </div>
 
             <Link href={`/blog/${post.slug}`}>
-              <Button
-                size="sm"
-                variant="ghost"
-                color={T.accent}
-                _hover={{ bg: T.accentDim }}
-
-                px={4}
-                py={2}
-                w="full"
-              >
+              <button className="text-sm text-accent hover:bg-accent-dim px-4 py-2 w-full rounded transition-colors">
                 อ่านเพิ่มเติม
-              </Button>
+              </button>
             </Link>
-          </VStack>
-        </VStack>
-      </VStack>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }

@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { MapPin, Calendar, Briefcase } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { ExhibitionACF } from "@/types/acf";
 
 interface ExhibitionACFDisplayProps {
   acf: ExhibitionACF;
 }
 
-/**
- * ACF display component for Exhibition portfolio items
- */
 export function ExhibitionACFDisplay({ acf }: ExhibitionACFDisplayProps) {
   const items = [
     { icon: MapPin, label: "สถานที่", value: acf.location },
@@ -18,36 +13,28 @@ export function ExhibitionACFDisplay({ acf }: ExhibitionACFDisplayProps) {
   ];
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.exhibition_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายนิทรรศการ
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.exhibition_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายนิทรรศการ</h3>
+          <p className="text-muted">{acf.exhibition_description}</p>
+        </div>
       )}
 
-      <Box>
-        <Heading size="md" mb={4}>
-          ข้อมูลนิทรรศการ
-        </Heading>
-        <Stack gap={3}>
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลนิทรรศการ</h3>
+        <div className="flex flex-col gap-3">
           {items.map(({ icon: Icon, label, value }) =>
             value ? (
-              <HStack key={label} gap={3}>
+              <div key={label} className="flex items-center gap-3">
                 <Icon size={20} />
-                <Text fontWeight="medium">{label}:</Text>
-                <Text color={T.textMuted}>
-                  {value}
-                </Text>
-              </HStack>
+                <span className="font-medium">{label}:</span>
+                <span className="text-muted">{value}</span>
+              </div>
             ) : null
           )}
-        </Stack>
-      </Box>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }

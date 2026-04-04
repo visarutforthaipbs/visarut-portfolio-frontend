@@ -1,20 +1,10 @@
 "use client";
 
-import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Image,
-  Skeleton,
-} from "@chakra-ui/react";
 import { ArrowRight, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { usePortfolios } from "@/hooks/useWordPress";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
-import { T } from "@/lib/tokens";
 
 interface PortfolioPreviewProps {
   maxItems?: number;
@@ -27,88 +17,56 @@ export function PortfolioPreview({ maxItems = 6 }: PortfolioPreviewProps) {
 
   if (error) {
     return (
-      <Box py={8} textAlign="center" role="alert">
-        <HStack gap={2} justify="center" color={T.textDim}>
+      <div className="py-8 text-center" role="alert">
+        <div className="flex items-center gap-2 justify-center text-dim">
           <AlertCircle size={16} aria-hidden="true" />
-          <Text fontSize="sm">เกิดข้อผิดพลาดในการโหลดผลงาน</Text>
-        </HStack>
-      </Box>
+          <span className="text-sm">เกิดข้อผิดพลาดในการโหลดผลงาน</span>
+        </div>
+      </div>
     );
   }
 
   return (
-    <VStack gap={{ base: 8, md: 10 }} w="full" aria-label="ผลงานล่าสุด" role="region">
-      <Heading
-        as="h2"
-        fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
-        fontWeight="medium"
-        color={T.textDim}
-        textTransform="uppercase"
-        letterSpacing="wider"
-        textAlign="center"
-      >
+    <div className="flex flex-col gap-8 md:gap-10 items-center w-full" aria-label="ผลงานล่าสุด" role="region">
+      <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-dim uppercase tracking-wider text-center">
         ผลงานล่าสุด
-      </Heading>
+      </h2>
 
       {loading ? (
-        <Box
-          css={{
-            columnCount: 1,
-            columnGap: "1rem",
-            "@media (min-width: 30em)": { columnCount: 2 },
-            "@media (min-width: 62em)": { columnCount: 3 },
-          }}
-          w="full"
-        >
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 w-full">
           {Array.from({ length: maxItems }).map((_, index) => (
-            <Box key={index} css={{ breakInside: "avoid" }} mb={4}>
-              <Skeleton height={{ base: "200px", md: "220px" }} borderRadius="md" />
-              <VStack gap={2} align="start" mt={3}>
-                <Skeleton height="14px" width="40%" />
-                <Skeleton height="16px" width="70%" />
-              </VStack>
-            </Box>
+            <div key={index} className="break-inside-avoid mb-4">
+              <div className="h-[200px] md:h-[220px] animate-pulse bg-surface rounded-md" />
+              <div className="flex flex-col gap-2 items-start mt-3">
+                <div className="h-3.5 w-2/5 animate-pulse bg-surface rounded" />
+                <div className="h-4 w-[70%] animate-pulse bg-surface rounded" />
+              </div>
+            </div>
           ))}
-        </Box>
+        </div>
       ) : portfolios.length > 0 ? (
         <>
-          <Box
-            css={{
-              columnCount: 1,
-              columnGap: "1rem",
-              "@media (min-width: 30em)": { columnCount: 2 },
-              "@media (min-width: 62em)": { columnCount: 3 },
-            }}
-            w="full"
-          >
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 w-full">
             {portfolios.map((portfolio) => (
               <PortfolioCard key={portfolio.id} portfolio={portfolio} />
             ))}
-          </Box>
+          </div>
 
           <Link href="/portfolio" aria-label="ดูผลงานทั้งหมด">
-            <HStack
-              gap={2}
-              color={T.text}
-              fontWeight="medium"
-              fontSize="sm"
-              _hover={{ gap: 3 }}
-              transition="all 0.2s"
-              cursor="pointer"
-            >
-              <Text>ดูผลงานทั้งหมด</Text>
+            <span className="flex items-center gap-2 text-content font-medium text-sm hover:gap-3 transition-all duration-200 cursor-pointer">
+              <span>ดูผลงานทั้งหมด</span>
               <ArrowRight size={16} aria-hidden="true" />
-            </HStack>
+            </span>
           </Link>
         </>
       ) : (
-        <Box textAlign="center" py={12}>
-          <Text fontSize="sm" color={T.textDim}>
+        <div className="text-center py-12">
+          <span className="text-sm text-dim">
             ยังไม่มีผลงานที่จะแสดง
-          </Text>
-        </Box>
+          </span>
+        </div>
       )}
-    </VStack>
+    </div>
   );
 }
 
@@ -135,51 +93,28 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
 
   return (
     <Link href={`/portfolio/${portfolio.slug}`} aria-label={getTextContent(portfolio.title)}>
-      <Box
-        as="article"
-        cursor="pointer"
-        role="group"
-        css={{ breakInside: "avoid" }}
-        mb={4}
-      >
-        <Box overflow="hidden" borderRadius="md" bg={T.surface}>
-          <Image
+      <article className="cursor-pointer group break-inside-avoid mb-4">
+        <div className="overflow-hidden rounded-md bg-surface">
+          <img
             src={getFeaturedImageUrl(portfolio.featured_image)}
             alt={getTextContent(portfolio.title)}
-            w="full"
-            h="auto"
-            display="block"
-            objectFit="cover"
-            transition="opacity 0.2s"
-            _groupHover={{ opacity: 0.85 }}
+            className="w-full h-auto block object-cover transition-opacity duration-200 group-hover:opacity-85"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = "/placeholder-image.svg";
             }}
           />
-        </Box>
+        </div>
 
-        <VStack align="start" gap={1} mt={3}>
-          <Text
-            fontSize="xs"
-            color={T.textDim}
-            textTransform="uppercase"
-            letterSpacing="wider"
-          >
+        <div className="flex flex-col items-start gap-1 mt-3">
+          <span className="text-xs text-dim uppercase tracking-wider">
             {categoryLabel}
-          </Text>
-          <Heading
-            as="h3"
-            fontSize={{ base: "lg", md: "xl" }}
-            fontWeight="medium"
-            color={T.text}
-            lineHeight="1.2"
-            lineClamp={2}
-          >
+          </span>
+          <h3 className="text-lg md:text-xl font-medium text-content leading-[1.2] line-clamp-2">
             {getTextContent(portfolio.title)}
-          </Heading>
-        </VStack>
-      </Box>
+          </h3>
+        </div>
+      </article>
     </Link>
   );
 }

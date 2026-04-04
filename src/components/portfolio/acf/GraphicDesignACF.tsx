@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack, Flex } from "@chakra-ui/react";
 import { Palette, Type, Layers } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { GraphicDesignACF } from "@/types/acf";
 
 interface GraphicDesignACFDisplayProps {
   acf: GraphicDesignACF;
 }
 
-/**
- * ACF display component for Graphic Design portfolio items
- */
 export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
   const colors = acf.color_palette
     ?.split(",")
@@ -17,81 +12,59 @@ export function GraphicDesignACFDisplay({ acf }: GraphicDesignACFDisplayProps) {
     .filter(Boolean);
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.design_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายงานออกแบบ
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.design_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายงานออกแบบ</h3>
+          <p className="text-muted">{acf.design_description}</p>
+        </div>
       )}
 
       {acf.design_software && (
-        <Box>
-          <Heading size="md" mb={3}>
-            โปรแกรมที่ใช้
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">โปรแกรมที่ใช้</h3>
+          <div className="flex items-center gap-3">
             <Palette size={20} />
-            <Text color={T.textMuted}>
-              {acf.design_software}
-            </Text>
-          </HStack>
-        </Box>
+            <span className="text-muted">{acf.design_software}</span>
+          </div>
+        </div>
       )}
 
       {colors && colors.length > 0 && (
-        <Box>
-          <Heading size="md" mb={3}>
-            สีหลักที่ใช้
-          </Heading>
-          <Flex gap={2} flexWrap="wrap">
+        <div>
+          <h3 className="text-lg font-semibold mb-3">สีหลักที่ใช้</h3>
+          <div className="flex gap-2 flex-wrap">
             {colors.map((color) => (
-              <Box
+              <div
                 key={color}
-                w="60px"
-                h="60px"
-                bg={color}
-                borderRadius="md"
-                border="1px solid"
-                borderColor={T.border}
+                className="w-[60px] h-[60px] rounded-md border border-edge"
+                style={{ backgroundColor: color }}
                 title={color}
               />
             ))}
-          </Flex>
-        </Box>
+          </div>
+        </div>
       )}
 
       {acf.typography && (
-        <Box>
-          <Heading size="md" mb={3}>
-            ฟอนต์ที่ใช้
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">ฟอนต์ที่ใช้</h3>
+          <div className="flex items-center gap-3">
             <Type size={20} />
-            <Text color={T.textMuted}>
-              {acf.typography}
-            </Text>
-          </HStack>
-        </Box>
+            <span className="text-muted">{acf.typography}</span>
+          </div>
+        </div>
       )}
 
       {acf.design_elements && (
-        <Box>
-          <Heading size="md" mb={3}>
-            องค์ประกอบการออกแบบ
-          </Heading>
-          <HStack gap={3}>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">องค์ประกอบการออกแบบ</h3>
+          <div className="flex items-center gap-3">
             <Layers size={20} />
-            <Text color={T.textMuted}>
-              {acf.design_elements}
-            </Text>
-          </HStack>
-        </Box>
+            <span className="text-muted">{acf.design_elements}</span>
+          </div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }

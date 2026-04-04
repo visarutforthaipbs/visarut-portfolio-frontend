@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import { GalleryImage } from "@/types/acf";
 import { useLightbox } from "@/hooks/useLightbox";
 import { Lightbox } from "./Lightbox";
@@ -10,10 +9,6 @@ interface BaseGalleryProps {
   showCaptions?: boolean;
 }
 
-/**
- * Base gallery component with lightbox functionality
- * Can be extended for category-specific layouts
- */
 export function BaseGallery({
   images,
   columns,
@@ -31,7 +26,7 @@ export function BaseGallery({
   if (images.length === 0) return null;
 
   return (
-    <Box>
+    <div>
       <GalleryGrid
         images={images}
         columns={columns}
@@ -47,6 +42,6 @@ export function BaseGallery({
         onNext={nextImage}
         onPrev={prevImage}
       />
-    </Box>
+    </div>
   );
 }

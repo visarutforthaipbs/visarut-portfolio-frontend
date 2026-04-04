@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Box } from "@chakra-ui/react";
 
 interface AdSenseProps {
   /** Ad slot ID from your AdSense dashboard */
@@ -32,29 +31,42 @@ export default function AdSense({
 
   useEffect(() => {
     if (pushed.current) return;
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      pushed.current = true;
-    } catch {
-      // AdSense not loaded (e.g. ad blocker)
-    }
+    const el = adRef.current;
+    if (!el) return;
+
+    // Wait until the container has a non-zero width before pushing
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry && entry.isIntersecting && el.offsetWidth > 0) {
+          observer.disconnect();
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            pushed.current = true;
+          } catch {
+            // AdSense not loaded (e.g. ad blocker)
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
 
     // Check if the ad actually rendered content
     const timer = setTimeout(() => {
-      const el = adRef.current;
-      if (el && el.offsetHeight > 0) {
+      if (el.offsetHeight > 0) {
         setFilled(true);
       }
-    }, 2000);
-    return () => clearTimeout(timer);
+    }, 3000);
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
-    <Box
-      w="full"
-      textAlign="center"
-      my={filled ? 6 : 0}
-      overflow="hidden"
+    <div
+      className={`w-full text-center overflow-hidden ${filled ? 'my-6' : 'my-0'}`}
       style={{ minHeight: 0 }}
     >
       <ins
@@ -66,6 +78,6 @@ export default function AdSense({
         data-full-width-responsive={responsive ? "true" : "false"}
         ref={adRef}
       />
-    </Box>
+    </div>
   );
 }

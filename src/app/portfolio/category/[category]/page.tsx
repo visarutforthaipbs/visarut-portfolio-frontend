@@ -1,16 +1,6 @@
 "use client";
 
 import { useParams, notFound } from "next/navigation";
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Badge,
-  Skeleton,
-} from "@chakra-ui/react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Layout } from "@/components/layout";
@@ -22,7 +12,6 @@ import { VideoEditingLayout } from "@/components/portfolio/layouts/VideoEditingL
 import { WebsiteLayout } from "@/components/portfolio/layouts/WebsiteLayout";
 import { GraphicDesignLayout } from "@/components/portfolio/layouts/GraphicDesignLayout";
 import { DefaultLayout } from "@/components/portfolio/layouts/DefaultLayout";
-import { T } from "@/lib/tokens";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -68,24 +57,15 @@ export default function CategoryPage() {
   if (loading) {
     return (
       <Layout>
-        <Box
-
-          display="flex"
-          justifyContent="center"
-          w="100%"
-        >
-          <Container
-            maxW="5xl"
-            py={{ base: 16, md: 20 }}
-            px={{ base: 6, md: 8 }}
-          >
-            <VStack gap={8} align="start">
-              <Skeleton height="20px" width="300px" />
-              <Skeleton height="60px" width="80%" />
-              <Skeleton height="400px" width="100%" />
-            </VStack>
-          </Container>
-        </Box>
+        <div className="flex justify-center w-full">
+          <div className="max-w-5xl w-full py-16 md:py-20 px-5 md:px-6">
+            <div className="flex flex-col gap-8 items-start">
+              <div className="h-5 w-[300px] animate-pulse bg-surface rounded" />
+              <div className="h-[60px] w-4/5 animate-pulse bg-surface rounded" />
+              <div className="h-[400px] w-full animate-pulse bg-surface rounded" />
+            </div>
+          </div>
+        </div>
       </Layout>
     );
   }
@@ -93,103 +73,66 @@ export default function CategoryPage() {
   if (error) {
     return (
       <Layout>
-        <Box
-
-          display="flex"
-          justifyContent="center"
-          w="100%"
-        >
-          <Container
-            maxW="5xl"
-            py={{ base: 16, md: 20 }}
-            px={{ base: 6, md: 8 }}
-          >
-            <VStack gap={8} textAlign="center">
-              <Heading
-                fontSize={{ base: "2xl", md: "3xl" }}
-
-              >
+        <div className="flex justify-center w-full">
+          <div className="max-w-5xl w-full py-16 md:py-20 px-5 md:px-6">
+            <div className="flex flex-col gap-8 text-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-content">
                 เกิดข้อผิดพลาด
-              </Heading>
-              <Text color={T.textDim} className="thai-text">
-                {error}
-              </Text>
-            </VStack>
-          </Container>
-        </Box>
+              </h1>
+              <p className="text-dim thai-text">{error}</p>
+            </div>
+          </div>
+        </div>
       </Layout>
     );
   }
 
   return (
     <Layout>
-      <Box
-        className="full-width"
-        display="flex"
-        justifyContent="center"
-        w="100%"
-      >
-        <Container maxW="5xl" py={{ base: 16, md: 20 }} px={{ base: 6, md: 8 }}>
-          <VStack gap={8} align="start" w="full">
+      <div className="flex justify-center w-full">
+        <div className="max-w-5xl w-full py-16 md:py-20 px-5 md:px-6">
+          <div className="flex flex-col gap-8 items-start w-full">
             {/* Navigation */}
-            <HStack gap={2} fontSize="sm" color={T.textDim}>
-              <Link href="/" className="thai-text hover:text-accent-500">
+            <div className="flex items-center gap-2 text-sm text-dim">
+              <Link href="/" className="thai-text hover:text-accent">
                 หน้าหลัก
               </Link>
-              <Text>/</Text>
-              <Link
-                href="/portfolio"
-
-              >
+              <span>/</span>
+              <Link href="/portfolio" className="hover:text-accent">
                 ผลงาน
               </Link>
-              <Text>/</Text>
-              <Text className="thai-text">{categoryName}</Text>
-            </HStack>
+              <span>/</span>
+              <span className="thai-text">{categoryName}</span>
+            </div>
 
             {/* Header */}
-            <VStack gap={4} align="start" w="full">
-              <HStack gap={4}>
+            <div className="flex flex-col gap-4 items-start w-full">
+              <div className="flex items-center gap-4">
                 <Link href="/portfolio">
-                  <HStack
-                    gap={2}
-                    color={T.textDim}
-                    _hover={{ color: T.accent }}
-                  >
+                  <span className="flex items-center gap-2 text-dim hover:text-accent transition-colors">
                     <ArrowLeft size={20} />
-                    <Text className="thai-text">กลับไปดูผลงานทั้งหมด</Text>
-                  </HStack>
+                    <span className="thai-text">กลับไปดูผลงานทั้งหมด</span>
+                  </span>
                 </Link>
-              </HStack>
+              </div>
 
-              <VStack gap={2} align="start">
-                <Heading
-                  fontSize={{ base: "2xl", md: "4xl" }}
-                  color={T.text}
-
-                >
+              <div className="flex flex-col gap-2 items-start">
+                <h1 className="text-2xl md:text-4xl text-content font-bold">
                   {categoryName}
-                </Heading>
-                <HStack gap={4}>
-                  <Badge
-                    bg={T.accentDim}
-                    color={T.accent}
-                    px={3}
-                    py={1}
-                    borderRadius="full"
-
-                  >
+                </h1>
+                <div className="flex items-center gap-4">
+                  <span className="bg-accent-dim text-accent px-3 py-1 rounded-full text-sm">
                     {portfolios.length} ผลงาน
-                  </Badge>
-                </HStack>
-              </VStack>
-            </VStack>
+                  </span>
+                </div>
+              </div>
+            </div>
 
             {/* Category-specific layout */}
             {renderCategoryLayout()}
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }

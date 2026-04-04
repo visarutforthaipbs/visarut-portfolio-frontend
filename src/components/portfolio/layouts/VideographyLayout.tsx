@@ -1,20 +1,6 @@
-import {
-  Box,
-  SimpleGrid,
-  AspectRatio,
-  Image,
-  VStack,
-  Text,
-  Heading,
-  HStack,
-  Badge,
-  Skeleton,
-  Button,
-} from "@chakra-ui/react";
 import { Calendar, Video, Play } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
-import { T } from "@/lib/tokens";
 
 interface VideographyLayoutProps {
   portfolios: PortfolioItem[];
@@ -27,162 +13,97 @@ export function VideographyLayout({
 }: VideographyLayoutProps) {
   if (loading) {
     return (
-      <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8} w="full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
         {Array.from({ length: 4 }).map((_, index) => (
-          <Box key={index}>
-            <Skeleton height="250px" borderRadius="lg" />
-            <VStack gap={2} align="start" mt={4}>
-              <Skeleton height="24px" width="80%" />
-              <Skeleton height="16px" width="60%" />
-              <Skeleton height="40px" width="120px" />
-            </VStack>
-          </Box>
+          <div key={index}>
+            <div className="h-[250px] rounded-lg animate-pulse bg-surface" />
+            <div className="flex flex-col gap-2 items-start mt-4">
+              <div className="h-6 w-4/5 rounded animate-pulse bg-surface" />
+              <div className="h-4 w-3/5 rounded animate-pulse bg-surface" />
+              <div className="h-10 w-[120px] rounded animate-pulse bg-surface" />
+            </div>
+          </div>
         ))}
-      </SimpleGrid>
+      </div>
     );
   }
 
   return (
-    <Box>
+    <div>
       {/* Video Grid - Larger Cards */}
-      <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8} w="full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
         {portfolios.map((portfolio) => (
-          <Box
+          <div
             key={portfolio.id}
-            bg={T.surface}
-            borderRadius="xl"
-            overflow="hidden"
-            border="1px solid"
-            borderColor={T.border}
-            _hover={{
-              transform: "translateY(-4px)",
-            }}
-            transition="all 0.3s ease"
+            className="bg-surface rounded-xl overflow-hidden border border-edge hover:-translate-y-1 transition-all duration-300"
           >
-            <Box position="relative">
-              <AspectRatio ratio={16 / 9}>
-                <Image
-                  src={
-                    portfolio.featured_image?.url || "/placeholder-video.jpg"
-                  }
+            <div className="relative">
+              <div className="aspect-video">
+                <img
+                  src={portfolio.featured_image?.url || "/placeholder-video.jpg"}
                   alt={portfolio.title.rendered}
-                  objectFit="cover"
-                  w="full"
-                  h="full"
+                  className="object-cover w-full h-full"
                 />
-              </AspectRatio>
+              </div>
 
               {/* Play Button Overlay */}
-              <Box
-                position="absolute"
-                top="50%"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                bg="blackAlpha.700"
-                borderRadius="full"
-                p={4}
-                _hover={{ bg: "blackAlpha.800" }}
-                transition="all 0.2s ease"
-              >
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/70 rounded-full p-4 hover:bg-black/80 transition-all duration-200">
                 <Play size={24} color="white" fill="white" />
-              </Box>
+              </div>
 
               {/* Video Badge */}
-              <Badge
-                position="absolute"
-                top={3}
-                right={3}
-                bg="red.500"
-                color="white"
-                px={2}
-                py={1}
-                borderRadius="md"
-                fontSize="xs"
-              >
+              <span className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-md text-xs">
                 VIDEO
-              </Badge>
-            </Box>
+              </span>
+            </div>
 
-            <VStack gap={4} p={6} align="start">
-              <VStack gap={2} align="start" w="full">
-                <Text
-                  fontSize="xl"
-                  fontWeight="600"
-                  color={T.text}
-
-                  lineHeight="1.4"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  display="-webkit-box"
-                  css={{
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
+            <div className="flex flex-col gap-4 p-6 items-start">
+              <div className="flex flex-col gap-2 items-start w-full">
+                <p className="text-xl font-semibold text-content leading-[1.4] line-clamp-2">
                   {portfolio.title.rendered}
-                </Text>
+                </p>
 
-                <HStack gap={4} fontSize="sm" color={T.textDim}>
-                  <HStack gap={1}>
+                <div className="flex items-center gap-4 text-sm text-dim">
+                  <span className="flex items-center gap-1">
                     <Video size={14} />
-                    <Text>วีดีโอกราฟี</Text>
-                  </HStack>
-                  <HStack gap={1}>
+                    <span>วีดีโอกราฟี</span>
+                  </span>
+                  <span className="flex items-center gap-1">
                     <Calendar size={14} />
-                    <Text>{new Date(portfolio.date).getFullYear()}</Text>
-                  </HStack>
-                </HStack>
-              </VStack>
+                    <span>{new Date(portfolio.date).getFullYear()}</span>
+                  </span>
+                </div>
+              </div>
 
               {portfolio.excerpt && (
-                <Text
-                  fontSize="sm"
-                  color={T.textMuted}
-
-                  lineHeight="1.6"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  display="-webkit-box"
-                  css={{
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
+                <p className="text-sm text-muted leading-[1.6] line-clamp-3">
                   {portfolio.excerpt.rendered}
-                </Text>
+                </p>
               )}
 
               <Link href={`/portfolio/${portfolio.slug}`}>
-                <Button
-                  size="sm"
-                  bg="accent.500"
-                  color="white"
-                  _hover={{ bg: "accent.600" }}
-
-                  px={4}
-                  py={2}
-                >
+                <button className="text-sm bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
                   ดูผลงาน
-                </Button>
+                </button>
               </Link>
-            </VStack>
-          </Box>
+            </div>
+          </div>
         ))}
-      </SimpleGrid>
+      </div>
 
       {portfolios.length === 0 && (
-        <VStack gap={4} py={12} textAlign="center">
+        <div className="flex flex-col gap-4 py-12 text-center items-center">
           <Video size={48} color="#CBD5E0" />
-          <VStack gap={2}>
-            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl text-muted thai-text">
               ยังไม่มีผลงานวีดีโอกราฟี
-            </Heading>
-            <Text color={T.textDim} className="thai-text">
+            </h2>
+            <p className="text-dim thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
-            </Text>
-          </VStack>
-        </VStack>
+            </p>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }

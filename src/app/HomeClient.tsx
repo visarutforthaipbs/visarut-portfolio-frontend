@@ -1,20 +1,6 @@
 "use client";
 
 import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  SimpleGrid,
-  AspectRatio,
-  Image,
-  Flex,
-  Icon,
-  Skeleton,
-} from "@chakra-ui/react";
-import {
   Camera,
   Video,
   Code,
@@ -33,7 +19,6 @@ import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
 import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
 import type { BlogPost, WordPressFeaturedMedia } from "@/types/wordpress";
-import { T } from "@/lib/tokens";
 
 const SERVICES = [
   { icon: Camera, title: "Photography", titleTh: "ภาพถ่าย", category: "photography" },
@@ -51,81 +36,54 @@ export default function HomeClient({ initialBlogPosts, featuredPortfolios }: Hom
   return (
     <Layout>
       {/* ── LAYER 1: SUBCONSCIOUS HOOK ── */}
-      <Box
-        as="section"
+      <section
         role="region"
         aria-label="แนะนำตัว"
-        position="relative"
-        overflow="hidden"
-        bg={T.bg}
-        py={{ base: 20, md: 32 }}
+        className="relative overflow-hidden bg-base py-20 md:py-32"
       >
         {/* Subtle dot-grid texture */}
-        <Box
-          position="absolute"
-          inset={0}
-          opacity={0.04}
-          backgroundImage="radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)"
-          backgroundSize="32px 32px"
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
           aria-hidden="true"
         />
 
-        <Container maxW="3xl" mx="auto" px={{ base: 5, md: 6 }} position="relative">
-          <VStack gap={6} align="start">
-            <Text
-              fontSize="sm"
-              fontWeight="500"
-              color={T.accent}
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-            >
+        <div className="max-w-3xl mx-auto px-5 md:px-6 relative">
+          <div className="flex flex-col gap-6 items-start">
+            <span className="text-sm font-medium text-accent uppercase tracking-[0.12em]">
               Visarut Sankham
-            </Text>
+            </span>
 
-            <Heading
-              as="h1"
-              fontSize={{ base: "3xl", md: "5xl", lg: "6xl" }}
-              fontWeight="700"
-              lineHeight="1.08"
-              letterSpacing="-0.03em"
-              color={T.text}
-              maxW="680px"
-            >
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight text-content max-w-[680px]">
               Visual Storyteller
               <br />
-              <Text as="span" color={T.textMuted}>
-                &amp; Media Producer
-              </Text>
-            </Heading>
+              <span className="text-muted">&amp; Media Producer</span>
+            </h1>
 
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color={T.textMuted}
-              lineHeight="1.7"
-              maxW="520px"
-            >
+            <p className="text-base md:text-lg text-muted leading-[1.7] max-w-[520px]">
               เล่าเรื่องผ่านภาพถ่าย วิดีโอ และสื่อดิจิทัล
               เพื่อสังคม สิ่งแวดล้อม และสิทธิมนุษยชน
-            </Text>
+            </p>
 
             {/* Authority markers */}
-            <HStack gap={4} mt={2} flexWrap="wrap">
+            <div className="flex items-center gap-4 mt-2 flex-wrap">
               {[
                 { icon: Briefcase, label: "Thai PBS" },
                 { icon: MapPin, label: "Thailand" },
                 { icon: Award, label: "Award-winning" },
               ].map((badge) => (
-                <HStack key={badge.label} gap={1.5}>
-                  <Icon as={badge.icon} boxSize={3.5} color={T.textDim} />
-                  <Text fontSize="xs" color={T.textDim} fontWeight="500">
-                    {badge.label}
-                  </Text>
-                </HStack>
+                <div key={badge.label} className="flex items-center gap-1.5">
+                  <badge.icon size={14} className="text-dim" />
+                  <span className="text-xs text-dim font-medium">{badge.label}</span>
+                </div>
               ))}
-            </HStack>
-          </VStack>
-        </Container>
-      </Box>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── Featured Slider ── */}
       {featuredPortfolios.length > 0 && (
@@ -133,140 +91,84 @@ export default function HomeClient({ initialBlogPosts, featuredPortfolios }: Hom
       )}
 
       {/* ── LAYER 2: SPECIALIZATIONS ── */}
-      <Box
-        as="section"
+      <section
         role="region"
         aria-label="บริการ"
-        bg={T.bg}
-        py={{ base: 12, md: 20 }}
+        className="bg-base py-12 md:py-20"
       >
-        <Container maxW="4xl" mx="auto" px={{ base: 5, md: 6 }}>
-          <VStack gap={{ base: 8, md: 12 }} align="stretch">
-            <Text
-              fontSize="xs"
-              fontWeight="500"
-              color={T.textDim}
-              textTransform="uppercase"
-              letterSpacing="0.1em"
-            >
+        <div className="max-w-4xl mx-auto px-5 md:px-6">
+          <div className="flex flex-col gap-8 md:gap-12">
+            <span className="text-xs font-medium text-dim uppercase tracking-[0.1em]">
               Specializations
-            </Text>
+            </span>
 
-            <SimpleGrid columns={{ base: 2, md: 4 }} gap={4}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {SERVICES.map((service) => (
                 <Link key={service.title} href={`/portfolio?category=${service.category}`}>
-                  <Box
-                    bg={T.surface}
-                    border="1px solid"
-                    borderColor={T.border}
-                    borderRadius="12px"
-                    p={{ base: 5, md: 6 }}
-                    transition="border-color 0.25s, background 0.25s"
-                    _hover={{ borderColor: T.accent, bg: T.surfaceHover }}
-                    cursor="pointer"
-                    h="full"
-                  >
-                    <VStack gap={3} align="start">
-                      <Flex
-                        w="36px"
-                        h="36px"
-                        align="center"
-                        justify="center"
-                        borderRadius="8px"
-                        bg={T.accentDim}
-                      >
-                        <Icon as={service.icon} boxSize={4} color={T.accent} />
-                      </Flex>
-                      <Text fontSize="sm" fontWeight="600" color={T.text}>
-                        {service.titleTh}
-                      </Text>
-                      <Text fontSize="xs" color={T.textDim}>
-                        {service.title}
-                      </Text>
-                    </VStack>
-                  </Box>
+                  <div className="bg-surface border border-edge rounded-xl p-5 md:p-6 transition-all duration-250 hover:border-accent hover:bg-surface-hover cursor-pointer h-full">
+                    <div className="flex flex-col gap-3 items-start">
+                      <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-accent-dim">
+                        <service.icon size={16} className="text-accent" />
+                      </div>
+                      <span className="text-sm font-semibold text-content">{service.titleTh}</span>
+                      <span className="text-xs text-dim">{service.title}</span>
+                    </div>
+                  </div>
                 </Link>
               ))}
-            </SimpleGrid>
-          </VStack>
-        </Container>
-      </Box>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── Minimal divider ── */}
-      <Box display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
-        <Box w="40px" h="1px" bg={T.border} />
-      </Box>
+      <div className="flex justify-center bg-base" aria-hidden="true">
+        <div className="w-10 h-px bg-edge" />
+      </div>
 
       {/* ── LAYER 3: PORTFOLIO ── */}
-      <Box
-        as="section"
-        w="100%"
-        display="flex"
-        justifyContent="center"
-        bg={T.bg}
-        py={{ base: 12, md: 20 }}
-      >
-        <Container maxW="5xl" mx="auto" px={{ base: 4, md: 6, lg: 8 }}>
+      <section className="w-full flex justify-center bg-base py-12 md:py-20">
+        <div className="max-w-5xl mx-auto px-5 md:px-6 w-full">
           <DarkPortfolioGrid maxItems={6} />
-        </Container>
-      </Box>
+        </div>
+      </section>
 
       {/* ── Minimal divider ── */}
-      <Box display="flex" justifyContent="center" bg={T.bg} aria-hidden="true">
-        <Box w="40px" h="1px" bg={T.border} />
-      </Box>
+      <div className="flex justify-center bg-base" aria-hidden="true">
+        <div className="w-10 h-px bg-edge" />
+      </div>
 
       {/* ── BLOG ── */}
-      <Box
-        as="section"
-        w="100%"
-        display="flex"
-        justifyContent="center"
-        bg={T.bg}
-        py={{ base: 12, md: 20 }}
+      <section
+        className="w-full flex justify-center bg-base py-12 md:py-20"
         role="region"
         aria-label="บทความล่าสุด"
       >
-        <Container maxW="5xl" mx="auto" px={{ base: 4, md: 6, lg: 8 }}>
-          <VStack gap={{ base: 8, md: 12 }} w="full">
-            <Text
-              fontSize="xs"
-              fontWeight="500"
-              color={T.textDim}
-              textTransform="uppercase"
-              letterSpacing="0.1em"
-              alignSelf="start"
-            >
+        <div className="max-w-5xl mx-auto px-5 md:px-6 w-full">
+          <div className="flex flex-col gap-8 md:gap-12 w-full">
+            <span className="text-xs font-medium text-dim uppercase tracking-[0.1em] self-start">
               Latest Writing
-            </Text>
+            </span>
 
             {initialBlogPosts.length > 0 ? (
               <>
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={{ base: 4, md: 6 }} w="full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
                   {initialBlogPosts.map((post) => (
                     <BlogCard key={post.id} post={post} />
                   ))}
-                </SimpleGrid>
+                </div>
 
                 <Link href="/blog" aria-label="ดูบทความทั้งหมด">
-                  <HStack
-                    gap={2}
-                    color={T.textMuted}
-                    fontWeight="medium"
-                    fontSize="sm"
-                    _hover={{ gap: 3, color: T.text }}
-                    transition="all 0.2s"
-                    cursor="pointer"
-                  >
-                    <Text>ดูบทความทั้งหมด</Text>
+                  <div className="flex items-center gap-2 text-muted font-medium text-sm hover:gap-3 hover:text-content transition-all duration-200 cursor-pointer">
+                    <span>ดูบทความทั้งหมด</span>
                     <ArrowRight size={16} aria-hidden="true" />
-                  </HStack>
+                  </div>
                 </Link>
               </>
             ) : null}
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }
@@ -280,83 +182,61 @@ function DarkPortfolioGrid({ maxItems = 6 }: { maxItems?: number }) {
 
   if (error) {
     return (
-      <Box py={8} textAlign="center" role="alert">
-        <HStack gap={2} justify="center" color={T.textDim}>
+      <div className="py-8 text-center" role="alert">
+        <div className="flex items-center gap-2 justify-center text-dim">
           <AlertCircle size={16} aria-hidden="true" />
-          <Text fontSize="sm">เกิดข้อผิดพลาดในการโหลดผลงาน</Text>
-        </HStack>
-      </Box>
+          <span className="text-sm">เกิดข้อผิดพลาดในการโหลดผลงาน</span>
+        </div>
+      </div>
     );
   }
 
   return (
-    <VStack gap={{ base: 8, md: 10 }} w="full" aria-label="ผลงานล่าสุด" role="region">
-      <Text
-        fontSize="xs"
-        fontWeight="500"
-        color={T.textDim}
-        textTransform="uppercase"
-        letterSpacing="0.1em"
-        alignSelf="start"
-      >
+    <div className="flex flex-col gap-8 md:gap-10 w-full" aria-label="ผลงานล่าสุด" role="region">
+      <span className="text-xs font-medium text-dim uppercase tracking-[0.1em] self-start">
         Recent Work
-      </Text>
+      </span>
 
       {loading ? (
-        <Box
-          css={{
+        <div
+          className="w-full"
+          style={{
             columnCount: 1,
             columnGap: "1rem",
-            "@media (min-width: 30em)": { columnCount: 2 },
-            "@media (min-width: 62em)": { columnCount: 3 },
           }}
-          w="full"
         >
-          {Array.from({ length: maxItems }).map((_, index) => (
-            <Box key={index} css={{ breakInside: "avoid" }} mb={4}>
-              <Skeleton height={{ base: "200px", md: "220px" }} borderRadius="12px" />
-            </Box>
-          ))}
-        </Box>
+          <style>{`@media(min-width:30em){.masonry-skeleton{column-count:2!important}}@media(min-width:62em){.masonry-skeleton{column-count:3!important}}`}</style>
+          <div className="masonry-skeleton" style={{ columnCount: 1, columnGap: "1rem" }}>
+            {Array.from({ length: maxItems }).map((_, index) => (
+              <div key={index} style={{ breakInside: "avoid" }} className="mb-4">
+                <div className="h-[200px] md:h-[220px] rounded-xl animate-pulse bg-surface" />
+              </div>
+            ))}
+          </div>
+        </div>
       ) : portfolios.length > 0 ? (
         <>
-          <Box
-            css={{
-              columnCount: 1,
-              columnGap: "1rem",
-              "@media (min-width: 30em)": { columnCount: 2 },
-              "@media (min-width: 62em)": { columnCount: 3 },
-            }}
-            w="full"
+          <div
+            className="w-full columns-1 sm:columns-2 lg:columns-3 gap-4"
           >
             {portfolios.map((portfolio) => (
               <DarkPortfolioCard key={portfolio.id} portfolio={portfolio} />
             ))}
-          </Box>
+          </div>
 
           <Link href="/portfolio" aria-label="ดูผลงานทั้งหมด">
-            <HStack
-              gap={2}
-              color={T.textMuted}
-              fontWeight="medium"
-              fontSize="sm"
-              _hover={{ gap: 3, color: T.text }}
-              transition="all 0.2s"
-              cursor="pointer"
-            >
-              <Text>ดูผลงานทั้งหมด</Text>
+            <div className="flex items-center gap-2 text-muted font-medium text-sm hover:gap-3 hover:text-content transition-all duration-200 cursor-pointer">
+              <span>ดูผลงานทั้งหมด</span>
               <ArrowRight size={16} aria-hidden="true" />
-            </HStack>
+            </div>
           </Link>
         </>
       ) : (
-        <Box textAlign="center" py={12}>
-          <Text fontSize="sm" color={T.textDim}>
-            ยังไม่มีผลงานที่จะแสดง
-          </Text>
-        </Box>
+        <div className="text-center py-12">
+          <span className="text-sm text-dim">ยังไม่มีผลงานที่จะแสดง</span>
+        </div>
       )}
-    </VStack>
+    </div>
   );
 }
 
@@ -376,51 +256,30 @@ function DarkPortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
 
   return (
     <Link href={`/portfolio/${portfolio.slug}`} aria-label={getTextContent(portfolio.title)}>
-      <Box
-        as="article"
-        cursor="pointer"
-        role="group"
-        css={{ breakInside: "avoid" }}
-        mb={4}
-      >
-        <Box overflow="hidden" borderRadius="12px" bg={T.surface}>
-          <Image
-            src={getFeaturedImageUrl(portfolio.featured_image)}
-            alt={getTextContent(portfolio.title)}
-            w="full"
-            h="auto"
-            display="block"
-            objectFit="cover"
-            transition="opacity 0.2s"
-            _groupHover={{ opacity: 0.85 }}
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "/placeholder-image.svg";
-            }}
-          />
-        </Box>
+      <article className="cursor-pointer group" style={{ breakInside: "avoid" }}>
+        <div className="mb-4">
+          <div className="overflow-hidden rounded-xl bg-surface">
+            <img
+              src={getFeaturedImageUrl(portfolio.featured_image)}
+              alt={getTextContent(portfolio.title)}
+              className="w-full h-auto block object-cover transition-opacity duration-200 group-hover:opacity-85"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/placeholder-image.svg";
+              }}
+            />
+          </div>
 
-        <VStack align="start" gap={1} mt={3}>
-          <Text
-            fontSize="xs"
-            color={T.textDim}
-            textTransform="uppercase"
-            letterSpacing="wider"
-          >
-            {categoryLabel}
-          </Text>
-          <Heading
-            as="h3"
-            fontSize={{ base: "lg", md: "xl" }}
-            fontWeight="medium"
-            color={T.text}
-            lineHeight="1.2"
-            lineClamp={2}
-          >
-            {getTextContent(portfolio.title)}
-          </Heading>
-        </VStack>
-      </Box>
+          <div className="flex flex-col items-start gap-1 mt-3">
+            <span className="text-xs text-dim uppercase tracking-wider">
+              {categoryLabel}
+            </span>
+            <h3 className="text-lg md:text-xl font-medium text-content leading-[1.2] line-clamp-2">
+              {getTextContent(portfolio.title)}
+            </h3>
+          </div>
+        </div>
+      </article>
     </Link>
   );
 }
@@ -450,60 +309,33 @@ function BlogCard({ post }: { post: BlogPost }) {
 
   return (
     <Link href={`/blog/${post.slug}`} aria-label={titleText}>
-      <Box
-        as="article"
-        cursor="pointer"
-        role="group"
-        bg={T.surface}
-        border="1px solid"
-        borderColor={T.border}
-        borderRadius="12px"
-        overflow="hidden"
-        transition="border-color 0.25s, background 0.25s"
-        _hover={{ borderColor: T.accent, bg: T.surfaceHover }}
-      >
-        <AspectRatio ratio={16 / 9} w="full">
-          <Box bg={T.surface}>
-            {thumbnail ? (
-              <Image
-                src={thumbnail}
-                alt={titleText}
-                w="full"
-                h="full"
-                objectFit="cover"
-                loading="lazy"
-              />
-            ) : (
-              <Box w="full" h="full" />
-            )}
-          </Box>
-        </AspectRatio>
-        <VStack align="start" gap={2} p={{ base: 4, md: 5 }}>
-          <Text fontSize="xs" color={T.textDim} letterSpacing="wide">
-            {formatDate(post.date)}
-          </Text>
-          <Heading
-            as="h3"
-            fontSize={{ base: "md", md: "lg" }}
-            fontWeight="600"
-            color={T.text}
-            lineHeight="1.3"
-            lineClamp={2}
-          >
-            {titleText}
-          </Heading>
-          {excerpt && (
-            <Text
-              fontSize="sm"
-              color={T.textMuted}
-              lineHeight="1.6"
-              lineClamp={2}
-            >
-              {excerpt}...
-            </Text>
+      <article className="cursor-pointer group bg-surface border border-edge rounded-xl overflow-hidden transition-all duration-250 hover:border-accent hover:bg-surface-hover">
+        <div className="aspect-video w-full bg-surface">
+          {thumbnail ? (
+            <img
+              src={thumbnail}
+              alt={titleText}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full" />
           )}
-        </VStack>
-      </Box>
+        </div>
+        <div className="flex flex-col items-start gap-2 p-4 md:p-5">
+          <span className="text-xs text-dim tracking-wide">
+            {formatDate(post.date)}
+          </span>
+          <h3 className="text-base md:text-lg font-semibold text-content leading-[1.3] line-clamp-2">
+            {titleText}
+          </h3>
+          {excerpt && (
+            <p className="text-sm text-muted leading-[1.6] line-clamp-2">
+              {excerpt}...
+            </p>
+          )}
+        </div>
+      </article>
     </Link>
   );
 }

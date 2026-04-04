@@ -1,15 +1,10 @@
-import { Box, Heading, Text, Stack, HStack } from "@chakra-ui/react";
 import { FileText, Ruler, Package } from "lucide-react";
-import { T } from "@/lib/tokens";
 import { PrintACF } from "@/types/acf";
 
 interface PrintACFDisplayProps {
   acf: PrintACF;
 }
 
-/**
- * ACF display component for Print portfolio items
- */
 export function PrintACFDisplay({ acf }: PrintACFDisplayProps) {
   const items = [
     { icon: Ruler, label: "ขนาด", value: acf.print_size },
@@ -18,36 +13,28 @@ export function PrintACFDisplay({ acf }: PrintACFDisplayProps) {
   ];
 
   return (
-    <Stack gap={6}>
+    <div className="flex flex-col gap-6">
       {acf.print_description && (
-        <Box>
-          <Heading size="md" mb={3}>
-            คำอธิบายงานพิมพ์
-          </Heading>
-          <Text color={T.textMuted}>
-            {acf.print_description}
-          </Text>
-        </Box>
+        <div>
+          <h3 className="text-lg font-semibold mb-3">คำอธิบายงานพิมพ์</h3>
+          <p className="text-muted">{acf.print_description}</p>
+        </div>
       )}
 
-      <Box>
-        <Heading size="md" mb={4}>
-          ข้อมูลงานพิมพ์
-        </Heading>
-        <Stack gap={3}>
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลงานพิมพ์</h3>
+        <div className="flex flex-col gap-3">
           {items.map(({ icon: Icon, label, value }) =>
             value ? (
-              <HStack key={label} gap={3}>
+              <div key={label} className="flex items-center gap-3">
                 <Icon size={20} />
-                <Text fontWeight="medium">{label}:</Text>
-                <Text color={T.textMuted}>
-                  {value}
-                </Text>
-              </HStack>
+                <span className="font-medium">{label}:</span>
+                <span className="text-muted">{value}</span>
+              </div>
             ) : null
           )}
-        </Stack>
-      </Box>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }

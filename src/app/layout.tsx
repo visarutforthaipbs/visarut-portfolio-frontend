@@ -87,14 +87,14 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logo/white-favicon.svg",
+        url: "/logo/logo-1.svg",
         type: "image/svg+xml",
       },
     ],
-    shortcut: "/logo/white-favicon.svg",
+    shortcut: "/logo/logo-1.svg",
     apple: [
       {
-        url: "/logo/white-favicon.svg",
+        url: "/logo/logo-1.svg",
         sizes: "180x180",
         type: "image/svg+xml",
       },

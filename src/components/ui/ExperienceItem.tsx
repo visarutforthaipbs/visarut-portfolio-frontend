@@ -1,8 +1,5 @@
 "use client";
 
-import { Box, Badge, Text, VStack, HStack } from "@chakra-ui/react";
-import { T } from "@/lib/tokens";
-
 interface ExperienceItemProps {
     year: string;
     company: string;
@@ -21,87 +18,51 @@ export function ExperienceItem({
     current,
 }: ExperienceItemProps) {
     return (
-        <Box
-            bg={T.surface}
-            p={6}
-            borderRadius="lg"
-            border="1px solid"
-            borderColor={T.border}
-        >
-            <VStack align="stretch" gap={4}>
-                <HStack justify="space-between" wrap="wrap" gap={2}>
-                    <VStack align="start" gap={1} flex={1}>
-                        <HStack gap={2}>
-                            <Text
-                                fontSize="lg"
-                                fontWeight="600"
-                                color={T.text}
-                            >
+        <div className="bg-surface p-6 rounded-lg border border-edge">
+            <div className="flex flex-col gap-4">
+                <div className="flex justify-between flex-wrap gap-2">
+                    <div className="flex flex-col items-start gap-1 flex-1">
+                        <div className="flex items-center gap-2">
+                            <span className="text-lg font-semibold text-content">
                                 {company}
-                            </Text>
+                            </span>
                             {current && (
-                                <Badge bg={T.accentDim} color={T.accent}>
+                                <span className="bg-accent-dim text-accent px-2 py-0.5 rounded-full text-xs">
                                     ปัจจุบัน
-                                </Badge>
+                                </span>
                             )}
-                        </HStack>
-                        <Text
-                            fontSize="md"
-                            color={T.textMuted}
-                        >
+                        </div>
+                        <span className="text-base text-muted">
                             {position}
-                        </Text>
-                    </VStack>
-                    <Text
-                        fontSize="sm"
-                        color={T.textDim}
-                        fontWeight="500"
-                    >
+                        </span>
+                    </div>
+                    <span className="text-sm text-dim font-medium">
                         {year}
-                    </Text>
-                </HStack>
+                    </span>
+                </div>
 
                 {/* Job Description */}
-                <Text
-                    fontSize="md"
-                    color={T.textMuted}
-                    lineHeight="1.6"
-                >
+                <p className="text-base text-muted leading-relaxed">
                     {description}
-                </Text>
+                </p>
 
                 {/* Responsibilities */}
-                <Box>
-                    <Text
-                        fontSize="sm"
-                        fontWeight="600"
-                        color={T.text}
-                        mb={2}
-                    >
+                <div>
+                    <p className="text-sm font-semibold text-content mb-2">
                         หน้าที่ความรับผิดชอบ:
-                    </Text>
-                    <VStack align="stretch" gap={1}>
+                    </p>
+                    <div className="flex flex-col gap-1">
                         {responsibilities.map((responsibility, idx) => (
-                            <Text
+                            <p
                                 key={idx}
-                                fontSize="sm"
-                                color={T.textMuted}
-                                pl={4}
-                                position="relative"
-                                _before={{
-                                    content: '"•"',
-                                    position: "absolute",
-                                    left: 0,
-                                    color: T.accent,
-                                    fontWeight: "bold",
-                                }}
+                                className="text-sm text-muted pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-accent before:font-bold"
                             >
                                 {responsibility}
-                            </Text>
+                            </p>
                         ))}
-                    </VStack>
-                </Box>
-            </VStack>
-        </Box>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -1,10 +1,9 @@
 "use client";
 
-import { Box, BoxProps } from "@chakra-ui/react";
 import { memo } from "react";
 import { sanitizeHtml } from "@/lib/sanitize";
 
-interface WordPressContentProps extends BoxProps {
+interface WordPressContentProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string;
   className?: string;
 }
@@ -12,13 +11,13 @@ interface WordPressContentProps extends BoxProps {
 export const WordPressContent = memo(function WordPressContent({
   content,
   className = "",
-  ...boxProps
+  ...props
 }: WordPressContentProps) {
   return (
-    <Box
+    <div
       className={`wordpress-content ${className}`}
       dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
-      {...boxProps}
+      {...props}
     />
   );
 });

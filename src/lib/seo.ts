@@ -127,7 +127,7 @@ export function generateOrganizationSchema() {
     name: siteConfig.titleTh,
     alternateName: siteConfig.title,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/logo/black-favicon.svg`,
+    logo: `${siteConfig.url}/logo/logo-1.svg`,
     image: `${siteConfig.url}/image/profile.png`,
     description: siteConfig.descriptionTh,
     founder: {

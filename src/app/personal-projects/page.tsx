@@ -1,22 +1,9 @@
 "use client";
 
-import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Badge,
-  Separator,
-  SimpleGrid,
-  Button,
-  Link,
-} from "@chakra-ui/react";
 import { Layout } from "@/components/layout";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { JsonLd } from "@/components/JsonLd";
-import { T } from "@/lib/tokens";
 
 // Dynamically import ReactCompareImage to avoid SSR issues
 const ReactCompareImage = dynamic(() => import("react-compare-image"), {
@@ -24,42 +11,15 @@ const ReactCompareImage = dynamic(() => import("react-compare-image"), {
 });
 
 // CTA Button Component
-const CTAButton = ({
-  size = "lg",
-}: {
-  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-}) => (
-  <Link
+const CTAButton = () => (
+  <a
     href="https://docs.google.com/forms/d/e/1FAIpQLSdxdTy2w99szZgmk6yvfiVkE4PZSv6N7-ofgFX8n3AZ3C5VlA/viewform"
     target="_blank"
     rel="noopener noreferrer"
-    textDecoration="none"
+    className="inline-block bg-accent text-base hover:bg-[#d97706] hover:-translate-y-0.5 hover:shadow-lg active:bg-[#c2680a] active:translate-y-0 transition-all duration-200 px-8 py-3 text-base md:text-lg font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-accent"
   >
-    <Button
-      size={size}
-      bg={T.accent}
-      color={T.bg}
-      _hover={{
-        bg: "#d97706",
-        transform: "translateY(-2px)",
-        boxShadow: "lg",
-      }}
-      _active={{
-        bg: "#c2680a",
-        transform: "translateY(0)",
-      }}
-      transition="all 0.2s"
-      px={8}
-      py={6}
-      fontSize={{ base: "md", md: "lg" }}
-      fontWeight="600"
-      borderRadius="full"
-
-      _focus={{ boxShadow: "outline" }}
-    >
-      โหลด Preset ได้ที่นี่
-    </Button>
-  </Link>
+    โหลด Preset ได้ที่นี่
+  </a>
 );
 
 export default function PersonalProjectsPage() {
@@ -120,238 +80,96 @@ export default function PersonalProjectsPage() {
       <JsonLd data={structuredData} />
 
       {/* Hero Section with Background Image */}
-      <Box
-        as="section"
+      <section
         role="region"
         aria-label="#PHOTOFORAIR"
-        position="relative"
-        w="100vw"
-        h={{ base: "60vh", md: "70vh" }}
-        overflow="hidden"
-        left="50%"
-        right="50%"
-        ml="-50vw"
-        mr="-50vw"
+        className="relative w-screen h-[45vh] md:h-[70vh] overflow-hidden left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
       >
         {/* Background Image */}
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          backgroundImage="url('/image/pfa/x2-1-2.jpg')"
-          backgroundSize="cover"
-          backgroundPosition="bottom"
-          backgroundRepeat="no-repeat"
-          _after={{
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            bg: "blackAlpha.500",
-          }}
+        <div
+          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat after:content-[''] after:absolute after:inset-0 after:bg-black/50"
+          style={{ backgroundImage: "url('/image/pfa/x2-1-2.jpg')" }}
         />
 
         {/* Hero Content */}
-        <Box
-          h="full"
-          position="relative"
-          zIndex={1}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          px={{ base: 6, md: 8 }}
-        >
-          <VStack gap={4} align="center" w="full" maxW="1200px">
-            <HStack gap={3} justify="center">
-              <Badge
-                bg={T.surface}
-                color={T.text}
-                px={4}
-                py={2}
-                borderRadius="full"
-
-                fontSize="md"
-              >
+        <div className="h-full relative z-[1] flex items-center justify-center px-5 md:px-6">
+          <div className="flex flex-col gap-4 items-center w-full max-w-[1200px]">
+            <div className="flex items-center gap-3 justify-center">
+              <span className="bg-surface text-content px-4 py-2 rounded-full text-base">
                 Social Campaign
-              </Badge>
-              <Badge
-                bg={T.surfaceHover}
-                color={T.text}
-                px={4}
-                py={2}
-                borderRadius="full"
-
-                fontSize="md"
-              >
+              </span>
+              <span className="bg-surface-hover text-content px-4 py-2 rounded-full text-base">
                 Photography
-              </Badge>
-            </HStack>
-            <Heading
-              fontSize={{ base: "4xl", md: "6xl" }}
-              fontWeight="bold"
-              color="white"
-
-              textShadow="0 2px 10px rgba(0,0,0,0.3)"
-              textAlign="center"
-            >
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-white text-center" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}>
               #PHOTOFORAIR
-            </Heading>
-            <Text
-              fontSize={{ base: "xl", md: "2xl" }}
-              color="white"
-
-              textShadow="0 2px 8px rgba(0,0,0,0.3)"
-              textAlign="center"
-            >
+            </h1>
+            <p className="text-xl md:text-2xl text-white text-center" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
               เปลี่ยนภาพถ่ายเพื่ออากาศที่เท่ากัน
-            </Text>
+            </p>
             {/* Campaign Stats */}
-            <SimpleGrid
-              columns={{ base: 1, md: 2 }}
-              gap={6}
-              w="full"
-              maxW="2xl"
-            >
-              <Box
-                bg={T.surface}
-                p={6}
-                borderRadius="lg"
-                borderWidth="1px"
-                borderColor={T.border}
-                boxShadow="sm"
-              >
-                <VStack gap={2} align="center">
-                  <Text fontSize="sm" color={T.textDim} className="thai-text">
-                    จำนวนเงินที่ได้แล้ว
-                  </Text>
-                  <Heading
-                    fontSize="3xl"
-                    color={T.text}
-
-                  >
-                    13,016 บาท
-                  </Heading>
-                </VStack>
-              </Box>
-              <Box
-                bg={T.surface}
-                p={6}
-                borderRadius="lg"
-                borderWidth="1px"
-                borderColor={T.border}
-                boxShadow="sm"
-              >
-                <VStack gap={2} align="center">
-                  <Text fontSize="sm" color={T.textDim} className="thai-text">
-                    จำนวนหน้ากาก N95
-                  </Text>
-                  <Heading
-                    fontSize="3xl"
-                    color={T.text}
-
-                  >
-                    591 ชิ้น
-                  </Heading>
-                </VStack>
-              </Box>
-            </SimpleGrid>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+              <div className="bg-surface p-6 rounded-lg border border-edge shadow-sm">
+                <div className="flex flex-col gap-2 items-center">
+                  <span className="text-sm text-dim thai-text">จำนวนเงินที่ได้แล้ว</span>
+                  <h2 className="text-3xl text-content font-bold">13,016 บาท</h2>
+                </div>
+              </div>
+              <div className="bg-surface p-6 rounded-lg border border-edge shadow-sm">
+                <div className="flex flex-col gap-2 items-center">
+                  <span className="text-sm text-dim thai-text">จำนวนหน้ากาก N95</span>
+                  <h2 className="text-3xl text-content font-bold">591 ชิ้น</h2>
+                </div>
+              </div>
+            </div>
 
             {/* CTA Button in Hero */}
             <CTAButton />
-          </VStack>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </section>
 
-      <Separator />
+      <hr className="border-edge" />
 
       {/* Why We Do This - Rationale */}
-      <VStack
-        as="section"
+      <section
         role="region"
         aria-label="ที่มาของแคมเปญ"
-        gap={6}
-        align="start"
-        w="full"
-        maxW="3xl"
-        mx="auto"
-        px={{ base: 4, md: 6 }}
+        className="flex flex-col gap-6 items-start w-full max-w-3xl mx-auto px-5 md:px-6"
       >
-        <Heading
-          fontSize={{ base: "2xl", md: "3xl" }}
-          fontWeight="bold"
-          color={T.text}
-
-          textAlign="center"
-          w="full"
-          paddingTop={{ base: 12, md: 20 }}
-        >
+        <h2 className="text-2xl md:text-3xl font-bold text-content text-center w-full pt-12 md:pt-20">
           แม้แต่อากาศหายใจของเรายังไม่เท่ากัน
-        </Heading>
+        </h2>
 
-        <Text
-          fontSize={{ base: "sm", md: "lg" }}
-          color={T.textMuted}
-
-          lineHeight="1.8"
-          textAlign="left"
-        >
+        <p className="text-sm md:text-lg text-muted leading-[1.8] text-left">
           ปัญหาฝุ่นควัน PM2.5
           ในเชียงใหม่วิกฤตจนทำให้มีผู้เสียชีวิตจากการดับไฟป่า 5 คนในปีที่แล้ว
           และส่งผลกระทบโดยตรงต่อสุขภาพส่วนตัวของผู้เขียนจนเลือดกำเดาไหลขณะหาข้อมูลเรื่องนี้
           การอยู่ในเชียงใหม่ 1 เดือน ในช่วงวิกฤตฝุ่นควัน
           เปรียบได้กับการสูบบุหรี่ 120 มวน หรือทำให้ชีวิตสั้นลงประมาณ 1
           วันต่อเดือน
-        </Text>
+        </p>
 
-        <Text
-          fontSize={{ base: "sm", md: "lg" }}
-          color={T.textMuted}
-
-          lineHeight="1.8"
-          textAlign="left"
-        >
+        <p className="text-sm md:text-lg text-muted leading-[1.8] text-left">
           หลายคนต้องใช้ชีวิตกว่า 3 เดือนภายใต้หมอกควันพิษตลอด 24 ชั่วโมง
           การป้องกันตัวด้วยเครื่องฟอกอากาศ (ราคาเริ่มต้นกว่า 3,000 บาท)
           และหน้ากาก N95 ได้กลายเป็น &ldquo;ของหรูหรา&rdquo; สำหรับคนจำนวนมาก
           โดยเฉพาะกลุ่มคนจนและแรงงานข้ามชาติที่มีรายได้จำกัดและไม่สามารถเข้าถึงอุปกรณ์เหล่านี้ได้
           ทั้งที่ตามสถิติมีคนอย่างน้อยกว่า 100,000
           คนในเชียงใหม่ที่ต้องการอากาศบริสุทธิ์
-        </Text>
+        </p>
 
-        <Text
-          fontSize={{ base: "sm", md: "lg" }}
-          color={T.textMuted}
-
-          lineHeight="1.8"
-          textAlign="left"
-        >
+        <p className="text-sm md:text-lg text-muted leading-[1.8] text-left">
           กลุ่มแรงงานข้ามชาติที่ทำงานเสี่ยงอยู่แล้ว มองว่าฝุ่นควัน PM2.5
           เป็นเพียงปัญหาเล็กน้อยเมื่อเทียบกับปัญหาหลักด้านรายได้และความมั่นคง
           แต่ทำได้เพียงใช้หน้ากากอนามัยราคาถูก เพราะหน้ากาก N95
           ราคาสูงเกินกำลังซื้อ ส่งผลให้แม้จะเผชิญวิกฤตเดียวกัน
           แต่ได้รับผลกระทบไม่เท่ากัน
-        </Text>
+        </p>
 
-        <Box
-          bg={T.surface}
-          p={{ base: 4, md: 6 }}
-          borderRadius="lg"
-          borderLeft="6px"
-          borderColor={T.accent}
-          w="full"
-        >
-          <Text
-            fontSize={{ base: "md", md: "xl" }}
-            color={T.text}
-
-            lineHeight="1.8"
-            fontWeight="600"
-            textAlign="left"
-          >
+        <div className="bg-surface p-4 md:p-6 rounded-lg border-l-[6px] border-accent w-full">
+          <p className="text-base md:text-xl text-content leading-[1.8] font-semibold text-left">
             ผมเชื่อว่า &ldquo;เราไม่ควรที่จะต้องจ่ายเพื่อหายใจ&rdquo;
             อากาศบริสุทธิ์ควรเป็นสิทธิ์ที่ทุกคนเข้าถึงได้เท่าเทียมกัน
             ในระหว่างที่รอการแก้ไขปัญหาฝุ่นควันอย่างยั่งยืน
@@ -359,351 +177,160 @@ export default function PersonalProjectsPage() {
             รูปถ่าย &ldquo;CNXPM2.5&rdquo; เพื่อนำเงินไปซื้อหน้ากาก N95
             แจกจ่ายให้แรงงานข้ามชาติในเชียงใหม่
             เพื่อให้ทุกคนได้หายใจในอากาศบริสุทธิ์ที่เท่าเทียมกันมากขึ้น
-          </Text>
-        </Box>
+          </p>
+        </div>
 
         {/* CTA Button after Rationale */}
-        <Box display="flex" justifyContent="center" w="full" mt={8}>
+        <div className="flex justify-center w-full mt-8">
           <CTAButton />
-        </Box>
-      </VStack>
+        </div>
+      </section>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        w="full"
-        pt={{ base: 12, md: 16 }}
-      >
-        <Separator w="60%" maxW="600px" />
-      </Box>
+      <div className="flex justify-center w-full pt-12 md:pt-16">
+        <hr className="border-edge w-[60%] max-w-[600px]" />
+      </div>
 
       {/* Collaboration Section */}
-      <VStack
-        as="section"
+      <section
         role="region"
         aria-label="ความร่วมมือ"
-        gap={6}
-        align="start"
-        w="full"
-        maxW="3xl"
-        mx="auto"
-        px={{ base: 4, md: 6 }}
-        py={{ base: 12, md: 16 }}
+        className="flex flex-col gap-6 items-start w-full max-w-3xl mx-auto px-5 md:px-6 py-12 md:py-16"
       >
-        <Heading
-          fontSize={{ base: "2xl", md: "3xl" }}
-          fontWeight="bold"
-          color={T.text}
-
-          textAlign="center"
-          w="full"
-        >
+        <h2 className="text-2xl md:text-3xl font-bold text-content text-center w-full">
           ความร่วมมือ
-        </Heading>
+        </h2>
 
-        <Box
-          bg={T.surface}
-          p={{ base: 4, sm: 6, md: 8 }}
-          borderRadius="xl"
-          borderWidth="1px"
-          borderColor={T.border}
-          w="full"
-        >
-          <VStack gap={4} align="start">
-            <Box w="full">
-              <Heading
-                fontSize={{ base: "lg", md: "xl" }}
-                fontWeight="600"
-                color={T.text}
-
-                mb={2}
-              >
+        <div className="bg-surface p-4 sm:p-6 md:p-8 rounded-xl border border-edge w-full">
+          <div className="flex flex-col gap-4 items-start">
+            <div className="w-full">
+              <h3 className="text-lg md:text-xl font-semibold text-content mb-2">
                 ร่วมมือกับ ตี่ต่าง
-              </Heading>
-              <Text
-                fontSize={{ base: "sm", md: "lg" }}
-                color={T.textMuted}
-
-                lineHeight="1.8"
-                mb={4}
-              >
+              </h3>
+              <p className="text-sm md:text-lg text-muted leading-[1.8] mb-4">
                 แคมเปญนี้ดำเนินการร่วมกับ <strong>ตี่ต่าง</strong>
                 ผู้ที่ทำงานใกล้ชิดกับชุมชนแรงงานข้ามชาติในเชียงใหม่
                 โดยตี่ต่างเป็นผู้ช่วยจัดเก็บเงินที่ได้จากการขาย preset
                 และดำเนินการแจกจ่ายหน้ากาก N95 ให้กับแรงงานข้ามชาติโดยตรง
                 เพื่อให้มั่นใจว่าความช่วยเหลือไปถึงผู้ที่ต้องการอย่างแท้จริง
-              </Text>
-              <Link
+              </p>
+              <a
                 href="https://www.facebook.com/profile.php?id=100068235085612"
                 target="_blank"
                 rel="noopener noreferrer"
-                textDecoration="none"
+                className="inline-flex items-center gap-2 bg-accent text-base hover:bg-[#d97706] hover:-translate-y-px transition-all duration-200 px-4 py-2 text-sm md:text-base rounded-md w-full sm:w-auto justify-center"
               >
-                <Button
-                  size={{ base: "sm", md: "md" }}
-                  bg={T.accent}
-                  color={T.bg}
-                  _hover={{
-                    bg: "#d97706",
-                    transform: "translateY(-1px)",
-                  }}
-                  transition="all 0.2s"
+                <span className="text-base md:text-lg"></span>
+                <span>ดูโปรไฟล์ Facebook ของตี่ต่าง</span>
+              </a>
+            </div>
 
-                  w={{ base: "full", sm: "auto" }}
-                >
-                  <HStack gap={2}>
-                    <Text fontSize={{ base: "md", md: "lg" }}></Text>
-                    <Text>ดูโปรไฟล์ Facebook ของตี่ต่าง </Text>
-                  </HStack>
-                </Button>
-              </Link>
-            </Box>
-
-            <Box
-              bg={T.bg}
-              p={4}
-              borderRadius="md"
-              borderLeft="4px"
-              borderColor={T.accent}
-              w="full"
-            >
-              <Text
-                fontSize="sm"
-                color={T.textDim}
-
-                lineHeight="1.7"
-                fontStyle="italic"
-              >
+            <div className="bg-base p-4 rounded-md border-l-4 border-accent w-full">
+              <p className="text-sm text-dim leading-[1.7] italic">
                 การทำงานร่วมกับคนในพื้นที่ช่วยให้เราเข้าถึงและเข้าใจความต้องการของชุมชนได้อย่างแท้จริง
                 และทำให้มั่นใจได้ว่าความช่วยเหลือไปถึงมือของผู้ที่ต้องการจริง ๆ
-              </Text>
-            </Box>
-          </VStack>
-        </Box>
-      </VStack>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        w="full"
-        pb={{ base: 8, md: 12 }}
-      >
-        <Separator w="60%" maxW="600px" />
-      </Box>
+      <div className="flex justify-center w-full pb-8 md:pb-12">
+        <hr className="border-edge w-[60%] max-w-[600px]" />
+      </div>
 
       {/* Media Coverage Section */}
-      <VStack
-        as="section"
+      <section
         role="region"
         aria-label="ข่าวและการรายงาน"
-        gap={6}
-        align="start"
-        w="full"
-        maxW="4xl"
-        mx="auto"
-        px={{ base: 4, md: 6 }}
-        py={{ base: 12, md: 16 }}
+        className="flex flex-col gap-6 items-start w-full max-w-4xl mx-auto px-5 md:px-6 py-12 md:py-16"
       >
-        <VStack gap={3} w="full" textAlign="center" px={{ base: 2, md: 0 }}>
-          <Heading
-            fontSize={{ base: "2xl", md: "3xl" }}
-            fontWeight="bold"
-            color={T.text}
-
-          >
+        <div className="flex flex-col gap-3 w-full text-center px-2 md:px-0">
+          <h2 className="text-2xl md:text-3xl font-bold text-content">
             ข่าวและการรายงาน
-          </Heading>
-          <Text
-            fontSize={{ base: "sm", md: "lg" }}
-            color={T.textDim}
-
-          >
+          </h2>
+          <p className="text-sm md:text-lg text-dim">
             แคมเปญนี้ได้เริ่มต้นตั้งแต่ปี 2564 และได้รับความสนใจจากสื่อหลายแห่ง
-          </Text>
-        </VStack>
+          </p>
+        </div>
 
-        <SimpleGrid
-          columns={{ base: 1, md: 2 }}
-          gap={{ base: 4, md: 6 }}
-          w="full"
-          mt={6}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full mt-6">
           {/* Prachatai */}
-          <Link
+          <a
             href="https://prachatai.com/journal/2021/02/91510"
             target="_blank"
             rel="noopener noreferrer"
-            _hover={{ textDecoration: "none" }}
+            className="block"
           >
-            <Box
-              bg={T.surface}
-              p={{ base: 5, md: 6 }}
-              borderRadius="lg"
-              borderWidth="1px"
-              borderColor={T.border}
-              h="full"
-              transition="all 0.2s"
-              _hover={{
-                transform: { base: "none", md: "translateY(-4px)" },
-                bg: T.surfaceHover,
-                borderColor: T.accent,
-              }}
-            >
-              <VStack gap={3} align="start">
-                <Badge
-                  bg={T.accentDim}
-                  color={T.accent}
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                  fontSize="xs"
-                >
+            <div className="bg-surface p-5 md:p-6 rounded-lg border border-edge h-full transition-all duration-200 md:hover:-translate-y-1 hover:bg-surface-hover hover:border-accent">
+              <div className="flex flex-col gap-3 items-start">
+                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full text-xs">
                   ข่าว
-                </Badge>
-                <Heading
-                  fontSize={{ base: "lg", md: "xl" }}
-                  fontWeight="600"
-                  color={T.text}
-
-                  lineHeight="1.4"
-                >
+                </span>
+                <h3 className="text-lg md:text-xl font-semibold text-content leading-[1.4]">
                   Prachatai
-                </Heading>
-                <Text
-                  fontSize="sm"
-                  color={T.textDim}
-
-                  lineHeight="1.6"
-                >
+                </h3>
+                <p className="text-sm text-dim leading-relaxed">
                   รายงานข่าวเกี่ยวกับแคมเปญ #PHOTOFORAIR
                   และการช่วยเหลือแรงงานข้ามชาติ
-                </Text>
-                <Text fontSize="xs" color={T.textDim} className="thai-text">
+                </p>
+                <span className="text-xs text-dim thai-text">
                   กุมภาพันธ์ 2564
-                </Text>
-              </VStack>
-            </Box>
-          </Link>
+                </span>
+              </div>
+            </div>
+          </a>
 
           {/* Urban Creature */}
-          <Link
+          <a
             href="https://urbancreature.co/whatsup-cnxpm25/"
             target="_blank"
             rel="noopener noreferrer"
-            _hover={{ textDecoration: "none" }}
+            className="block"
           >
-            <Box
-              bg={T.surface}
-              p={{ base: 5, md: 6 }}
-              borderRadius="lg"
-              borderWidth="1px"
-              borderColor={T.border}
-              h="full"
-              transition="all 0.2s"
-              _hover={{
-                transform: { base: "none", md: "translateY(-4px)" },
-                bg: T.surfaceHover,
-                borderColor: T.accent,
-              }}
-            >
-              <VStack gap={3} align="start">
-                <Badge
-                  bg={T.accentDim}
-                  color={T.accent}
-                  px={3}
-                  py={1}
-                  borderRadius="full"
-                  fontSize="xs"
-                >
+            <div className="bg-surface p-5 md:p-6 rounded-lg border border-edge h-full transition-all duration-200 md:hover:-translate-y-1 hover:bg-surface-hover hover:border-accent">
+              <div className="flex flex-col gap-3 items-start">
+                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full text-xs">
                   บทความ
-                </Badge>
-                <Heading
-                  fontSize={{ base: "lg", md: "xl" }}
-                  fontWeight="600"
-                  color={T.text}
-
-                  lineHeight="1.4"
-                >
+                </span>
+                <h3 className="text-lg md:text-xl font-semibold text-content leading-[1.4]">
                   Urban Creature
-                </Heading>
-                <Text
-                  fontSize="sm"
-                  color={T.textDim}
-
-                  lineHeight="1.6"
-                >
+                </h3>
+                <p className="text-sm text-dim leading-relaxed">
                   What&apos;s Up #CNXPM2.5 -
                   บทความเจาะลึกเกี่ยวกับแคมเปญและปัญหาฝุ่นควันในเชียงใหม่
-                </Text>
-              </VStack>
-            </Box>
-          </Link>
-        </SimpleGrid>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
 
-        <Box
-          bg={T.surface}
-          p={6}
-          borderRadius="lg"
-          w="full"
-          mt={6}
-        >
-          <Text
-            fontSize={{ base: "sm", md: "md" }}
-            color={T.textMuted}
-
-            lineHeight="1.8"
-            textAlign="center"
-          >
+        <div className="bg-surface p-6 rounded-lg w-full mt-6">
+          <p className="text-sm md:text-base text-muted leading-[1.8] text-center">
             แคมเปญ #PHOTOFORAIR ดำเนินการมาตั้งแต่ปี 2564 จนถึงปัจจุบัน
             และได้รับการตอบรับที่ดีจากสังคม ช่วยให้เราสามารถแจกจ่ายหน้ากาก N95
             ให้กับแรงงานข้ามชาติในเชียงใหม่ได้อย่างต่อเนื่อง
-          </Text>
-        </Box>
-      </VStack>
+          </p>
+        </div>
+      </section>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        w="full"
-        pb={{ base: 12, md: 16 }}
-      >
-        <Separator w="60%" maxW="600px" />
-      </Box>
+      <div className="flex justify-center w-full pb-12 md:pb-16">
+        <hr className="border-edge w-[60%] max-w-[600px]" />
+      </div>
 
       {/* Main Content */}
-      <Box
-        bg={T.bg}
-        py={{ base: 16, md: 20 }}
-        w="full"
-        display="flex"
-        justifyContent="center"
-      >
-        <Box maxW="1200px" px={{ base: 4, md: 8 }} w="full">
-          <VStack gap={12} align="center" w="full">
+      <div className="bg-base py-16 md:py-20 w-full flex justify-center">
+        <div className="max-w-[1200px] px-4 md:px-8 w-full">
+          <div className="flex flex-col gap-12 items-center w-full">
             {/* #PHOTOFORAIR Project */}
-            <VStack gap={8} align="center" w="full">
+            <div className="flex flex-col gap-8 items-center w-full">
               {/* Preset Sections */}
-              <VStack gap={8} align="center" w="full">
-                <Box w="full" maxW="3xl" px={{ base: 2, md: 0 }}>
-                  <Heading
-                    fontSize={{ base: "lg", md: "2xl" }}
-                    fontWeight="600"
-                    color={T.text}
-
-                    mb={3}
-                    textAlign="left"
-                  >
+              <div className="flex flex-col gap-8 items-center w-full">
+                <div className="w-full max-w-3xl px-2 md:px-0">
+                  <h2 className="text-lg md:text-2xl font-semibold text-content mb-3 text-left">
                     3 ลักษณะเด่นของ &ldquo;ฤดูฝุ่นควัน&rdquo; ในเชียงใหม่
-                  </Heading>
+                  </h2>
 
-                  <Text
-                    fontSize={{ base: "sm", md: "lg" }}
-                    color={T.textMuted}
-
-                    lineHeight="1.8"
-                    mb={4}
-                    textAlign="left"
-                  >
+                  <p className="text-sm md:text-lg text-muted leading-[1.8] mb-4 text-left">
                     ความสามารถพิเศษของคนที่อาศัยอยู่ในเชียงใหม่แบบผม
                     คือสามารถที่จะบอกได้ว่าฝุ่นควันที่เห็นอยู่ตรงหน้านี้น่าจะมีค่า
                     AQI เท่าไหร่ โดยสังเกตจากลักษณะของแสง สี
@@ -712,29 +339,15 @@ export default function PersonalProjectsPage() {
                     เพื่อให้ทุกคนได้สัมผัสกับ &ldquo;ฤดูฝุ่นควัน&rdquo;
                     ในเชียงใหม่ผ่านภาพถ่ายของตัวเอง โดยมี 3
                     ลักษณะเด่นที่สำคัญดังนี้
-                  </Text>
-                </Box>
+                  </p>
+                </div>
                 {/* Soft-Box from Haze */}
-                <Box w="full" maxW="3xl" px={{ base: 2, md: 0 }}>
-                  <Heading
-                    fontSize={{ base: "lg", md: "2xl" }}
-                    fontWeight="600"
-                    color={T.text}
-
-                    mb={3}
-                    textAlign="left"
-                  >
+                <div className="w-full max-w-3xl px-2 md:px-0">
+                  <h3 className="text-lg md:text-2xl font-semibold text-content mb-3 text-left">
                     1.แสงนุ่ม ๆ จากฝุ่นควันที่ปกคลุม (Soft-Box from Haze)
-                  </Heading>
+                  </h3>
 
-                  <Text
-                    fontSize={{ base: "sm", md: "lg" }}
-                    color={T.textMuted}
-
-                    lineHeight="1.8"
-                    mb={4}
-                    textAlign="left"
-                  >
+                  <p className="text-sm md:text-lg text-muted leading-[1.8] mb-4 text-left">
                     ทุกวันนี้ ชีวิตชาวเชียงใหม่ในช่วงเดือนมีนาคม-พฤษภาคม
                     รู้จักมักคุ้นกับสภาพอากาศระดับ 150 – 500 AQI เป็นอย่างดี
                     เพราะบรรยากาศเช่นนี้ ปกคลุมเมืองเชียงใหม่ตั้งแต่เช้ายันเช้า
@@ -743,10 +356,10 @@ export default function PersonalProjectsPage() {
                     ครอบคลุมดวงอาทิตย์อันร้อนแรงในหน้าแล้งเอาไว้
                     ทำให้ภาพที่คนเชียงใหม่เห็นค่อนข้างนุ่มนวล Low-contrast
                     จนแทบขาดอากาศหายใจ
-                  </Text>
+                  </p>
 
                   {/* Before/After Image Comparison */}
-                  <Box mb={4} borderRadius="lg" overflow="hidden">
+                  <div className="mb-4 rounded-lg overflow-hidden">
                     <ReactCompareImage
                       leftImage="/image/pfa/DSC00094-scaled.jpg"
                       rightImage="/image/pfa/DSC00094-1-scaled.jpg"
@@ -755,67 +368,36 @@ export default function PersonalProjectsPage() {
                       handleSize={50}
                       hover={true}
                     />
-                  </Box>
+                  </div>
 
-                  <Box
-                    bg={T.surface}
-                    p={4}
-                    borderRadius="md"
-                    borderLeft="4px"
-                    borderColor={T.border}
-                  >
-                    <Text
-                      fontSize="sm"
-                      fontWeight="600"
-                      color={T.textMuted}
-                      mb={2}
-
-                    >
+                  <div className="bg-surface p-4 rounded-md border-l-4 border-edge">
+                    <p className="text-sm font-semibold text-muted mb-2">
                       Creative tip
-                    </Text>
-                    <Text
-                      fontSize="sm"
-                      color={T.textMuted}
-
-                      lineHeight="1.7"
-                    >
+                    </p>
+                    <p className="text-sm text-muted leading-[1.7]">
                       ลองปรับภาพถ่ายของคุณที่สดใสด้วยการลด saturation และ
                       exposure หลังจากใช้ CNXPM2.5
                       จะทำให้คุณได้ภาพถ่ายที่หม่นหมองเหมือนอยู่ในเชียงใหม่ในทุก
                       ๆ วัน
-                    </Text>
-                  </Box>
-                </Box>
+                    </p>
+                  </div>
+                </div>
 
                 {/* Warm Tone by Wildfire */}
-                <Box w="full" maxW="3xl" px={{ base: 2, md: 0 }}>
-                  <Heading
-                    fontSize={{ base: "lg", md: "2xl" }}
-                    fontWeight="600"
-                    color={T.text}
-
-                    mb={3}
-                    textAlign="left"
-                  >
+                <div className="w-full max-w-3xl px-2 md:px-0">
+                  <h3 className="text-lg md:text-2xl font-semibold text-content mb-3 text-left">
                     2.โทนอุ่น ๆ จากไฟป่ายามพระอาทิตย์ตก (Warm Tone by Wildfire)
-                  </Heading>
+                  </h3>
 
-                  <Text
-                    fontSize={{ base: "sm", md: "lg" }}
-                    color={T.textMuted}
-
-                    lineHeight="1.8"
-                    mb={4}
-                    textAlign="left"
-                  >
+                  <p className="text-sm md:text-lg text-muted leading-[1.8] mb-4 text-left">
                     อีกจุดเด่นสำคัญของ CNXPM2.5
                     คือสีเหลืองอบอวนอยู่ในจังหวัดเชียงใหม่
                     โดยได้รับแรงบัลดาลใจมากจากสีของท้องฟ้ายามเย็นและไฟป่าที่ไหม้อยู่บนดอยสุเทพ
                     ทำให้ท้องฟ้าเชียงใหม่ปกคลุมไปด้วยสีเหลืองที่ดูเหมือตอนจบของหนังรักโรแมนติก
                     แต่พระเอกต้องใส่หน้ากากอนามัยระหว่างจูบนางเอก
-                  </Text>
+                  </p>
                   {/* Before/After Image Comparison */}
-                  <Box mb={4} borderRadius="lg" overflow="hidden">
+                  <div className="mb-4 rounded-lg overflow-hidden">
                     <ReactCompareImage
                       leftImage="/image/pfa/DSC00084-scaled.jpg"
                       rightImage="/image/pfa/DSC00084-1-scaled.jpg"
@@ -824,58 +406,27 @@ export default function PersonalProjectsPage() {
                       handleSize={50}
                       hover={true}
                     />
-                  </Box>
-                  <Box
-                    bg={T.surface}
-                    p={4}
-                    borderRadius="md"
-                    borderLeft="4px"
-                    borderColor={T.border}
-                  >
-                    <Text
-                      fontSize="sm"
-                      fontWeight="600"
-                      color={T.textMuted}
-                      mb={2}
-
-                    >
+                  </div>
+                  <div className="bg-surface p-4 rounded-md border-l-4 border-edge">
+                    <p className="text-sm font-semibold text-muted mb-2">
                       Creative tip
-                    </Text>
-                    <Text
-                      fontSize="sm"
-                      color={T.textMuted}
-
-                      lineHeight="1.7"
-                    >
+                    </p>
+                    <p className="text-sm text-muted leading-[1.7]">
                       เพื่อที่จะทำให้ได้โทนสีเหลืองปนส้มคล้ายกับท้องฟ้ายามเย็นช่วงไฟป่าดอยสุเทพ
                       แนะนำให้ปรับ Temp ไปที่ช่วง 5500 และ Tint
                       ไปที่ช่วงสีเขียวเพิ่ม
-                    </Text>
-                  </Box>
-                </Box>
+                    </p>
+                  </div>
+                </div>
 
                 {/* Faded Look by Air pollution */}
-                <Box w="full" maxW="3xl" px={{ base: 2, md: 0 }}>
-                  <Heading
-                    fontSize={{ base: "lg", md: "2xl" }}
-                    fontWeight="600"
-                    color={T.text}
-
-                    mb={3}
-                    textAlign="left"
-                  >
+                <div className="w-full max-w-3xl px-2 md:px-0">
+                  <h3 className="text-lg md:text-2xl font-semibold text-content mb-3 text-left">
                     3.โทนหม่น ๆ จากฝุ่นควัน 500 AQI (Faded Look by Air
                     pollution)
-                  </Heading>
+                  </h3>
 
-                  <Text
-                    fontSize={{ base: "sm", md: "lg" }}
-                    color={T.textMuted}
-
-                    lineHeight="1.8"
-                    mb={4}
-                    textAlign="left"
-                  >
+                  <p className="text-sm md:text-lg text-muted leading-[1.8] mb-4 text-left">
                     faded look
                     นี้จะเห็นได้เฉพาะช่วงที่ฝุ่นควันมีความหนาแน่นสูงหรือตั้งแต่
                     500 AQI ขึ้นไป ลักษณะสำคัญคือ Faded look
@@ -886,9 +437,9 @@ export default function PersonalProjectsPage() {
                     หรือเวียนเทียนวันพระใหญ่ แน่นอนว่ามันจะทำให้ทุกภาพของคนดูเบา
                     เหมือนทาทับด้วยสีเทาบาง ๆ ไว้ จนใครเห็นภาพจำต้องไอ
                     เพราะมันไปสะกิดต่อมอะไรในลำคอ และโพรงจมูก
-                  </Text>
+                  </p>
                   {/* Before/After Image Comparison */}
-                  <Box mb={4} borderRadius="lg" overflow="hidden">
+                  <div className="mb-4 rounded-lg overflow-hidden">
                     <ReactCompareImage
                       leftImage="/image/pfa/DSC00527-2-scaled.jpg"
                       rightImage="/image/pfa/DSC00527-1-scaled.jpg"
@@ -897,82 +448,40 @@ export default function PersonalProjectsPage() {
                       handleSize={50}
                       hover={true}
                     />
-                  </Box>
-                  <Box
-                    bg={T.surface}
-                    p={4}
-                    borderRadius="md"
-                    borderLeft="4px"
-                    borderColor={T.border}
-                  >
-                    <Text
-                      fontSize="sm"
-                      fontWeight="600"
-                      color={T.textMuted}
-                      mb={2}
-
-                    >
+                  </div>
+                  <div className="bg-surface p-4 rounded-md border-l-4 border-edge">
+                    <p className="text-sm font-semibold text-muted mb-2">
                       Creative tip
-                    </Text>
-                    <Text
-                      fontSize="sm"
-                      color={T.textMuted}
-
-                      lineHeight="1.7"
-                    >
+                    </p>
+                    <p className="text-sm text-muted leading-[1.7]">
                       preset นี้จะเหมาะเจาะอย่างยิ่งกับภาพ Landscape
                       ที่ไม่ได้มีผู้คนเป็นจุดสนใจ เพราะด้านบนของภาพมีการเพิ่ม
                       dehaze
-                    </Text>
-                  </Box>
-                </Box>
-              </VStack>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               {/* CTA Button after Presets */}
-              <Box display="flex" justifyContent="center" w="full" my={8}>
+              <div className="flex justify-center w-full my-8">
                 <CTAButton />
-              </Box>
+              </div>
 
-              <Box
-                display="flex"
-                justifyContent="center"
-                w="full"
-                pt={{ base: 12, md: 16 }}
-              >
-                <Separator w="60%" maxW="600px" />
-              </Box>
+              <div className="flex justify-center w-full pt-12 md:pt-16">
+                <hr className="border-edge w-[60%] max-w-[600px]" />
+              </div>
 
               {/* Campaign Call to Action */}
-              <VStack
-                gap={6}
-                align="start"
-                w="full"
-                maxW="3xl"
-                mx="auto"
-                px={{ base: 4, md: 0 }}
-              >
-                <Heading
-                  fontSize={{ base: "xl", md: "2xl" }}
-                  fontWeight="600"
-                  color={T.text}
-
-                  textAlign="center"
-                  w="full"
-                >
+              <div className="flex flex-col gap-6 items-start w-full max-w-3xl mx-auto px-4 md:px-0">
+                <h2 className="text-xl md:text-2xl font-semibold text-content text-center w-full">
                   ตัวอย่างภาพที่ใช้ CNXPM2.5
-                </Heading>
-                <Text
-                  fontSize={{ base: "sm", md: "lg" }}
-                  color={T.textMuted}
-
-                  lineHeight="1.8"
-                  textAlign="left"
-                >
+                </h2>
+                <p className="text-sm md:text-lg text-muted leading-[1.8] text-left">
                   สามารถใช้ preset ตัวนี้แล้ว tag #cnxpm25 และ #photoforair ใน
                   instagram ได้เลย แล้วภาพจะถูกนำมา repost ในนี้
-                </Text>
+                </p>
                 {/* Instagram Feed from EmbedSocial */}
-                <Box w="full" mt={12}>
+                <div className="w-full mt-12">
                   <iframe
                     src="https://app.mirror-app.com/feed-instagram/351ad4cb-df04-4add-b467-fbe826b8bf03/preview"
                     title="Instagram feed #PHOTOFORAIR"
@@ -993,17 +502,17 @@ export default function PersonalProjectsPage() {
                       }
                     }}
                   />
-                </Box>
+                </div>
 
                 {/* Final CTA Button */}
-                <Box display="flex" justifyContent="center" w="full" mt={8}>
+                <div className="flex justify-center w-full mt-8">
                   <CTAButton />
-                </Box>
-              </VStack>
-            </VStack>
-          </VStack>
-        </Box>
-      </Box>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }

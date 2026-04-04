@@ -1,11 +1,9 @@
 "use client";
 
-import { Box, Container, Heading, Text, Button, VStack } from "@chakra-ui/react";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { reportError } from "@/lib/errorReporting";
-import { T } from "@/lib/tokens";
 
 export default function Error({
   error,
@@ -19,64 +17,38 @@ export default function Error({
   }, [error]);
 
   return (
-    <Box
-      minH="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bg={T.bg}
-    >
-      <Container maxW="md" py={16}>
-        <VStack gap={6} textAlign="center">
-          <Box color={T.accent}>
+    <div className="min-h-screen flex items-center justify-center bg-base">
+      <div className="max-w-md mx-auto py-16 px-4">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="text-accent">
             <AlertTriangle size={64} />
-          </Box>
-          <Heading
-            fontSize={{ base: "2xl", md: "3xl" }}
-            color={T.text}
-          >
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-content">
             เกิดข้อผิดพลาด
-          </Heading>
-          <Text
-            fontSize={{ base: "md", md: "lg" }}
-            color={T.textMuted}
-          >
+          </h1>
+          <p className="text-base md:text-lg text-muted">
             ขออภัย เกิดข้อผิดพลาดบางอย่าง กรุณาลองใหม่อีกครั้ง
-          </Text>
-          <Text
-            fontSize="sm"
-            color={T.textDim}
-          >
+          </p>
+          <p className="text-sm text-dim">
             Something went wrong. Please try again.
-          </Text>
-          <VStack gap={3} w="full" maxW="xs">
-            <Button
+          </p>
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            <button
               onClick={reset}
-              bg={T.accent}
-              color={T.bg}
-              _hover={{ bg: "#d97706" }}
-              size="lg"
-              w="full"
+              className="w-full bg-accent text-base hover:bg-[#d97706] py-3 rounded-md flex items-center justify-center gap-2 transition-colors"
             >
               <RefreshCw size={18} />
               ลองใหม่อีกครั้ง
-            </Button>
-            <Link href="/" style={{ width: "100%" }}>
-              <Button
-                variant="outline"
-                borderColor={T.border}
-                color={T.textMuted}
-                _hover={{ bg: T.surface }}
-                size="lg"
-                w="full"
-              >
+            </button>
+            <Link href="/" className="w-full">
+              <button className="w-full border border-edge text-muted hover:bg-surface py-3 rounded-md flex items-center justify-center gap-2 transition-colors">
                 <Home size={18} />
                 กลับหน้าแรก
-              </Button>
+              </button>
             </Link>
-          </VStack>
-        </VStack>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

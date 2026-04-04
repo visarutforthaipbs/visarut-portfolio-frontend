@@ -1,78 +1,42 @@
-import { Box, Container, Heading, Text, Button, VStack } from "@chakra-ui/react";
 import { FileQuestion, Home, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { T } from "@/lib/tokens";
 
 export default function NotFound() {
   return (
-    <Box
-      minH="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bg={T.bg}
-    >
-      <Container maxW="md" py={16}>
-        <VStack gap={6} textAlign="center">
-          <Box color={T.textDim}>
+    <div className="min-h-screen flex items-center justify-center bg-base">
+      <div className="max-w-md mx-auto py-16 px-4">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="text-dim">
             <FileQuestion size={80} />
-          </Box>
-          <Heading
-            fontSize={{ base: "6xl", md: "8xl" }}
-            fontWeight="bold"
-            color={T.border}
-            lineHeight="1"
-          >
+          </div>
+          <h1 className="text-6xl md:text-8xl font-bold text-edge leading-none">
             404
-          </Heading>
-          <Heading
-            fontSize={{ base: "xl", md: "2xl" }}
-            color={T.text}
-          >
+          </h1>
+          <h2 className="text-xl md:text-2xl font-bold text-content">
             ไม่พบหน้าที่ต้องการ
-          </Heading>
-          <Text
-            fontSize={{ base: "md", md: "lg" }}
-            color={T.textMuted}
-            maxW="sm"
-          >
+          </h2>
+          <p className="text-base md:text-lg text-muted max-w-sm">
             หน้าที่คุณกำลังมองหาอาจถูกย้าย ลบ หรือไม่มีอยู่
-          </Text>
-          <Text
-            fontSize="sm"
-            color={T.textDim}
-          >
+          </p>
+          <p className="text-sm text-dim">
             The page you&apos;re looking for doesn&apos;t exist.
-          </Text>
-          <VStack gap={3} w="full" maxW="xs" pt={4}>
-            <Link href="/" style={{ width: "100%" }}>
-              <Button
-                bg={T.accent}
-                color={T.bg}
-                _hover={{ bg: "#d97706" }}
-                size="lg"
-                w="full"
-              >
+          </p>
+          <div className="flex flex-col gap-3 w-full max-w-xs pt-4">
+            <Link href="/" className="w-full">
+              <button className="w-full bg-accent text-base hover:bg-[#d97706] py-3 rounded-md flex items-center justify-center gap-2 transition-colors">
                 <Home size={18} />
                 กลับหน้าแรก
-              </Button>
+              </button>
             </Link>
-            <Link href="/portfolio" style={{ width: "100%" }}>
-              <Button
-                variant="outline"
-                borderColor={T.border}
-                color={T.textMuted}
-                _hover={{ bg: T.surface }}
-                size="lg"
-                w="full"
-              >
+            <Link href="/portfolio" className="w-full">
+              <button className="w-full border border-edge text-muted hover:bg-surface py-3 rounded-md flex items-center justify-center gap-2 transition-colors">
                 <ArrowLeft size={18} />
                 ดูผลงาน
-              </Button>
+              </button>
             </Link>
-          </VStack>
-        </VStack>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

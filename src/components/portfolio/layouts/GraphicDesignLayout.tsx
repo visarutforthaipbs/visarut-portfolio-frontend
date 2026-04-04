@@ -1,19 +1,6 @@
-import {
-  Box,
-  SimpleGrid,
-  AspectRatio,
-  Image,
-  VStack,
-  Text,
-  Heading,
-  HStack,
-  Badge,
-  Skeleton,
-} from "@chakra-ui/react";
 import { Calendar, Palette } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
-import { T } from "@/lib/tokens";
 
 interface GraphicDesignLayoutProps {
   portfolios: PortfolioItem[];
@@ -26,108 +13,73 @@ export function GraphicDesignLayout({
 }: GraphicDesignLayoutProps) {
   if (loading) {
     return (
-      <SimpleGrid columns={{ base: 2, md: 3, lg: 4 }} gap={4} w="full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
         {Array.from({ length: 8 }).map((_, index) => (
-          <Box key={index}>
-            <Skeleton height="250px" borderRadius="lg" />
-            <VStack gap={1} align="start" mt={3}>
-              <Skeleton height="16px" width="80%" />
-              <Skeleton height="14px" width="60%" />
-            </VStack>
-          </Box>
+          <div key={index}>
+            <div className="h-[250px] rounded-lg animate-pulse bg-surface" />
+            <div className="flex flex-col gap-1 items-start mt-3">
+              <div className="h-4 w-4/5 rounded animate-pulse bg-surface" />
+              <div className="h-3.5 w-3/5 rounded animate-pulse bg-surface" />
+            </div>
+          </div>
         ))}
-      </SimpleGrid>
+      </div>
     );
   }
 
   return (
-    <Box>
+    <div>
       {/* Graphic Design Grid - Pinterest Style */}
-      <SimpleGrid columns={{ base: 2, md: 3, lg: 4 }} gap={4} w="full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
-            <Box
-              bg={T.surface}
-              borderRadius="lg"
-              overflow="hidden"
-              border="1px solid"
-              borderColor={T.border}
-              _hover={{
-                transform: "translateY(-2px)",
-              }}
-              transition="all 0.3s ease"
-              cursor="pointer"
-            >
-              <AspectRatio ratio={3 / 4}>
-                <Image
-                  src={
-                    portfolio.featured_image?.url || "/placeholder-design.jpg"
-                  }
+            <div className="bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
+              <div className="aspect-[3/4]">
+                <img
+                  src={portfolio.featured_image?.url || "/placeholder-design.jpg"}
                   alt={portfolio.title.rendered}
-                  objectFit="cover"
-                  w="full"
-                  h="full"
+                  className="object-cover w-full h-full"
                 />
-              </AspectRatio>
+              </div>
 
-              <VStack gap={2} p={3} align="start">
-                <Text
-                  fontSize="sm"
-                  fontWeight="600"
-                  color={T.text}
-
-                  lineHeight="1.3"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  display="-webkit-box"
-                  css={{
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
+              <div className="flex flex-col gap-2 p-3 items-start">
+                <p className="text-sm font-semibold text-content leading-[1.3] line-clamp-2">
                   {portfolio.title.rendered}
-                </Text>
+                </p>
 
-                <HStack gap={3} fontSize="xs" color={T.textDim}>
-                  <HStack gap={1}>
+                <div className="flex items-center gap-3 text-xs text-dim">
+                  <span className="flex items-center gap-1">
                     <Palette size={12} />
-                    <Text>กราฟิก</Text>
-                  </HStack>
-                  <HStack gap={1}>
+                    <span>กราฟิก</span>
+                  </span>
+                  <span className="flex items-center gap-1">
                     <Calendar size={12} />
-                    <Text>{new Date(portfolio.date).getFullYear()}</Text>
-                  </HStack>
-                </HStack>
+                    <span>{new Date(portfolio.date).getFullYear()}</span>
+                  </span>
+                </div>
 
-                <Badge
-                  bg="pink.50"
-                  color="pink.600"
-                  px={2}
-                  py={1}
-                  borderRadius="md"
-                  fontSize="xs"
-                >
+                <span className="bg-pink-50 text-pink-600 px-2 py-1 rounded-md text-xs">
                   Design
-                </Badge>
-              </VStack>
-            </Box>
+                </span>
+              </div>
+            </div>
           </Link>
         ))}
-      </SimpleGrid>
+      </div>
 
       {portfolios.length === 0 && (
-        <VStack gap={4} py={12} textAlign="center">
+        <div className="flex flex-col gap-4 py-12 text-center items-center">
           <Palette size={48} color="#CBD5E0" />
-          <VStack gap={2}>
-            <Heading fontSize="xl" color={T.textMuted} className="thai-text">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl text-muted thai-text">
               ยังไม่มีผลงานออกแบบกราฟิก
-            </Heading>
-            <Text color={T.textDim} className="thai-text">
+            </h2>
+            <p className="text-dim thai-text">
               ผลงานใหม่จะปรากฏที่นี่เร็วๆ นี้
-            </Text>
-          </VStack>
-        </VStack>
+            </p>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }
