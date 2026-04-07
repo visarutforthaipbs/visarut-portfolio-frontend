@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { decodeHtmlEntities } from "@/utils";
+import AdSense from "@/components/AdSense";
 import type { BlogPost } from "@/types/wordpress";
 import { calculateCognitiveCost, countWords } from "@/utils/cognitiveCost";
 import {
@@ -137,6 +138,9 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
             {/* Divider */}
             <div className="w-[60px] h-px bg-edge mx-auto" />
 
+            {/* Ad — below title */}
+            <AdSense slot="6029713036" format="auto" />
+
             {/* Content */}
             <div
               className="w-full wordpress-content overflow-hidden"
@@ -146,6 +150,9 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
               }}
               dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content.rendered) }}
             />
+
+            {/* Ad — after article */}
+            <AdSense slot="6029713036" format="auto" />
 
 
           </div>
