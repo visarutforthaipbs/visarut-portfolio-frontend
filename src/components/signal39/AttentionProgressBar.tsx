@@ -88,7 +88,7 @@ export default function AttentionProgressBar({ cost }: AttentionProgressBarProps
         <div
           className="flex items-center gap-1.5 rounded-md px-2 py-1"
           style={{
-            backgroundColor: "rgba(15,17,23,0.95)",
+            backgroundColor: "rgba(255,255,255,0.95)",
             border: `1px solid ${T.border}`,
             backdropFilter: "blur(8px)",
             whiteSpace: "nowrap",

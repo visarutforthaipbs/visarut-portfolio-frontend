@@ -1,7 +1,7 @@
 /**
  * Signal 39 Design Tokens
  *
- * Single source of truth for the dark design philosophy.
+ * Single source of truth for the light design philosophy.
  * All pages and components import from here for visual consistency.
  *
  * Palette rules:
@@ -16,15 +16,15 @@
  * - accentDim: subtle accent background (icon containers, badges)
  */
 export const T = {
-  bg: "#0F1117",
-  surface: "#161922",
-  surfaceHover: "#1C1F2B",
-  border: "#23273A",
-  text: "#E8E8ED",
-  textMuted: "#8B8FA3",
-  textDim: "#565B73",
-  accent: "#ED8936",
-  accentDim: "rgba(237,137,54,0.12)",
-  signal: "#22C55E",
-  signalDim: "rgba(34,197,94,0.12)",
+  bg: "#FFFFFF",
+  surface: "#F7F7F9",
+  surfaceHover: "#EEEFF2",
+  border: "#D8D9E0",
+  text: "#1A1B2E",
+  textMuted: "#5C5F72",
+  textDim: "#8E91A3",
+  accent: "#D97706",
+  accentDim: "rgba(217,119,6,0.10)",
+  signal: "#16A34A",
+  signalDim: "rgba(22,163,74,0.10)",
 } as const;
