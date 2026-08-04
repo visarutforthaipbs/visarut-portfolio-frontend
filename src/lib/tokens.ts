@@ -12,7 +12,7 @@
  * - text: primary text (headings, titles)
  * - textMuted: secondary text (body, descriptions)
  * - textDim: tertiary text (labels, meta, placeholders)
- * - accent: brand accent (orange) for interactive, active states
+ * - accent: brand accent (green) for interactive, active states
  * - accentDim: subtle accent background (icon containers, badges)
  */
 export const T = {
@@ -23,8 +23,8 @@ export const T = {
   text: "#1A1B2E",
   textMuted: "#5C5F72",
   textDim: "#8E91A3",
-  accent: "#D97706",
-  accentDim: "rgba(217,119,6,0.10)",
+  accent: "#22c55e",
+  accentDim: "rgba(34, 197, 94, 0.10)",
   signal: "#16A34A",
   signalDim: "rgba(22,163,74,0.10)",
 } as const;

@@ -128,7 +128,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
-        <meta name="theme-color" content="#6b7280" />
+        <meta name="theme-color" content="#22c55e" />
         <meta name="color-scheme" content="light dark" />
         <meta
           name="format-detection"

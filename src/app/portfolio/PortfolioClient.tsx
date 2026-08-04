@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout";
 import { usePortfolios } from "@/hooks/useWordPress";
-import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
+import { MarketplaceSearchBar } from "@/components/portfolio/MarketplaceSearchBar";
+import { MarketplaceSidebar } from "@/components/portfolio/MarketplaceSidebar";
+import { MarketplaceGrid } from "@/components/portfolio/MarketplaceGrid";
+import { MarketplaceQuickViewModal } from "@/components/portfolio/MarketplaceQuickViewModal";
 import type { PortfolioItem } from "@/types/portfolio";
 
 interface PortfolioClientProps {
@@ -19,8 +21,15 @@ export default function PortfolioClient({
   initialTotalPages,
 }: PortfolioClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedOrg, setSelectedOrg] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sortBy, setSortBy] = useState<string>("latest");
+  const [activeQuickView, setActiveQuickView] = useState<PortfolioItem | null>(null);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const itemsPerPage = 18; // Larger page size for marketplace layout
 
   const { portfolios, loading, total, totalPages } = usePortfolios({
     per_page: itemsPerPage,
@@ -28,191 +37,186 @@ export default function PortfolioClient({
     categories: selectedCategory === "all" ? undefined : selectedCategory,
   });
 
-  const displayPortfolios =
-    currentPage === 1 && selectedCategory === "all" && loading
+  const sourcePortfolios =
+    currentPage === 1 && selectedCategory === "all" && loading && portfolios.length === 0
       ? initialPortfolios
-      : portfolios;
+      : portfolios.length > 0
+      ? portfolios
+      : initialPortfolios;
 
-  const displayTotal =
-    currentPage === 1 && selectedCategory === "all" && loading
-      ? initialTotal
-      : total;
+  // Filter items by Search Query and Selected Organization
+  const filteredPortfolios = useMemo(() => {
+    return sourcePortfolios.filter((item) => {
+      // Category filter
+      if (selectedCategory !== "all" && item.category !== selectedCategory) {
+        return false;
+      }
 
-  const displayTotalPages =
-    currentPage === 1 && selectedCategory === "all" && loading
-      ? initialTotalPages
-      : totalPages;
+      // Organization filter
+      if (selectedOrg !== "all") {
+        const itemContent = JSON.stringify(item).toLowerCase();
+        if (!itemContent.includes(selectedOrg.toLowerCase())) {
+          return false;
+        }
+      }
 
-  const filterOptions = [
-    { value: "all", label: "ทั้งหมด" },
-    ...Object.entries(PORTFOLIO_CATEGORIES).map(([key, label]) => ({
-      value: key,
-      label,
-    })),
-  ];
+      // Search Query filter
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const titleStr = typeof item.title === "string" ? item.title : item.title.rendered;
+        const excerptStr = item.excerpt
+          ? typeof item.excerpt === "string"
+            ? item.excerpt
+            : item.excerpt.rendered
+          : "";
+        const acfStr = JSON.stringify(item.acf || {});
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
-    setCurrentPage(1);
-  };
+        const combined = (titleStr + " " + excerptStr + " " + acfStr).toLowerCase();
+        return combined.includes(q);
+      }
+
+      return true;
+    }).sort((a, b) => {
+      if (sortBy === "oldest") {
+        return new Date(a.date || 0).getTime() - new Date(b.date || 0).getTime();
+      }
+      if (sortBy === "title") {
+        const titleA = typeof a.title === "string" ? a.title : a.title.rendered;
+        const titleB = typeof b.title === "string" ? b.title : b.title.rendered;
+        return titleA.localeCompare(titleB, "th");
+      }
+      // default: latest
+      return new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
+    });
+  }, [sourcePortfolios, selectedCategory, selectedOrg, searchQuery, sortBy]);
+
+  // Calculate category counts
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: sourcePortfolios.length };
+    sourcePortfolios.forEach((item) => {
+      if (item.category) {
+        counts[item.category] = (counts[item.category] || 0) + 1;
+      }
+    });
+    return counts;
+  }, [sourcePortfolios]);
 
   return (
     <Layout>
-      {/* Hero */}
+      {/* Header Banner */}
       <section
-        className="bg-base py-20 md:py-28 flex justify-center w-full"
+        className="bg-base py-12 md:py-16 border-b border-edge/60"
         role="region"
-        aria-label="ผลงาน"
+        aria-label="หัวข้อผลงาน"
       >
-        <div className="max-w-3xl mx-auto px-5 md:px-6">
-          <div className="flex flex-col gap-5 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-content tracking-tight">
-              ผลงาน
-            </h1>
-            <p className="text-base md:text-lg text-muted leading-[1.8]">
-              รวมผลงานถ่ายภาพ วิดีโอ เว็บไซต์ และการออกแบบ
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="w-full flex justify-center bg-base" aria-hidden="true">
-        <div className="w-[60px] h-px bg-edge" />
-      </div>
-
-      {/* Content */}
-      <section
-        className="bg-base py-16 md:py-24 flex justify-center w-full"
-        role="region"
-        aria-label="รายการผลงาน"
-      >
-        <div className="max-w-5xl mx-auto px-5 md:px-6 w-full">
-          <div className="flex flex-col gap-8 w-full">
-            {/* Category Filter */}
-            <div className="flex items-center gap-3 justify-center flex-wrap" role="tablist" aria-label="ตัวกรองหมวดหมู่">
-              {filterOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => handleCategoryChange(option.value)}
-                  className={`text-sm transition-colors duration-150 bg-transparent border-none cursor-pointer ${
-                    selectedCategory === option.value
-                      ? "text-content"
-                      : "text-dim hover:text-content"
-                  }`}
-                  role="tab"
-                  aria-selected={selectedCategory === option.value}
-                >
-                  {option.label}
-                </button>
-              ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-widest text-accent mb-2 block">
+                Creative Catalog &amp; Works Archive
+              </span>
+              <h1 className="text-3xl md:text-5xl font-bold text-content tracking-tight">
+                คลังผลงานทั้งหมด
+              </h1>
+              <p className="text-sm md:text-base text-muted mt-2 max-w-xl">
+                สำรวจผลงานถ่ายภาพ วิดีโอ เว็บไซต์ และการสื่อสารข้อมูลเชิงภาพ (Data Storytelling) โดย วิศรุต สังข์ขำ
+              </p>
             </div>
 
-            {/* Portfolio Grid */}
-            {displayPortfolios.length > 0 ? (
-              <>
-                <div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6">
-                  {displayPortfolios.map((portfolio) => (
-                    <PortfolioCard key={portfolio.id} portfolio={portfolio} />
-                  ))}
-                </div>
-
-                {/* Pagination */}
-                {displayTotalPages > 1 && (
-                  <nav aria-label="การแบ่งหน้า" className="flex items-center gap-6 justify-center mt-4">
-                    <button
-                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                      disabled={currentPage === 1}
-                      className={`text-sm bg-transparent border-none transition-colors duration-150 ${
-                        currentPage === 1
-                          ? "text-edge cursor-default"
-                          : "text-muted hover:text-content cursor-pointer"
-                      }`}
-                    >
-                      ← ก่อนหน้า
-                    </button>
-
-                    <div className="flex items-center gap-2">
-                      {Array.from({ length: Math.min(5, displayTotalPages) }, (_, i) => {
-                        const page = i + 1;
-                        return (
-                          <button
-                            key={page}
-                            onClick={() => setCurrentPage(page)}
-                            className={`text-sm bg-transparent border-none cursor-pointer transition-colors duration-150 ${
-                              currentPage === page
-                                ? "font-medium text-content"
-                                : "text-dim hover:text-content"
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    <button
-                      onClick={() => setCurrentPage(Math.min(displayTotalPages, currentPage + 1))}
-                      disabled={currentPage === displayTotalPages}
-                      className={`text-sm bg-transparent border-none transition-colors duration-150 ${
-                        currentPage === displayTotalPages
-                          ? "text-edge cursor-default"
-                          : "text-muted hover:text-content cursor-pointer"
-                      }`}
-                    >
-                      ถัดไป →
-                    </button>
-                  </nav>
-                )}
-
-                {/* Results Info */}
-                <span className="text-xs text-dim text-center">
-                  {displayPortfolios.length} / {displayTotal}
-                </span>
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <button
-                  className="text-sm text-dim hover:text-content cursor-pointer bg-transparent border-none transition-colors"
-                  onClick={() => handleCategoryChange("all")}
-                >
-                  ไม่พบผลงาน — ดูทั้งหมด
-                </button>
-              </div>
-            )}
+            <div className="text-xs text-dim bg-surface/60 border border-edge px-3.5 py-2 rounded-xl self-start md:self-auto">
+              แสดง <strong className="text-content">{filteredPortfolios.length}</strong> จากทั้งหมด{" "}
+              <strong className="text-content">{initialTotal || sourcePortfolios.length}</strong> ผลงาน
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Main Marketplace Area */}
+      <section
+        className="bg-base py-8 md:py-12 min-h-screen"
+        role="region"
+        aria-label="แคตตาล็อกผลงาน"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Desktop & Mobile Filter Sidebar */}
+            <MarketplaceSidebar
+              selectedCategory={selectedCategory}
+              onCategorySelect={(cat) => {
+                setSelectedCategory(cat);
+                setCurrentPage(1);
+              }}
+              selectedOrg={selectedOrg}
+              onOrgSelect={setSelectedOrg}
+              categoryCounts={categoryCounts}
+              isOpenMobile={isMobileSidebarOpen}
+              onCloseMobile={() => setIsMobileSidebarOpen(false)}
+            />
+
+            {/* Main Content Stream */}
+            <div className="flex-1 flex flex-col gap-6 min-w-0">
+              {/* Search & Toolbar */}
+              <MarketplaceSearchBar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                selectedCategory={selectedCategory}
+                onCategorySelect={(cat) => {
+                  setSelectedCategory(cat);
+                  setCurrentPage(1);
+                }}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                onToggleMobileSidebar={() => setIsMobileSidebarOpen(true)}
+                totalCount={filteredPortfolios.length}
+              />
+
+              {/* Grid / List Results */}
+              <MarketplaceGrid
+                items={filteredPortfolios}
+                viewMode={viewMode}
+                onQuickView={(item) => setActiveQuickView(item)}
+                isLoading={loading && sourcePortfolios.length === 0}
+              />
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <nav
+                  aria-label="การแบ่งหน้า"
+                  className="flex items-center justify-center gap-2 mt-8 pt-6 border-t border-edge/60"
+                >
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3.5 py-2 rounded-xl text-xs font-medium border border-edge bg-surface/50 text-content disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface transition-colors cursor-pointer"
+                  >
+                    ← ก่อนหน้า
+                  </button>
+
+                  <span className="text-xs text-dim px-3">
+                    หน้า {currentPage} / {totalPages}
+                  </span>
+
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-3.5 py-2 rounded-xl text-xs font-medium border border-edge bg-surface/50 text-content disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface transition-colors cursor-pointer"
+                  >
+                    ถัดไป →
+                  </button>
+                </nav>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick View Drawer Modal */}
+      <MarketplaceQuickViewModal
+        portfolio={activeQuickView}
+        onClose={() => setActiveQuickView(null)}
+      />
     </Layout>
-  );
-}
-
-function PortfolioCard({ portfolio }: { portfolio: PortfolioItem }) {
-  return (
-    <Link href={`/portfolio/${portfolio.slug}`} aria-label={portfolio.title.rendered.replace(/<[^>]*>/g, '')}>
-      <article className="cursor-pointer group mb-6" style={{ breakInside: "avoid" }}>
-        <div className="overflow-hidden rounded-md bg-surface">
-          <img
-            src={portfolio.featured_image?.url || "/placeholder-image.svg"}
-            alt={portfolio.title.rendered}
-            className="w-full h-auto block object-cover transition-opacity duration-200 group-hover:opacity-85"
-            loading="lazy"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "/placeholder-image.svg";
-            }}
-          />
-        </div>
-
-        <div className="flex flex-col items-start gap-1 mt-3">
-          <span className="text-xs text-dim uppercase tracking-[0.05em]">
-            {PORTFOLIO_CATEGORIES[portfolio.category] || portfolio.category}
-          </span>
-          <span className="text-sm md:text-base font-medium text-content leading-[1.4] line-clamp-2">
-            {portfolio.title.rendered}
-          </span>
-        </div>
-      </article>
-    </Link>
   );
 }

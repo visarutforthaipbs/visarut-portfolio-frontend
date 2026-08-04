@@ -5,9 +5,11 @@ import { Footer } from "./Footer";
 
 interface LayoutProps {
   children: React.ReactNode;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, hideHeader = false, hideFooter = false }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <a
@@ -16,11 +18,11 @@ export function Layout({ children }: LayoutProps) {
       >
         ข้ามไปยังเนื้อหาหลัก
       </a>
-      <Header />
+      {!hideHeader && <Header />}
       <main className="flex-1" id="main-content">
         {children}
       </main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 }

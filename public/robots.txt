@@ -1,22 +1,30 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://www.sankham.cv/sitemap.xml
+# AI Crawlers & Search Engines (GEO)
+User-agent: GPTBot
+Allow: /
 
-# Crawl delay
-Crawl-delay: 1
+User-agent: ChatGPT-User
+Allow: /
 
-# Disallow admin areas (if any)
-Disallow: /admin/
-Disallow: /private/
-Disallow: /.env
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Social Media Preview Bots
+User-agent: Googlebot
+Allow: /
 
 User-agent: Googlebot-Image
 Allow: /
 
-# Allow specific social media bots
-User-agent: facebookexternalhit/*
+User-agent: facebookexternalhit
 Allow: /
 
 User-agent: Twitterbot
@@ -27,3 +35,11 @@ Allow: /
 
 User-agent: WhatsApp
 Allow: /
+
+# Sitemap
+Sitemap: https://www.sankham.cv/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.env

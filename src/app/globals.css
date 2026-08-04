@@ -8,8 +8,8 @@
   --color-content: #1A1B2E;
   --color-muted: #5C5F72;
   --color-dim: #8E91A3;
-  --color-accent: #D97706;
-  --color-accent-dim: rgba(217,119,6,0.10);
+  --color-accent: #22c55e;
+  --color-accent-dim: rgba(34, 197, 94, 0.10);
   --color-signal: #16A34A;
   --color-signal-dim: rgba(22,163,74,0.10);
 }
@@ -50,6 +50,20 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* Scrollbar Hiding Utilities */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 /* Restore list styles for content areas */
@@ -106,14 +120,14 @@
 }
 
 .wordpress-content a {
-  color: #D97706;
+  color: #22c55e;
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.15s;
 }
 
 .wordpress-content a:hover {
-  color: #B45309;
+  color: #16a34a;
 }
 
 .wordpress-content blockquote {

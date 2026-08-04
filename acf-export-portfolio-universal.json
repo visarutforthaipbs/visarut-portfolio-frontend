@@ -1,0 +1,103 @@
+[
+  {
+    "key": "group_portfolio_universal_fields",
+    "title": "Portfolio Universal Fields",
+    "fields": [
+      {
+        "key": "field_client_name",
+        "label": "ลูกค้า / องค์กร (Client Name)",
+        "name": "client_name",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "ชื่อลูกค้า องค์กร หรือหน่วยงานผู้ว่าจ้าง",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "e.g. Greenpeace, iLaw, ThaiPBS",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_project_date",
+        "label": "วันที่ / ระยะเวลางาน (Project Date)",
+        "name": "project_date",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "ปีที่จัดทำ หรือช่วงเวลาการดำเนินงาน",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "placeholder": "e.g. 2024 หรือ สิงหาคม 2024",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_external_url",
+        "label": "ลิงก์โปรเจกต์ / ผลงาน (External URL)",
+        "name": "external_url",
+        "aria-label": "",
+        "type": "url",
+        "instructions": "ลิงก์เว็บไซต์ ลิงก์คลิป หรือลิงก์ชิ้นงานภายนอก",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "placeholder": "https://..."
+      },
+      {
+        "key": "field_project_description",
+        "label": "คำอธิบายสรุป (Project Summary)",
+        "name": "project_description",
+        "aria-label": "",
+        "type": "textarea",
+        "instructions": "คำอธิบายหรือสรุปภาพรวมของผลงาน",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "placeholder": "",
+        "maxlength": "",
+        "rows": 3,
+        "new_lines": ""
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "portfolio"
+        }
+      ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Simplified universal fields for all portfolio posts",
+    "show_in_rest": 1
+  }
+]

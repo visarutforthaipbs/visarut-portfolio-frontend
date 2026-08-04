@@ -19,7 +19,11 @@ export type PortfolioCategory =
   | "print"
   | "exhibition"
   | "campaign"
-  | "producer";
+  | "producer"
+  | "live-stream"
+  | "training"
+  | "research"
+  | "writing";
 
 // Portfolio Category Labels (Thai)
 export const PORTFOLIO_CATEGORIES: Record<PortfolioCategory, string> = {
@@ -32,6 +36,10 @@ export const PORTFOLIO_CATEGORIES: Record<PortfolioCategory, string> = {
   exhibition: "นิทรรศการ",
   campaign: "แคมเปญ",
   producer: "โปรดิวเซอร์",
+  "live-stream": "ไลฟ์สด",
+  training: "อบรม",
+  research: "งานวิจัย",
+  writing: "งานเขียน",
 };
 
 // Media Types
@@ -79,6 +87,26 @@ export interface PortfolioItem extends Omit<WordPressPost, "acf"> {
     | WebsiteACF
     | GraphicDesignACF
     | Record<string, unknown>;
+}
+
+// Standardized / Normalized Portfolio Model across all categories
+export interface StandardizedPortfolio {
+  id: number;
+  slug: string;
+  title: string;
+  category: PortfolioCategory;
+  date: string;
+  meta: {
+    clientName?: string;
+    projectDate?: string;
+    description?: string;
+    externalUrl?: string;
+  };
+  featuredImage?: ImageMedia;
+  galleryImages: ImageMedia[];
+  videos: VideoMedia[];
+  specs: Array<{ label: string; value: string }>;
+  rawItem: PortfolioItem;
 }
 
 // Portfolio Filter State

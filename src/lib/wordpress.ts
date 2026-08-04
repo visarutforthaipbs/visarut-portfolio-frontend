@@ -1,10 +1,12 @@
 import axios from "axios";
 import { apiCache } from "./cache";
 import { CATEGORY_IDS, categoryIdToSlug } from "./config";
+import { formatDate } from "@/utils";
 import type {
   WordPressPost,
   WordPressFeaturedMedia,
   PortfolioItem,
+  StandardizedPortfolio,
   PortfolioResponse,
   CategoriesResponse,
   PortfolioCategory,
@@ -263,6 +265,103 @@ export class WordPressAPI {
       featured_image: featuredImage,
       media,
     } as PortfolioItem;
+  }
+
+  /**
+   * Normalize any PortfolioItem into a unified, predictable StandardizedPortfolio model
+   */
+  static normalizePortfolio(item: PortfolioItem): StandardizedPortfolio {
+    const acf = (item.acf || {}) as Record<string, unknown>;
+
+    const getString = (key: string): string | undefined => {
+      const val = acf[key];
+      return typeof val === "string" && val.trim() ? val.trim() : undefined;
+    };
+
+    // Core Meta
+    const clientName =
+      getString("client_name") || getString("client") || getString("client_ngo");
+    const rawProjectDate =
+      getString("project_date") || getString("date") || item.date;
+    const projectDate = formatDate(rawProjectDate);
+    const description =
+      getString("project_description") ||
+      getString("photo_description") ||
+      getString("video_description") ||
+      getString("editing_description") ||
+      getString("design_description");
+    const externalUrl =
+      getString("external_url") ||
+      getString("website_url") ||
+      getString("video_link") ||
+      getString("video_url") ||
+      getString("github_url");
+
+    // Gallery images
+    const galleryImages: ImageMedia[] = (item.media || []).filter(
+      (m): m is ImageMedia => m.type === "image"
+    );
+
+    // Extract embedded videos
+    const videos: VideoMedia[] = this.extractVideoEmbeds(
+      item.content?.rendered || ""
+    );
+
+    // Category-specific specs as dynamic label/value array
+    const specs: Array<{ label: string; value: string }> = [];
+
+    const addSpec = (label: string, value?: string) => {
+      if (value) specs.push({ label, value });
+    };
+
+    addSpec("Client", clientName);
+    addSpec("Date", projectDate);
+    addSpec(
+      "Location",
+      getString("photo_location") || getString("location") || getString("venue_name")
+    );
+    addSpec(
+      "Camera / Equipment",
+      getString("camera_equipment") || getString("camera") || getString("video_equipment")
+    );
+    addSpec(
+      "Style",
+      getString("photography_style") || getString("design_type") || getString("video_type")
+    );
+    addSpec(
+      "Technologies",
+      getString("technologies_used") || getString("software") || getString("software_used")
+    );
+    addSpec(
+      "Print Specs",
+      getString("print_specifications") || getString("paper_type") || getString("print_dimensions")
+    );
+    addSpec(
+      "Role",
+      getString("project_role") || getString("production_role") || getString("role")
+    );
+
+    return {
+      id: item.id,
+      slug: item.slug,
+      title:
+        typeof item.title === "string"
+          ? item.title
+          : item.title?.rendered || "",
+      category: item.category,
+      date: item.date,
+      meta: {
+        clientName,
+        projectDate,
+        description,
+        externalUrl,
+      },
+      featuredImage: item.featured_image,
+      galleryImages,
+      videos,
+      specs,
+      rawItem: item,
+    };
   }
 
   /**

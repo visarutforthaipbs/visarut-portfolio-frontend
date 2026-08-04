@@ -22,16 +22,59 @@ export function decodeHtmlEntities(str: string): string {
     .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 }
 
+const THAI_MONTHS = [
+  "มกราคม",
+  "กุมภาพันธ์",
+  "มีนาคม",
+  "เมษายน",
+  "พฤษภาคม",
+  "มิถุนายน",
+  "กรกฎาคม",
+  "สิงหาคม",
+  "กันยายน",
+  "ตุลาคม",
+  "พฤศจิกายน",
+  "ธันวาคม",
+];
+
 /**
- * Format date for display
+ * Format date for display in Thai format (e.g. "20250101" or "2025-01-01" -> "1 มกราคม 2568")
  */
-export function formatDate(date: string | Date): string {
-  const d = new Date(date);
-  return d.toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+export function formatDate(dateStr?: string | Date): string {
+  if (!dateStr) return "";
+
+  if (dateStr instanceof Date) {
+    const day = dateStr.getDate();
+    const month = dateStr.getMonth();
+    const thaiYear = dateStr.getFullYear() + 543;
+    return `${day} ${THAI_MONTHS[month]} ${thaiYear}`;
+  }
+
+  const clean = String(dateStr).trim();
+
+  // Pattern 1: YYYYMMDD (e.g. 20250101 -> 1 มกราคม 2568)
+  if (/^\d{8}$/.test(clean)) {
+    const year = parseInt(clean.substring(0, 4), 10);
+    const month = parseInt(clean.substring(4, 6), 10);
+    const day = parseInt(clean.substring(6, 8), 10);
+
+    if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+      const thaiYear = year + 543;
+      const monthName = THAI_MONTHS[month - 1];
+      return `${day} ${monthName} ${thaiYear}`;
+    }
+  }
+
+  // Pattern 2: YYYY-MM-DD or ISO string
+  const parsedDate = new Date(clean);
+  if (!isNaN(parsedDate.getTime())) {
+    const day = parsedDate.getDate();
+    const month = parsedDate.getMonth();
+    const thaiYear = parsedDate.getFullYear() + 543;
+    return `${day} ${THAI_MONTHS[month]} ${thaiYear}`;
+  }
+
+  return clean;
 }
 
 /**

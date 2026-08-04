@@ -15,6 +15,10 @@ export const CATEGORY_IDS: Record<PortfolioCategory, number> = {
   website: 29,
   campaign: 30,
   producer: 31,
+  "live-stream": 51,
+  training: 52,
+  research: 53,
+  writing: 54,
 } as const;
 
 /** Reverse lookup: WordPress category ID → portfolio category slug */
@@ -25,13 +29,13 @@ export function categoryIdToSlug(id: number): PortfolioCategory {
 }
 
 export const siteConfig: SiteConfig = {
-  title: "Visarut Sankham - Media Professional",
-  titleTh: "วิศรุต แสนคำ - ผู้ผลิตสื่อ",
+  title: "วิศรุต แสนคำ - ผู้ผลิตสื่ออิสระ (Portfolio Catalog)",
+  titleTh: "วิศรุต แสนคำ - ผู้ผลิตสื่ออิสระ (Portfolio Catalog)",
   description:
-    "Thai media professional specializing in photography, videography, web development, graphic design, and creative services.",
+    "วิศรุต แสนคำ ผู้ผลิตสื่ออิสระ ช่างภาพสารคดี ผู้กำกับภาพวิดีโอ และนักพัฒนาเว็บสื่อสังคม",
   descriptionTh:
-    "ผู้ผลิตสื่อหลายรูปแบบ โดยมีความเชี่ยวชาญเป็นพิเศษกับภาคประชาสังคม องค์กรพัฒนาเอกชน และสถาบันการศึกษา",
-  author: "Visarut Sankham",
+    "วิศรุต แสนคำ ผู้ผลิตสื่ออิสระ ช่างภาพสารคดี ผู้กำกับภาพวิดีโอ และนักพัฒนาเว็บสื่อสังคม รังสรรค์งานภาพถ่ายสารคดี วิดีโอเชิงประเด็น เว็บไซต์อินเทอร์แอคทีฟ และสื่อแคมเปญขับเคลื่อนสังคม",
+  author: "วิศรุต แสนคำ",
   authorTh: "วิศรุต แสนคำ",
   url: "https://www.sankham.cv",
   social: {
@@ -67,34 +71,27 @@ export const navigation = [
   {
     label: "Home",
     labelTh: "หน้าแรก",
-    href: "/",
+    href: "/#top",
   },
   {
-    label: "Portfolio",
-    labelTh: "ผลงาน",
-    href: "/portfolio",
-  },
-  {
-    label: "Personal Projects",
-    labelTh: "โครงการส่วนตัว",
-    href: "/personal-projects",
-    subItems: [
-      {
-        label: "#PHOTOFORAIR",
-        labelTh: "#PHOTOFORAIR",
-        href: "/personal-projects",
-      },
-    ],
-  },
-  {
-    label: "Blog",
-    labelTh: "บล็อก",
-    href: "/blog",
+    label: "Catalog",
+    labelTh: "คลังผลงาน",
+    href: "/#catalog",
   },
   {
     label: "About",
-    labelTh: "เกี่ยวกับ",
-    href: "/about",
+    labelTh: "เกี่ยวกับผู้ผลิต",
+    href: "/#about",
+  },
+  {
+    label: "Blog",
+    labelTh: "บทความ",
+    href: "/#blog",
+  },
+  {
+    label: "Contact",
+    labelTh: "ติดต่อ",
+    href: "/#contact",
   },
 ];
 
