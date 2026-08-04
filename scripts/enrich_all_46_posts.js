@@ -5,7 +5,13 @@
 
 const WP_URL = process.env.WP_URL || 'https://api.sankham.cv';
 const WP_USER = process.env.WP_USER || 'visarutsankham';
-const WP_PASS = process.env.WP_PASS || '5YgZ WY2w o4e4 8G3c j8rD 1DhQ';
+const WP_PASS = process.env.WP_PASS;
+
+if (!WP_PASS) {
+  console.error('Missing WP_PASS environment variable. See .env.example.');
+  process.exit(1);
+}
+
 const WP_AUTH = Buffer.from(`${WP_USER}:${WP_PASS}`).toString('base64');
 
 function extractFirstLink(htmlContent) {

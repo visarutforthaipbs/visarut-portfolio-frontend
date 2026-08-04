@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
+import { createContactMailto, submitContactForm } from "@/lib/contact";
 
 export default function ContactClient() {
   const [formData, setFormData] = useState({
@@ -11,11 +12,13 @@ export default function ContactClient() {
     email: "",
     subject: "",
     message: "",
+    website: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,13 +31,21 @@ export default function ContactClient() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setErrorMessage("");
 
-    setTimeout(() => {
+    try {
+      await submitContactForm(formData);
       setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setIsSubmitting(false);
+      setFormData({ name: "", email: "", subject: "", message: "", website: "" });
       setTimeout(() => setSubmitStatus("idle"), 5000);
-    }, 1500);
+    } catch (error) {
+      setSubmitStatus("error");
+      setErrorMessage(
+        error instanceof Error ? error.message : "ไม่สามารถส่งข้อความได้ในขณะนี้"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClass =
@@ -88,13 +99,32 @@ export default function ContactClient() {
             {submitStatus === "error" && (
               <div className="text-center" role="alert" aria-live="polite">
                 <span className="text-sm text-red-500">
-                  เกิดข้อผิดพลาด — กรุณาลองใหม่อีกครั้ง
+                  {errorMessage}
                 </span>
+                <div>
+                  <a
+                    href={createContactMailto(formData)}
+                    className="text-sm text-content underline underline-offset-4"
+                  >
+                    เปิดแอปอีเมลเพื่อส่งโดยตรง
+                  </a>
+                </div>
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-5">
+                <div className="absolute -left-[9999px]" aria-hidden="true">
+                  <label htmlFor="website">เว็บไซต์</label>
+                  <input
+                    id="website"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleInputChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 <div>
                   <label htmlFor="name" className="sr-only">ชื่อ</label>
                   <input

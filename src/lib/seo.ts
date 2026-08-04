@@ -16,7 +16,7 @@ interface SEOProps {
 export function generateSEO({
   title,
   description,
-  image = "/image/profile.png",
+  image = "/image/social-thumbnail.jpg",
   url,
   type = "website",
   publishedTime,
@@ -91,7 +91,7 @@ export function generatePersonSchema() {
     name: siteConfig.authorTh,
     alternateName: siteConfig.author,
     url: siteConfig.url,
-    image: `${siteConfig.url}/image/profile.png`,
+    image: `${siteConfig.url}/image/social-thumbnail.jpg`,
     sameAs: [
       siteConfig.social.facebook,
       siteConfig.social.instagram,
@@ -128,7 +128,7 @@ export function generateOrganizationSchema() {
     alternateName: siteConfig.title,
     url: siteConfig.url,
     logo: `${siteConfig.url}/logo/logo-1.svg`,
-    image: `${siteConfig.url}/image/profile.png`,
+    image: `${siteConfig.url}/image/social-thumbnail.jpg`,
     description: siteConfig.descriptionTh,
     founder: {
       "@type": "Person",

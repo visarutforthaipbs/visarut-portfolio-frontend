@@ -349,7 +349,7 @@ export class WordPressAPI {
           ? item.title
           : item.title?.rendered || "",
       category: item.category,
-      date: item.date,
+      date: projectDate || formatDate(item.date),
       meta: {
         clientName,
         projectDate,

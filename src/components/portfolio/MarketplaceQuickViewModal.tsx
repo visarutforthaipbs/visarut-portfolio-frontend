@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   X,
   ExternalLink,
@@ -9,22 +9,19 @@ import {
   MapPin,
   Camera,
   Code,
-  Layers,
   ChevronLeft,
   ChevronRight,
   Sparkles,
   User,
-  Wrench,
   Palette,
   Printer,
-  Megaphone,
-  CheckCircle2,
   Share2,
   Check,
 } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
 import { WordPressAPI } from "@/lib/wordpress";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface MarketplaceQuickViewModalProps {
   portfolio: PortfolioItem | null;
@@ -101,6 +98,8 @@ export function MarketplaceQuickViewModal({
   // 1. All hooks MUST be defined at the top unconditionally (React Rules of Hooks)
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const isOpen = Boolean(portfolio);
 
   // Prepare data safely for hooks without early returns
   const normalized = portfolio ? WordPressAPI.normalizePortfolio(portfolio) : null;
@@ -147,6 +146,21 @@ export function MarketplaceQuickViewModal({
     setActiveImageIndex(0);
   }, [portfolio]);
 
+  // Keep keyboard focus inside the modal flow and prevent background scrolling.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previouslyFocused?.focus();
+    };
+  }, [isOpen]);
+
   // 2. Conditional early return AFTER all Hooks are defined
   if (!portfolio || !normalized) return null;
 
@@ -159,7 +173,9 @@ export function MarketplaceQuickViewModal({
     portfolio.content?.rendered || portfolio.excerpt?.rendered || normalized.meta.description || "";
 
   // Clean right-side text HTML
-  const textContentHtml = cleanRightPanelContent(rawContentHtml, cleanTitle);
+  const textContentHtml = sanitizeHtml(
+    cleanRightPanelContent(rawContentHtml, cleanTitle)
+  );
 
   const externalLink = normalized.meta.externalUrl;
   const clientName = normalized.meta.clientName;
@@ -190,11 +206,17 @@ export function MarketplaceQuickViewModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="quick-view-title"
+    >
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Container */}
@@ -227,6 +249,7 @@ export function MarketplaceQuickViewModal({
           <div className="flex items-center gap-1.5">
             {/* Share / Copy Link Button */}
             <button
+              ref={closeButtonRef}
               onClick={handleShare}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-surface hover:bg-surface-hover border border-edge rounded-xl text-xs font-semibold text-content transition-colors cursor-pointer min-h-[38px]"
               title="แชร์ หรือ คัดลอกลิงก์ผลงานนี้"
@@ -347,7 +370,7 @@ export function MarketplaceQuickViewModal({
           {/* Right Details Panel */}
           <div className="md:col-span-5 p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 overflow-y-auto max-h-[45vh] md:max-h-[75vh]">
             <div className="flex flex-col gap-2.5">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-content leading-snug">
+              <h2 id="quick-view-title" className="text-lg sm:text-xl md:text-2xl font-bold text-content leading-snug">
                 {cleanTitle}
               </h2>
 

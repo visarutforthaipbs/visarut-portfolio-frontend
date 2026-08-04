@@ -71,27 +71,27 @@ export const navigation = [
   {
     label: "Home",
     labelTh: "หน้าแรก",
-    href: "/#top",
+    href: "/",
   },
   {
     label: "Catalog",
     labelTh: "คลังผลงาน",
-    href: "/#catalog",
+    href: "/portfolio",
   },
   {
     label: "About",
     labelTh: "เกี่ยวกับผู้ผลิต",
-    href: "/#about",
+    href: "/about",
   },
   {
     label: "Blog",
     labelTh: "บทความ",
-    href: "/#blog",
+    href: "/blog",
   },
   {
     label: "Contact",
     labelTh: "ติดต่อ",
-    href: "/#contact",
+    href: "/contact",
   },
 ];
 

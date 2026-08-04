@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.titleTh,
     images: [
       {
-        url: "/image/profile.png",
+        url: "/image/social-thumbnail.jpg",
         width: 1200,
         height: 630,
         alt: siteConfig.titleTh,
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     title: siteConfig.titleTh,
     description: siteConfig.descriptionTh,
     creator: "@visarutsankham",
-    images: ["/image/profile.png"],
+    images: ["/image/social-thumbnail.jpg"],
   },
   robots: {
     index: true,

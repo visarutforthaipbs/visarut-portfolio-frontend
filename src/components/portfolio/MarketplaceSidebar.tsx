@@ -36,6 +36,7 @@ interface MarketplaceSidebarProps {
   selectedOrg?: string;
   onOrgSelect: (org: string) => void;
   categoryCounts?: Record<string, number>;
+  orgCounts?: Record<string, number>;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
   onOpenContactModal?: () => void;
@@ -57,12 +58,14 @@ const CATEGORY_ICONS: Record<string, React.ComponentType<{ size?: number; classN
   writing: PenTool,
 };
 
-const ORGANIZATIONS = [
+export const ORGANIZATIONS = [
   { id: "all", label: "ทุกองค์กร / โครงการ" },
-  { id: "Thai PBS", label: "ไทยพีบีเอส (Thai PBS)" },
-  { id: "Lanna Project", label: "Lanna Project" },
-  { id: "Realframe", label: "Realframe" },
-  { id: "The Nation", label: "หนังสือพิมพ์เดอะเนชั่น" },
+  { id: "thai-pbs", label: "ไทยพีบีเอส (Thai PBS)" },
+  { id: "greenpeace", label: "กรีนพีซ (Greenpeace)" },
+  { id: "realframe", label: "Realframe" },
+  { id: "lanna", label: "โครงการล้านนา (Lanna Project)" },
+  { id: "nation", label: "หนังสือพิมพ์เดอะเนชั่น (The Nation)" },
+  { id: "ngo", label: "ภาคประชาสังคม / มูลนิธิ (NGOs)" },
 ];
 
 export function MarketplaceSidebar({
@@ -71,6 +74,7 @@ export function MarketplaceSidebar({
   selectedOrg = "all",
   onOrgSelect,
   categoryCounts = {},
+  orgCounts = {},
   isOpenMobile = false,
   onCloseMobile,
   onOpenContactModal,
@@ -129,12 +133,13 @@ export function MarketplaceSidebar({
           </a>
         </div>
 
+        {/* Trigger Contact Modal */}
         {onOpenContactModal && (
           <button
             onClick={onOpenContactModal}
-            className="w-full py-2 bg-content text-base font-semibold text-xs rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer mt-1"
+            className="w-full mt-1 flex items-center justify-center gap-2 py-2 px-3 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer"
           >
-            <Send size={13} />
+            <Send size={13} className="text-accent" />
             <span>ส่งข้อความติดต่องาน</span>
           </button>
         )}
@@ -145,9 +150,10 @@ export function MarketplaceSidebar({
         <span className="text-[11px] font-bold text-dim uppercase tracking-wider px-2">
           หมวดหมู่สื่อ &amp; ผลงาน
         </span>
+
         {categoriesList.map((cat) => {
           const Icon = cat.icon;
-          const isActive = selectedCategory === cat.key;
+          const isSelected = selectedCategory === cat.key;
           const count = categoryCounts[cat.key];
 
           return (
@@ -157,22 +163,20 @@ export function MarketplaceSidebar({
                 onCategorySelect(cat.key);
                 if (onCloseMobile) onCloseMobile();
               }}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
-                isActive
-                  ? "bg-accent/10 text-accent font-semibold border border-accent/20"
-                  : "text-muted hover:bg-surface hover:text-content"
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                isSelected
+                  ? "bg-accent/15 text-accent font-semibold border border-accent/30 shadow-2xs"
+                  : "text-muted hover:text-content hover:bg-surface"
               }`}
             >
-              <div className="flex items-center gap-2.5">
-                <Icon size={16} className={isActive ? "text-accent" : "text-dim"} />
+              <span className="flex items-center gap-2.5">
+                <Icon size={16} className={isSelected ? "text-accent" : "text-dim"} />
                 <span>{cat.label}</span>
-              </div>
+              </span>
               {count !== undefined && (
                 <span
                   className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    isActive
-                      ? "bg-accent text-white font-bold"
-                      : "bg-surface text-dim"
+                    isSelected ? "bg-accent text-white font-bold" : "bg-surface text-dim font-medium"
                   }`}
                 >
                   {count}
@@ -183,7 +187,7 @@ export function MarketplaceSidebar({
         })}
       </div>
 
-      {/* ── 3. ORGANIZATION FILTER ── */}
+      {/* ── 3. ORGANIZATION FILTER (FUZZY MATCHED) ── */}
       <div className="flex flex-col gap-2 pt-3 border-t border-edge/60">
         <span className="text-[11px] font-bold text-dim uppercase tracking-wider px-2 flex items-center gap-1.5">
           <Building2 size={13} />
@@ -192,6 +196,8 @@ export function MarketplaceSidebar({
         <div className="flex flex-col gap-1">
           {ORGANIZATIONS.map((org) => {
             const isSelected = selectedOrg === org.id;
+            const count = orgCounts[org.id];
+
             return (
               <button
                 key={org.id}
@@ -201,12 +207,19 @@ export function MarketplaceSidebar({
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
                   isSelected
-                    ? "bg-surface text-content font-medium border border-edge/80"
-                    : "text-dim hover:text-content hover:bg-surface/50"
+                    ? "bg-surface text-content font-semibold border border-edge/80 shadow-2xs"
+                    : "text-muted hover:text-content hover:bg-surface/50"
                 }`}
               >
                 <span>{org.label}</span>
-                {isSelected && <CheckCircle2 size={14} className="text-accent" />}
+                <div className="flex items-center gap-1.5">
+                  {count !== undefined && count > 0 && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-surface text-dim">
+                      {count}
+                    </span>
+                  )}
+                  {isSelected && <CheckCircle2 size={14} className="text-accent shrink-0" />}
+                </div>
               </button>
             );
           })}

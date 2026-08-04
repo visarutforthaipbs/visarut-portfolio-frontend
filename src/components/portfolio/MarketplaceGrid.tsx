@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, ExternalLink, Calendar, Building2, ChevronRight } from "lucide-react";
+import { Eye, Calendar, ChevronRight } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
 import { WordPressAPI } from "@/lib/wordpress";
@@ -90,7 +90,16 @@ export function MarketplaceGrid({
             <article
               key={item.id}
               onClick={() => onQuickView(item)}
-              className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer"
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onQuickView(item);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`ดูรายละเอียด ${cleanTitle}`}
+              className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               {/* Thumbnail + Text */}
               <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -160,7 +169,16 @@ export function MarketplaceGrid({
           <article
             key={item.id}
             onClick={() => onQuickView(item)}
-            className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl cursor-pointer"
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onQuickView(item);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={`ดูรายละเอียด ${cleanTitle}`}
+            className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {/* Image Container */}
             <div className="relative aspect-4/3 w-full bg-surface overflow-hidden">
@@ -199,10 +217,10 @@ export function MarketplaceGrid({
             <div className="p-4 flex flex-col gap-2.5 flex-1 justify-between">
               <div className="flex flex-col gap-1.5">
                 {normalized.date && (
-                  <span className="text-[11px] text-dim flex items-center gap-1">
+                  <time dateTime={item.date} className="text-[11px] text-dim flex items-center gap-1">
                     <Calendar size={12} />
                     {normalized.date}
-                  </span>
+                  </time>
                 )}
                 <h3 className="text-base font-bold text-content leading-snug line-clamp-2 group-hover:text-accent transition-colors">
                   {cleanTitle}

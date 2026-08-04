@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "sync-notion": "node scripts/sync-notion.js"
+    "sync-notion": "node scripts/sync-notion.js",
+    "summarize-gpu": "node scripts/summarize_with_gpu.js"
   },
   "dependencies": {
     "@types/dompurify": "^3.0.5",

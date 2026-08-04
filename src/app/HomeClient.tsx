@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { Layout } from "@/components/layout";
 import { MarketplaceSearchBar } from "@/components/portfolio/MarketplaceSearchBar";
 import { MarketplaceSidebar } from "@/components/portfolio/MarketplaceSidebar";
@@ -10,11 +10,41 @@ import { ContactModal } from "@/components/portfolio/ContactModal";
 import { JsonLd } from "@/components/JsonLd";
 import { usePortfolios } from "@/hooks/useWordPress";
 import type { PortfolioItem } from "@/types/portfolio";
+import { WordPressAPI } from "@/lib/wordpress";
 import { AlertCircle, MessageSquare } from "lucide-react";
 
 interface HomeClientProps {
   initialBlogPosts?: unknown[];
   featuredPortfolios: PortfolioItem[];
+}
+
+// Fuzzy organization matcher dictionary
+const ORGANIZATIONS_FUZZY: Record<string, string[]> = {
+  "thai-pbs": ["thai pbs", "thaipbs", "ไทยพีบีเอส", "สื่อสาธารณะ", "สำนักเครือข่ายสื่อสาธารณะ", "ศูนย์สื่อชุมชน"],
+  greenpeace: ["greenpeace", "กรีนพีซ"],
+  realframe: ["realframe", "เรียลเฟรม"],
+  lanna: ["lanna", "ล้านนา"],
+  nation: ["nation", "เนชั่น"],
+  ngo: ["มูลนิธิ", "foundation", "ngo", "สมาคม", "เครือข่าย", "องค์กร", "แรงงาน"],
+};
+
+function matchOrganization(item: PortfolioItem, orgId: string): boolean {
+  if (!orgId || orgId === "all") return true;
+
+  const normalized = WordPressAPI.normalizePortfolio(item);
+  const clientName = (normalized.meta.clientName || "").toLowerCase();
+
+  const rawTitle = typeof item.title === "string" ? item.title : item.title?.rendered || "";
+  const titleStr = rawTitle.toLowerCase();
+
+  const rawExcerpt = item.excerpt ? (typeof item.excerpt === "string" ? item.excerpt : item.excerpt.rendered || "") : "";
+  const excerptStr = rawExcerpt.toLowerCase();
+
+  const acfStr = JSON.stringify(item.acf || {}).toLowerCase();
+  const fullText = `${titleStr} ${excerptStr} ${clientName} ${acfStr}`;
+
+  const aliases = ORGANIZATIONS_FUZZY[orgId.toLowerCase()] || [orgId.toLowerCase()];
+  return aliases.some((alias) => fullText.includes(alias));
 }
 
 export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
@@ -27,52 +57,64 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-
   const { portfolios, loading, error } = usePortfolios({ per_page: 50 });
 
   const sourcePortfolios =
     portfolios.length > 0 ? portfolios : featuredPortfolios;
 
-  // 1. Direct URL Share Query Parameter Sync (?item=slug)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    if (activeQuickView) {
-      const newUrl = `${window.location.pathname}?item=${activeQuickView.slug}`;
-      window.history.pushState({ slug: activeQuickView.slug }, "", newUrl);
-    } else {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has("item")) {
-        window.history.pushState({}, "", window.location.pathname);
-      }
-    }
-  }, [activeQuickView]);
-
-  // 2. Auto-open modal on initial page load if ?item=slug is in the URL
-  useEffect(() => {
+  const syncQuickViewFromUrl = useCallback(() => {
     if (typeof window === "undefined" || sourcePortfolios.length === 0) return;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const itemSlug = urlParams.get("item");
-    if (itemSlug) {
-      const matched = sourcePortfolios.find((p) => p.slug === itemSlug);
-      if (matched) {
-        setActiveQuickView(matched);
-      }
-    }
+    const itemSlug = new URL(window.location.href).searchParams.get("item");
+    setActiveQuickView(
+      itemSlug
+        ? sourcePortfolios.find((portfolio) => portfolio.slug === itemSlug) || null
+        : null
+    );
   }, [sourcePortfolios]);
+
+  // Open shared project links and keep Back/Forward navigation in sync.
+  useEffect(() => {
+    syncQuickViewFromUrl();
+    window.addEventListener("popstate", syncQuickViewFromUrl);
+    return () => window.removeEventListener("popstate", syncQuickViewFromUrl);
+  }, [syncQuickViewFromUrl]);
+
+  const openQuickView = (portfolio: PortfolioItem) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("item", portfolio.slug);
+    window.history.pushState({ portfolioQuickView: true }, "", url);
+    setActiveQuickView(portfolio);
+  };
+
+  const closeQuickView = () => {
+    if (window.history.state?.portfolioQuickView) {
+      window.history.back();
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("item");
+    window.history.replaceState(window.history.state, "", url);
+    setActiveQuickView(null);
+  };
 
   // 3. Power-User Keyboard Shortcuts (Cmd+K / Ctrl+K / '/' to focus search)
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      // Cmd/Ctrl + K or '/' key to focus search bar
+      const activeElement = document.activeElement;
+      const isTyping =
+        activeElement instanceof HTMLInputElement ||
+        activeElement instanceof HTMLTextAreaElement ||
+        activeElement instanceof HTMLSelectElement ||
+        activeElement?.getAttribute("contenteditable") === "true";
+
       if (
         ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") ||
-        (e.key === "/" && document.activeElement?.tagName !== "INPUT")
+        (e.key === "/" && !isTyping)
       ) {
         e.preventDefault();
-        const inputEl = document.querySelector('input[type="text"]') as HTMLInputElement;
+        const inputEl = document.getElementById("portfolio-search") as HTMLInputElement | null;
         if (inputEl) inputEl.focus();
       }
     };
@@ -80,7 +122,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, []);
 
-  // Filter items by search query, category, organization, and sort
+  // Filter items by search query, category, fuzzy organization, and sort
   const filteredPortfolios = useMemo(() => {
     return sourcePortfolios
       .filter((item) => {
@@ -89,12 +131,9 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
           return false;
         }
 
-        // Organization filter
-        if (selectedOrg !== "all") {
-          const itemContent = JSON.stringify(item).toLowerCase();
-          if (!itemContent.includes(selectedOrg.toLowerCase())) {
-            return false;
-          }
+        // Fuzzy Organization filter
+        if (selectedOrg !== "all" && !matchOrganization(item, selectedOrg)) {
+          return false;
         }
 
         // Search Query filter
@@ -138,6 +177,16 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
     return counts;
   }, [sourcePortfolios]);
 
+  // Calculate organization counts for sidebar
+  const orgCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: sourcePortfolios.length };
+    const orgKeys = ["thai-pbs", "greenpeace", "realframe", "lanna", "nation", "ngo"];
+    orgKeys.forEach((key) => {
+      counts[key] = sourcePortfolios.filter((item) => matchOrganization(item, key)).length;
+    });
+    return counts;
+  }, [sourcePortfolios]);
+
   return (
     <Layout hideHeader={true}>
       {/* AI-SEO Structured Data Schema */}
@@ -159,6 +208,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
               selectedOrg={selectedOrg}
               onOrgSelect={setSelectedOrg}
               categoryCounts={categoryCounts}
+              orgCounts={orgCounts}
               isOpenMobile={isMobileSidebarOpen}
               onCloseMobile={() => setIsMobileSidebarOpen(false)}
               onOpenContactModal={() => setIsContactModalOpen(true)}
@@ -192,7 +242,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
                 <MarketplaceGrid
                   items={filteredPortfolios}
                   viewMode={viewMode}
-                  onQuickView={(item) => setActiveQuickView(item)}
+                  onQuickView={openQuickView}
                   isLoading={loading && sourcePortfolios.length === 0}
                 />
               )}
@@ -200,7 +250,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
           </div>
         </div>
 
-        {/* ── 5. MOBILE FLOATING ACTION BUTTON (FAB) FOR CONTACT ── */}
+        {/* ── MOBILE FLOATING ACTION BUTTON (FAB) FOR CONTACT ── */}
         <button
           onClick={() => setIsContactModalOpen(true)}
           className="lg:hidden fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-3 bg-content text-base border border-edge rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
@@ -214,7 +264,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
       {/* Quick View Drawer Modal */}
       <MarketplaceQuickViewModal
         portfolio={activeQuickView}
-        onClose={() => setActiveQuickView(null)}
+        onClose={closeQuickView}
       />
 
       {/* Contact Form Popup Dialog */}

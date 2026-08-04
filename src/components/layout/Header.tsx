@@ -18,7 +18,7 @@ export function Header() {
       <div className="max-w-6xl w-full mx-auto px-5 md:px-6">
         <div className="flex items-center justify-between h-[52px] md:h-[56px]">
           {/* Logo */}
-          <Link href="/#top" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <img
               src="/logo/logo-1.svg"
               alt="วิศรุต แสนคำ"
@@ -32,7 +32,10 @@ export function Header() {
             className="hidden md:flex items-center gap-1"
           >
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link key={item.href} href={item.href} aria-current={isActive ? "page" : undefined}>
                   <span
@@ -66,7 +69,10 @@ export function Header() {
             className="flex flex-col items-start gap-1 pb-4 md:hidden border-t border-edge/40 pt-2"
           >
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
                   key={item.href}

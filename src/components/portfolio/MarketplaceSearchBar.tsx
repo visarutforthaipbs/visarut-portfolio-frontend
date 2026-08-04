@@ -14,6 +14,8 @@ interface MarketplaceSearchBarProps {
   onSortChange: (sort: string) => void;
   onToggleMobileSidebar?: () => void;
   totalCount: number;
+  hasAdditionalFilters?: boolean;
+  onClearAdditionalFilters?: () => void;
 }
 
 export function MarketplaceSearchBar({
@@ -27,6 +29,8 @@ export function MarketplaceSearchBar({
   onSortChange,
   onToggleMobileSidebar,
   totalCount,
+  hasAdditionalFilters = false,
+  onClearAdditionalFilters,
 }: MarketplaceSearchBarProps) {
   const categoryPills = [
     { value: "all", label: "ทั้งหมด" },
@@ -47,10 +51,13 @@ export function MarketplaceSearchBar({
             className="absolute left-3.5 top-1/2 -translate-y-1/2 text-dim pointer-events-none"
           />
           <input
+            id="portfolio-search"
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="ค้นหาผลงาน หัวข้อ ชื่องาน หรือองค์กร..."
+            aria-label="ค้นหาผลงาน"
+            aria-keyshortcuts="Control+K Meta+K /"
             className="w-full pl-10 pr-9 py-2.5 sm:py-2.5 bg-base border border-edge/80 rounded-xl text-base sm:text-sm text-content placeholder:text-dim focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all min-h-[44px]"
           />
           {searchQuery && (
@@ -81,6 +88,7 @@ export function MarketplaceSearchBar({
           <div className="flex items-center gap-2">
             <span className="text-xs text-dim hidden sm:inline-block">เรียงตาม:</span>
             <select
+              aria-label="เรียงลำดับผลงาน"
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value)}
               className="bg-base border border-edge/80 rounded-xl px-3 py-2.5 sm:py-2 text-xs font-medium text-content focus:outline-none focus:border-accent cursor-pointer transition-colors min-h-[44px]"
@@ -102,6 +110,7 @@ export function MarketplaceSearchBar({
               }`}
               title="มุมมองการ์ด (Grid)"
               aria-label="มุมมองการ์ด"
+              aria-pressed={viewMode === "grid"}
             >
               <LayoutGrid size={16} />
             </button>
@@ -114,6 +123,7 @@ export function MarketplaceSearchBar({
               }`}
               title="มุมมองรายการ (List)"
               aria-label="มุมมองรายการ"
+              aria-pressed={viewMode === "list"}
             >
               <List size={16} />
             </button>
@@ -134,6 +144,7 @@ export function MarketplaceSearchBar({
                   ? "bg-content text-base shadow-sm font-semibold scale-[1.02]"
                   : "bg-base hover:bg-surface border border-edge/60 text-muted hover:text-content"
               }`}
+              aria-pressed={isActive}
             >
               {pill.label}
             </button>
@@ -142,7 +153,7 @@ export function MarketplaceSearchBar({
       </div>
 
       {/* Active filters status bar */}
-      {(searchQuery || selectedCategory !== "all") && (
+      {(searchQuery || selectedCategory !== "all" || hasAdditionalFilters) && (
         <div className="flex items-center justify-between pt-1 text-xs text-dim">
           <span>
             พบผลงาน <strong className="text-content">{totalCount}</strong> รายการ
@@ -151,6 +162,7 @@ export function MarketplaceSearchBar({
             onClick={() => {
               onSearchChange("");
               onCategorySelect("all");
+              onClearAdditionalFilters?.();
             }}
             className="text-accent hover:underline text-xs font-medium cursor-pointer"
           >
