@@ -7,8 +7,10 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "sync-notion": "node scripts/sync-notion.js",
-    "summarize-gpu": "node scripts/summarize_with_gpu.js"
+    "sync-notion": "node --env-file-if-exists=.env scripts/sync-notion.js",
+    "summarize-gpu": "node --env-file-if-exists=.env scripts/summarize_with_gpu.js",
+    "summarize-notion": "node --env-file-if-exists=.env scripts/summarize_notion_projects.js",
+    "enrich-posts": "node --env-file-if-exists=.env scripts/enrich_all_46_posts.js"
   },
   "dependencies": {
     "@types/dompurify": "^3.0.5",
