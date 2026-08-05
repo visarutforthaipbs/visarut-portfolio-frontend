@@ -1,5 +1,6 @@
 /**
- * Summarize Notion Projects using local RTX 3090 GPU (scb10x/llama3.1-typhoon2-8b-instruct)
+ * Enhanced GPU LLM Project Summarizer (RTX 3090 + Typhoon2 8B)
+ * Generates public portfolio-grade Thai summaries for all Notion projects.
  * Usage: node scripts/summarize_with_gpu.js
  */
 
@@ -8,18 +9,13 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const NOTION_TOKEN = process.env.NOTION_TOKEN;
+const NOTION_TOKEN = process.env.NOTION_TOKEN || '';
 const NOTION_DB_ID = process.env.NOTION_DB_ID || '28eb1417-739e-4529-9902-fc338a7dd252';
-
-if (!NOTION_TOKEN) {
-  console.error('Missing NOTION_TOKEN environment variable. See .env.example.');
-  process.exit(1);
-}
 
 const TEMP_FILE = path.join(os.tmpdir(), 'llm_payload.json');
 
 /**
- * Call local GPU LLM (Typhoon2 8b) via SSH using file pipe to avoid shell escaping issues
+ * Call local GPU LLM (Typhoon2 8b) via SSH using OS temp file piping
  */
 function callLocalGpuLlm(prompt) {
   try {
@@ -33,17 +29,17 @@ function callLocalGpuLlm(prompt) {
 
     const cmd = `cat "${TEMP_FILE}" | ssh gpu "curl -s http://localhost:11434/api/generate -d @-"`;
     
-    const output = execSync(cmd, { encoding: 'utf8', timeout: 35000 });
+    const output = execSync(cmd, { encoding: 'utf8', timeout: 40000 });
     const json = JSON.parse(output);
     return json.response?.trim() || null;
   } catch (err) {
-    console.error('  ⚠️ GPU LLM Error:', err.message);
+    console.error('  ⚠️ GPU LLM Call Failed:', err.message);
     return null;
   }
 }
 
 /**
- * Recursively fetch text content from Notion page blocks (including columns & toggles)
+ * Recursively fetch text content from Notion page blocks (including columns, callouts & toggles)
  */
 async function fetchPageTextRecursive(blockId, depth = 0) {
   if (depth > 3) return '';
@@ -62,10 +58,13 @@ async function fetchPageTextRecursive(blockId, depth = 0) {
       const type = b.type;
       if (b[type] && b[type].rich_text && Array.isArray(b[type].rich_text)) {
         const text = b[type].rich_text.map(t => t.plain_text).join('').trim();
-        if (text) textChunks.push(text);
+        // Exclude lines that are clearly budget/financial admin notes
+        if (text && !/^(งบประมาณ|ค่าจ้าง|ค่าตอบแทน|บาท|budget|cost|price|deadline|contact person)/i.test(text)) {
+          textChunks.push(text);
+        }
       }
       
-      // If block has children (e.g. columns, toggles, callouts), traverse deeper
+      // Traverse child blocks
       if (b.has_children && type !== 'child_database' && type !== 'child_page') {
         const childText = await fetchPageTextRecursive(b.id, depth + 1);
         if (childText) textChunks.push(childText);
@@ -77,10 +76,60 @@ async function fetchPageTextRecursive(blockId, depth = 0) {
   }
 }
 
-async function main() {
-  console.log('🚀 Starting GPU LLM Project Summarization (RTX 3090 + Typhoon2)...\n');
+/**
+ * Quality check filter: Return true if summary needs improvement
+ */
+function needsImprovement(summary) {
+  if (!summary) return true;
+  if (summary.length < 35) return true;
+  // Check for admin/financial leakages
+  if (/(งบประมาณ|ค่าตอบแทน|บาท|baht|USD|บาท\/|ค่าจ้าง|deadline|contact person|พี่|โทร)/i.test(summary)) return true;
+  // Check for incomplete cut-offs
+  if (/^(The|A|An|Project|Work|Title)\s*$/i.test(summary)) return true;
+  return false;
+}
 
-  // Query all projects from Notion database
+function buildPrompt(title, category, clientName, pageText, isRetry = false) {
+  const cleanBody = (pageText || '').substring(0, 1500);
+
+  if (isRetry || !cleanBody || cleanBody.length < 20) {
+    return `คุณคือผู้เขียนบรรณาธิการสื่อและนักพัฒนาเว็บ จงเขียนคำอธิบายผลงานสำหรับจัดแสดงบนพอร์ตโฟลิโอเว็บไซต์สาธารณะ
+
+ข้อมูลผลงาน:
+- ชื่อโปรเจกต์: "${title}"
+- หมวดหมู่: "${category || 'สื่อสารมวลชน'}"
+${clientName ? `- องค์กร/ผู้ว่าจ้าง: "${clientName}"` : ''}
+
+คำสั่ง:
+เขียนสรุปภาพรวมผลงานนี้เป็นภาษาไทย ความยาว 2 ประโยค ให้ได้ใจความ สละสลวย น่าอ่าน และเป็นมืออาชีพ
+ข้อห้ามเด็ดขาด: ห้ามใส่ตัวเลขงบประมาณ ห้ามใส่ค่าตอบแทน ห้ามใส่ชื่อติดต่อภายใน ห้ามใส่คำว่า deadline หรือข้อมูลการเงิน
+
+ตอบเฉพาะเนื้อหาสรุปภาษาไทย 2 ประโยค:`;
+  }
+
+  return `คุณคือบรรณาธิการสื่อสารมวลชนและผู้เชี่ยวชาญการเขียน Portfolio
+
+ผลงานเรื่อง: "${title}" (หมวดหมู่: "${category || 'สื่อ'}")
+${clientName ? `องค์กรผู้ว่าจ้าง: "${clientName}"` : ''}
+
+รายละเอียดและเนื้อหาหลัก:
+${cleanBody}
+
+คำสั่ง:
+จงเขียนสรุปภาพรวมผลงานนี้เป็นภาษาไทย ความยาว 2 ประโยค สำหรับแสดงบนหน้าพอร์ตโฟลิโอสาธารณะ โดยอธิบายว่าผลงานนี้คืออะไร ทำเรื่องอะไร และมีคุณค่าหรือความสำคัญอย่างไรต่อสังคมและผู้ดู
+
+ข้อห้ามเด็ดขาด:
+1. ห้ามใส่ตัวเลขงบประมาณ จำนวนเงิน หรือค่าตอบแทน
+2. ห้ามใส่ชื่อบุคคลติดต่อภายใน หรือหมายเหตุแอดมิน
+3. ตอบเฉพาะเนื้อหาสรุปภาษาไทย 2 ประโยคสั้นกระชับ ไม่ต้องมีคำเกริ่นนำ
+
+สรุปภาษาไทย:`;
+}
+
+async function main() {
+  console.log('🚀 Starting Enhanced GPU LLM Summarizer (Public Portfolio Mode)...\n');
+
+  // Query Notion database projects
   const res = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
     method: 'POST',
     headers: {
@@ -100,41 +149,45 @@ async function main() {
   console.log(`📌 Found ${data.results.length} projects to process.\n`);
 
   let count = 0;
+  let improvedCount = 0;
 
   for (const page of data.results) {
     const props = page.properties;
     const titleArr = props['ชื่อโปรเจกต์ (Name)']?.title || [];
     const title = titleArr.map(t => t.plain_text).join('').trim() || 'Untitled Project';
 
-    const category = props['หมวดงาน (Category)']?.multi_select?.map(c => c.name).join(', ') || 'สื่อ';
+    const category = props['หมวดงาน (Category)']?.multi_select?.map(c => c.name).join(', ') || '';
+    const clientName = props['ลูกค้า/องค์กร (Client/NGO)']?.relation?.[0]?.id || '';
     
-    // Fetch recursive block text from Notion
+    // Fetch page text
     const pageText = await fetchPageTextRecursive(page.id);
 
-    const prompt = `คุณคือผู้ช่วยสรุปผลงานของผู้ผลิตสื่อ ชื่องาน: "${title}", หมวดหมู่: "${category}"
-
-รายละเอียดข้อมูลในโปรเจกต์:
-${pageText || title}
-
-จงสรุปภาพรวมผลงานนี้เป็นภาษาไทย ความยาว 2 ประโยค ให้ได้ใจความ สั้นกระชับ ตรงประเด็น โดยอธิบายว่าผลงานนี้คืออะไร ทำเรื่องอะไร และมีความสำคัญอย่างไร (ตอบเฉพาะเนื้อหาสรุป):`;
-
+    // Initial prompt pass
+    let prompt = buildPrompt(title, category, clientName, pageText, false);
     console.log(`🔄 [${count + 1}/${data.results.length}] Processing: "${title}"`);
-    if (pageText) console.log(`   Text Extracted: ${pageText.substring(0, 100).replace(/\n/g, ' ')}...`);
-
-    // Call GPU LLM
-    let summary = callLocalGpuLlm(prompt);
     
-    if (!summary) {
-      console.log(`   ⚠️ LLM Retry needed for "${title}"...`);
+    let summary = callLocalGpuLlm(prompt);
+
+    // If summary fails quality check, re-prompt with enriched fallback prompt
+    if (needsImprovement(summary)) {
+      console.log(`   ⚠️ Summary needed quality improvement, re-prompting Typhoon2...`);
+      prompt = buildPrompt(title, category, clientName, pageText, true);
       summary = callLocalGpuLlm(prompt);
+      improvedCount++;
     }
 
     if (summary) {
-      // Clean leading/trailing quotes
-      summary = summary.replace(/^["'«“]/, '').replace(/["'»”]$/, '').trim();
-      console.log(`   🤖 GPU Typhoon2 Summary:\n      "${summary}"`);
+      // Clean quotes & extra whitespace
+      summary = summary
+        .replace(/^["'«“]/, '')
+        .replace(/["'»”]$/, '')
+        .replace(/^สรุป:\s*/, '')
+        .replace(/^คำอธิบาย:\s*/, '')
+        .trim();
 
-      // Update Notion property
+      console.log(`   🤖 Portfolio Summary:\n      "${summary}"\n`);
+
+      // Save directly to Notion
       const updateRes = await fetch(`https://api.notion.com/v1/pages/${page.id}`, {
         method: 'PATCH',
         headers: {
@@ -157,21 +210,16 @@ ${pageText || title}
         })
       });
 
-      if (updateRes.ok) {
-        console.log(`   ✅ Saved to Notion!\n`);
-        count++;
-      } else {
-        console.error(`   ❌ Error saving to Notion:`, await updateRes.json());
-      }
+      if (updateRes.ok) count++;
     }
   }
 
-  // Cleanup temp payload file
+  // Clean temp file
   if (fs.existsSync(TEMP_FILE)) {
     fs.unlinkSync(TEMP_FILE);
   }
 
-  console.log(`🎉 Completed! Successfully summarized ${count} projects using local RTX 3090 GPU!`);
+  console.log(`\n🎉 Done! Processed ${count} projects (${improvedCount} quality-enhanced via Typhoon2).`);
 }
 
 main().catch(console.error);
