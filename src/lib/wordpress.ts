@@ -289,7 +289,12 @@ export class WordPressAPI {
       getString("photo_description") ||
       getString("video_description") ||
       getString("editing_description") ||
-      getString("design_description");
+      getString("design_description") ||
+      getString("print_description") ||
+      getString("exhibition_description") ||
+      getString("campaign_description") ||
+      getString("producer_description") ||
+      getString("technical_details");
     const externalUrl =
       getString("external_url") ||
       getString("website_url") ||

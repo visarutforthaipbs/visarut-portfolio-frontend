@@ -169,13 +169,37 @@ export function MarketplaceQuickViewModal({
 
   const cleanTitle = normalized.title.replace(/<[^>]*>/g, "");
   
-  const rawContentHtml =
-    portfolio.content?.rendered || portfolio.excerpt?.rendered || normalized.meta.description || "";
+  // 1. Clean content body text (with images/figures stripped)
+  const cleanedContentText = cleanRightPanelContent(portfolio.content?.rendered || "", cleanTitle);
 
-  // Clean right-side text HTML
-  const textContentHtml = sanitizeHtml(
-    cleanRightPanelContent(rawContentHtml, cleanTitle)
-  );
+  // 2. Clean ACF project description
+  const cleanedAcfText = cleanRightPanelContent(normalized.meta.description || "", cleanTitle);
+
+  // 3. Clean excerpt text
+  const cleanedExcerptText = cleanRightPanelContent(portfolio.excerpt?.rendered || "", cleanTitle);
+
+  // Helper to check if an HTML string has actual text content
+  const hasVisibleText = (html: string): boolean => {
+    if (!html) return false;
+    return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, "").trim().length > 0;
+  };
+
+  // Fallback chain: Pick the best available text with visible characters
+  let rawText = "";
+  if (hasVisibleText(cleanedContentText)) {
+    rawText = cleanedContentText;
+  } else if (hasVisibleText(cleanedAcfText)) {
+    rawText = cleanedAcfText;
+  } else if (hasVisibleText(cleanedExcerptText)) {
+    rawText = cleanedExcerptText;
+  }
+
+  // If both ACF description and body content exist and are distinct, include ACF summary first!
+  if (hasVisibleText(cleanedAcfText) && hasVisibleText(cleanedContentText) && !cleanedContentText.includes(cleanedAcfText.trim())) {
+    rawText = `<p className="font-medium text-content/90">${cleanedAcfText}</p>${cleanedContentText}`;
+  }
+
+  const textContentHtml = sanitizeHtml(rawText);
 
   const externalLink = normalized.meta.externalUrl;
   const clientName = normalized.meta.clientName;

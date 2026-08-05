@@ -1,6 +1,6 @@
 /**
- * Enhanced GPU LLM Project Summarizer (RTX 3090 + Typhoon2 8B)
- * Generates public portfolio-grade Thai summaries for all Notion projects.
+ * Enhanced GPU LLM Project Summarizer with Full Pagination (RTX 3090 + Typhoon2 8B)
+ * Processes ALL projects in Notion database (no 100 item limit).
  * Usage: node scripts/summarize_with_gpu.js
  */
 
@@ -126,32 +126,52 @@ ${cleanBody}
 สรุปภาษาไทย:`;
 }
 
-async function main() {
-  console.log('🚀 Starting Enhanced GPU LLM Summarizer (Public Portfolio Mode)...\n');
+/**
+ * Fetch ALL pages from Notion database using pagination
+ */
+async function fetchAllNotionPages() {
+  let allPages = [];
+  let hasMore = true;
+  let startCursor = undefined;
 
-  // Query Notion database projects
-  const res = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${NOTION_TOKEN}`,
-      'Notion-Version': '2022-06-28',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ page_size: 100 })
-  });
+  while (hasMore) {
+    const body = { page_size: 100 };
+    if (startCursor) body.start_cursor = startCursor;
 
-  if (!res.ok) {
-    console.error('❌ Failed to fetch Notion database:', await res.json());
-    return;
+    const res = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${NOTION_TOKEN}`,
+        'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      console.error('❌ Failed to fetch Notion database page chunk:', await res.json());
+      break;
+    }
+
+    const data = await res.json();
+    allPages = allPages.concat(data.results);
+    hasMore = data.has_more;
+    startCursor = data.next_cursor;
   }
 
-  const data = await res.json();
-  console.log(`📌 Found ${data.results.length} projects to process.\n`);
+  return allPages;
+}
+
+async function main() {
+  console.log('🚀 Starting Full GPU LLM Project Summarization (All Notion Projects, No Page Limits)...\n');
+
+  const pages = await fetchAllNotionPages();
+  console.log(`📌 Found a total of ${pages.length} projects across all pages in Notion database.\n`);
 
   let count = 0;
   let improvedCount = 0;
 
-  for (const page of data.results) {
+  for (const page of pages) {
     const props = page.properties;
     const titleArr = props['ชื่อโปรเจกต์ (Name)']?.title || [];
     const title = titleArr.map(t => t.plain_text).join('').trim() || 'Untitled Project';
@@ -164,11 +184,11 @@ async function main() {
 
     // Initial prompt pass
     let prompt = buildPrompt(title, category, clientName, pageText, false);
-    console.log(`🔄 [${count + 1}/${data.results.length}] Processing: "${title}"`);
+    console.log(`🔄 [${count + 1}/${pages.length}] Processing: "${title}"`);
     
     let summary = callLocalGpuLlm(prompt);
 
-    // If summary fails quality check, re-prompt with enriched fallback prompt
+    // Quality check retry
     if (needsImprovement(summary)) {
       console.log(`   ⚠️ Summary needed quality improvement, re-prompting Typhoon2...`);
       prompt = buildPrompt(title, category, clientName, pageText, true);
@@ -177,7 +197,6 @@ async function main() {
     }
 
     if (summary) {
-      // Clean quotes & extra whitespace
       summary = summary
         .replace(/^["'«“]/, '')
         .replace(/["'»”]$/, '')
@@ -219,7 +238,7 @@ async function main() {
     fs.unlinkSync(TEMP_FILE);
   }
 
-  console.log(`\n🎉 Done! Processed ${count} projects (${improvedCount} quality-enhanced via Typhoon2).`);
+  console.log(`\n🎉 Done! Successfully processed ALL ${count} projects in Notion (${improvedCount} quality-enhanced via Typhoon2).`);
 }
 
 main().catch(console.error);
