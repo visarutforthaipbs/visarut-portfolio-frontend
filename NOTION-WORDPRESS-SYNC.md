@@ -13,7 +13,8 @@ flowchart TD
         N_Status["สถานะงาน: พร้อมเผยแพร่ (Ready to Publish)"]
     end
 
-    subgraph Sync ["2. Sync Engine (scripts/sync-notion.js)"]
+    subgraph Sync ["2. Sync Engine (Vercel Webhook + scripts/sync-notion.js fallback)"]
+        Webhook["POST /api/notion-publish"]
         GHA["GitHub Actions (Hourly / Manual Dispatch)"]
         HTML["Notion Blocks ➔ HTML Converter"]
         Media["Cover Upload ➔ WP Media Library"]
@@ -31,7 +32,8 @@ flowchart TD
     end
 
     N_DB -->|Filtered by Status| GHA
-    N_Status --> GHA
+    N_Status -->|Notion automation webhook| Webhook
+    Webhook --> HTML & Media
     GHA --> HTML & Media
     HTML & Media --> WP_Post
     WP_Post --> WP_Tax & WP_ACF
@@ -99,13 +101,52 @@ Portfolio Universal Fields
 ## 🔄 5. Status Lifecycle & Sync Flow
 
 1. **In Notion**: Change **`สถานะงาน (Work Status)`** to **`พร้อมเผยแพร่ (Ready to Publish)`** 🟦.
-2. **Sync Execution**: GitHub Actions runs `scripts/sync-notion.js` automatically (or run `npm run sync-notion` manually).
-3. **WordPress Post Creation / Update**:
+2. **Instant Sync Execution**: Notion automation sends a POST request to `https://www.sankham.cv/api/notion-publish`.
+   - If the webhook payload includes a `pageId`, only that Notion page is checked and published.
+   - If no `pageId` is provided, the endpoint immediately queries all rows marked `พร้อมเผยแพร่ (Ready to Publish)`.
+3. **Fallback Sync Execution**: GitHub Actions still runs `scripts/sync-notion.js` hourly (or run `npm run sync-notion` manually) to catch anything missed by the webhook.
+4. **WordPress Post Creation / Update**:
    - If **`WP Post ID`** is empty in Notion ➔ Creates a new post.
    - If **`WP Post ID`** exists ➔ Updates the existing post without creating duplicates.
-4. **Notion Completion**:
+5. **Notion Completion**:
    - **`สถานะงาน (Work Status)`** updates to **`เผยแพร่แล้ว (Published)`** 🟩.
    - **`WP Post ID`** and **`WP URL`** are written back to the Notion card.
+
+### Instant Webhook Setup
+
+1. Deploy the site to Vercel with the API route `POST /api/notion-publish`.
+2. Add a new Vercel environment variable:
+
+   ```
+   NOTION_WEBHOOK_SECRET=<long random secret>
+   ```
+
+3. In Notion, create a database automation:
+   - **Trigger**: `สถานะงาน (Work Status)` changes to `พร้อมเผยแพร่ (Ready to Publish)`.
+   - **Action**: Send webhook / POST request.
+   - **URL**: `https://www.sankham.cv/api/notion-publish`
+   - **Header**: `x-notion-webhook-secret: <same secret>`
+   - **Body**: preferably include the page id:
+
+     ```json
+     {
+       "pageId": "{{Page ID}}"
+     }
+     ```
+
+     If Notion cannot send the page id from your automation UI, send an empty JSON body. The endpoint will still immediately query every `พร้อมเผยแพร่ (Ready to Publish)` row.
+
+### Notion Developer Webhook Verification
+
+If you create a webhook subscription from the Notion Developers page instead of a database automation, use the full endpoint URL:
+
+```
+https://www.sankham.cv/api/notion-publish
+```
+
+Do not use `https://www.sankham.cv/`; the site root is a page, not the webhook handler, and Notion may show a `405`.
+
+When Notion sends the verification request, `/api/notion-publish` returns HTTP 200 and logs the `verification_token`. Copy the token from the response or from Vercel Function logs, then paste it into Notion's **Verify subscription** dialog.
 
 ---
 
@@ -120,6 +161,7 @@ For GitHub Actions or local CLI sync, set the following environment variables:
 | `WP_URL` | WordPress REST API Base URL | `https://api.sankham.cv` |
 | `WP_USER` | WordPress Admin Username | `visarutsankham` |
 | `WP_PASS` | WordPress Application Password | `xxxx xxxx xxxx xxxx xxxx xxxx` |
+| `NOTION_WEBHOOK_SECRET` | Secret required by `/api/notion-publish` | `use-a-long-random-string` |
 
 ---
 
