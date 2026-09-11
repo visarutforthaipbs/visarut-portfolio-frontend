@@ -1,6 +1,9 @@
+"use client";
+
 import { Calendar, Camera } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { getPortfolioFeaturedImageUrl } from "@/utils";
 
 interface PhotographyLayoutProps {
   portfolios: PortfolioItem[];
@@ -33,12 +36,16 @@ export function PhotographyLayout({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
-            <div className="bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-              <div className="aspect-[4/3]">
+            <div className="group bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
                 <img
-                  src={portfolio.featured_image?.url || "/placeholder-image.jpg"}
+                  src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="object-cover w-full h-full"
+                  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/placeholder-image.svg";
+                  }}
                 />
               </div>
 

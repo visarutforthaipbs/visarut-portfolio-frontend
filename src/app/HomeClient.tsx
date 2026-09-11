@@ -215,7 +215,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
             />
 
             {/* Main Stream (Search bar & Grid view) */}
-            <main className="flex-1 flex flex-col gap-4 sm:gap-5 w-full min-w-0" id="main-content">
+            <section className="flex-1 flex flex-col gap-4 sm:gap-5 w-full min-w-0" aria-label="รายการผลงาน">
               {/* Search Toolbar */}
               <MarketplaceSearchBar
                 searchQuery={searchQuery}
@@ -246,7 +246,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
                   isLoading={loading && sourcePortfolios.length === 0}
                 />
               )}
-            </main>
+            </section>
           </div>
         </div>
 

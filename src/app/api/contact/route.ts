@@ -29,6 +29,16 @@ function getClientIp(request: NextRequest): string {
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Clean expired entries if map gets too large
+  if (rateLimits.size > 1000) {
+    for (const [key, val] of rateLimits.entries()) {
+      if (val.resetAt <= now) {
+        rateLimits.delete(key);
+      }
+    }
+  }
+
   const entry = rateLimits.get(ip);
 
   if (!entry || entry.resetAt <= now) {

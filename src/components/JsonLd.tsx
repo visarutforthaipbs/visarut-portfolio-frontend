@@ -1,5 +1,3 @@
-"use client";
-
 import { siteConfig } from "@/lib/config";
 import type { PortfolioItem } from "@/types/portfolio";
 
@@ -8,13 +6,17 @@ interface JsonLdProps {
   data?: Record<string, unknown>;
 }
 
+function safeJsonLd(obj: unknown): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c");
+}
+
 export function JsonLd({ items = [], data }: JsonLdProps) {
   // If custom raw data object is passed from legacy pages, render it directly
   if (data) {
     return (
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
       />
     );
   }
@@ -104,16 +106,16 @@ export function JsonLd({ items = [], data }: JsonLdProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(personSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteSchema) }}
       />
       {itemListSchema && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
         />
       )}
     </>

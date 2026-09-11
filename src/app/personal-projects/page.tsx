@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { JsonLd } from "@/components/JsonLd";
+import { siteConfig } from "@/lib/config";
 
 // Dynamically import ReactCompareImage to avoid SSR issues
 const ReactCompareImage = dynamic(() => import("react-compare-image"), {
@@ -23,23 +24,12 @@ const CTAButton = () => (
 );
 
 export default function PersonalProjectsPage() {
-  // Load EmbedSocial iframe bridge script
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "https://cdn.jsdelivr.net/npm/@mirrorapp/iframe-bridge@latest/dist/index.umd.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      // Cleanup script on unmount
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
   }, []);
 
-  // Structured data for SEO
+  // Structured Data for Social Campaign
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -49,7 +39,7 @@ export default function PersonalProjectsPage() {
     creator: {
       "@type": "Person",
       name: "Visarut Sankham",
-      url: "https://visarut.com",
+      url: siteConfig.url,
     },
     datePublished: "2021-02-01",
     inLanguage: "th-TH",
@@ -61,7 +51,7 @@ export default function PersonalProjectsPage() {
       "PHOTOFORAIR, CNXPM2.5, ฝุ่นควัน, PM2.5, เชียงใหม่, แคมเปญสังคม, แรงงานข้ามชาติ, หน้ากาก N95",
     image: {
       "@type": "ImageObject",
-      url: "https://visarut.com/image/pfa/x2-1-2.jpg",
+      url: `${siteConfig.url}/image/pfa/x2-1-2.jpg`,
       width: 1200,
       height: 630,
     },
@@ -83,7 +73,7 @@ export default function PersonalProjectsPage() {
       <section
         role="region"
         aria-label="#PHOTOFORAIR"
-        className="relative w-screen h-[45vh] md:h-[70vh] overflow-hidden left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
+        className="relative w-full h-[45vh] md:h-[70vh] overflow-hidden"
       >
         {/* Background Image */}
         <div
@@ -113,13 +103,13 @@ export default function PersonalProjectsPage() {
               <div className="bg-surface p-6 rounded-lg border border-edge shadow-sm">
                 <div className="flex flex-col gap-2 items-center">
                   <span className="text-sm text-dim thai-text">จำนวนเงินที่ได้แล้ว</span>
-                  <h2 className="text-3xl text-content font-bold">13,016 บาท</h2>
+                  <p className="text-3xl text-content font-bold">13,016 บาท</p>
                 </div>
               </div>
               <div className="bg-surface p-6 rounded-lg border border-edge shadow-sm">
                 <div className="flex flex-col gap-2 items-center">
                   <span className="text-sm text-dim thai-text">จำนวนหน้ากาก N95</span>
-                  <h2 className="text-3xl text-content font-bold">591 ชิ้น</h2>
+                  <p className="text-3xl text-content font-bold">591 ชิ้น</p>
                 </div>
               </div>
             </div>

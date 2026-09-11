@@ -1,5 +1,15 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { apiCache } from "@/lib/cache";
+import { timingSafeEqual } from "crypto";
+
+function isValidSecret(provided: string | null, expected?: string): boolean {
+  if (!provided || !expected) return false;
+  const bufProvided = Buffer.from(provided);
+  const bufExpected = Buffer.from(expected);
+  if (bufProvided.length !== bufExpected.length) return false;
+  return timingSafeEqual(bufProvided, bufExpected);
+}
 
 /**
  * On-demand revalidation endpoint.
@@ -15,11 +25,13 @@ export async function POST(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get("secret");
   const type = request.nextUrl.searchParams.get("type") ?? "all";
 
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  if (!isValidSecret(secret, process.env.REVALIDATE_SECRET)) {
     return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
   }
 
   try {
+    // Invalidate in-memory REST API cache
+    apiCache.clear();
     if (type === "blog" || type === "all") {
       revalidatePath("/blog", "page");
       revalidatePath("/blog/[slug]", "page");

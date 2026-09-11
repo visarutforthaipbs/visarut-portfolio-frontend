@@ -1,10 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Providers } from "@/components/providers";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { WebVitals } from "@/components/WebVitals";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#22c55e",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  colorScheme: "light",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -118,18 +126,6 @@ export default function RootLayout({
   return (
     <html lang="th" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=5"
-        />
-        <meta name="theme-color" content="#22c55e" />
-        <meta name="color-scheme" content="light dark" />
         <meta
           name="format-detection"
           content="telephone=no, date=no, email=no, address=no"
@@ -168,11 +164,6 @@ export default function RootLayout({
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="//api.sankham.cv" />
         <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-
-        {/* Canonical URL will be set per page */}
-        <link rel="canonical" href={siteConfig.url} />
       </head>
       <body suppressHydrationWarning>
         <GoogleAnalytics />

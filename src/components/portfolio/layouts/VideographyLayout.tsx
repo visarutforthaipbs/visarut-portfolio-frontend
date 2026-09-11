@@ -1,6 +1,9 @@
+"use client";
+
 import { Calendar, Video, Play } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { getPortfolioFeaturedImageUrl } from "@/utils";
 
 interface VideographyLayoutProps {
   portfolios: PortfolioItem[];
@@ -38,11 +41,15 @@ export function VideographyLayout({
             className="bg-surface rounded-xl overflow-hidden border border-edge hover:-translate-y-1 transition-all duration-300"
           >
             <div className="relative">
-              <div className="aspect-video">
+              <div className="aspect-video w-full overflow-hidden bg-surface relative">
                 <img
-                  src={portfolio.featured_image?.url || "/placeholder-video.jpg"}
+                  src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="object-cover w-full h-full"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/placeholder-image.svg";
+                  }}
                 />
               </div>
 
@@ -81,10 +88,11 @@ export function VideographyLayout({
                 </p>
               )}
 
-              <Link href={`/portfolio/${portfolio.slug}`}>
-                <button className="text-sm bg-accent text-white px-4 py-2 rounded-md hover:bg-accent/80 transition-colors">
-                  ดูผลงาน
-                </button>
+              <Link
+                href={`/portfolio/${portfolio.slug}`}
+                className="text-sm bg-accent text-[#1A1B2E] font-semibold px-4 py-2 rounded-md hover:bg-signal transition-colors cursor-pointer"
+              >
+                ดูผลงาน
               </Link>
             </div>
           </div>

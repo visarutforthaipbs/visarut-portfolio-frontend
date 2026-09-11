@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { siteConfig } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "#PHOTOFORAIR - เปลี่ยนภาพเพื่อออกาศที่เท่ากัน | Visarut Sankham",
+  title: "#PHOTOFORAIR - เปลี่ยนภาพเพื่ออากาศที่เท่ากัน",
   description:
     "แคมเปญสังคม #PHOTOFORAIR เปลี่ยนภาพถ่ายด้วย Preset CNXPM2.5 เพื่อระดมทุนซื้อหน้ากาก N95 แจกจ่ายให้แรงงานข้ามชาติในเชียงใหม่ ช่วยลดความเหลื่อมล้ำในการเข้าถึงอากาศบริสุทธิ์ระหว่างวิกฤตฝุ่นควัน PM2.5",
   keywords: [

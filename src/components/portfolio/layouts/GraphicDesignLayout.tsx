@@ -1,6 +1,9 @@
+"use client";
+
 import { Calendar, Palette } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { getPortfolioFeaturedImageUrl } from "@/utils";
 
 interface GraphicDesignLayoutProps {
   portfolios: PortfolioItem[];
@@ -34,11 +37,15 @@ export function GraphicDesignLayout({
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
             <div className="bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
-              <div className="aspect-[3/4]">
+              <div className="aspect-[3/4] w-full overflow-hidden bg-surface relative">
                 <img
-                  src={portfolio.featured_image?.url || "/placeholder-design.jpg"}
+                  src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="object-cover w-full h-full"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/placeholder-image.svg";
+                  }}
                 />
               </div>
 

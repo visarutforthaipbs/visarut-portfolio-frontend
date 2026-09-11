@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Camera,
   Video,
@@ -281,6 +281,15 @@ export function MarketplaceSidebar({
     </div>
   );
 
+  useEffect(() => {
+    if (!isOpenMobile) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCloseMobile?.();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpenMobile, onCloseMobile]);
+
   return (
     <>
       {/* Desktop Sidebar */}
@@ -290,15 +299,25 @@ export function MarketplaceSidebar({
 
       {/* Mobile Drawer */}
       {isOpenMobile && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
+        <div
+          className="fixed inset-0 z-50 lg:hidden flex"
+          role="dialog"
+          aria-modal="true"
+          aria-label="ตัวกรองและข้อมูล"
+        >
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
+            aria-hidden="true"
           />
           <aside className="relative ml-auto w-4/5 max-w-xs bg-base border-l border-edge p-5 h-full overflow-y-auto shadow-2xl z-10">
             <div className="flex items-center justify-between pb-3 border-b border-edge/60 mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-content">ตัวกรอง &amp; ข้อมูล</span>
-              <button onClick={onCloseMobile} className="p-1 text-dim hover:text-content">
+              <button
+                onClick={onCloseMobile}
+                className="p-1.5 text-dim hover:text-content min-w-[36px] min-h-[36px] flex items-center justify-center cursor-pointer"
+                aria-label="ปิดตัวกรอง"
+              >
                 <X size={18} />
               </button>
             </div>

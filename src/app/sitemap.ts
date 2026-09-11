@@ -1,46 +1,47 @@
 import { MetadataRoute } from "next";
-import { siteConfig, wpApiUrl } from "@/lib/config";
+import { siteConfig, wpApiUrl, CATEGORY_IDS } from "@/lib/config";
 import type { PortfolioItem } from "@/types";
 import type { BlogPost } from "@/types/wordpress";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
+  const staticLastMod = new Date("2025-01-01T00:00:00.000Z");
 
   // Static pages
   const staticPages = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: staticLastMod,
       changeFrequency: "weekly" as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: staticLastMod,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/portfolio`,
-      lastModified: new Date(),
+      lastModified: staticLastMod,
       changeFrequency: "weekly" as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/personal-projects`,
-      lastModified: new Date(),
+      lastModified: staticLastMod,
       changeFrequency: "monthly" as const,
       priority: 0.85,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: staticLastMod,
       changeFrequency: "daily" as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: staticLastMod,
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
@@ -86,18 +87,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Sitemap: Error fetching blog posts:", error);
   }
 
-  // Portfolio categories
-  const portfolioCategories = [
-    "photography",
-    "videography",
-    "website",
-    "graphic-design",
-    "video-editing",
-  ];
+  // All 13 portfolio categories from single source of truth
+  const portfolioCategories = Object.keys(CATEGORY_IDS);
 
   const categoryPages = portfolioCategories.map((category) => ({
     url: `${baseUrl}/portfolio/category/${category}`,
-    lastModified: new Date(),
+    lastModified: staticLastMod,
     changeFrequency: "weekly" as const,
     priority: 0.4,
   }));

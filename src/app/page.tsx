@@ -6,9 +6,11 @@ import {
   generateOrganizationSchema,
   generateWebsiteSchema,
 } from "@/lib/seo";
-import { siteConfig, wpApiUrl, categoryIdToSlug } from "@/lib/config";
-import type { BlogPost } from "@/types/wordpress";
+import { siteConfig, wpApiUrl } from "@/lib/config";
+import type { BlogPost, WordPressPost } from "@/types/wordpress";
 import type { PortfolioItem } from "@/types/portfolio";
+
+import { WordPressAPI } from "@/lib/wordpress";
 
 export const metadata: Metadata = {
   // Use default metadata from layout or override if needed
@@ -35,31 +37,7 @@ async function getFeaturedPortfolios(count = 4): Promise<PortfolioItem[]> {
     );
     if (!res.ok) return [];
     const posts = await res.json();
-    return posts.map((post: Record<string, unknown>) => {
-      const embedded = post._embedded as Record<string, unknown[]> | undefined;
-      const featuredMedia = (embedded?.["wp:featuredmedia"] as Record<string, unknown>[])?.[0];
-      const mediaDetails = featuredMedia?.media_details as Record<string, unknown> | undefined;
-      const sizes = mediaDetails?.sizes as Record<string, Record<string, string>> | undefined;
-      const categories = (post.portfolio_category as number[]) || [];
-      const category = categories.length > 0 ? categoryIdToSlug(categories[0]) : "photography";
-
-      return {
-        ...post,
-        category,
-        featured_image: featuredMedia ? {
-          id: String(featuredMedia.id),
-          type: "image" as const,
-          url: featuredMedia.source_url as string,
-          alt: (featuredMedia.alt_text as string) || "",
-          sizes: sizes ? {
-            thumbnail: sizes.thumbnail?.source_url || "",
-            medium: sizes.medium?.source_url || "",
-            large: sizes.large?.source_url || "",
-            full: sizes.full?.source_url || (featuredMedia.source_url as string),
-          } : undefined,
-        } : undefined,
-      };
-    });
+    return posts.map((post: WordPressPost) => WordPressAPI.transformPortfolioPost(post));
   } catch {
     return [];
   }

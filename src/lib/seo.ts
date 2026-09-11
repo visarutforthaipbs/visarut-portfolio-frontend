@@ -34,7 +34,7 @@ export function generateSEO({
     : `${siteConfig.url}${image}`;
 
   const metadata: Metadata = {
-    title: metaTitle,
+    title: title || siteConfig.titleTh,
     description: metaDescription,
     alternates: {
       canonical: metaUrl,

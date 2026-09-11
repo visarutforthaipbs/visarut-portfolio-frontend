@@ -7,11 +7,14 @@
   --color-edge: #D8D9E0;
   --color-content: #1A1B2E;
   --color-muted: #5C5F72;
-  --color-dim: #8E91A3;
+  --color-dim: #606475;
   --color-accent: #22c55e;
   --color-accent-dim: rgba(34, 197, 94, 0.10);
   --color-signal: #16A34A;
   --color-signal-dim: rgba(22,163,74,0.10);
+
+  --font-thai: "DB Helvethaica", "Sukhumvit Set", "Thonburi", "Leelawadee UI", sans-serif;
+  --font-db-helvethaica: "DB Helvethaica", "Sukhumvit Set", "Thonburi", "Leelawadee UI", sans-serif;
 }
 
 /* DB Helvethaica Font Definitions */
@@ -291,13 +294,13 @@ main {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid #D97706;
+  outline: 2px solid #16A34A;
   outline-offset: 2px;
 }
 
 /* Selection styles */
 ::selection {
-  background-color: #D97706;
+  background-color: #16A34A;
   color: #FFFFFF;
 }
 
@@ -464,7 +467,7 @@ img {
 /* Better focus states for accessibility */
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #D97706;
+  outline: 2px solid #16A34A;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -479,10 +482,12 @@ a:focus-visible {
 /* Blog Content Styles */
 .blog-content p {
   margin-bottom: 2.5rem;
-  line-height: 1.8;
+  line-height: 1.85;
   font-size: 1.25rem;
   color: #5C5F72;
-  text-align: justify;
+  text-align: left;
+  word-break: break-word;
+  line-break: relaxed;
 }
 
 .blog-content h1,
@@ -500,17 +505,17 @@ a:focus-visible {
 
 .blog-content h1 {
   font-size: 2.5rem;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .blog-content h2 {
   font-size: 2rem;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .blog-content h3 {
   font-size: 1.75rem;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .blog-content h4 {
@@ -529,7 +534,7 @@ a:focus-visible {
 }
 
 .blog-content blockquote {
-  border-left: 4px solid #D97706;
+  border-left: 4px solid #16A34A;
   background: #F7F7F9;
   padding: 2rem 2.5rem;
   margin: 3rem 0;
@@ -611,14 +616,14 @@ a:focus-visible {
 }
 
 .blog-content a {
-  color: #D97706;
+  color: #16A34A;
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .blog-content a:hover {
-  color: #1A1B2E;
+  color: #15803d;
 }
 
 .blog-content strong {
@@ -638,46 +643,6 @@ a:focus-visible {
   font-family: monospace;
   font-size: 0.875rem;
   color: #1A1B2E;
-}
-
-/* Additional WordPress Content Styles */
-.wordpress-content p {
-  margin-bottom: 1.5rem;
-  line-height: 1.7;
-  color: #5C5F72;
-}
-
-.wordpress-content h1,
-.wordpress-content h2,
-.wordpress-content h3,
-.wordpress-content h4,
-.wordpress-content h5,
-.wordpress-content h6 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
-  color: #1A1B2E;
-}
-
-.wordpress-content a {
-  color: #D97706;
-  text-decoration: underline;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.wordpress-content a:hover {
-  color: #1A1B2E;
-}
-
-.wordpress-content strong {
-  font-weight: 600;
-  color: #1A1B2E;
-}
-
-.wordpress-content em {
-  font-style: italic;
-  color: #5C5F72;
 }
 
 /* Ensure bullets show in all contexts */

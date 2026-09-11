@@ -3,12 +3,26 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { navigation } from "@/lib/config";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
+  // Close mobile menu on Escape key press or route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   return (
     <header
@@ -52,10 +66,11 @@ export function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="block md:hidden text-muted cursor-pointer"
+            className="block md:hidden text-muted hover:text-content cursor-pointer p-2.5 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-surface/50 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "ปิดเมนู" : "เปิดเมนู"}
             aria-expanded={isOpen}
+            aria-controls="mobile-nav"
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>

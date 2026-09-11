@@ -117,7 +117,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </div>
 
             {submitStatus === "error" && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700" role="alert" aria-live="assertive">
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-500" role="alert" aria-live="assertive">
                 <p>{errorMessage}</p>
                 <a
                   href={createContactMailto(formData)}
@@ -128,17 +128,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="contact-name" className="text-xs text-dim block mb-1 font-medium">ชื่อของคุณ</label>
+                <label htmlFor="contact-name" className="text-xs text-dim block mb-1 font-medium">ชื่อ / องค์กร</label>
                 <input
                   id="contact-name"
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="ชื่อ-นามสกุล"
-                  className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-xs text-content focus:outline-none focus:border-accent"
+                  placeholder="ชื่อ-นามสกุล หรือ หน่วยงาน"
+                  className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-base sm:text-sm text-content focus:outline-none focus:border-accent"
                 />
               </div>
               <div>
@@ -150,7 +150,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="yourname@domain.com"
-                  className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-xs text-content focus:outline-none focus:border-accent"
+                  className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-base sm:text-sm text-content focus:outline-none focus:border-accent"
                 />
               </div>
             </div>
@@ -164,7 +164,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                 placeholder="เช่น ถ่ายภาพ / พัฒนาเว็บ / ผลิตวิดีโอ"
-                className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-xs text-content focus:outline-none focus:border-accent"
+                className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-base sm:text-sm text-content focus:outline-none focus:border-accent"
               />
             </div>
 
@@ -177,7 +177,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="ข้อความหรือรายละเอียดโครงการที่ต้องการหารือ..."
-                className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-xs text-content focus:outline-none focus:border-accent resize-y"
+                className="w-full px-3.5 py-2.5 bg-surface border border-edge rounded-xl text-base sm:text-sm text-content focus:outline-none focus:border-accent resize-y"
               />
             </div>
 

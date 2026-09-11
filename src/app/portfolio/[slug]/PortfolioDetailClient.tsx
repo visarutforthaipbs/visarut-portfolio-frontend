@@ -101,11 +101,11 @@ export default function PortfolioDetailClient({
 
             {/* Featured Image */}
             {portfolio.featured_image && portfolio.category !== "photography" && (
-              <div className="w-full overflow-hidden rounded-md">
+              <div className="w-full max-h-[550px] overflow-hidden rounded-xl bg-surface border border-edge/60">
                 <img
                   src={portfolio.featured_image.url}
                   alt={portfolio.title.rendered}
-                  className="w-full object-cover"
+                  className="w-full h-full max-h-[550px] object-cover object-center"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "/placeholder-image.svg";
@@ -138,9 +138,9 @@ export default function PortfolioDetailClient({
                     <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
                       รายละเอียด
                     </p>
-                    <p className="text-base text-muted leading-[1.8]">
+                    <div className="text-base text-muted leading-[1.8]">
                       <WordPressContent content={portfolio.excerpt.rendered} />
-                    </p>
+                    </div>
                   </div>
                 )}
               </>

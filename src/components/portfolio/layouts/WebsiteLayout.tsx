@@ -1,6 +1,9 @@
+"use client";
+
 import { Calendar, Globe, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { PortfolioItem } from "@/types/portfolio";
+import { getPortfolioFeaturedImageUrl } from "@/utils";
 
 interface WebsiteLayoutProps {
   portfolios: PortfolioItem[];
@@ -35,16 +38,20 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
             className="bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-1 hover:border-accent transition-all duration-300"
           >
             <div className="relative">
-              <div className="aspect-[16/10]">
+              <div className="aspect-[16/10] w-full overflow-hidden bg-surface relative">
                 <img
-                  src={portfolio.featured_image?.url || "/placeholder-website.jpg"}
+                  src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="object-cover w-full h-full"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/placeholder-image.svg";
+                  }}
                 />
               </div>
 
               {/* Website Badge */}
-              <span className="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-md text-xs">
+              <span className="absolute top-3 right-3 bg-accent text-[#1A1B2E] font-semibold px-2 py-1 rounded-md text-xs">
                 WEBSITE
               </span>
             </div>
@@ -74,25 +81,26 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
               )}
 
               <div className="flex items-center gap-2 w-full">
-                <Link href={`/portfolio/${portfolio.slug}`}>
-                  <button className="text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-accent hover:text-white transition-colors">
-                    ดูรายละเอียด
-                  </button>
+                <Link
+                  href={`/portfolio/${portfolio.slug}`}
+                  className="text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-accent hover:text-[#1A1B2E] font-medium transition-colors"
+                >
+                  ดูรายละเอียด
                 </Link>
 
                 {/* Add website URL if available in ACF */}
                 {portfolio.acf &&
                   typeof portfolio.acf === "object" &&
                   "website_url" in portfolio.acf && (
-                    <Link
+                    <a
                       href={portfolio.acf.website_url as string}
                       target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm bg-accent text-[#1A1B2E] font-semibold px-4 py-2 rounded-md hover:bg-signal transition-colors flex items-center gap-1"
                     >
-                      <button className="text-sm bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors flex items-center gap-1">
-                        <ExternalLink size={14} />
-                        <span>ดูเว็บไซต์</span>
-                      </button>
-                    </Link>
+                      <ExternalLink size={14} />
+                      <span>ดูเว็บไซต์</span>
+                    </a>
                   )}
               </div>
             </div>

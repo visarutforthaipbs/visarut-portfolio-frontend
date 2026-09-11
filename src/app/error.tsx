@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base">
+    <main id="main-content" role="alert" className="min-h-screen flex items-center justify-center bg-base">
       <div className="max-w-md mx-auto py-16 px-4">
         <div className="flex flex-col items-center gap-6 text-center">
           <div className="text-accent">
@@ -35,20 +35,21 @@ export default function Error({
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <button
               onClick={reset}
-              className="w-full bg-accent text-base hover:bg-[#d97706] py-3 rounded-md flex items-center justify-center gap-2 transition-colors"
+              className="w-full bg-accent text-[#1A1B2E] font-semibold hover:bg-signal py-3 rounded-md flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <RefreshCw size={18} />
               ลองใหม่อีกครั้ง
             </button>
-            <Link href="/" className="w-full">
-              <button className="w-full border border-edge text-muted hover:bg-surface py-3 rounded-md flex items-center justify-center gap-2 transition-colors">
-                <Home size={18} />
-                กลับหน้าแรก
-              </button>
+            <Link
+              href="/"
+              className="w-full border border-edge text-muted hover:text-content hover:bg-surface py-3 rounded-md flex items-center justify-center gap-2 transition-colors"
+            >
+              <Home size={18} />
+              กลับหน้าแรก
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

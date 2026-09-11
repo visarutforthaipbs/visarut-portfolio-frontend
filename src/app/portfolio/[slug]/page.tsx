@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { siteConfig, wpApiUrl, categoryIdToSlug } from "@/lib/config";
+import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { PortfolioItem, WordPressFeaturedMedia } from "@/types";
-import { getBlogPostImage } from "@/utils";
+import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
 import PortfolioDetailClient from "./PortfolioDetailClient";
 import { JsonLd } from "@/components/JsonLd";
 import { generateCreativeWorkSchema } from "@/lib/seo";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
+import { WordPressAPI } from "@/lib/wordpress";
 import { notFound } from "next/navigation";
 
 async function getPortfolio(slug: string): Promise<PortfolioItem | null> {
@@ -20,36 +21,7 @@ async function getPortfolio(slug: string): Promise<PortfolioItem | null> {
     const portfolioData = await portfolioResponse.json();
     if (portfolioData.length === 0) return null;
 
-    const post = portfolioData[0];
-
-    // Map category from portfolio_category IDs
-    const categoryId = post.portfolio_category?.[0];
-    const category = categoryId ? categoryIdToSlug(categoryId) : "photography";
-
-    // Extract featured image from embedded data
-    let featured_image = undefined;
-    const embedded = post._embedded;
-    if (embedded?.["wp:featuredmedia"]?.[0]) {
-      const media = embedded["wp:featuredmedia"][0];
-      featured_image = {
-        id: String(media.id),
-        url: media.source_url,
-        alt: media.alt_text || post.title.rendered,
-        type: "image" as const,
-        sizes: media.media_details?.sizes ? {
-          thumbnail: media.media_details.sizes.thumbnail?.source_url,
-          medium: media.media_details.sizes.medium?.source_url,
-          large: media.media_details.sizes.large?.source_url,
-          full: media.source_url,
-        } : undefined,
-      };
-    }
-
-    return {
-      ...post,
-      category,
-      featured_image,
-    };
+    return WordPressAPI.transformPortfolioPost(portfolioData[0]);
   } catch (error) {
     console.error("Error fetching portfolio:", error);
     return null;
@@ -96,25 +68,31 @@ export async function generateMetadata({
     featuredImageUrl = getBlogPostImage(null, portfolio.content.rendered);
   }
 
+  const cleanTitle = decodeHtmlEntities(portfolio.title.rendered);
+
   const description = portfolio.excerpt?.rendered
-    ? portfolio.excerpt.rendered
-        .replace(/<[^>]*>/g, "")
-        .trim()
-        .slice(0, 160)
+    ? decodeHtmlEntities(
+        portfolio.excerpt.rendered
+          .replace(/<[^>]*>/g, "")
+          .trim()
+          .slice(0, 160)
+      )
     : portfolio.content?.rendered
-    ? portfolio.content.rendered
-        .replace(/<[^>]*>/g, "")
-        .trim()
-        .slice(0, 160)
-    : portfolio.title.rendered;
+    ? decodeHtmlEntities(
+        portfolio.content.rendered
+          .replace(/<[^>]*>/g, "")
+          .trim()
+          .slice(0, 160)
+      )
+    : cleanTitle;
 
   const portfolioUrl = `${siteConfig.url}/portfolio/${portfolio.slug}`;
 
   return {
-    title: portfolio.title.rendered,
+    title: cleanTitle,
     description,
     openGraph: {
-      title: portfolio.title.rendered,
+      title: cleanTitle,
       url: portfolioUrl,
       siteName: siteConfig.titleTh,
       images: featuredImageUrl
@@ -123,7 +101,7 @@ export async function generateMetadata({
               url: featuredImageUrl,
               width: 1200,
               height: 630,
-              alt: portfolio.title.rendered,
+              alt: cleanTitle,
             },
           ]
         : [
@@ -131,7 +109,7 @@ export async function generateMetadata({
               url: `${siteConfig.url}/portfolio/${portfolio.slug}/opengraph-image`,
               width: 1200,
               height: 630,
-              alt: portfolio.title.rendered,
+              alt: cleanTitle,
             },
           ],
       locale: "th_TH",
@@ -142,7 +120,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: portfolio.title.rendered,
+      title: cleanTitle,
       images: featuredImageUrl
         ? [featuredImageUrl]
         : [`${siteConfig.url}/portfolio/${portfolio.slug}/opengraph-image`],
@@ -168,12 +146,13 @@ export default async function PortfolioDetailPage({
 
   const featuredImageUrl = await getFeaturedImage(portfolio.featured_media);
   
+  const pageTitle = decodeHtmlEntities(portfolio.title.rendered);
   const description = portfolio.excerpt?.rendered
-    ? portfolio.excerpt.rendered.replace(/<[^>]*>/g, "").substring(0, 160)
+    ? decodeHtmlEntities(portfolio.excerpt.rendered.replace(/<[^>]*>/g, "").substring(0, 160))
     : `ผลงาน${PORTFOLIO_CATEGORIES[portfolio.category]} โดย วิศรุต แสนคำ`;
 
   const jsonLd = generateCreativeWorkSchema({
-    title: portfolio.title.rendered,
+    title: pageTitle,
     description: description,
     image: featuredImageUrl || `${siteConfig.url}/placeholder-image.jpg`,
     dateCreated: portfolio.date,

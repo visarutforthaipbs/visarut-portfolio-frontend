@@ -108,6 +108,27 @@ export function getWordPressMediaUrl(baseUrl: string, mediaId: number): string {
 }
 
 /**
+ * Get the best featured or thumbnail image URL for a portfolio item
+ */
+export function getPortfolioFeaturedImageUrl(item: {
+  featured_image?: { url?: string; sizes?: { large?: string; medium?: string; thumbnail?: string } } | string;
+  media?: Array<{ type: string; url: string }>;
+}): string {
+  const img = item.featured_image;
+  if (img) {
+    if (typeof img === "string") return img;
+    if (img.sizes?.large) return img.sizes.large;
+    if (img.sizes?.medium) return img.sizes.medium;
+    if (img.url) return img.url;
+  }
+  if (item.media && item.media.length > 0) {
+    const firstImage = item.media.find((m) => m.type === "image");
+    if (firstImage?.url) return firstImage.url;
+  }
+  return "/placeholder-image.svg";
+}
+
+/**
  * Check if a URL is external
  */
 export function isExternalUrl(url: string): boolean {

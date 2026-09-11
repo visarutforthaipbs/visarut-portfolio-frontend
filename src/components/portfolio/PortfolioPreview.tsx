@@ -78,12 +78,19 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   const categoryLabel =
     PORTFOLIO_CATEGORIES[portfolio.category] || portfolio.category;
 
-  const getFeaturedImageUrl = (
-    image: string | ImageMedia | undefined
-  ): string => {
-    if (!image) return "/placeholder-image.svg";
-    if (typeof image === "string") return image;
-    return image.url || "/placeholder-image.svg";
+  const getFeaturedImageUrl = (item: PortfolioItem): string => {
+    const img = item.featured_image;
+    if (img) {
+      if (typeof img === "string") return img;
+      if (img.sizes?.large) return img.sizes.large;
+      if (img.sizes?.medium) return img.sizes.medium;
+      if (img.url) return img.url;
+    }
+    if (item.media && item.media.length > 0) {
+      const firstImage = item.media.find((m): m is ImageMedia => m.type === "image");
+      if (firstImage?.url) return firstImage.url;
+    }
+    return "/placeholder-image.svg";
   };
 
   const getTextContent = (content: { rendered: string } | string): string => {
@@ -94,11 +101,12 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   return (
     <Link href={`/portfolio/${portfolio.slug}`} aria-label={getTextContent(portfolio.title)}>
       <article className="cursor-pointer group break-inside-avoid mb-4">
-        <div className="overflow-hidden rounded-md bg-surface">
+        <div className="relative aspect-4/3 overflow-hidden rounded-md bg-surface">
           <img
-            src={getFeaturedImageUrl(portfolio.featured_image)}
+            src={getFeaturedImageUrl(portfolio)}
             alt={getTextContent(portfolio.title)}
-            className="w-full h-auto block object-cover transition-opacity duration-200 group-hover:opacity-85"
+            className="w-full h-full object-cover object-center transition-all duration-300 group-hover:scale-105"
+            loading="lazy"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = "/placeholder-image.svg";

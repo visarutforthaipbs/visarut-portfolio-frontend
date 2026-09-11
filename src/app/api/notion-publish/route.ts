@@ -1,5 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { apiCache } from "@/lib/cache";
+import { timingSafeEqual } from "crypto";
 import {
   publishNotionPageById,
   syncReadyPages,
@@ -9,6 +11,13 @@ import {
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
+
+function safeCompare(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
+}
 
 function extractVerificationToken(body: unknown): string | null {
   if (typeof body !== "object" || body === null) return null;
@@ -36,7 +45,10 @@ function verifySecret(request: NextRequest, body: unknown): boolean {
       ? String((body as { secret?: unknown }).secret || "")
       : "";
 
-  return headerSecret === expected || bodySecret === expected;
+  return (
+    (!!headerSecret && safeCompare(headerSecret, expected)) ||
+    (!!bodySecret && safeCompare(bodySecret, expected))
+  );
 }
 
 function extractPageId(body: unknown): string | null {
@@ -62,6 +74,7 @@ function extractPageId(body: unknown): string | null {
 }
 
 function revalidatePortfolioPaths() {
+  apiCache.clear();
   revalidatePath("/", "page");
   revalidatePath("/portfolio", "page");
   revalidatePath("/portfolio/[slug]", "page");

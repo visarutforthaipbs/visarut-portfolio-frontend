@@ -248,7 +248,7 @@ export class WordPressAPI {
   /**
    * Transform WordPress post to PortfolioItem
    */
-  private static transformPortfolioPost(post: WordPressPost): PortfolioItem {
+  static transformPortfolioPost(post: WordPressPost): PortfolioItem {
     // Extract category from post categories
     // This is a simplified approach - you might need to map category IDs to slugs
     const category = this.extractPortfolioCategory(post);
@@ -259,10 +259,15 @@ export class WordPressAPI {
     // Extract media items from ACF fields and content
     const media = this.extractMediaItems(post);
 
+    // Fallback: If featured image is missing, find the first image media item
+    const fallbackImage = !featuredImage
+      ? (media.find((m): m is ImageMedia => m.type === "image") as ImageMedia | undefined)
+      : undefined;
+
     return {
       ...post,
       category,
-      featured_image: featuredImage,
+      featured_image: featuredImage || fallbackImage,
       media,
     } as PortfolioItem;
   }

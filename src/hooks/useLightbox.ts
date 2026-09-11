@@ -27,10 +27,12 @@ export function useLightbox(imagesLength: number): UseLightboxReturn {
   }, []);
 
   const nextImage = useCallback(() => {
+    if (imagesLength <= 0) return;
     setCurrentImageIndex((prev) => (prev + 1) % imagesLength);
   }, [imagesLength]);
 
   const prevImage = useCallback(() => {
+    if (imagesLength <= 0) return;
     setCurrentImageIndex((prev) => (prev - 1 + imagesLength) % imagesLength);
   }, [imagesLength]);
 

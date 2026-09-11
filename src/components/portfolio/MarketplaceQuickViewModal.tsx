@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
+import Link from "next/link";
 import {
   X,
   ExternalLink,
@@ -17,6 +18,7 @@ import {
   Printer,
   Share2,
   Check,
+  ArrowRight,
 } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
@@ -99,11 +101,18 @@ export function MarketplaceQuickViewModal({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalContainerRef = useRef<HTMLDivElement>(null);
   const isOpen = Boolean(portfolio);
 
   // Prepare data safely for hooks without early returns
-  const normalized = portfolio ? WordPressAPI.normalizePortfolio(portfolio) : null;
-  const embeddedImages = portfolio ? extractImageUrlsFromHtml(portfolio.content?.rendered || "") : [];
+  const normalized = useMemo(
+    () => (portfolio ? WordPressAPI.normalizePortfolio(portfolio) : null),
+    [portfolio]
+  );
+  const embeddedImages = useMemo(
+    () => (portfolio ? extractImageUrlsFromHtml(portfolio.content?.rendered || "") : []),
+    [portfolio]
+  );
 
   const getFeaturedImageUrl = (
     image: string | ImageMedia | undefined
@@ -113,19 +122,17 @@ export function MarketplaceQuickViewModal({
     return image.url || "/placeholder-image.svg";
   };
 
-  const galleryImages: string[] = normalized
-    ? [
-        getFeaturedImageUrl(normalized.featuredImage),
-        ...(normalized.galleryImages?.map((m) => m.url) || []),
-        ...embeddedImages,
-      ].filter((url, index, self) => self.indexOf(url) === index && url && url !== "/placeholder-image.svg")
-    : [];
+  const galleryImages: string[] = useMemo(() => {
+    if (!normalized) return ["/placeholder-image.svg"];
+    const images = [
+      getFeaturedImageUrl(normalized.featuredImage),
+      ...(normalized.galleryImages?.map((m) => m.url) || []),
+      ...embeddedImages,
+    ].filter((url, index, self) => self.indexOf(url) === index && url && url !== "/placeholder-image.svg");
+    return images.length > 0 ? images : ["/placeholder-image.svg"];
+  }, [normalized, embeddedImages]);
 
-  if (galleryImages.length === 0) {
-    galleryImages.push("/placeholder-image.svg");
-  }
-
-  // Hook 3: Keyboard navigation & Shortcuts
+  // Hook 3: Keyboard navigation & Focus Trapping
   useEffect(() => {
     if (!portfolio) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -135,6 +142,28 @@ export function MarketplaceQuickViewModal({
       }
       if (e.key === "ArrowRight" && galleryImages.length > 1) {
         setActiveImageIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
+      }
+      // Focus Trap inside Modal
+      if (e.key === "Tab" && modalContainerRef.current) {
+        const focusableElements = modalContainerRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length > 0) {
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              e.preventDefault();
+              lastElement.focus();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              e.preventDefault();
+              firstElement.focus();
+            }
+          }
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -161,45 +190,40 @@ export function MarketplaceQuickViewModal({
     };
   }, [isOpen]);
 
+  // Memoized HTML text computation to avoid expensive regex/sanitization on slide change
+  const { cleanTitle, textContentHtml } = useMemo(() => {
+    if (!portfolio || !normalized) return { cleanTitle: "", textContentHtml: "" };
+    const title = normalized.title.replace(/<[^>]*>/g, "");
+    const cleanedContent = cleanRightPanelContent(portfolio.content?.rendered || "", title);
+    const cleanedAcf = cleanRightPanelContent(normalized.meta.description || "", title);
+    const cleanedExcerpt = cleanRightPanelContent(portfolio.excerpt?.rendered || "", title);
+
+    const hasText = (html: string) => html.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, "").trim().length > 0;
+
+    let raw = "";
+    if (hasText(cleanedContent)) {
+      raw = cleanedContent;
+    } else if (hasText(cleanedAcf)) {
+      raw = cleanedAcf;
+    } else if (hasText(cleanedExcerpt)) {
+      raw = cleanedExcerpt;
+    }
+
+    if (hasText(cleanedAcf) && hasText(cleanedContent) && !cleanedContent.includes(cleanedAcf.trim())) {
+      raw = `<p className="font-medium text-content/90">${cleanedAcf}</p>${cleanedContent}`;
+    }
+
+    return {
+      cleanTitle: title,
+      textContentHtml: sanitizeHtml(raw),
+    };
+  }, [portfolio, normalized]);
+
   // 2. Conditional early return AFTER all Hooks are defined
   if (!portfolio || !normalized) return null;
 
   const categoryLabel =
     PORTFOLIO_CATEGORIES[normalized.category] || normalized.category;
-
-  const cleanTitle = normalized.title.replace(/<[^>]*>/g, "");
-  
-  // 1. Clean content body text (with images/figures stripped)
-  const cleanedContentText = cleanRightPanelContent(portfolio.content?.rendered || "", cleanTitle);
-
-  // 2. Clean ACF project description
-  const cleanedAcfText = cleanRightPanelContent(normalized.meta.description || "", cleanTitle);
-
-  // 3. Clean excerpt text
-  const cleanedExcerptText = cleanRightPanelContent(portfolio.excerpt?.rendered || "", cleanTitle);
-
-  // Helper to check if an HTML string has actual text content
-  const hasVisibleText = (html: string): boolean => {
-    if (!html) return false;
-    return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, "").trim().length > 0;
-  };
-
-  // Fallback chain: Pick the best available text with visible characters
-  let rawText = "";
-  if (hasVisibleText(cleanedContentText)) {
-    rawText = cleanedContentText;
-  } else if (hasVisibleText(cleanedAcfText)) {
-    rawText = cleanedAcfText;
-  } else if (hasVisibleText(cleanedExcerptText)) {
-    rawText = cleanedExcerptText;
-  }
-
-  // If both ACF description and body content exist and are distinct, include ACF summary first!
-  if (hasVisibleText(cleanedAcfText) && hasVisibleText(cleanedContentText) && !cleanedContentText.includes(cleanedAcfText.trim())) {
-    rawText = `<p className="font-medium text-content/90">${cleanedAcfText}</p>${cleanedContentText}`;
-  }
-
-  const textContentHtml = sanitizeHtml(rawText);
 
   const externalLink = normalized.meta.externalUrl;
   const clientName = normalized.meta.clientName;
@@ -244,7 +268,10 @@ export function MarketplaceQuickViewModal({
       />
 
       {/* Modal Container */}
-      <div className="relative w-full max-w-5xl bg-base border border-edge rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 my-0 sm:my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] transition-all">
+      <div
+        ref={modalContainerRef}
+        className="relative w-full max-w-5xl bg-base border border-edge rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 my-0 sm:my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] transition-all"
+      >
         {/* Mobile Drag Handle */}
         <div className="sm:hidden w-full flex justify-center py-2 bg-surface/90 border-b border-edge/30 cursor-grab">
           <div className="w-12 h-1 bg-edge rounded-full" />
@@ -273,7 +300,6 @@ export function MarketplaceQuickViewModal({
           <div className="flex items-center gap-1.5">
             {/* Share / Copy Link Button */}
             <button
-              ref={closeButtonRef}
               onClick={handleShare}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-surface hover:bg-surface-hover border border-edge rounded-xl text-xs font-semibold text-content transition-colors cursor-pointer min-h-[38px]"
               title="แชร์ หรือ คัดลอกลิงก์ผลงานนี้"
@@ -293,6 +319,7 @@ export function MarketplaceQuickViewModal({
 
             {/* Close button */}
             <button
+              ref={closeButtonRef}
               onClick={onClose}
               className="p-2 sm:p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-dim hover:text-content hover:bg-surface rounded-full transition-colors cursor-pointer shrink-0"
               aria-label="ปิดหน้าต่าง"
@@ -376,15 +403,22 @@ export function MarketplaceQuickViewModal({
             )}
 
             {/* Action buttons bar */}
-            <div className="flex items-center gap-2.5 w-full">
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full">
+              <Link
+                href={`/portfolio/${portfolio.slug}`}
+                className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-surface hover:bg-surface-hover border border-edge text-content font-semibold rounded-xl text-xs transition-all shadow-sm cursor-pointer min-h-[44px]"
+              >
+                <span>ดูหน้ารายละเอียดเต็ม</span>
+                <ArrowRight size={15} className="text-accent" />
+              </Link>
               {externalLink && (
                 <a
                   href={externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-sm cursor-pointer min-h-[44px]"
+                  className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-sm cursor-pointer min-h-[44px]"
                 >
-                  <span>เปิดดูสื่อจริง / เว็บไซต์ (Live Project)</span>
+                  <span>เปิดดูสื่อจริง (Live)</span>
                   <ExternalLink size={15} />
                 </a>
               )}

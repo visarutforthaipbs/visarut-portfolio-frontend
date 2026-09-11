@@ -1,5 +1,3 @@
-"use client";
-
 import { Brain } from "lucide-react";
 import type { CognitiveCostResult } from "@/utils/cognitiveCost";
 

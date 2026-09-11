@@ -95,11 +95,12 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
 
           {/* View All Button */}
           <div className="flex items-center gap-4 mt-8">
-            <Link href="/blog">
-              <button className="text-lg bg-accent text-base hover:bg-[#d97706] px-6 py-3 rounded flex items-center gap-2 transition-colors">
-                <span>ดูบทความทั้งหมด</span>
-                <ArrowRight size={20} />
-              </button>
+            <Link
+              href="/blog"
+              className="text-base bg-accent text-[#1A1B2E] font-semibold hover:bg-signal px-6 py-3 rounded-lg flex items-center gap-2 transition-colors cursor-pointer"
+            >
+              <span>ดูบทความทั้งหมด</span>
+              <ArrowRight size={20} />
             </Link>
           </div>
         </div>
@@ -183,7 +184,7 @@ function BlogPostCard({
           )}
 
           {/* Title */}
-          <h3 className="text-lg font-semibold text-content leading-[1.4] truncate">
+          <h3 className="text-lg font-semibold text-content leading-[1.5] line-clamp-2 min-h-[3rem]">
             {decodeHtmlEntities(post.title.rendered)}
           </h3>
 
@@ -197,9 +198,9 @@ function BlogPostCard({
             />
           )}
 
-          {/* Meta */}
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-center gap-4 text-xs text-dim">
+          {/* Meta & Link */}
+          <div className="flex flex-col gap-3 pt-2 border-t border-edge/40">
+            <div className="flex items-center justify-between text-xs text-dim">
               <span className="flex items-center gap-1">
                 <Calendar size={12} />
                 <span>{formatDate(post.date)}</span>
@@ -210,10 +211,11 @@ function BlogPostCard({
               </span>
             </div>
 
-            <Link href={`/blog/${post.slug}`}>
-              <button className="text-sm text-accent hover:bg-accent-dim px-4 py-2 w-full rounded transition-colors">
-                อ่านเพิ่มเติม
-              </button>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="block text-center text-sm font-semibold text-signal hover:bg-signal-dim py-2 w-full rounded-lg transition-colors cursor-pointer"
+            >
+              อ่านเพิ่มเติม
             </Link>
           </div>
         </div>

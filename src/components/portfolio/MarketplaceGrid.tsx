@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Eye, Calendar, ChevronRight } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
@@ -18,12 +19,28 @@ export function MarketplaceGrid({
   onQuickView,
   isLoading = false,
 }: MarketplaceGridProps) {
-  const getFeaturedImageUrl = (
-    image: string | ImageMedia | undefined
-  ): string => {
-    if (!image) return "/placeholder-image.svg";
-    if (typeof image === "string") return image;
-    return image.url || "/placeholder-image.svg";
+  const handleCardClick = (e: React.MouseEvent, item: PortfolioItem) => {
+    // Allow opening in new tab via middle-click or modifier keys
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) {
+      return;
+    }
+    e.preventDefault();
+    onQuickView(item);
+  };
+  const getFeaturedImageUrl = (item: PortfolioItem): string => {
+    const img = item.featured_image;
+    if (img) {
+      if (typeof img === "string") return img;
+      if (img.sizes?.large) return img.sizes.large;
+      if (img.sizes?.medium) return img.sizes.medium;
+      if (img.url) return img.url;
+    }
+    // Check item.media for first available image
+    if (item.media && item.media.length > 0) {
+      const firstImage = item.media.find((m): m is ImageMedia => m.type === "image");
+      if (firstImage?.url) return firstImage.url;
+    }
+    return "/placeholder-image.svg";
   };
 
   const getCleanTitle = (title: { rendered: string } | string): string => {
@@ -87,27 +104,20 @@ export function MarketplaceGrid({
           const cleanExcerpt = getCleanExcerpt(item.excerpt);
 
           return (
-            <article
+            <Link
               key={item.id}
-              onClick={() => onQuickView(item)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  onQuickView(item);
-                }
-              }}
-              role="button"
-              tabIndex={0}
+              href={`/portfolio/${item.slug}`}
+              onClick={(e) => handleCardClick(e, item)}
               aria-label={`ดูรายละเอียด ${cleanTitle}`}
               className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               {/* Thumbnail + Text */}
               <div className="flex items-center gap-4 flex-1 min-w-0">
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-surface shrink-0 border border-edge/40">
+                <div className="relative w-24 sm:w-28 aspect-4/3 rounded-xl overflow-hidden bg-surface shrink-0 border border-edge/40">
                   <img
-                    src={getFeaturedImageUrl(item.featured_image)}
+                    src={getFeaturedImageUrl(item)}
                     alt={cleanTitle}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder-image.svg";
@@ -149,7 +159,7 @@ export function MarketplaceGrid({
                   <span>ดูรายละเอียด</span>
                 </div>
               </div>
-            </article>
+            </Link>
           );
         })}
       </div>
@@ -166,26 +176,19 @@ export function MarketplaceGrid({
         const cleanExcerpt = getCleanExcerpt(item.excerpt);
 
         return (
-          <article
+          <Link
             key={item.id}
-            onClick={() => onQuickView(item)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onQuickView(item);
-              }
-            }}
-            role="button"
-            tabIndex={0}
+            href={`/portfolio/${item.slug}`}
+            onClick={(e) => handleCardClick(e, item)}
             aria-label={`ดูรายละเอียด ${cleanTitle}`}
             className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {/* Image Container */}
             <div className="relative aspect-4/3 w-full bg-surface overflow-hidden">
               <img
-                src={getFeaturedImageUrl(item.featured_image)}
+                src={getFeaturedImageUrl(item)}
                 alt={cleanTitle}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/placeholder-image.svg";
@@ -240,7 +243,7 @@ export function MarketplaceGrid({
                 </span>
               </div>
             </div>
-          </article>
+          </Link>
         );
       })}
     </div>

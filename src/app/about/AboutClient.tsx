@@ -1,5 +1,3 @@
-"use client";
-
 import { Layout } from "@/components/layout";
 import { workExperience, awards } from "@/constants/data";
 import { ExperienceItem } from "@/components/ui/ExperienceItem";

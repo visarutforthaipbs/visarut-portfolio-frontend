@@ -141,7 +141,7 @@ export function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
                   window.open("mailto:visarut298@gmail.com", "_blank");
                 }
               }}
-              className="w-full bg-accent text-base hover:bg-[#d97706] text-sm md:text-base py-2 md:py-3 rounded-md flex items-center justify-center gap-2 transition-colors"
+              className="w-full bg-accent text-[#1A1B2E] font-semibold hover:bg-signal text-sm md:text-base py-2 md:py-3 rounded-md flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Mail size={16} />
               <span>ส่งอีเมล</span>
