@@ -28,11 +28,13 @@ const contactJsonLd = {
   },
 };
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ project?: string | string[] }> }) {
+  const { project } = await searchParams;
+  const subject = typeof project === "string" ? project.slice(0, 200) : "";
   return (
     <>
       <JsonLd data={contactJsonLd} />
-      <ContactClient />
+      <ContactClient initialSubject={subject} />
     </>
   );
 }

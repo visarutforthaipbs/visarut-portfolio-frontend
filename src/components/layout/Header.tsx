@@ -27,7 +27,7 @@ export function Header() {
   return (
     <header
       role="banner"
-      className="sticky top-0 z-[999] flex justify-center w-full border-b border-edge bg-base/90 backdrop-blur-md"
+      className="sticky top-0 z-30 flex justify-center w-full border-b border-edge bg-base/90 backdrop-blur-md"
     >
       <div className="max-w-6xl w-full mx-auto px-5 md:px-6">
         <div className="flex items-center justify-between h-[52px] md:h-[56px]">

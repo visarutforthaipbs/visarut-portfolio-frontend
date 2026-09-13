@@ -145,9 +145,9 @@ export function MarketplaceQuickViewModal({
       }
       // Focus Trap inside Modal
       if (e.key === "Tab" && modalContainerRef.current) {
-        const focusableElements = modalContainerRef.current.querySelectorAll<HTMLElement>(
+        const focusableElements = Array.from(modalContainerRef.current.querySelectorAll<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
+        )).filter(element => !element.hasAttribute("disabled") && element.getClientRects().length > 0);
         if (focusableElements.length > 0) {
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -210,7 +210,7 @@ export function MarketplaceQuickViewModal({
     }
 
     if (hasText(cleanedAcf) && hasText(cleanedContent) && !cleanedContent.includes(cleanedAcf.trim())) {
-      raw = `<p className="font-medium text-content/90">${cleanedAcf}</p>${cleanedContent}`;
+      raw = `<div class="font-medium text-content/90">${cleanedAcf}</div>${cleanedContent}`;
     }
 
     return {
@@ -230,7 +230,7 @@ export function MarketplaceQuickViewModal({
 
   // Handle Share / Copy Link
   const handleShare = async () => {
-    const shareUrl = window.location.href;
+    const shareUrl = new URL(`/portfolio/${portfolio.slug}`, window.location.origin).href;
     if (navigator.share) {
       try {
         await navigator.share({
@@ -404,6 +404,9 @@ export function MarketplaceQuickViewModal({
 
             {/* Action buttons bar */}
             <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full">
+              <Link href={`/contact?project=${encodeURIComponent(cleanTitle)}`} className="w-full sm:flex-1 text-center py-3 text-sm font-semibold text-accent underline">
+                สอบถามงานลักษณะนี้
+              </Link>
               <Link
                 href={`/portfolio/${portfolio.slug}`}
                 className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-surface hover:bg-surface-hover border border-edge text-content font-semibold rounded-xl text-xs transition-all shadow-sm cursor-pointer min-h-[44px]"
@@ -426,7 +429,7 @@ export function MarketplaceQuickViewModal({
           </div>
 
           {/* Right Details Panel */}
-          <div className="md:col-span-5 p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 overflow-y-auto max-h-[45vh] md:max-h-[75vh]">
+          <div className="md:col-span-5 p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 md:overflow-y-auto md:max-h-[75vh]">
             <div className="flex flex-col gap-2.5">
               <h2 id="quick-view-title" className="text-lg sm:text-xl md:text-2xl font-bold text-content leading-snug">
                 {cleanTitle}

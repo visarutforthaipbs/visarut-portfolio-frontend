@@ -15,6 +15,7 @@ interface MarketplaceSearchBarProps {
   onToggleMobileSidebar?: () => void;
   totalCount: number;
   hasAdditionalFilters?: boolean;
+  additionalFilterLabel?: string;
   onClearAdditionalFilters?: () => void;
 }
 
@@ -30,6 +31,7 @@ export function MarketplaceSearchBar({
   onToggleMobileSidebar,
   totalCount,
   hasAdditionalFilters = false,
+  additionalFilterLabel,
   onClearAdditionalFilters,
 }: MarketplaceSearchBarProps) {
   const categoryPills = [
@@ -132,7 +134,7 @@ export function MarketplaceSearchBar({
       </div>
 
       {/* Category Pills (Touch-optimized horizontal scrolling) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-1 border-t border-edge/40 min-h-[44px]">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-1 border-t border-edge/40 min-h-[44px] -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
         {categoryPills.map((pill) => {
           const isActive = selectedCategory === pill.value;
           return (
@@ -155,8 +157,9 @@ export function MarketplaceSearchBar({
       {/* Active filters status bar */}
       {(searchQuery || selectedCategory !== "all" || hasAdditionalFilters) && (
         <div className="flex items-center justify-between pt-1 text-xs text-dim">
-          <span>
+          <span role="status">
             พบผลงาน <strong className="text-content">{totalCount}</strong> รายการ
+            {additionalFilterLabel && <span> · {additionalFilterLabel}</span>}
           </span>
           <button
             onClick={() => {

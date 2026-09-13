@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Camera,
   Video,
@@ -81,6 +81,9 @@ export function MarketplaceSidebar({
 }: MarketplaceSidebarProps) {
   const [showExperience, setShowExperience] = useState(false);
   const [showAwards, setShowAwards] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const closeMobileRef = useRef(onCloseMobile);
+  closeMobileRef.current = onCloseMobile;
 
   const categoriesList = [
     { key: "all", label: "ผลงานทั้งหมด", icon: Sparkles },
@@ -136,7 +139,7 @@ export function MarketplaceSidebar({
         {/* Trigger Contact Modal */}
         {onOpenContactModal && (
           <button
-            onClick={onOpenContactModal}
+            onClick={() => { onCloseMobile?.(); onOpenContactModal(); }}
             className="w-full mt-1 flex items-center justify-center gap-2 py-2 px-3 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer"
           >
             <Send size={13} className="text-accent" />
@@ -283,12 +286,43 @@ export function MarketplaceSidebar({
 
   useEffect(() => {
     if (!isOpenMobile) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const drawer = drawerRef.current;
+    const getFocusable = () => Array.from(drawer?.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, [tabindex="0"]') || []).filter(el => !el.hasAttribute("disabled") && el.getClientRects().length > 0);
+    getFocusable()[0]?.focus();
+    const inertElements: Array<{ element: HTMLElement; inert: boolean }> = [];
+    let branch: HTMLElement | null = drawer;
+    while (branch?.parentElement) {
+      for (const sibling of Array.from(branch.parentElement.children)) {
+        if (sibling instanceof HTMLElement && sibling !== branch) {
+          inertElements.push({ element: sibling, inert: sibling.inert });
+          sibling.inert = true;
+        }
+      }
+      branch = branch.parentElement;
+      if (branch === document.body) break;
+    }
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCloseMobile?.();
+      if (e.key === "Escape") closeMobileRef.current?.();
+      if (e.key === "Tab") {
+        const elements = getFocusable();
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+        if (!first) { e.preventDefault(); return; }
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpenMobile, onCloseMobile]);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      inertElements.forEach(({ element, inert }) => { element.inert = inert; });
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
+  }, [isOpenMobile]);
 
   return (
     <>
@@ -300,6 +334,7 @@ export function MarketplaceSidebar({
       {/* Mobile Drawer */}
       {isOpenMobile && (
         <div
+          ref={drawerRef}
           className="fixed inset-0 z-50 lg:hidden flex"
           role="dialog"
           aria-modal="true"

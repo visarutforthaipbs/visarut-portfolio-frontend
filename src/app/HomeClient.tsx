@@ -3,14 +3,13 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { Layout } from "@/components/layout";
 import { MarketplaceSearchBar } from "@/components/portfolio/MarketplaceSearchBar";
-import { MarketplaceSidebar } from "@/components/portfolio/MarketplaceSidebar";
+import { MarketplaceSidebar, ORGANIZATIONS } from "@/components/portfolio/MarketplaceSidebar";
 import { MarketplaceGrid } from "@/components/portfolio/MarketplaceGrid";
 import { MarketplaceQuickViewModal } from "@/components/portfolio/MarketplaceQuickViewModal";
 import { ContactModal } from "@/components/portfolio/ContactModal";
 import { JsonLd } from "@/components/JsonLd";
 import { usePortfolios } from "@/hooks/useWordPress";
 import type { PortfolioItem } from "@/types/portfolio";
-import { WordPressAPI } from "@/lib/wordpress";
 import { AlertCircle, MessageSquare } from "lucide-react";
 
 interface HomeClientProps {
@@ -18,34 +17,7 @@ interface HomeClientProps {
   featuredPortfolios: PortfolioItem[];
 }
 
-// Fuzzy organization matcher dictionary
-const ORGANIZATIONS_FUZZY: Record<string, string[]> = {
-  "thai-pbs": ["thai pbs", "thaipbs", "ไทยพีบีเอส", "สื่อสาธารณะ", "สำนักเครือข่ายสื่อสาธารณะ", "ศูนย์สื่อชุมชน"],
-  greenpeace: ["greenpeace", "กรีนพีซ"],
-  realframe: ["realframe", "เรียลเฟรม"],
-  lanna: ["lanna", "ล้านนา"],
-  nation: ["nation", "เนชั่น"],
-  ngo: ["มูลนิธิ", "foundation", "ngo", "สมาคม", "เครือข่าย", "องค์กร", "แรงงาน"],
-};
-
-function matchOrganization(item: PortfolioItem, orgId: string): boolean {
-  if (!orgId || orgId === "all") return true;
-
-  const normalized = WordPressAPI.normalizePortfolio(item);
-  const clientName = (normalized.meta.clientName || "").toLowerCase();
-
-  const rawTitle = typeof item.title === "string" ? item.title : item.title?.rendered || "";
-  const titleStr = rawTitle.toLowerCase();
-
-  const rawExcerpt = item.excerpt ? (typeof item.excerpt === "string" ? item.excerpt : item.excerpt.rendered || "") : "";
-  const excerptStr = rawExcerpt.toLowerCase();
-
-  const acfStr = JSON.stringify(item.acf || {}).toLowerCase();
-  const fullText = `${titleStr} ${excerptStr} ${clientName} ${acfStr}`;
-
-  const aliases = ORGANIZATIONS_FUZZY[orgId.toLowerCase()] || [orgId.toLowerCase()];
-  return aliases.some((alias) => fullText.includes(alias));
-}
+import { matchOrganization } from "@/lib/portfolioOrganization";
 
 export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -57,10 +29,10 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  const { portfolios, loading, error } = usePortfolios({ per_page: 50 });
+  const { portfolios, loading, error, hasLoaded, retry } = usePortfolios({ all: true });
 
   const sourcePortfolios =
-    portfolios.length > 0 ? portfolios : featuredPortfolios;
+    hasLoaded ? portfolios : featuredPortfolios;
 
   const syncQuickViewFromUrl = useCallback(() => {
     if (typeof window === "undefined" || sourcePortfolios.length === 0) return;
@@ -102,6 +74,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
   // 3. Power-User Keyboard Shortcuts (Cmd+K / Ctrl+K / '/' to focus search)
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (document.querySelector('[role="dialog"]')) return;
       const activeElement = document.activeElement;
       const isTyping =
         activeElement instanceof HTMLInputElement ||
@@ -138,7 +111,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
 
         // Search Query filter
         if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase();
+          const q = searchQuery.trim().toLowerCase();
           const titleStr = typeof item.title === "string" ? item.title : item.title.rendered;
           const excerptStr = item.excerpt
             ? typeof item.excerpt === "string"
@@ -188,14 +161,17 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
   }, [sourcePortfolios]);
 
   return (
-    <Layout hideHeader={true}>
+    <Layout>
       {/* AI-SEO Structured Data Schema */}
       <JsonLd items={sourcePortfolios} />
 
       {/* Semantic H1 for Search Engine & AI Crawler indexing */}
-      <h1 className="sr-only">
-        วิศรุต แสนคำ | ผู้ผลิตสื่ออิสระ คลังผลงานมัลติมีเดีย ภาพถ่ายสารคดี วิดีโอ และเว็บแอปพลิเคชัน
+      <h1 className="max-w-7xl mx-auto w-full px-4 pt-6 text-xl sm:text-2xl font-bold">
+        วิศรุต แสนคำ · ผู้ผลิตสื่ออิสระ
       </h1>
+      <p className="max-w-7xl mx-auto w-full px-4 pt-2 text-sm text-muted">
+        ภาพถ่ายสารคดี วิดีโอ เว็บไซต์ และสื่อเพื่อการเปลี่ยนแปลงสังคม
+      </p>
 
       {/* ── PURE MARKETPLACE CATALOG CONTAINER ── */}
       <section className="w-full bg-base py-4 sm:py-6 md:py-8 min-h-[calc(100vh-4rem)] relative">
@@ -216,6 +192,17 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
 
             {/* Main Stream (Search bar & Grid view) */}
             <section className="flex-1 flex flex-col gap-4 sm:gap-5 w-full min-w-0" aria-label="รายการผลงาน">
+              {!searchQuery && selectedCategory === "all" && selectedOrg === "all" && (
+                <section aria-label="ผลงานแนะนำ" className="space-y-3">
+                  <h2 className="text-lg font-bold">ผลงานแนะนำ</h2>
+                  <MarketplaceGrid
+                    items={sourcePortfolios.filter(item => ["livingriversiam", "migrantmother", "titang-2024"].includes(item.slug))}
+                    viewMode="list"
+                    onQuickView={openQuickView}
+                  />
+                </section>
+              )}
+              <h2 className="text-lg font-bold">คลังผลงานทั้งหมด</h2>
               {/* Search Toolbar */}
               <MarketplaceSearchBar
                 searchQuery={searchQuery}
@@ -228,17 +215,22 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
                 onSortChange={setSortBy}
                 onToggleMobileSidebar={() => setIsMobileSidebarOpen(true)}
                 totalCount={filteredPortfolios.length}
+                hasAdditionalFilters={selectedOrg !== "all"}
+                additionalFilterLabel={selectedOrg === "all" ? undefined : ORGANIZATIONS.find(org => org.id === selectedOrg)?.label}
+                onClearAdditionalFilters={() => setSelectedOrg("all")}
               />
 
               {/* Grid / List Results */}
-              {error ? (
+              {error && (
                 <div className="py-12 text-center" role="alert">
                   <div className="flex items-center gap-2 justify-center text-dim">
                     <AlertCircle size={16} aria-hidden="true" />
-                    <span className="text-sm">เกิดข้อผิดพลาดในการโหลดผลงาน</span>
+                    <span className="text-sm">โหลดข้อมูลล่าสุดไม่สำเร็จ ผลงานที่โหลดแล้วจะแสดงต่อไป</span>
+                    <button onClick={retry} className="underline min-h-[44px]">ลองอีกครั้ง</button>
                   </div>
                 </div>
-              ) : (
+              )}
+              {(!error || sourcePortfolios.length > 0) && (
                 <MarketplaceGrid
                   items={filteredPortfolios}
                   viewMode={viewMode}
@@ -253,7 +245,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
         {/* ── MOBILE FLOATING ACTION BUTTON (FAB) FOR CONTACT ── */}
         <button
           onClick={() => setIsContactModalOpen(true)}
-          className="lg:hidden fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-3 bg-content text-base border border-edge rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          className="lg:hidden fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-40 flex items-center gap-2 px-4 py-3 bg-content text-base border border-edge rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer min-h-[44px]"
           aria-label="ติดต่องาน"
         >
           <MessageSquare size={18} className="text-accent" />

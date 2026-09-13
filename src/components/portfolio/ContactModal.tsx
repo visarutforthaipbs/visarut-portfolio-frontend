@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, Send, CheckCircle2, Mail, Phone } from "lucide-react";
 import { createContactMailto, submitContactForm } from "@/lib/contact";
 
@@ -10,6 +10,7 @@ interface ContactModalProps {
 }
 
 export function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,10 +32,25 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   useEffect(() => {
     if (!isOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const focusable = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button, a[href], input, textarea') || []).filter(el => !el.hasAttribute("disabled") && el.getClientRects().length > 0);
+    focusable()[0]?.focus();
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (!first) { event.preventDefault(); return; }
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", trapFocus);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
+      window.removeEventListener("keydown", trapFocus);
       document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
     };
   }, [isOpen]);
 
@@ -66,6 +82,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   return (
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
       role="dialog"
       aria-modal="true"

@@ -11,12 +11,15 @@ export function usePortfolios(params?: {
   per_page?: number;
   categories?: string;
   search?: string;
+  all?: boolean;
 }) {
   const [portfolios, setPortfolios] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   // Serialize params to a stable string to avoid infinite re-renders
   const paramsKey = JSON.stringify(params);
@@ -28,15 +31,16 @@ export function usePortfolios(params?: {
         setLoading(true);
         setError(null);
 
-        const response: PortfolioResponse = await WordPressAPI.getPortfolios({
+        const response: PortfolioResponse = params?.all ? await WordPressAPI.getAllPortfolios(controller.signal) : await WordPressAPI.getPortfolios({
           per_page: 6,
           ...params,
-        });
+        }, controller.signal);
 
         if (!controller.signal.aborted) {
           setPortfolios(response.items);
           setTotal(response.total);
           setTotalPages(response.totalPages);
+          setHasLoaded(true);
         }
       } catch (err) {
         if (controller.signal.aborted) return;
@@ -54,7 +58,7 @@ export function usePortfolios(params?: {
     fetchPortfolios();
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsKey]);
+  }, [paramsKey, attempt]);
 
   return {
     portfolios,
@@ -62,6 +66,8 @@ export function usePortfolios(params?: {
     error,
     total,
     totalPages,
+    hasLoaded,
+    retry: () => setAttempt(value => value + 1),
   };
 }
 

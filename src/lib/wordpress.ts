@@ -65,6 +65,17 @@ wpApi.interceptors.response.use(
 
 // WordPress API Client Class
 export class WordPressAPI {
+  static async getAllPortfolios(signal?: AbortSignal): Promise<PortfolioResponse> {
+    const first = await this.getPortfolios({ per_page: 100, page: 1 }, signal);
+    const items = [...first.items];
+    for (let page = 2; page <= first.totalPages; page++) {
+      signal?.throwIfAborted();
+      const next = await this.getPortfolios({ per_page: 100, page }, signal);
+      items.push(...next.items);
+    }
+    return { ...first, items: Array.from(new Map(items.map(item => [item.id, item])).values()) };
+  }
+
   /**
    * Fetch portfolio items from WordPress
    */
@@ -75,7 +86,7 @@ export class WordPressAPI {
     search?: string;
     orderby?: string;
     order?: "asc" | "desc";
-  }): Promise<PortfolioResponse> {
+  }, signal?: AbortSignal): Promise<PortfolioResponse> {
     // Create cache key
     const cacheKey = `portfolios_${JSON.stringify(params || {})}`;
 
@@ -93,6 +104,7 @@ export class WordPressAPI {
       }
 
       const response = await wpApi.get("/portfolios", {
+        signal,
         params: {
           per_page: 12,
           orderby: "date",

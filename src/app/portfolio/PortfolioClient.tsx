@@ -4,9 +4,10 @@ import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout";
 import { usePortfolios } from "@/hooks/useWordPress";
 import { MarketplaceSearchBar } from "@/components/portfolio/MarketplaceSearchBar";
-import { MarketplaceSidebar } from "@/components/portfolio/MarketplaceSidebar";
+import { MarketplaceSidebar, ORGANIZATIONS } from "@/components/portfolio/MarketplaceSidebar";
 import { MarketplaceGrid } from "@/components/portfolio/MarketplaceGrid";
 import { MarketplaceQuickViewModal } from "@/components/portfolio/MarketplaceQuickViewModal";
+import { matchOrganization } from "@/lib/portfolioOrganization";
 import type { PortfolioItem } from "@/types/portfolio";
 
 interface PortfolioClientProps {
@@ -18,7 +19,6 @@ interface PortfolioClientProps {
 export default function PortfolioClient({
   initialPortfolios,
   initialTotal,
-  initialTotalPages,
 }: PortfolioClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedOrg, setSelectedOrg] = useState<string>("all");
@@ -31,19 +31,8 @@ export default function PortfolioClient({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18; // Larger page size for marketplace layout
 
-  const { portfolios, loading, total, totalPages } = usePortfolios({
-    per_page: itemsPerPage,
-    page: currentPage,
-    categories: selectedCategory === "all" ? undefined : selectedCategory,
-  });
-
-  const sourcePortfolios =
-    currentPage === 1 && selectedCategory === "all" && loading && portfolios.length === 0
-      ? initialPortfolios
-      : portfolios.length > 0
-      ? portfolios
-      : initialPortfolios;
-
+  const { portfolios, loading, error, hasLoaded, retry } = usePortfolios({ all: true });
+  const sourcePortfolios = hasLoaded ? portfolios : initialPortfolios;
   // Filter items by Search Query and Selected Organization
   const filteredPortfolios = useMemo(() => {
     return sourcePortfolios.filter((item) => {
@@ -54,15 +43,14 @@ export default function PortfolioClient({
 
       // Organization filter
       if (selectedOrg !== "all") {
-        const itemContent = JSON.stringify(item).toLowerCase();
-        if (!itemContent.includes(selectedOrg.toLowerCase())) {
+        if (!matchOrganization(item, selectedOrg)) {
           return false;
         }
       }
 
       // Search Query filter
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
+        const q = searchQuery.trim().toLowerCase();
         const titleStr = typeof item.title === "string" ? item.title : item.title.rendered;
         const excerptStr = item.excerpt
           ? typeof item.excerpt === "string"
@@ -89,6 +77,10 @@ export default function PortfolioClient({
       return new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
     });
   }, [sourcePortfolios, selectedCategory, selectedOrg, searchQuery, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredPortfolios.length / itemsPerPage));
+  const page = Math.min(currentPage, totalPages);
+  const visiblePortfolios = filteredPortfolios.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   // Calculate category counts
   const categoryCounts = useMemo(() => {
@@ -119,13 +111,13 @@ export default function PortfolioClient({
                 คลังผลงานทั้งหมด
               </h1>
               <p className="text-sm md:text-base text-muted mt-2 max-w-xl">
-                สำรวจผลงานถ่ายภาพ วิดีโอ เว็บไซต์ และการสื่อสารข้อมูลเชิงภาพ (Data Storytelling) โดย วิศรุต สังข์ขำ
+                สำรวจผลงานถ่ายภาพ วิดีโอ เว็บไซต์ และการสื่อสารข้อมูลเชิงภาพ (Data Storytelling) โดย วิศรุต แสนคำ
               </p>
             </div>
 
             <div className="text-xs text-dim bg-surface/60 border border-edge px-3.5 py-2 rounded-xl self-start md:self-auto">
-              แสดง <strong className="text-content">{filteredPortfolios.length}</strong> จากทั้งหมด{" "}
-              <strong className="text-content">{initialTotal || sourcePortfolios.length}</strong> ผลงาน
+              พบ <strong className="text-content">{filteredPortfolios.length}</strong> จากทั้งหมด{" "}
+              <strong className="text-content">{hasLoaded ? sourcePortfolios.length : initialTotal}</strong> ผลงาน
             </div>
           </div>
         </div>
@@ -147,7 +139,7 @@ export default function PortfolioClient({
                 setCurrentPage(1);
               }}
               selectedOrg={selectedOrg}
-              onOrgSelect={setSelectedOrg}
+              onOrgSelect={(value) => { setSelectedOrg(value); setCurrentPage(1); }}
               categoryCounts={categoryCounts}
               isOpenMobile={isMobileSidebarOpen}
               onCloseMobile={() => setIsMobileSidebarOpen(false)}
@@ -158,7 +150,7 @@ export default function PortfolioClient({
               {/* Search & Toolbar */}
               <MarketplaceSearchBar
                 searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
+                onSearchChange={(value) => { setSearchQuery(value); setCurrentPage(1); }}
                 selectedCategory={selectedCategory}
                 onCategorySelect={(cat) => {
                   setSelectedCategory(cat);
@@ -167,14 +159,18 @@ export default function PortfolioClient({
                 viewMode={viewMode}
                 onViewModeChange={setViewMode}
                 sortBy={sortBy}
-                onSortChange={setSortBy}
+                onSortChange={(value) => { setSortBy(value); setCurrentPage(1); }}
                 onToggleMobileSidebar={() => setIsMobileSidebarOpen(true)}
                 totalCount={filteredPortfolios.length}
+                hasAdditionalFilters={selectedOrg !== "all"}
+                additionalFilterLabel={selectedOrg === "all" ? undefined : ORGANIZATIONS.find(org => org.id === selectedOrg)?.label}
+                onClearAdditionalFilters={() => { setSelectedOrg("all"); setCurrentPage(1); }}
               />
 
+              {error && <div role="alert">โหลดข้อมูลล่าสุดไม่สำเร็จ <button onClick={retry} className="underline min-h-[44px]">ลองอีกครั้ง</button></div>}
               {/* Grid / List Results */}
               <MarketplaceGrid
-                items={filteredPortfolios}
+                items={visiblePortfolios}
                 viewMode={viewMode}
                 onQuickView={(item) => setActiveQuickView(item)}
                 isLoading={loading && sourcePortfolios.length === 0}
@@ -187,20 +183,20 @@ export default function PortfolioClient({
                   className="flex items-center justify-center gap-2 mt-8 pt-6 border-t border-edge/60"
                 >
                   <button
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(Math.max(1, page - 1))}
+                    disabled={page === 1}
                     className="px-3.5 py-2 rounded-xl text-xs font-medium border border-edge bg-surface/50 text-content disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface transition-colors cursor-pointer"
                   >
                     ← ก่อนหน้า
                   </button>
 
                   <span className="text-xs text-dim px-3">
-                    หน้า {currentPage} / {totalPages}
+                    หน้า {page} / {totalPages}
                   </span>
 
                   <button
-                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(Math.min(totalPages, page + 1))}
+                    disabled={page === totalPages}
                     className="px-3.5 py-2 rounded-xl text-xs font-medium border border-edge bg-surface/50 text-content disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface transition-colors cursor-pointer"
                   >
                     ถัดไป →

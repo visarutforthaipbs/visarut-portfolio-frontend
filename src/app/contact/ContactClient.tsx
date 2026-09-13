@@ -1,16 +1,16 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 import { createContactMailto, submitContactForm } from "@/lib/contact";
 
-export default function ContactClient() {
+export default function ContactClient({ initialSubject = "" }: { initialSubject?: string }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
+    subject: initialSubject,
     message: "",
     website: "",
   });
@@ -53,51 +53,49 @@ export default function ContactClient() {
 
   return (
     <Layout>
-      {/* Hero */}
       <section
-        className="bg-base py-20 md:py-28 flex justify-center w-full"
+        className="bg-base flex justify-center w-full px-5 py-14 md:px-6 md:py-20"
         role="region"
         aria-label="ติดต่อ"
       >
-        <div className="max-w-3xl mx-auto px-5 md:px-6">
-          <div className="flex flex-col gap-5 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-content tracking-tight">
+        <div className="mx-auto w-full max-w-5xl">
+          <div className="flex max-w-2xl flex-col gap-4">
+            <h1 className="text-3xl font-bold text-content tracking-tight md:text-5xl">
               ติดต่อ
             </h1>
-            <p className="text-base md:text-lg text-muted leading-[1.8] max-w-[560px] mx-auto">
-              พร้อมให้คำปรึกษาและรับฟังความต้องการของคุณ
+            <p className="text-base text-muted leading-[1.8] md:text-lg">
+              เล่าโจทย์งาน ภาพที่อยากสื่อ หรือรายละเอียดโปรเจกต์ได้เลย เราจะคุยกันให้ชัดก่อนเริ่มผลิตงาน
             </p>
           </div>
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="w-full flex justify-center bg-base" aria-hidden="true">
-        <div className="w-[60px] h-px bg-edge" />
-      </div>
-
-      {/* Form Section */}
       <section
-        className="bg-base py-16 md:py-24 flex justify-center w-full"
+        className="bg-base flex justify-center w-full px-5 pb-16 md:px-6 md:pb-24"
         role="region"
         aria-label="ส่งข้อความ"
       >
-        <div className="max-w-3xl mx-auto px-5 md:px-6">
-          <div className="flex flex-col gap-8">
-            <h2 className="text-lg md:text-xl font-medium text-dim uppercase tracking-wider text-center">
-              ส่งข้อความ
-            </h2>
+        <div className="mx-auto grid w-full max-w-5xl gap-12 border-t border-edge pt-10 md:grid-cols-[minmax(0,1fr)_320px] md:gap-16 md:pt-14">
+          <div className="flex min-w-0 flex-col gap-8">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg font-medium text-content md:text-xl">
+                ส่งข้อความ
+              </h2>
+              <p className="max-w-xl text-sm leading-7 text-muted">
+                ใช้ฟอร์มนี้สำหรับงานถ่ายภาพ วิดีโอ เว็บไซต์ กราฟิก หรือโปรเจกต์สื่อสารที่ต้องการทีมผลิตเนื้อหา
+              </p>
+            </div>
 
             {submitStatus === "success" && (
-              <div className="text-center" role="alert" aria-live="polite">
+              <div role="alert" aria-live="polite">
                 <span className="text-sm text-green-500">
-                  ส่งข้อความสำเร็จ — เราจะติดต่อกลับโดยเร็ว
+                  ส่งข้อความสำเร็จ เราจะติดต่อกลับโดยเร็ว
                 </span>
               </div>
             )}
 
             {submitStatus === "error" && (
-              <div className="text-center" role="alert" aria-live="polite">
+              <div role="alert" aria-live="polite">
                 <span className="text-sm text-red-500">
                   {errorMessage}
                 </span>
@@ -112,8 +110,8 @@ export default function ContactClient() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-5">
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="flex w-full flex-col gap-5">
                 <div className="absolute -left-[9999px]" aria-hidden="true">
                   <label htmlFor="website">เว็บไซต์</label>
                   <input
@@ -183,65 +181,65 @@ export default function ContactClient() {
                   />
                 </div>
 
-                <div className="pt-4 w-full text-center">
+                <div className="pt-4">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-transparent border-none cursor-pointer disabled:cursor-not-allowed"
+                    className="group inline-flex cursor-pointer items-center gap-2 border-b border-content pb-1 text-sm font-medium text-content transition-colors hover:text-muted hover:border-muted disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <div
-                      className={`flex items-center gap-2 justify-center text-content font-medium text-sm transition-[gap] duration-200 ${
-                        isSubmitting ? "opacity-50" : ""
-                      }`}
-                    >
-                      <span>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</span>
-                      <ArrowRight size={16} aria-hidden="true" />
-                    </div>
+                    <span>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</span>
+                    <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
             </form>
           </div>
-        </div>
-      </section>
 
-      {/* Divider */}
-      <div className="w-full flex justify-center bg-base" aria-hidden="true">
-        <div className="w-[60px] h-px bg-edge" />
-      </div>
+          <aside
+            className="flex min-w-0 flex-col gap-8 border-t border-edge pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0"
+            aria-label="ช่องทางติดต่อ"
+          >
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg font-medium text-content md:text-xl">
+                ช่องทางติดต่อ
+              </h2>
+              <p className="text-sm leading-7 text-muted">
+                ถ้าต้องการคุยเร็ว ส่งอีเมลหรือโทรได้โดยตรง
+              </p>
+            </div>
 
-      {/* Contact Info Section */}
-      <section
-        className="bg-base py-16 md:py-24 flex justify-center w-full"
-        role="region"
-        aria-label="ช่องทางติดต่อ"
-      >
-        <div className="max-w-3xl mx-auto px-5 md:px-6">
-          <div className="flex flex-col gap-8">
-            <h2 className="text-lg md:text-xl font-medium text-dim uppercase tracking-wider text-center">
-              ช่องทางติดต่อ
-            </h2>
-
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-between items-center py-2 border-b border-edge">
-                <span className="text-sm text-muted">อีเมล</span>
-                <Link href="mailto:visarut298@gmail.com">
-                  <span className="text-sm md:text-base font-medium text-content hover:text-muted transition-colors duration-200">
+            <div className="flex flex-col gap-5">
+              <Link
+                href="mailto:visarut298@gmail.com"
+                className="group flex items-start gap-3 border-b border-edge pb-5"
+              >
+                <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-surface text-content">
+                  <Mail size={16} aria-hidden="true" />
+                </span>
+                <span className="flex min-w-0 flex-col gap-1">
+                  <span className="text-sm text-muted">อีเมล</span>
+                  <span className="break-words text-sm font-medium text-content transition-colors group-hover:text-muted md:text-[1rem]">
                     visarut298@gmail.com
                   </span>
-                </Link>
-              </div>
+                </span>
+              </Link>
 
-              <div className="flex justify-between items-center py-2 border-b border-edge">
-                <span className="text-sm text-muted">โทรศัพท์</span>
-                <Link href="tel:+66627283058">
-                  <span className="text-sm md:text-base font-medium text-content hover:text-muted transition-colors duration-200">
+              <Link
+                href="tel:+66627283058"
+                className="group flex items-start gap-3 border-b border-edge pb-5"
+              >
+                <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-surface text-content">
+                  <Phone size={16} aria-hidden="true" />
+                </span>
+                <span className="flex min-w-0 flex-col gap-1">
+                  <span className="text-sm text-muted">โทรศัพท์</span>
+                  <span className="text-sm font-medium text-content transition-colors group-hover:text-muted md:text-[1rem]">
                     062-728-3058
                   </span>
-                </Link>
-              </div>
+                </span>
+              </Link>
             </div>
-          </div>
+          </aside>
         </div>
       </section>
     </Layout>

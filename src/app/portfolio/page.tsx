@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PortfolioClient from "./PortfolioClient";
 import { generateSEO } from "@/lib/seo";
 import { WordPressAPI } from "@/lib/wordpress";
+export const revalidate = 300;
 
 export const metadata: Metadata = generateSEO({
   title: "ผลงาน",
@@ -11,10 +12,7 @@ export const metadata: Metadata = generateSEO({
 
 async function getInitialPortfolios() {
   try {
-    const response = await WordPressAPI.getPortfolios({
-      per_page: 9,
-      page: 1,
-    });
+    const response = await WordPressAPI.getAllPortfolios();
     return response;
   } catch (error) {
     console.error("Error fetching initial portfolios:", error);

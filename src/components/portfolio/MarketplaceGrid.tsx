@@ -101,7 +101,7 @@ export function MarketplaceGrid({
           const categoryLabel =
             PORTFOLIO_CATEGORIES[item.category] || item.category;
           const cleanTitle = getCleanTitle(item.title);
-          const cleanExcerpt = getCleanExcerpt(item.excerpt);
+          const cleanExcerpt = getCleanExcerpt(normalized.meta.description || item.excerpt);
 
           return (
             <Link
@@ -109,15 +109,16 @@ export function MarketplaceGrid({
               href={`/portfolio/${item.slug}`}
               onClick={(e) => handleCardClick(e, item)}
               aria-label={`ดูรายละเอียด ${cleanTitle}`}
-              className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3 sm:p-4 flex flex-row items-center justify-between gap-3 sm:gap-4 transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
-              {/* Thumbnail + Text */}
-              <div className="flex items-center gap-4 flex-1 min-w-0">
-                <div className="relative w-24 sm:w-28 aspect-4/3 rounded-xl overflow-hidden bg-surface shrink-0 border border-edge/40">
+              {/* Thumbnail + Text Info */}
+              <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                {/* Thumbnail */}
+                <div className="aspect-holder relative w-20 h-20 sm:w-28 sm:h-24 rounded-xl overflow-hidden bg-surface shrink-0 border border-edge/40">
                   <img
                     src={getFeaturedImageUrl(item)}
                     alt={cleanTitle}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder-image.svg";
@@ -125,38 +126,42 @@ export function MarketplaceGrid({
                   />
                 </div>
 
-                <div className="flex flex-col gap-1 min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[11px] font-semibold text-accent uppercase tracking-wider">
+                {/* Text Content */}
+                <div className="flex flex-col gap-1 min-w-0 flex-1 justify-center">
+                  <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-accent uppercase tracking-wider shrink-0">
                       {categoryLabel}
                     </span>
                     {normalized.meta.clientName && (
-                      <span className="text-[11px] font-medium text-dim bg-surface px-2 py-0.5 rounded-full border border-edge">
+                      <span className="text-[10px] sm:text-[11px] font-medium text-dim bg-surface px-1.5 py-0.5 rounded-full border border-edge truncate max-w-[110px] sm:max-w-[200px]">
                         {normalized.meta.clientName}
                       </span>
                     )}
                     {item.date && (
-                      <span className="text-[11px] text-dim">
+                      <span className="text-[10px] sm:text-[11px] text-dim shrink-0">
                         • {new Date(item.date).getFullYear() + 543}
                       </span>
                     )}
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-content leading-snug truncate group-hover:text-accent transition-colors">
+                  <h3 className="text-xs sm:text-[1rem] font-bold text-content leading-snug line-clamp-2 shrink-0 break-words group-hover:text-accent transition-colors">
                     {cleanTitle}
                   </h3>
                   {cleanExcerpt && (
-                    <p className="text-xs text-muted line-clamp-1">
+                    <p className="text-xs text-muted hidden sm:line-clamp-2">
                       {cleanExcerpt}
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Quick View Button */}
-              <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-base group-hover:bg-accent group-hover:text-white border border-edge group-hover:border-accent rounded-xl text-xs font-semibold text-content transition-all">
+              {/* Action: Desktop button / Mobile chevron */}
+              <div className="shrink-0 flex items-center">
+                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-base group-hover:bg-accent group-hover:text-white border border-edge group-hover:border-accent rounded-xl text-xs font-semibold text-content transition-all">
                   <Eye size={14} />
                   <span>ดูรายละเอียด</span>
+                </div>
+                <div className="sm:hidden p-1 text-dim group-hover:text-accent group-hover:translate-x-0.5 transition-all">
+                  <ChevronRight size={18} />
                 </div>
               </div>
             </Link>
@@ -173,7 +178,7 @@ export function MarketplaceGrid({
         const categoryLabel =
           PORTFOLIO_CATEGORIES[item.category] || item.category;
         const cleanTitle = getCleanTitle(item.title);
-        const cleanExcerpt = getCleanExcerpt(item.excerpt);
+        const cleanExcerpt = getCleanExcerpt(normalized.meta.description || item.excerpt);
 
         return (
           <Link
@@ -184,11 +189,11 @@ export function MarketplaceGrid({
             className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {/* Image Container */}
-            <div className="relative aspect-4/3 w-full bg-surface overflow-hidden">
+            <div className="aspect-holder relative aspect-4/3 w-full bg-surface overflow-hidden">
               <img
                 src={getFeaturedImageUrl(item)}
                 alt={cleanTitle}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/placeholder-image.svg";
