@@ -4,12 +4,11 @@ import Link from "next/link";
 import { Layout } from "@/components/layout";
 import { PORTFOLIO_CATEGORIES, PortfolioItem } from "@/types/portfolio";
 import { WordPressContent } from "@/components/WordPressContent";
-import PortfolioVideo from "@/components/PortfolioVideo";
 import {
   PortfolioACFDisplay,
   PortfolioGallery,
 } from "@/components/portfolio/PortfolioDetails";
-import { WordPressAPI } from "@/lib/wordpress";
+import { preparePortfolioDetail } from "@/lib/portfolioDetailContent";
 import { usePortfolioBySlug } from "@/hooks/useWordPress";
 
 interface PortfolioDetailClientProps {
@@ -59,7 +58,7 @@ export default function PortfolioDetailClient({
     );
   }
 
-  const videos = WordPressAPI.extractVideoEmbeds(portfolio.content.rendered);
+  const detail = preparePortfolioDetail(portfolio);
 
   return (
     <Layout>
@@ -100,7 +99,7 @@ export default function PortfolioDetailClient({
             </div>
 
             {/* Featured Image */}
-            {portfolio.featured_image && portfolio.category !== "photography" && (
+            {portfolio.featured_image && detail.showFeatured && (
               <div className="w-full max-h-[550px] overflow-hidden rounded-xl bg-surface border border-edge/60">
                 <img
                   src={portfolio.featured_image.url}
@@ -127,78 +126,20 @@ export default function PortfolioDetailClient({
         <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
           <div className="flex flex-col gap-12 items-start [&_.wordpress-content]:w-full [&_.wordpress-content]:flex [&_.wordpress-content]:flex-wrap [&_.wordpress-content]:gap-4 [&_.wordpress-content]:justify-center [&_.wordpress-content]:items-start [&_.wordpress-content>p:empty]:hidden [&_iframe]:max-w-full [&_iframe]:rounded-lg [&_.blog-content]:w-full">
             {/* ACF Project Details */}
-            <PortfolioACFDisplay portfolio={portfolio} />
+            <PortfolioACFDisplay portfolio={detail.details} />
 
-            {/* Content by Category */}
-            {portfolio.category === "photography" ? (
-              <>
-                <PortfolioGallery portfolio={portfolio} />
-                {portfolio.excerpt && (
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
-                      รายละเอียด
-                    </p>
-                    <div className="text-base text-muted leading-[1.8]">
-                      <WordPressContent content={portfolio.excerpt.rendered} />
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : portfolio.category === "videography" || portfolio.category === "video-editing" ? (
-              <>
-                {videos.length > 0 && (
-                  <div className="w-full">
-                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-6">
-                      วีดีโอ ({videos.length})
-                    </p>
-                    <div className="flex flex-col gap-8 w-full">
-                      {videos.map((video, index) => (
-                        <PortfolioVideo key={index} video={video} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <PortfolioGallery portfolio={portfolio} />
-                {portfolio.content && (
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
-                      รายละเอียด
-                    </p>
-                    <div className="blog-content">
-                      <WordPressContent content={portfolio.content.rendered} />
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                {portfolio.content && (
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
-                      รายละเอียด
-                    </p>
-                    <div className="blog-content">
-                      <WordPressContent content={portfolio.content.rendered} />
-                    </div>
-                  </div>
-                )}
-                {videos.length > 0 && (
-                  <div className="w-full">
-                    <p className="text-xs uppercase tracking-[0.1em] text-dim mb-6">
-                      วีดีโอ
-                    </p>
-                    <div className="flex flex-col gap-6 w-full">
-                      {videos.map((video, index) => (
-                        <PortfolioVideo key={index} video={video} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {portfolio.category !== "producer" && (
-                  <PortfolioGallery portfolio={portfolio} />
-                )}
-              </>
+            {/* WordPress owns inline media; the gallery contains only additional images. */}
+            {detail.body && (
+              <div className="w-full">
+                <p className="text-xs uppercase tracking-[0.1em] text-dim mb-4">
+                  รายละเอียด
+                </p>
+                <div className="blog-content">
+                  <WordPressContent content={detail.body} />
+                </div>
+              </div>
             )}
+            <PortfolioGallery portfolio={detail.gallery} />
           </div>
         </div>
       </div>

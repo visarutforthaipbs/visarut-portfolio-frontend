@@ -118,7 +118,7 @@ export function MarketplaceGrid({
                   <img
                     src={getFeaturedImageUrl(item)}
                     alt={cleanTitle}
-                    className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full! object-cover object-center group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder-image.svg";
@@ -189,11 +189,11 @@ export function MarketplaceGrid({
             className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {/* Image Container */}
-            <div className="aspect-holder relative aspect-4/3 w-full bg-surface overflow-hidden">
+            <div className="aspect-holder relative aspect-4/3 w-full shrink-0 bg-surface overflow-hidden">
               <img
                 src={getFeaturedImageUrl(item)}
                 alt={cleanTitle}
-                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                className="absolute inset-0 w-full h-full! object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/placeholder-image.svg";

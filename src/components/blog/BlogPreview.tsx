@@ -155,7 +155,7 @@ function BlogPostCard({
             <img
               src={featuredImage}
               alt={decodeHtmlEntities(post.title.rendered)}
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
               loading="lazy"
               onError={() => setFeaturedImage(null)}
             />

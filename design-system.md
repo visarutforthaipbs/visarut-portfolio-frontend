@@ -84,3 +84,25 @@ All raw WordPress API posts MUST be passed through **`WordPressAPI.normalizePort
    - Always verify TypeScript compilation with `npx tsc --noEmit` before concluding work. Zero errors allowed.
 3. **Image Placeholders**:
    - Never use raw text placeholders. Use `public/placeholder-image.svg` (sleek dark gradient vector frame).
+
+---
+
+## 📱 7. Mobile UX Standards (UI/UX Agent Skill System)
+
+Following the [UI/UX Agent Skill System](https://github.com/sergekostenchuk/ui-ux-agent-skill-system) and `ui-ux-pro-max`:
+
+1. **Touch Targets & Spacing**:
+   - Minimum interactive touch area: **44×44px** (W3C / Apple HIG) with minimum 8px separation between adjacent buttons.
+2. **Text & Line Heights**:
+   - Body font size minimum **16px** (`text-base`) on search inputs and forms to prevent iOS Safari auto-zoom.
+   - Dynamic wrapping with `line-clamp-2 break-words leading-snug` — avoid single-line `truncate` that prematurely clips Thai text.
+3. **Viewport & Safe Areas**:
+   - Use `min-h-dvh` (dynamic viewport height) instead of `100vh` to account for mobile address bars.
+   - Safe-area bottom padding (`env(safe-area-inset-bottom)`) for fixed elements (e.g. Floating Action Buttons, bottom drawers).
+4. **Scrolling & Gestures**:
+   - `touch-action: manipulation` enabled globally to prevent the 300ms double-tap zoom latency.
+   - Avoid nested scroll traps in mobile modals; modal bodies should scroll as a single continuous viewport.
+   - Horizontal category scrollers must have `no-scrollbar`, `shrink-0`, and bleed edge-to-edge.
+5. **Accessibility & Reduced Motion**:
+   - Respect `prefers-reduced-motion` to collapse animations for users with vestibular sensitivities.
+   - No color-only status indicators; pair colors with text badges or icons.

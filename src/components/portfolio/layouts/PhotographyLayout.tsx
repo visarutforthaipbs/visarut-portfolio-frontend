@@ -37,11 +37,11 @@ export function PhotographyLayout({
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
             <div className="group bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
+              <div className="aspect-holder relative aspect-[4/3] w-full overflow-hidden bg-surface">
                 <img
                   src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "/placeholder-image.svg";

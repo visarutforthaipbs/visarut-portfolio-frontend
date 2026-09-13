@@ -55,6 +55,22 @@
   box-sizing: border-box;
 }
 
+html {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Scrollbar Hiding Utilities */
 .no-scrollbar::-webkit-scrollbar,
 .scrollbar-none::-webkit-scrollbar {
@@ -305,9 +321,11 @@ main {
 }
 
 /* Image optimization */
-img {
-  max-width: 100%;
-  height: auto;
+@layer base {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 /* React Image Gallery custom styles */
@@ -719,4 +737,18 @@ a:focus-visible {
     margin: 2.5rem 0;
     padding: 1.5rem 2rem;
   }
+}
+
+/* Card Thumbnail & Aspect Image Fill */
+.aspect-holder {
+  position: relative;
+  overflow: hidden;
+}
+.aspect-holder > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center;
 }

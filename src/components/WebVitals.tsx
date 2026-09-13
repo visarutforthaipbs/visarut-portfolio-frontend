@@ -1,24 +1,22 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 /**
  * Lightweight Web Vitals reporter.
- * Reports Core Web Vitals (LCP, FID, CLS, INP, FCP, TTFB) to console
- * and to Google Analytics (if available).
+ * Reports document-level metrics to Google Analytics, with opt-in debug logs.
  */
 export function WebVitals() {
-  const pathname = usePathname();
-
   useEffect(() => {
     if (typeof window === "undefined") return;
+    let active = true;
 
     // Dynamically import web-vitals to avoid blocking initial load
     import("web-vitals").then(({ onCLS, onLCP, onFCP, onTTFB, onINP }) => {
+      if (!active) return;
       const reportMetric = (metric: { name: string; value: number; id: string; delta: number }) => {
-        // Log to console in development
-        if (process.env.NODE_ENV === "development") {
+        if (!active) return;
+        if (process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_DEBUG_WEB_VITALS === "true") {
           console.log(`[Web Vital] ${metric.name}:`, Math.round(metric.value * 100) / 100);
         }
 
@@ -40,7 +38,8 @@ export function WebVitals() {
     }).catch(() => {
       // web-vitals not available, silently ignore
     });
-  }, [pathname]);
+    return () => { active = false; };
+  }, []);
 
   return null;
 }

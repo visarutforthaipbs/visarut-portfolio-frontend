@@ -101,11 +101,11 @@ function PortfolioCard({ portfolio }: PortfolioCardProps) {
   return (
     <Link href={`/portfolio/${portfolio.slug}`} aria-label={getTextContent(portfolio.title)}>
       <article className="cursor-pointer group break-inside-avoid mb-4">
-        <div className="relative aspect-4/3 overflow-hidden rounded-md bg-surface">
+        <div className="aspect-holder relative aspect-4/3 overflow-hidden rounded-md bg-surface">
           <img
             src={getFeaturedImageUrl(portfolio)}
             alt={getTextContent(portfolio.title)}
-            className="w-full h-full object-cover object-center transition-all duration-300 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-300 group-hover:scale-105"
             loading="lazy"
             onError={(e) => {
               const target = e.target as HTMLImageElement;

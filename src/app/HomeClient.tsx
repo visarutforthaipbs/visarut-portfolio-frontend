@@ -165,17 +165,12 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
       {/* AI-SEO Structured Data Schema */}
       <JsonLd items={sourcePortfolios} />
 
-      {/* Semantic H1 for Search Engine & AI Crawler indexing */}
-      <h1 className="max-w-7xl mx-auto w-full px-4 pt-6 text-xl sm:text-2xl font-bold">
-        วิศรุต แสนคำ · ผู้ผลิตสื่ออิสระ
-      </h1>
-      <p className="max-w-7xl mx-auto w-full px-4 pt-2 text-sm text-muted">
-        ภาพถ่ายสารคดี วิดีโอ เว็บไซต์ และสื่อเพื่อการเปลี่ยนแปลงสังคม
-      </p>
+      {/* Hidden Semantic H1 for SEO & Accessibility */}
+      <h1 className="sr-only">วิศรุต แสนคำ · แฟ้มสะสมผลงาน</h1>
 
       {/* ── PURE MARKETPLACE CATALOG CONTAINER ── */}
-      <section className="w-full bg-base py-4 sm:py-6 md:py-8 min-h-[calc(100vh-4rem)] relative">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 w-full">
+      <section className="w-full bg-base py-4 sm:py-6 md:py-8 min-h-[calc(100dvh-4rem)] relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
           <div className="flex flex-col lg:flex-row gap-5 sm:gap-6 items-start">
             {/* Sidebar with Profile, Experience, Categories & Contact */}
             <MarketplaceSidebar
@@ -193,8 +188,8 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
             {/* Main Stream (Search bar & Grid view) */}
             <section className="flex-1 flex flex-col gap-4 sm:gap-5 w-full min-w-0" aria-label="รายการผลงาน">
               {!searchQuery && selectedCategory === "all" && selectedOrg === "all" && (
-                <section aria-label="ผลงานแนะนำ" className="space-y-3">
-                  <h2 className="text-lg font-bold">ผลงานแนะนำ</h2>
+                <section aria-label="ผลงานแนะนำ" className="space-y-3 pb-3 sm:pb-4 border-b border-edge/60">
+                  <h2 className="text-lg font-bold text-content">ผลงานแนะนำ</h2>
                   <MarketplaceGrid
                     items={sourcePortfolios.filter(item => ["livingriversiam", "migrantmother", "titang-2024"].includes(item.slug))}
                     viewMode="list"
@@ -202,7 +197,7 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
                   />
                 </section>
               )}
-              <h2 className="text-lg font-bold">คลังผลงานทั้งหมด</h2>
+              <h2 className="text-lg font-bold text-content">คลังผลงานทั้งหมด</h2>
               {/* Search Toolbar */}
               <MarketplaceSearchBar
                 searchQuery={searchQuery}

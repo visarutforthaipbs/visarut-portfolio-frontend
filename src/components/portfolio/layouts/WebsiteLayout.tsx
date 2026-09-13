@@ -38,11 +38,11 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
             className="bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-1 hover:border-accent transition-all duration-300"
           >
             <div className="relative">
-              <div className="aspect-[16/10] w-full overflow-hidden bg-surface relative">
+              <div className="aspect-holder aspect-[16/10] w-full overflow-hidden bg-surface relative">
                 <img
                   src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "/placeholder-image.svg";

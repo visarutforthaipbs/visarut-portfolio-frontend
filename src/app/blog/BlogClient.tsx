@@ -127,12 +127,12 @@ function BlogPostCard({ post }: { post: BlogPost }) {
     <Link href={`/blog/${post.slug}`} aria-label={post.title.rendered.replace(/<[^>]*>/g, '')}>
       <article className="cursor-pointer group">
         {/* Image */}
-        <div className="h-[200px] bg-surface overflow-hidden rounded-md flex items-center justify-center">
+        <div className="relative h-[200px] bg-surface overflow-hidden rounded-md flex items-center justify-center">
           {featuredImage ? (
             <img
               src={featuredImage}
               alt={decodeHtmlEntities(post.title.rendered)}
-              className="w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-85"
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-85"
               loading="lazy"
             />
           ) : (

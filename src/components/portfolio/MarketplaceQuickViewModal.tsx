@@ -19,6 +19,7 @@ import {
   Share2,
   Check,
   ArrowRight,
+  MessageSquare,
 } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
@@ -404,25 +405,29 @@ export function MarketplaceQuickViewModal({
 
             {/* Action buttons bar */}
             <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full">
-              <Link href={`/contact?project=${encodeURIComponent(cleanTitle)}`} className="w-full sm:flex-1 text-center py-3 text-sm font-semibold text-accent underline">
-                สอบถามงานลักษณะนี้
+              <Link
+                href={`/contact?project=${encodeURIComponent(cleanTitle)}`}
+                className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-sm cursor-pointer min-h-[44px]"
+              >
+                <MessageSquare size={15} className="text-accent shrink-0" />
+                <span>สอบถามงานลักษณะนี้</span>
               </Link>
               <Link
                 href={`/portfolio/${portfolio.slug}`}
                 className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-surface hover:bg-surface-hover border border-edge text-content font-semibold rounded-xl text-xs transition-all shadow-sm cursor-pointer min-h-[44px]"
               >
                 <span>ดูหน้ารายละเอียดเต็ม</span>
-                <ArrowRight size={15} className="text-accent" />
+                <ArrowRight size={15} className="text-muted shrink-0" />
               </Link>
               {externalLink && (
                 <a
                   href={externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-sm cursor-pointer min-h-[44px]"
+                  className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-surface hover:bg-surface-hover border border-edge text-content font-semibold rounded-xl text-xs transition-all shadow-sm cursor-pointer min-h-[44px]"
                 >
                   <span>เปิดดูสื่อจริง (Live)</span>
-                  <ExternalLink size={15} />
+                  <ExternalLink size={15} className="text-muted shrink-0" />
                 </a>
               )}
             </div>

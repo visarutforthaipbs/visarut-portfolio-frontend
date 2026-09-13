@@ -114,22 +114,19 @@ export function MarketplaceSidebar({
             <span className="text-[11px] text-accent font-semibold">ผู้ผลิตสื่ออิสระ</span>
           </div>
         </div>
-        <p className="text-xs text-muted leading-relaxed">
-          ช่างภาพสารคดี ผู้กำกับภาพวิดีโอ และนักพัฒนาเว็บสื่อสังคม — รังสรรค์งานภาพถ่ายสารคดี วิดีโอเชิงประเด็น เว็บไซต์อินเทอร์แอคทีฟ และสื่อแคมเปญขับเคลื่อนสังคม
-        </p>
 
         {/* Contact buttons */}
-        <div className="flex items-center gap-2 pt-1">
+        <div className="flex items-center gap-2">
           <a
             href="mailto:visarut298@gmail.com"
-            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-base hover:bg-surface border border-edge rounded-xl text-[11px] font-semibold text-content transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 bg-base hover:bg-surface border border-edge rounded-xl text-[11px] font-semibold text-content transition-colors min-h-[38px]"
           >
             <Mail size={13} className="text-accent" />
             <span>อีเมล</span>
           </a>
           <a
             href="tel:+66627283058"
-            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-base hover:bg-surface border border-edge rounded-xl text-[11px] font-semibold text-content transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 bg-base hover:bg-surface border border-edge rounded-xl text-[11px] font-semibold text-content transition-colors min-h-[38px]"
           >
             <Phone size={13} className="text-accent" />
             <span>โทรศัพท์</span>
@@ -140,7 +137,7 @@ export function MarketplaceSidebar({
         {onOpenContactModal && (
           <button
             onClick={() => { onCloseMobile?.(); onOpenContactModal(); }}
-            className="w-full mt-1 flex items-center justify-center gap-2 py-2 px-3 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer min-h-[40px]"
           >
             <Send size={13} className="text-accent" />
             <span>ส่งข้อความติดต่องาน</span>
@@ -327,7 +324,7 @@ export function MarketplaceSidebar({
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-72 shrink-0 bg-surface/40 p-4 rounded-2xl border border-edge/60 sticky top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto">
+      <aside className="hidden lg:block w-72 shrink-0 bg-surface/40 p-4 rounded-2xl border border-edge/60 sticky top-20 self-start max-h-[calc(100dvh-6rem)] overflow-y-auto">
         {sidebarContent}
       </aside>
 

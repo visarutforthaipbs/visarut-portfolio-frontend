@@ -30,6 +30,7 @@ export default function AdSense({
   const [filled, setFilled] = useState(false);
 
   useEffect(() => {
+    if (process.env.NODE_ENV !== "production") return;
     if (pushed.current) return;
     const el = adRef.current;
     if (!el) return;
@@ -63,6 +64,8 @@ export default function AdSense({
       clearTimeout(timer);
     };
   }, []);
+
+  if (process.env.NODE_ENV !== "production") return null;
 
   return (
     <div

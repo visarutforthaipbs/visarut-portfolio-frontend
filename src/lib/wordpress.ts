@@ -21,6 +21,8 @@ const WP_BASE = "https://api.sankham.cv";
 // Create axios instance with default config
 const wpApi = axios.create({
   baseURL: WP_BASE,
+  // Avoid the Node HTTP adapter's legacy URL parsing in proxy-from-env.
+  adapter: "fetch",
   timeout: 30000, // Increased timeout to 30 seconds
   headers: {
     "Content-Type": "application/json",
@@ -38,7 +40,7 @@ wpApi.interceptors.request.use(
       rest_route: `/wp/v2${originalUrl}`,
       ...config.params,
     };
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG_API === "true") {
       console.log("API Request:", config.url, config.params);
     }
     return config;
@@ -52,12 +54,13 @@ wpApi.interceptors.request.use(
 // Add response interceptor for debugging
 wpApi.interceptors.response.use(
   (response) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG_API === "true") {
       console.log("API Response:", response.status, response.config.url);
     }
     return response;
   },
   (error) => {
+    if (axios.isCancel(error)) return Promise.reject(error);
     console.error("API Response Error:", error.message, error.response?.status);
     return Promise.reject(error);
   }
@@ -138,6 +141,7 @@ export class WordPressAPI {
 
       return result;
     } catch (error) {
+      if (axios.isCancel(error) || signal?.aborted) throw error;
       console.error("Error fetching portfolios:", error);
 
       // Log more detailed error information in development

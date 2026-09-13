@@ -821,11 +821,11 @@ export function PortfolioGallery({
         <div className="flex flex-col gap-6 w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {images.map((image, index) => (
-              <div key={image.id || index} className="aspect-video">
+              <div key={image.id || index} className="relative aspect-video overflow-hidden rounded-lg">
                 <img
                   src={image.url}
                   alt={image.alt || `Video still ${index + 1}`}
-                  className="object-cover rounded-lg cursor-pointer w-full h-full hover:scale-[1.02] hover:brightness-110 transition-all duration-300"
+                  className="absolute inset-0 w-full h-full object-cover cursor-pointer hover:scale-[1.02] hover:brightness-110 transition-all duration-300"
                   onClick={() => openLightbox(index)}
                   onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                 />
@@ -837,11 +837,11 @@ export function PortfolioGallery({
         <div className="flex flex-col gap-6 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
             {images.map((image, index) => (
-              <div key={image.id || index} className="aspect-[16/10]">
+              <div key={image.id || index} className="relative aspect-[16/10] overflow-hidden rounded-md border border-edge">
                 <img
                   src={image.url}
                   alt={image.alt || `Website screenshot ${index + 1}`}
-                  className="object-cover rounded-md border border-edge cursor-pointer w-full h-full hover:scale-[1.02] hover:border-accent transition-all duration-300"
+                  className="absolute inset-0 w-full h-full object-cover cursor-pointer hover:scale-[1.02] hover:border-accent transition-all duration-300"
                   onClick={() => openLightbox(index)}
                   onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                 />
@@ -853,11 +853,11 @@ export function PortfolioGallery({
         <div className="flex flex-col gap-6 w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             {images.map((image, index) => (
-              <div key={image.id || index} className="aspect-video">
+              <div key={image.id || index} className="relative aspect-video overflow-hidden rounded-lg">
                 <img
                   src={image.url}
                   alt={image.alt || `Video editing still ${index + 1}`}
-                  className="object-cover rounded-lg cursor-pointer w-full h-full hover:scale-[1.02] hover:brightness-110 transition-all duration-300"
+                  className="absolute inset-0 w-full h-full object-cover cursor-pointer hover:scale-[1.02] hover:brightness-110 transition-all duration-300"
                   onClick={() => openLightbox(index)}
                   onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                 />
@@ -881,11 +881,11 @@ export function PortfolioGallery({
           {images.length > 1 && (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
               {images.slice(1).map((image, index) => (
-                <div key={image.id || index} className="aspect-square">
+                <div key={image.id || index} className="relative aspect-square overflow-hidden rounded-md">
                   <img
                     src={image.url}
                     alt={image.alt || `Design ${index + 2}`}
-                    className="object-cover rounded-md cursor-pointer w-full h-full hover:scale-105 transition-transform duration-200"
+                    className="absolute inset-0 w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={() => openLightbox(index + 1)}
                     onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-image.svg"; }}
                   />

@@ -45,11 +45,11 @@ export function DefaultLayout({
         {portfolios.map((portfolio) => (
           <Link key={portfolio.id} href={`/portfolio/${portfolio.slug}`}>
             <div className="group bg-surface rounded-lg overflow-hidden border border-edge hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-              <div className="aspect-[4/3] w-full overflow-hidden bg-surface relative">
+              <div className="aspect-holder aspect-[4/3] w-full overflow-hidden bg-surface relative">
                 <img
                   src={getPortfolioFeaturedImageUrl(portfolio)}
                   alt={portfolio.title.rendered}
-                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "/placeholder-image.svg";
