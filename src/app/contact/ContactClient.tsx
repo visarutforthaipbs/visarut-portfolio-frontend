@@ -185,7 +185,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-xl bg-content px-6 py-3 text-sm font-semibold text-canvas shadow-xs transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="group inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-full bg-content px-6 py-3 text-sm font-semibold text-canvas transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</span>
                     <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />

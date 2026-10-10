@@ -109,7 +109,7 @@ export function MarketplaceGrid({
               href={`/portfolio/${item.slug}`}
               onClick={(e) => handleCardClick(e, item)}
               aria-label={`ดูรายละเอียด ${cleanTitle}`}
-              className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3 sm:p-4 flex flex-row items-center justify-between gap-3 sm:gap-4 transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl p-3 sm:p-4 flex flex-row items-center justify-between gap-3 sm:gap-4 transition-[background-color,border-color] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               {/* Thumbnail + Text Info */}
               <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
@@ -118,7 +118,7 @@ export function MarketplaceGrid({
                   <img
                     src={getFeaturedImageUrl(item)}
                     alt={cleanTitle}
-                    className="absolute inset-0 w-full h-full! object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full! object-cover object-center transition-opacity duration-200"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder-image.svg";
@@ -186,14 +186,14 @@ export function MarketplaceGrid({
             href={`/portfolio/${item.slug}`}
             onClick={(e) => handleCardClick(e, item)}
             aria-label={`ดูรายละเอียด ${cleanTitle}`}
-            className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="group relative bg-surface/40 hover:bg-surface/90 border border-edge/60 hover:border-accent/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-[background-color,border-color,box-shadow] duration-200 hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {/* Image Container */}
             <div className="aspect-holder relative aspect-4/3 w-full shrink-0 bg-surface overflow-hidden">
               <img
                 src={getFeaturedImageUrl(item)}
                 alt={cleanTitle}
-                className="absolute inset-0 w-full h-full! object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                className="absolute inset-0 w-full h-full! object-cover object-center transition-opacity duration-200"
                 loading="lazy"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/placeholder-image.svg";

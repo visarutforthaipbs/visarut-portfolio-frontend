@@ -118,14 +118,14 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
                 <button
                   type="button"
                   onClick={() => setIsContactModalOpen(true)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-xl bg-content text-canvas text-sm font-semibold shadow-xs hover:opacity-90 transition-opacity cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-full bg-content text-canvas text-sm font-semibold hover:opacity-85 active:scale-[0.98] transition-[opacity,transform] cursor-pointer"
                 >
                   <Send size={15} aria-hidden="true" />
                   <span>ส่งข้อความติดต่องาน</span>
                 </button>
                 <Link
                   href="/portfolio"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 min-h-[44px] px-5 rounded-xl bg-canvas border border-edge text-sm font-semibold text-content hover:bg-surface transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 min-h-[44px] px-5 rounded-full bg-canvas border border-edge text-sm font-semibold text-content hover:bg-surface active:scale-[0.98] transition-[background-color,transform]"
                 >
                   <span>ดูผลงานทั้งหมด{total > 0 ? ` (${total})` : ""}</span>
                   <ArrowRight size={15} aria-hidden="true" />
@@ -195,7 +195,7 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
 
             <Link
               href="/portfolio"
-              className="sm:hidden inline-flex items-center justify-center gap-1.5 min-h-[44px] px-5 rounded-xl bg-canvas border border-edge text-sm font-semibold text-content hover:bg-surface transition-colors"
+              className="sm:hidden inline-flex items-center justify-center gap-1.5 min-h-[44px] px-5 rounded-full bg-canvas border border-edge text-sm font-semibold text-content hover:bg-surface transition-colors"
             >
               <span>ดูผลงานทั้งหมด{total > 0 ? ` (${total})` : ""}</span>
               <ArrowRight size={15} aria-hidden="true" />

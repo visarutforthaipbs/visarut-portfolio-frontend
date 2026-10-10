@@ -137,7 +137,7 @@ export function MarketplaceSidebar({
         {onOpenContactModal && (
           <button
             onClick={() => { onCloseMobile?.(); onOpenContactModal(); }}
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-content text-canvas font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer min-h-[40px]"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-content text-canvas font-semibold rounded-full text-xs hover:opacity-85 active:scale-[0.98] transition-[opacity,transform] cursor-pointer min-h-[40px]"
           >
             <Send size={13} className="text-accent" />
             <span>ส่งข้อความติดต่องาน</span>
