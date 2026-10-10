@@ -2,9 +2,6 @@
   "name": "visarut-portfolio",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "24.x"
-  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
@@ -24,7 +21,7 @@
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.12",
-    "isomorphic-dompurify": "^3.7.1",
+    "isomorphic-dompurify": "2.26.0",
     "lucide-react": "^0.540.0",
     "next": "15.5.9",
     "next-seo": "^6.8.0",
