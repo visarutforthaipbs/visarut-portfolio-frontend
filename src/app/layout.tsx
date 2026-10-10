@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/providers";
-import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { WebVitals } from "@/components/WebVitals";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
+
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const viewport: Viewport = {
   themeColor: "#22c55e",
@@ -165,6 +166,26 @@ export default function RootLayout({
 
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="//api.sankham.cv" />
+
+        {/* Google tag (gtag.js) — rendered server-side in <head> so Search
+            Console can verify ownership via the Google Analytics method. */}
+        {GA_MEASUREMENT_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+            />
+            <script
+              id="google-analytics"
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_MEASUREMENT_ID}');`,
+              }}
+            />
+          </>
+        )}
         {process.env.NODE_ENV === "production" && (
           <script
             async
@@ -174,7 +195,6 @@ export default function RootLayout({
         )}
       </head>
       <body suppressHydrationWarning>
-        <GoogleAnalytics />
         {/* Skip to main content link for accessibility */}
         <a
           href="#main-content"
