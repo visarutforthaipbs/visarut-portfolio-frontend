@@ -37,7 +37,6 @@ export function CoverMedia({ src, alt, className = "", priority = false }: Cover
         loop
         playsInline
         preload={priority ? "auto" : "metadata"}
-        role="img"
         aria-label={alt}
         onError={() => setVideoFailed(true)}
       />
