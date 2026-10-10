@@ -763,3 +763,24 @@ a:focus-visible {
   object-fit: cover;
   object-position: center;
 }
+
+/* ── Portfolio case-study story column ── */
+.case-study-text {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-content);
+}
+.case-study-text > * + * { margin-top: 1.1em; }
+.case-study-text p { margin-bottom: 0; }
+.case-study-text h2,
+.case-study-text h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 1.8em;
+  letter-spacing: -0.01em;
+}
+.case-study-text ul,
+.case-study-text ol { padding-left: 1.25em; }
+.case-study-text li + li { margin-top: 0.4em; }
+.case-study-text a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
