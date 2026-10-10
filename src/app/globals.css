@@ -27,6 +27,7 @@
   --color-accent-dim: rgba(45, 163, 90, 0.10);
   --color-signal: #25894D;
   --color-signal-dim: rgba(37, 137, 77, 0.10);
+  --color-danger: #C4161C;
 
   /* System font (SF Pro on Apple devices, incl. Thai). Never self-host SF. */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", Roboto, "Noto Sans Thai", "Sukhumvit Set", "Thonburi", system-ui, sans-serif;
@@ -55,6 +56,7 @@
     --color-accent-dim: rgba(93, 214, 138, 0.16);
     --color-signal: #30B467;
     --color-signal-dim: rgba(48, 180, 103, 0.18);
+    --color-danger: #FF6961;
   }
 }
 

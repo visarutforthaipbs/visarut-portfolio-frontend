@@ -134,7 +134,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </div>
 
             {submitStatus === "error" && (
-              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-500" role="alert" aria-live="assertive">
+              <div className="rounded-xl border border-danger/30 bg-danger/10 p-3 text-sm text-danger" role="alert" aria-live="assertive">
                 <p>{errorMessage}</p>
                 <a
                   href={createContactMailto(formData)}
