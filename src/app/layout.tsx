@@ -168,13 +168,6 @@ gtag('config', '${GA_MEASUREMENT_ID}');`,
             />
           </>
         )}
-        {process.env.NODE_ENV === "production" && (
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8948939937417308"
-            crossOrigin="anonymous"
-          />
-        )}
       </head>
       <body suppressHydrationWarning>
         {/* Skip to main content link for accessibility */}

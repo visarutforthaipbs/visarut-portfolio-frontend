@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CoverMedia } from "./CoverMedia";
 import { Eye, Calendar, ChevronRight } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import type { PortfolioItem, ImageMedia } from "@/types/portfolio";
@@ -96,7 +97,7 @@ export function MarketplaceGrid({
   if (viewMode === "list") {
     return (
       <div className="flex flex-col gap-3.5 w-full">
-        {items.map((item) => {
+        {items.map((item, index) => {
           const normalized = WordPressAPI.normalizePortfolio(item);
           const categoryLabel =
             PORTFOLIO_CATEGORIES[item.category] || item.category;
@@ -115,14 +116,11 @@ export function MarketplaceGrid({
               <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                 {/* Thumbnail */}
                 <div className="aspect-holder relative w-20 h-20 sm:w-28 sm:h-24 rounded-xl overflow-hidden bg-surface shrink-0 border border-edge/40">
-                  <img
+                  <CoverMedia
                     src={getFeaturedImageUrl(item)}
                     alt={cleanTitle}
                     className="absolute inset-0 w-full h-full! object-cover object-center transition-opacity duration-200"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/placeholder-image.svg";
-                    }}
+                    priority={index < 1}
                   />
                 </div>
 
@@ -173,7 +171,7 @@ export function MarketplaceGrid({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 w-full">
-      {items.map((item) => {
+      {items.map((item, index) => {
         const normalized = WordPressAPI.normalizePortfolio(item);
         const categoryLabel =
           PORTFOLIO_CATEGORIES[item.category] || item.category;
@@ -190,14 +188,11 @@ export function MarketplaceGrid({
           >
             {/* Image Container */}
             <div className="aspect-holder relative aspect-4/3 w-full shrink-0 bg-surface overflow-hidden">
-              <img
+              <CoverMedia
                 src={getFeaturedImageUrl(item)}
                 alt={cleanTitle}
                 className="absolute inset-0 w-full h-full! object-cover object-center transition-opacity duration-200"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/placeholder-image.svg";
-                }}
+                priority={index < 2}
               />
 
               {/* Overlay Category & Client Badges */}
