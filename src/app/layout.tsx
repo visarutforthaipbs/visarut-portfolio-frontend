@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/providers";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { WebVitals } from "@/components/WebVitals";
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
 
@@ -183,6 +184,7 @@ export default function RootLayout({
           <WebVitals />
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
