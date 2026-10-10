@@ -38,7 +38,8 @@ export const metadata: Metadata = {
     "ผู้ผลิตสื่อ",
     "creative services",
     "Thailand",
-    "Bangkok",
+    "Chiang Mai",
+    "เชียงใหม่",
   ],
   authors: [
     {

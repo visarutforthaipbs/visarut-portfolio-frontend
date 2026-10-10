@@ -113,8 +113,9 @@ export function generatePersonSchema() {
     ],
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Bangkok",
-      addressCountry: "Thailand",
+      addressLocality: "Chiang Mai",
+      addressRegion: "Chiang Mai",
+      addressCountry: "TH",
     },
     email: siteConfig.social.email,
     telephone: siteConfig.social.phone,
@@ -148,8 +149,9 @@ export function generateOrganizationSchema() {
     ],
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Bangkok",
-      addressCountry: "Thailand",
+      addressLocality: "Chiang Mai",
+      addressRegion: "Chiang Mai",
+      addressCountry: "TH",
     },
   };
 }
