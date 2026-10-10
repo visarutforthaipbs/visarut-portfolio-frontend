@@ -84,14 +84,20 @@ function clip(text: string, max = 158): string {
 }
 
 /**
- * Meta description: prefer a real excerpt; skip excerpts that are just the
+ * Meta description: prefer the ACF project description, then a real excerpt; skip excerpts that are just the
  * title or an image caption ("Screenshot"); fall back to body text, then to
  * a category sentence.
  */
 function buildDescription(portfolio: PortfolioItem, cleanTitle: string): string {
-  const excerpt = stripText(portfolio.excerpt?.rendered);
   const isUseful = (t: string) =>
     t.length >= 50 && t !== cleanTitle && !/^screenshot/i.test(t);
+  // 1. ACF project description (written per project in WordPress)
+  const acfDescription = stripText(
+    WordPressAPI.normalizePortfolio(portfolio).meta.description
+  );
+  if (isUseful(acfDescription)) return clip(acfDescription);
+  // 2. WP excerpt, 3. body text
+  const excerpt = stripText(portfolio.excerpt?.rendered);
   if (isUseful(excerpt)) return clip(excerpt);
   const body = stripText(portfolio.content?.rendered);
   if (isUseful(body)) return clip(body);
