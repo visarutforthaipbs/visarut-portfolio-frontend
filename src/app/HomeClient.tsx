@@ -15,7 +15,6 @@ interface HomeClientProps {
   portfolios: PortfolioItem[];
 }
 
-const FEATURED_SLUGS = ["livingriversiam", "migrantmother", "titang-2024"];
 const LATEST_COUNT = 9;
 
 export default function HomeClient({ portfolios }: HomeClientProps) {
@@ -55,19 +54,10 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
     setActiveQuickView(null);
   };
 
-  const featured = useMemo(
-    () =>
-      FEATURED_SLUGS.map((slug) => portfolios.find((p) => p.slug === slug)).filter(
-        (p): p is PortfolioItem => Boolean(p)
-      ),
-    [portfolios]
-  );
-
   const latest = useMemo(
     () =>
       [...portfolios]
         .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
-        .filter((p) => !FEATURED_SLUGS.includes(p.slug))
         .slice(0, LATEST_COUNT),
     [portfolios]
   );
@@ -109,10 +99,6 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
                   ผู้ผลิตสื่ออิสระ · เชียงใหม่
                 </p>
               </div>
-              <p className="text-base md:text-lg text-muted leading-relaxed max-w-2xl">
-                ช่างภาพสารคดี ผู้กำกับภาพวิดีโอ และนักพัฒนาเว็บสื่อสังคม — ภาพถ่ายสารคดี
-                วิดีโอเชิงประเด็น เว็บไซต์อินเทอร์แอคทีฟ และสื่อแคมเปญขับเคลื่อนสังคม
-              </p>
 
               <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-1 w-full sm:w-auto">
                 <button
@@ -157,16 +143,6 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
 
       <div className="w-full bg-canvas">
         <div className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-14 flex flex-col gap-12 md:gap-16">
-          {/* ── Featured ── */}
-          {featured.length > 0 && (
-            <section aria-labelledby="featured-title" className="flex flex-col gap-4">
-              <h2 id="featured-title" className="text-xl md:text-2xl font-bold text-content tracking-tight">
-                ผลงานแนะนำ
-              </h2>
-              <MarketplaceGrid items={featured} viewMode="list" onQuickView={openQuickView} />
-            </section>
-          )}
-
           {/* ── Latest ── */}
           <section aria-labelledby="latest-title" className="flex flex-col gap-4">
             <div className="flex items-end justify-between gap-4">
