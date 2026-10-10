@@ -88,6 +88,7 @@ export function generatePersonSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${siteConfig.url}/#person`,
     name: siteConfig.authorTh,
     alternateName: siteConfig.author,
     url: siteConfig.url,
@@ -124,16 +125,14 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteConfig.url}/#organization`,
     name: siteConfig.titleTh,
     alternateName: siteConfig.title,
     url: siteConfig.url,
     logo: `${siteConfig.url}/logo/logo-1.svg`,
     image: `${siteConfig.url}/image/social-thumbnail.jpg`,
     description: siteConfig.descriptionTh,
-    founder: {
-      "@type": "Person",
-      name: siteConfig.authorTh,
-    },
+    founder: { "@id": `${siteConfig.url}/#person` },
     contactPoint: {
       "@type": "ContactPoint",
       telephone: siteConfig.social.phone,
@@ -159,15 +158,13 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${siteConfig.url}/#website`,
     name: siteConfig.titleTh,
     alternateName: siteConfig.title,
     url: siteConfig.url,
     description: siteConfig.descriptionTh,
     inLanguage: "th-TH",
-    publisher: {
-      "@type": "Person",
-      name: siteConfig.authorTh,
-    },
+    publisher: { "@id": `${siteConfig.url}/#person` },
   };
 }
 
@@ -182,19 +179,17 @@ export function generateCreativeWorkSchema(work: {
   return {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
+    "@id": `${work.url}#creativework`,
     name: work.title,
     description: work.description,
     image: work.image,
     dateCreated: work.dateCreated,
-    creator: {
-      "@type": "Person",
-      name: siteConfig.authorTh,
-    },
+    creator: { "@id": `${siteConfig.url}/#person`, "@type": "Person", name: siteConfig.authorTh },
+    author: { "@id": `${siteConfig.url}/#person` },
     genre: work.category,
     url: work.url,
-    publisher: {
-      "@type": "Person",
-      name: siteConfig.authorTh,
-    },
+    mainEntityOfPage: work.url,
+    inLanguage: "th-TH",
+    isPartOf: { "@id": `${siteConfig.url}/#website` },
   };
 }

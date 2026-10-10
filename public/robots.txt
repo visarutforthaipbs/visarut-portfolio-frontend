@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.env
 
 # AI Crawlers & Search Engines (GEO)
 User-agent: GPTBot
@@ -8,16 +11,22 @@ Allow: /
 User-agent: ChatGPT-User
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-SearchBot
+Allow: /
+
 User-agent: Google-Extended
 Allow: /
 
-# Social Media Preview Bots
+# Search engines & social media preview bots
 User-agent: Googlebot
 Allow: /
 
@@ -38,8 +47,3 @@ Allow: /
 
 # Sitemap
 Sitemap: https://www.sankham.cv/sitemap.xml
-
-# Disallow admin areas
-Disallow: /admin/
-Disallow: /private/
-Disallow: /.env
