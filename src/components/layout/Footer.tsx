@@ -1,46 +1,40 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/config";
 
+const linkClass =
+  "inline-flex items-center min-h-[32px] px-1.5 -mx-1.5 rounded-md text-sm text-dim hover:text-content transition-colors duration-150";
+
 export function Footer() {
+  const links = [
+    { href: `mailto:${siteConfig.social.email}`, label: "อีเมล", external: false },
+    { href: siteConfig.social.instagram, label: "Instagram", external: true },
+    { href: siteConfig.social.facebook, label: "Facebook", external: true },
+    { href: siteConfig.social.linkedin, label: "LinkedIn", external: true },
+  ].filter((l): l is { href: string; label: string; external: boolean } => Boolean(l.href));
+
   return (
     <footer
       role="contentinfo"
-      className="mt-auto flex justify-center w-full border-t border-edge bg-base"
+      className="mt-auto flex justify-center w-full border-t border-edge bg-canvas"
     >
       <div className="max-w-5xl w-full mx-auto px-5 md:px-6">
         <div className="flex justify-between items-center py-6 flex-wrap gap-3">
-          <span className="text-xs text-dim">
+          <span className="text-sm text-dim">
             © {new Date().getFullYear()} {siteConfig.authorTh}
           </span>
 
-          <div className="flex items-center gap-4">
-            <Link href={`mailto:${siteConfig.social.email}`}>
-              <span className="text-xs text-dim hover:text-content transition-colors duration-150">
-                Email
-              </span>
-            </Link>
-            {siteConfig.social.instagram && (
-              <Link href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer">
-                <span className="text-xs text-dim hover:text-content transition-colors duration-150">
-                  Instagram
-                </span>
+          <nav aria-label="ช่องทางติดต่อ" className="flex items-center gap-5">
+            {links.map((l) => (
+              <Link
+                key={l.label}
+                href={l.href}
+                className={linkClass}
+                {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {l.label}
               </Link>
-            )}
-            {siteConfig.social.facebook && (
-              <Link href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer">
-                <span className="text-xs text-dim hover:text-content transition-colors duration-150">
-                  Facebook
-                </span>
-              </Link>
-            )}
-            {siteConfig.social.linkedin && (
-              <Link href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">
-                <span className="text-xs text-dim hover:text-content transition-colors duration-150">
-                  LinkedIn
-                </span>
-              </Link>
-            )}
-          </div>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

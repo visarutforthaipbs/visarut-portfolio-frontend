@@ -17,6 +17,8 @@ interface MarketplaceSearchBarProps {
   hasAdditionalFilters?: boolean;
   additionalFilterLabel?: string;
   onClearAdditionalFilters?: () => void;
+  /** Hide the category chip row at ≥ lg (when a sidebar already offers categories). */
+  hidePillsOnDesktop?: boolean;
 }
 
 export function MarketplaceSearchBar({
@@ -33,6 +35,7 @@ export function MarketplaceSearchBar({
   hasAdditionalFilters = false,
   additionalFilterLabel,
   onClearAdditionalFilters,
+  hidePillsOnDesktop = false,
 }: MarketplaceSearchBarProps) {
   const categoryPills = [
     { value: "all", label: "ทั้งหมด" },
@@ -43,7 +46,7 @@ export function MarketplaceSearchBar({
   ];
 
   return (
-    <div className="w-full flex flex-col gap-3.5 sm:gap-4 bg-surface/60 backdrop-blur-md p-3.5 sm:p-5 rounded-2xl border border-edge/60 shadow-sm transition-all">
+    <div className="w-full flex flex-col gap-3.5 sm:gap-4 bg-surface/60 p-3.5 sm:p-5 rounded-2xl border border-edge/60 shadow-sm transition-all">
       {/* Top row: Search input + Controls (Mobile-First stack) */}
       <div className="flex flex-col md:flex-row items-center gap-3 w-full">
         {/* Search input (16px text on mobile prevents iOS auto-zoom) */}
@@ -60,7 +63,7 @@ export function MarketplaceSearchBar({
             placeholder="ค้นหาผลงาน หัวข้อ ชื่องาน หรือองค์กร..."
             aria-label="ค้นหาผลงาน"
             aria-keyshortcuts="Control+K Meta+K /"
-            className="w-full pl-10 pr-9 py-2.5 sm:py-2.5 bg-base border border-edge/80 rounded-xl text-base sm:text-sm text-content placeholder:text-dim focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all min-h-[44px]"
+            className="w-full pl-10 pr-9 py-2.5 sm:py-2.5 bg-canvas border border-edge/80 rounded-xl text-base sm:text-sm text-content placeholder:text-dim focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all min-h-[44px]"
           />
           {searchQuery && (
             <button
@@ -79,7 +82,7 @@ export function MarketplaceSearchBar({
           {onToggleMobileSidebar && (
             <button
               onClick={onToggleMobileSidebar}
-              className="lg:hidden flex items-center justify-center gap-2 px-3.5 py-2.5 bg-base border border-edge rounded-xl text-xs font-semibold text-content hover:bg-surface transition-colors min-h-[44px] cursor-pointer"
+              className="lg:hidden flex items-center justify-center gap-2 px-3.5 py-2.5 bg-canvas border border-edge rounded-xl text-xs font-semibold text-content hover:bg-surface transition-colors min-h-[44px] cursor-pointer"
             >
               <Filter size={15} className="text-accent" />
               <span>ตัวกรอง</span>
@@ -93,7 +96,7 @@ export function MarketplaceSearchBar({
               aria-label="เรียงลำดับผลงาน"
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value)}
-              className="bg-base border border-edge/80 rounded-xl px-3 py-2.5 sm:py-2 text-xs font-medium text-content focus:outline-none focus:border-accent cursor-pointer transition-colors min-h-[44px]"
+              className="bg-canvas border border-edge/80 rounded-xl px-3 py-2.5 sm:py-2 text-xs font-medium text-content focus:outline-none focus:border-accent cursor-pointer transition-colors min-h-[44px]"
             >
               <option value="latest">ล่าสุด</option>
               <option value="oldest">เก่าสุด</option>
@@ -102,7 +105,7 @@ export function MarketplaceSearchBar({
           </div>
 
           {/* Grid / List View Toggle */}
-          <div className="flex items-center bg-base p-1 rounded-xl border border-edge/80 min-h-[44px]">
+          <div className="flex items-center bg-canvas p-1 rounded-xl border border-edge/80 min-h-[44px]">
             <button
               onClick={() => onViewModeChange("grid")}
               className={`p-2 rounded-lg transition-all min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer ${
@@ -134,7 +137,11 @@ export function MarketplaceSearchBar({
       </div>
 
       {/* Category Pills (Touch-optimized horizontal scrolling) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-1 border-t border-edge/40 min-h-[44px] -mx-3.5 px-3.5 sm:mx-0 sm:px-0">
+      <div
+        role="group"
+        aria-label="กรองตามหมวดหมู่"
+        className={`${hidePillsOnDesktop ? "lg:hidden " : ""}flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-1 border-t border-edge/40 min-h-[44px] -mx-3.5 px-3.5 sm:mx-0 sm:px-0 [mask-image:linear-gradient(to_right,black_calc(100%-2.5rem),transparent)]`}
+      >
         {categoryPills.map((pill) => {
           const isActive = selectedCategory === pill.value;
           return (
@@ -143,8 +150,8 @@ export function MarketplaceSearchBar({
               onClick={() => onCategorySelect(pill.value)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer min-h-[38px] flex items-center shrink-0 ${
                 isActive
-                  ? "bg-content text-base shadow-sm font-semibold scale-[1.02]"
-                  : "bg-base hover:bg-surface border border-edge/60 text-muted hover:text-content"
+                  ? "bg-brand-dim text-accent border border-accent/40"
+                  : "bg-canvas hover:bg-surface border border-edge/60 text-muted hover:text-content"
               }`}
               aria-pressed={isActive}
             >

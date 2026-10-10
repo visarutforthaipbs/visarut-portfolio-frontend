@@ -271,7 +271,7 @@ export function MarketplaceQuickViewModal({
       {/* Modal Container */}
       <div
         ref={modalContainerRef}
-        className="relative w-full max-w-5xl bg-base border border-edge rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 my-0 sm:my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] transition-all"
+        className="relative w-full max-w-5xl bg-canvas border border-edge rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 my-0 sm:my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] transition-all"
       >
         {/* Mobile Drag Handle */}
         <div className="sm:hidden w-full flex justify-center py-2 bg-surface/90 border-b border-edge/30 cursor-grab">
@@ -281,17 +281,17 @@ export function MarketplaceQuickViewModal({
         {/* Top Header Bar */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-edge/60 bg-surface/95 sticky top-0 z-20">
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0 pr-2">
-            <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-accent/15 text-accent font-semibold rounded-full text-[11px] sm:text-xs uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-brand/15 text-accent font-semibold rounded-full text-xs sm:text-xs uppercase tracking-wider">
               {categoryLabel}
             </span>
             {normalized.date && (
-              <span className="flex items-center gap-1 text-[11px] sm:text-xs text-dim">
+              <span className="flex items-center gap-1 text-xs sm:text-xs text-dim">
                 <Calendar size={13} />
                 {normalized.date}
               </span>
             )}
             {clientName && (
-              <span className="flex items-center gap-1 text-[11px] sm:text-xs text-accent font-medium bg-surface px-2 py-0.5 rounded-full border border-edge truncate max-w-[140px] sm:max-w-[200px]">
+              <span className="flex items-center gap-1 text-xs sm:text-xs text-accent font-medium bg-surface px-2 py-0.5 rounded-full border border-edge truncate max-w-[140px] sm:max-w-[200px]">
                 <Building2 size={12} />
                 <span className="truncate">{clientName}</span>
               </span>
@@ -308,12 +308,12 @@ export function MarketplaceQuickViewModal({
               {copied ? (
                 <>
                   <Check size={14} className="text-accent" />
-                  <span className="text-accent text-[11px]">คัดลอกลิงก์แล้ว!</span>
+                  <span className="text-accent text-xs">คัดลอกลิงก์แล้ว!</span>
                 </>
               ) : (
                 <>
                   <Share2 size={14} className="text-accent" />
-                  <span className="hidden sm:inline text-[11px]">แชร์ลิงก์</span>
+                  <span className="hidden sm:inline text-xs">แชร์ลิงก์</span>
                 </>
               )}
             </button>
@@ -407,7 +407,7 @@ export function MarketplaceQuickViewModal({
             <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full">
               <Link
                 href={`/contact?project=${encodeURIComponent(cleanTitle)}`}
-                className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-sm cursor-pointer min-h-[44px]"
+                className="w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-content text-canvas font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-sm cursor-pointer min-h-[44px]"
               >
                 <MessageSquare size={15} className="text-accent shrink-0" />
                 <span>สอบถามงานลักษณะนี้</span>
@@ -450,7 +450,7 @@ export function MarketplaceQuickViewModal({
 
             {normalized.specs.length > 0 && (
               <div className="flex flex-col gap-2.5 text-xs">
-                <span className="font-bold text-content flex items-center gap-1.5 uppercase tracking-wider text-[11px] text-accent">
+                <span className="font-bold text-content flex items-center gap-1.5 uppercase tracking-wider text-xs text-accent">
                   <Sparkles size={14} />
                   <span>ข้อมูลและรายละเอียดเชิงลึก</span>
                 </span>

@@ -111,7 +111,7 @@ export function MarketplaceSidebar({
           </div>
           <div>
             <h3 className="text-sm font-bold text-content leading-tight">วิศรุต แสนคำ</h3>
-            <span className="text-[11px] text-accent font-semibold">ผู้ผลิตสื่ออิสระ</span>
+            <span className="text-xs text-accent font-semibold">ผู้ผลิตสื่ออิสระ</span>
           </div>
         </div>
 
@@ -119,14 +119,14 @@ export function MarketplaceSidebar({
         <div className="flex items-center gap-2">
           <a
             href="mailto:visarut298@gmail.com"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 bg-base hover:bg-surface border border-edge rounded-xl text-[11px] font-semibold text-content transition-colors min-h-[38px]"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 bg-canvas hover:bg-surface border border-edge rounded-xl text-xs font-semibold text-content transition-colors min-h-[38px]"
           >
             <Mail size={13} className="text-accent" />
             <span>อีเมล</span>
           </a>
           <a
             href="tel:+66627283058"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 bg-base hover:bg-surface border border-edge rounded-xl text-[11px] font-semibold text-content transition-colors min-h-[38px]"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 bg-canvas hover:bg-surface border border-edge rounded-xl text-xs font-semibold text-content transition-colors min-h-[38px]"
           >
             <Phone size={13} className="text-accent" />
             <span>โทรศัพท์</span>
@@ -137,7 +137,7 @@ export function MarketplaceSidebar({
         {onOpenContactModal && (
           <button
             onClick={() => { onCloseMobile?.(); onOpenContactModal(); }}
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer min-h-[40px]"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-content text-canvas font-semibold rounded-xl text-xs hover:opacity-90 transition-all shadow-xs cursor-pointer min-h-[40px]"
           >
             <Send size={13} className="text-accent" />
             <span>ส่งข้อความติดต่องาน</span>
@@ -147,8 +147,8 @@ export function MarketplaceSidebar({
 
       {/* ── 2. CATEGORY NAVIGATION ── */}
       <div className="flex flex-col gap-1.5">
-        <span className="text-[11px] font-bold text-dim uppercase tracking-wider px-2">
-          หมวดหมู่สื่อ &amp; ผลงาน
+        <span className="text-xs font-bold text-dim uppercase tracking-wider px-2">
+          หมวดหมู่ผลงาน
         </span>
 
         {categoriesList.map((cat) => {
@@ -165,7 +165,7 @@ export function MarketplaceSidebar({
               }}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                 isSelected
-                  ? "bg-accent/15 text-accent font-semibold border border-accent/30 shadow-2xs"
+                  ? "bg-brand/15 text-accent font-semibold border border-accent/30 shadow-2xs"
                   : "text-muted hover:text-content hover:bg-surface"
               }`}
             >
@@ -175,8 +175,8 @@ export function MarketplaceSidebar({
               </span>
               {count !== undefined && (
                 <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    isSelected ? "bg-accent text-white font-bold" : "bg-surface text-dim font-medium"
+                  className={`text-xs px-2 py-0.5 rounded-full ${
+                    isSelected ? "bg-brand text-on-brand font-bold" : "bg-surface text-dim font-medium"
                   }`}
                 >
                   {count}
@@ -189,9 +189,9 @@ export function MarketplaceSidebar({
 
       {/* ── 3. ORGANIZATION FILTER (FUZZY MATCHED) ── */}
       <div className="flex flex-col gap-2 pt-3 border-t border-edge/60">
-        <span className="text-[11px] font-bold text-dim uppercase tracking-wider px-2 flex items-center gap-1.5">
+        <span className="text-xs font-bold text-dim uppercase tracking-wider px-2 flex items-center gap-1.5">
           <Building2 size={13} />
-          <span>กรองตามองค์กร / โครงการ</span>
+          <span>องค์กร / โครงการ</span>
         </span>
         <div className="flex flex-col gap-1">
           {ORGANIZATIONS.map((org) => {
@@ -214,7 +214,7 @@ export function MarketplaceSidebar({
                 <span>{org.label}</span>
                 <div className="flex items-center gap-1.5">
                   {count !== undefined && count > 0 && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-surface text-dim">
+                    <span className="text-xs px-1.5 py-0.5 rounded-full bg-surface text-dim">
                       {count}
                     </span>
                   )}
@@ -230,11 +230,12 @@ export function MarketplaceSidebar({
       <div className="flex flex-col gap-2 pt-3 border-t border-edge/60">
         <button
           onClick={() => setShowExperience(!showExperience)}
-          className="w-full flex items-center justify-between px-2 text-[11px] font-bold text-dim uppercase tracking-wider cursor-pointer hover:text-content"
+          className="w-full flex items-center justify-between px-2 min-h-[36px] rounded-lg text-xs font-bold text-dim uppercase tracking-wider cursor-pointer hover:text-content hover:bg-surface transition-colors"
+          aria-expanded={showExperience}
         >
           <span className="flex items-center gap-1.5">
             <Briefcase size={13} />
-            <span>ประวัติการทำงาน (Experience)</span>
+            <span>ประวัติการทำงาน</span>
           </span>
           {showExperience ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
@@ -245,9 +246,9 @@ export function MarketplaceSidebar({
               <div key={idx} className="p-2.5 bg-surface/40 rounded-xl border border-edge/40 text-xs">
                 <div className="flex items-center justify-between font-semibold text-content">
                   <span>{job.company}</span>
-                  <span className="text-[10px] text-accent">{job.year}</span>
+                  <span className="text-xs text-accent">{job.year}</span>
                 </div>
-                <div className="text-[11px] text-dim">{job.position}</div>
+                <div className="text-xs text-dim">{job.position}</div>
               </div>
             ))}
           </div>
@@ -258,11 +259,12 @@ export function MarketplaceSidebar({
       <div className="flex flex-col gap-2 pt-3 border-t border-edge/60">
         <button
           onClick={() => setShowAwards(!showAwards)}
-          className="w-full flex items-center justify-between px-2 text-[11px] font-bold text-dim uppercase tracking-wider cursor-pointer hover:text-content"
+          className="w-full flex items-center justify-between px-2 min-h-[36px] rounded-lg text-xs font-bold text-dim uppercase tracking-wider cursor-pointer hover:text-content hover:bg-surface transition-colors"
+          aria-expanded={showAwards}
         >
           <span className="flex items-center gap-1.5">
             <Award size={13} />
-            <span>รางวัล (Awards)</span>
+            <span>รางวัล</span>
           </span>
           {showAwards ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
@@ -272,7 +274,7 @@ export function MarketplaceSidebar({
             {awards.map((award, idx) => (
               <div key={idx} className="p-2.5 bg-surface/40 rounded-xl border border-edge/40 text-xs">
                 <div className="font-semibold text-content">{award.title}</div>
-                <div className="text-[11px] text-dim">{award.organization} ({award.year})</div>
+                <div className="text-xs text-dim">{award.organization} ({award.year})</div>
               </div>
             ))}
           </div>
@@ -342,7 +344,7 @@ export function MarketplaceSidebar({
             onClick={onCloseMobile}
             aria-hidden="true"
           />
-          <aside className="relative ml-auto w-4/5 max-w-xs bg-base border-l border-edge p-5 h-full overflow-y-auto shadow-2xl z-10">
+          <aside className="relative ml-auto w-4/5 max-w-xs bg-canvas border-l border-edge p-5 h-full overflow-y-auto shadow-2xl z-10">
             <div className="flex items-center justify-between pb-3 border-b border-edge/60 mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-content">ตัวกรอง &amp; ข้อมูล</span>
               <button

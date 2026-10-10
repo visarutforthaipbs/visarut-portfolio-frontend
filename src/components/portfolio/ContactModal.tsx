@@ -94,7 +94,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-lg bg-base border border-edge rounded-3xl shadow-2xl overflow-hidden z-10 my-auto p-6 md:p-8 flex flex-col gap-6">
+      <div className="relative w-full max-w-lg bg-canvas border border-edge rounded-3xl shadow-2xl overflow-hidden z-10 my-auto p-6 md:p-8 flex flex-col gap-6">
         <div className="flex items-center justify-between pb-3 border-b border-edge/60">
           <div>
             <h3 id="contact-modal-title" className="text-lg font-bold text-content leading-tight">ติดต่องาน &amp; สอบถาม</h3>
@@ -111,7 +111,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
         {submitStatus === "success" ? (
           <div className="py-8 text-center flex flex-col items-center gap-3">
-            <div className="p-3 bg-green-500/10 text-green-500 rounded-full">
+            <div className="p-3 bg-green-500/10 text-accent rounded-full">
               <CheckCircle2 size={32} />
             </div>
             <h4 className="text-base font-bold text-content">ส่งข้อความสำเร็จ!</h4>
@@ -201,7 +201,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 px-4 bg-content text-base font-semibold rounded-xl text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm disabled:opacity-50 mt-1"
+              className="w-full py-3 px-4 bg-content text-canvas font-semibold rounded-xl text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm disabled:opacity-50 mt-1"
             >
               <Send size={14} />
               <span>{isSubmitting ? "กำลังส่งข้อความ..." : "ส่งข้อความ"}</span>

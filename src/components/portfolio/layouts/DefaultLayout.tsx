@@ -81,7 +81,7 @@ export function DefaultLayout({
                   </p>
                 )}
 
-                <span className="bg-accent-dim text-accent px-2 py-1 rounded-md text-xs">
+                <span className="bg-brand-dim text-accent px-2 py-1 rounded-md text-xs">
                   {categoryName}
                 </span>
               </div>

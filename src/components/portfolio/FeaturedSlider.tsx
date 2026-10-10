@@ -55,7 +55,7 @@ export function FeaturedSlider({ items }: FeaturedSliderProps) {
       role="region"
       aria-label="ผลงานแนะนำ"
       aria-roledescription="carousel"
-      className="w-full bg-base relative overflow-hidden"
+      className="w-full bg-canvas relative overflow-hidden"
     >
       {/* Embla viewport */}
       <div ref={emblaRef} className="overflow-hidden">

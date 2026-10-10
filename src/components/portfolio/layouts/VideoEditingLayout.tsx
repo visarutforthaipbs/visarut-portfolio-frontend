@@ -97,7 +97,7 @@ export function VideoEditingLayout({
 
               <Link
                 href={`/portfolio/${portfolio.slug}`}
-                className="inline-block text-center text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-accent hover:text-white transition-colors"
+                className="inline-block text-center text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-brand hover:text-on-brand transition-colors"
               >
                 ดูผลงาน
               </Link>

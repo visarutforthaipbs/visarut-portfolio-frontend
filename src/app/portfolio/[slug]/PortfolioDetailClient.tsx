@@ -46,10 +46,8 @@ export default function PortfolioDetailClient({
               <p className="text-sm text-muted">
                 ไม่พบผลงาน
               </p>
-              <Link href="/portfolio">
-                <span className="text-sm text-dim hover:text-content transition-colors">
-                  ← กลับไปผลงาน
-                </span>
+              <Link href="/portfolio" className="inline-flex items-center justify-center min-h-[44px] px-4 rounded-xl text-sm text-dim hover:text-content hover:bg-surface transition-colors">
+                ← กลับไปผลงาน
               </Link>
             </div>
           </div>
@@ -63,19 +61,19 @@ export default function PortfolioDetailClient({
   return (
     <Layout>
       {/* Hero */}
-      <article className="bg-base py-20 md:py-28 flex justify-center w-full">
+      <article className="bg-canvas py-20 md:py-28 flex justify-center w-full">
         <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
           <div className="flex flex-col gap-6 items-start">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-xs text-dim">
-              <Link href="/portfolio">
-                <span className="hover:text-content transition-colors duration-150">
-                  ผลงาน
-                </span>
+            <nav aria-label="เส้นทางหน้า" className="flex items-center gap-1 text-sm text-dim">
+              <Link href="/portfolio" className="inline-flex items-center min-h-[32px] px-1.5 -ml-1.5 rounded-md hover:text-content hover:bg-surface transition-colors duration-150">
+                ผลงาน
               </Link>
-              <span>/</span>
-              <span>{PORTFOLIO_CATEGORIES[portfolio.category]}</span>
-            </div>
+              <span aria-hidden="true">/</span>
+              <Link href={`/portfolio/category/${portfolio.category}`} className="inline-flex items-center min-h-[32px] px-1.5 rounded-md hover:text-content hover:bg-surface transition-colors duration-150" aria-current="location">
+                {PORTFOLIO_CATEGORIES[portfolio.category]}
+              </Link>
+            </nav>
 
             {/* Title & Meta */}
             <div className="flex flex-col gap-3 items-start w-full">
@@ -83,8 +81,8 @@ export default function PortfolioDetailClient({
                 {portfolio.title.rendered}
               </h1>
 
-              <div className="flex items-center gap-3 text-xs text-dim">
-                <span className="uppercase tracking-widest">
+              <div className="flex items-center gap-3 text-sm text-dim">
+                <span>
                   {PORTFOLIO_CATEGORIES[portfolio.category]}
                 </span>
                 <span>·</span>
@@ -117,12 +115,12 @@ export default function PortfolioDetailClient({
       </article>
 
       {/* Divider */}
-      <div className="w-full flex justify-center bg-base">
+      <div className="w-full flex justify-center bg-canvas">
         <div className="w-[60px] h-px bg-edge" />
       </div>
 
       {/* Content */}
-      <div className="bg-base py-16 md:py-24 flex justify-center w-full">
+      <div className="bg-canvas py-16 md:py-24 flex justify-center w-full">
         <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
           <div className="flex flex-col gap-12 items-start [&_.wordpress-content]:w-full [&_.wordpress-content]:flex [&_.wordpress-content]:flex-wrap [&_.wordpress-content]:gap-4 [&_.wordpress-content]:justify-center [&_.wordpress-content]:items-start [&_.wordpress-content>p:empty]:hidden [&_iframe]:max-w-full [&_iframe]:rounded-lg [&_.blog-content]:w-full">
             {/* ACF Project Details */}
@@ -145,22 +143,18 @@ export default function PortfolioDetailClient({
       </div>
 
       {/* Bottom Nav */}
-      <div className="w-full flex justify-center bg-base">
+      <div className="w-full flex justify-center bg-canvas">
         <div className="w-[60px] h-px bg-edge" />
       </div>
 
-      <div className="bg-base py-12 md:py-16 flex justify-center w-full">
+      <div className="bg-canvas py-12 md:py-16 flex justify-center w-full">
         <div className="max-w-3xl mx-auto px-5 md:px-6 w-full">
           <div className="flex items-center gap-6 justify-center">
-            <Link href="/portfolio">
-              <span className="text-sm text-dim hover:text-content transition-colors duration-150">
-                ← ผลงานทั้งหมด
-              </span>
+            <Link href="/portfolio" className="inline-flex items-center min-h-[36px] px-2 rounded-lg text-sm text-dim hover:text-content hover:bg-surface transition-colors duration-150">
+              ← ผลงานทั้งหมด
             </Link>
-            <Link href={`/portfolio/category/${portfolio.category}`}>
-              <span className="text-sm text-dim hover:text-content transition-colors duration-150">
-                {PORTFOLIO_CATEGORIES[portfolio.category]} →
-              </span>
+            <Link href={`/portfolio/category/${portfolio.category}`} className="inline-flex items-center min-h-[36px] px-2 rounded-lg text-sm text-dim hover:text-content hover:bg-surface transition-colors duration-150">
+              {PORTFOLIO_CATEGORIES[portfolio.category]} →
             </Link>
           </div>
         </div>

@@ -120,7 +120,7 @@ export default async function CategoryPage({
                   {categoryName}
                 </h1>
                 <div className="flex items-center gap-4">
-                  <span className="bg-accent-dim text-accent font-semibold px-3 py-1 rounded-full text-sm">
+                  <span className="bg-brand-dim text-accent font-semibold px-3 py-1 rounded-full text-sm">
                     {portfolios.length} ผลงาน
                   </span>
                 </div>

@@ -17,7 +17,7 @@ const CTAButton = () => (
     href="https://docs.google.com/forms/d/e/1FAIpQLSdxdTy2w99szZgmk6yvfiVkE4PZSv6N7-ofgFX8n3AZ3C5VlA/viewform"
     target="_blank"
     rel="noopener noreferrer"
-    className="inline-block bg-accent text-base hover:bg-[#d97706] hover:-translate-y-0.5 hover:shadow-lg active:bg-[#c2680a] active:translate-y-0 transition-all duration-200 px-8 py-3 text-base md:text-lg font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-accent"
+    className="inline-block bg-brand text-on-brand hover:bg-signal hover:-translate-y-0.5 hover:shadow-lg active:bg-signal active:translate-y-0 transition-all duration-200 px-8 py-3 text-base md:text-lg font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-accent"
   >
     โหลด Preset ได้ที่นี่
   </a>
@@ -207,14 +207,14 @@ export default function PersonalProjectsPage() {
                 href="https://www.facebook.com/profile.php?id=100068235085612"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-accent text-base hover:bg-[#d97706] hover:-translate-y-px transition-all duration-200 px-4 py-2 text-sm md:text-base rounded-md w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 bg-brand text-on-brand hover:bg-signal hover:-translate-y-px transition-all duration-200 px-4 py-2 text-sm md:text-base rounded-md w-full sm:w-auto justify-center"
               >
                 <span className="text-base md:text-lg"></span>
                 <span>ดูโปรไฟล์ Facebook ของตี่ต่าง</span>
               </a>
             </div>
 
-            <div className="bg-base p-4 rounded-md border-l-4 border-accent w-full">
+            <div className="bg-canvas p-4 rounded-md border-l-4 border-accent w-full">
               <p className="text-sm text-dim leading-[1.7] italic">
                 การทำงานร่วมกับคนในพื้นที่ช่วยให้เราเข้าถึงและเข้าใจความต้องการของชุมชนได้อย่างแท้จริง
                 และทำให้มั่นใจได้ว่าความช่วยเหลือไปถึงมือของผู้ที่ต้องการจริง ๆ
@@ -253,7 +253,7 @@ export default function PersonalProjectsPage() {
           >
             <div className="bg-surface p-5 md:p-6 rounded-lg border border-edge h-full transition-all duration-200 md:hover:-translate-y-1 hover:bg-surface-hover hover:border-accent">
               <div className="flex flex-col gap-3 items-start">
-                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full text-xs">
+                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full text-xs">
                   ข่าว
                 </span>
                 <h3 className="text-lg md:text-xl font-semibold text-content leading-[1.4]">
@@ -279,7 +279,7 @@ export default function PersonalProjectsPage() {
           >
             <div className="bg-surface p-5 md:p-6 rounded-lg border border-edge h-full transition-all duration-200 md:hover:-translate-y-1 hover:bg-surface-hover hover:border-accent">
               <div className="flex flex-col gap-3 items-start">
-                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full text-xs">
+                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full text-xs">
                   บทความ
                 </span>
                 <h3 className="text-lg md:text-xl font-semibold text-content leading-[1.4]">
@@ -308,7 +308,7 @@ export default function PersonalProjectsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="bg-base py-16 md:py-20 w-full flex justify-center">
+      <div className="bg-canvas py-16 md:py-20 w-full flex justify-center">
         <div className="max-w-[1200px] px-4 md:px-8 w-full">
           <div className="flex flex-col gap-12 items-center w-full">
             {/* #PHOTOFORAIR Project */}

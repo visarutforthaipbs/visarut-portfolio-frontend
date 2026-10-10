@@ -98,7 +98,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           {photoACF.photography_style && (
             <div className="flex flex-col items-start gap-2 w-full">
               <span className="text-sm font-semibold text-accent">รูปแบบการถ่ายภาพ</span>
-              <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">{photoACF.photography_style}</span>
+              <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">{photoACF.photography_style}</span>
             </div>
           )}
 
@@ -128,7 +128,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   <Film size={18} />
                   <span className="text-sm font-semibold">ประเภทวีดีโอ</span>
                 </div>
-                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">
+                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">
                   {videoACF.video_type === "documentary" ? "สารคดี"
                     : videoACF.video_type === "commercial" ? "โฆษณา"
                     : videoACF.video_type === "music-video" ? "มิวสิควิดีโอ"
@@ -189,7 +189,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="bg-accent rounded-full p-2 text-base">
+                  <div className="bg-brand rounded-full p-2 text-on-brand">
                     <Play size={16} fill="white" />
                   </div>
                   <div className="flex flex-col items-start gap-1">
@@ -242,7 +242,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   <User size={18} />
                   <span className="text-sm font-semibold">ประเภทเว็บไซต์</span>
                 </div>
-                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">
+                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">
                   {webACF.website_type === "web_app" ? "Web Application"
                     : webACF.website_type === "website" ? "Website"
                     : webACF.website_type === "ecommerce" ? "E-commerce"
@@ -277,7 +277,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                 className="bg-surface border-2 border-edge rounded-lg p-4 w-full cursor-pointer hover:border-accent hover:bg-surface-hover hover:-translate-y-0.5 transition-all duration-200 block"
               >
                 <div className="flex items-center gap-3">
-                  <div className="bg-accent rounded-full p-2 text-base">
+                  <div className="bg-brand rounded-full p-2 text-on-brand">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                       <polyline points="15 3 21 3 21 9" />
@@ -298,7 +298,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <span className="text-sm font-semibold text-accent">เทคโนโลยีที่ใช้</span>
               <div className="flex items-center gap-2 flex-wrap">
                 {webACF.technologies_used.split(",").map((tech: string, index: number) => (
-                  <span key={index} className="bg-accent-dim text-accent px-3 py-1 rounded-full">{tech.trim()}</span>
+                  <span key={index} className="bg-brand-dim text-accent px-3 py-1 rounded-full">{tech.trim()}</span>
                 ))}
               </div>
             </div>
@@ -352,7 +352,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   <User size={18} />
                   <span className="text-sm font-semibold">ประเภทงานออกแบบ</span>
                 </div>
-                <span className="bg-accent-dim text-accent px-3 py-1 rounded-full">
+                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">
                   {designACF.design_type === "social_media" ? "Social Media"
                     : designACF.design_type === "logo" ? "Logo"
                     : designACF.design_type === "branding" ? "Branding"

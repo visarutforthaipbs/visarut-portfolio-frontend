@@ -102,7 +102,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
   return (
     <Layout>
       {cognitiveCost && <AttentionProgressBar cost={cognitiveCost} />}
-      <article className="bg-base py-12 md:py-28 flex justify-center w-full">
+      <article className="bg-canvas py-12 md:py-28 flex justify-center w-full">
         <div className="max-w-3xl mx-auto px-4 md:px-6 w-full overflow-hidden">
           <div className="flex flex-col gap-6 md:gap-8">
             {/* Back */}

@@ -54,7 +54,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
   return (
     <Layout>
       <section
-        className="bg-base flex justify-center w-full px-5 py-14 md:px-6 md:py-20"
+        className="bg-canvas flex justify-center w-full px-5 py-14 md:px-6 md:py-20"
         role="region"
         aria-label="ติดต่อ"
       >
@@ -71,7 +71,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
       </section>
 
       <section
-        className="bg-base flex justify-center w-full px-5 pb-16 md:px-6 md:pb-24"
+        className="bg-canvas flex justify-center w-full px-5 pb-16 md:px-6 md:pb-24"
         role="region"
         aria-label="ส่งข้อความ"
       >
@@ -88,7 +88,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
 
             {submitStatus === "success" && (
               <div role="alert" aria-live="polite">
-                <span className="text-sm text-green-500">
+                <span className="text-sm text-accent">
                   ส่งข้อความสำเร็จ เราจะติดต่อกลับโดยเร็ว
                 </span>
               </div>
@@ -185,7 +185,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group inline-flex cursor-pointer items-center gap-2 border-b border-content pb-1 text-sm font-medium text-content transition-colors hover:text-muted hover:border-muted disabled:cursor-not-allowed disabled:opacity-50"
+                    className="group inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-xl bg-content px-6 py-3 text-sm font-semibold text-canvas shadow-xs transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</span>
                     <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />

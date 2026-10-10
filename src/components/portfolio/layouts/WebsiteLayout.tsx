@@ -51,7 +51,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
               </div>
 
               {/* Website Badge */}
-              <span className="absolute top-3 right-3 bg-accent text-[#1A1B2E] font-semibold px-2 py-1 rounded-md text-xs">
+              <span className="absolute top-3 right-3 bg-brand text-on-brand font-semibold px-2 py-1 rounded-md text-xs">
                 WEBSITE
               </span>
             </div>
@@ -83,7 +83,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
               <div className="flex items-center gap-2 w-full">
                 <Link
                   href={`/portfolio/${portfolio.slug}`}
-                  className="text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-accent hover:text-[#1A1B2E] font-medium transition-colors"
+                  className="text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-brand hover:text-on-brand font-medium transition-colors"
                 >
                   ดูรายละเอียด
                 </Link>
@@ -96,7 +96,7 @@ export function WebsiteLayout({ portfolios, loading }: WebsiteLayoutProps) {
                       href={portfolio.acf.website_url as string}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm bg-accent text-[#1A1B2E] font-semibold px-4 py-2 rounded-md hover:bg-signal transition-colors flex items-center gap-1"
+                      className="text-sm bg-brand text-on-brand font-semibold px-4 py-2 rounded-md hover:bg-signal transition-colors flex items-center gap-1"
                     >
                       <ExternalLink size={14} />
                       <span>ดูเว็บไซต์</span>

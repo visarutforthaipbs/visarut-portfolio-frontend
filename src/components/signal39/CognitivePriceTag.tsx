@@ -20,7 +20,7 @@ export default function CognitivePriceTag({ cost }: CognitivePriceTagProps) {
         strokeWidth={1.5}
         aria-hidden="true"
       />
-      <span className="text-[11px] md:text-sm text-muted whitespace-normal">
+      <span className="text-xs md:text-sm text-muted whitespace-normal">
         เวลาอ่าน {readingMinutes} นาที · คิดเป็น {cost.percentageOfDaily}% ของต้นทุนความสนใจที่มีต่อวัน ({cost.kbCost}/184 KB)
       </span>
     </div>
