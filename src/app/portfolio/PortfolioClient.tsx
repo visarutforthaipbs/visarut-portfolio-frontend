@@ -97,15 +97,15 @@ export default function PortfolioClient({
     <Layout>
       {/* Header Banner */}
       <section
-        className="bg-base py-12 md:py-16 border-b border-edge/60"
+        className="bg-canvas py-12 md:py-16 border-b border-edge/60"
         role="region"
         aria-label="หัวข้อผลงาน"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-widest text-accent mb-2 block">
-                Creative Catalog &amp; Works Archive
+              <span className="text-sm font-semibold text-accent mb-2 block">
+                คลังผลงาน
               </span>
               <h1 className="text-3xl md:text-5xl font-bold text-content tracking-tight">
                 คลังผลงานทั้งหมด
@@ -125,7 +125,7 @@ export default function PortfolioClient({
 
       {/* Main Marketplace Area */}
       <section
-        className="bg-base py-8 md:py-12 min-h-screen"
+        className="bg-canvas py-8 md:py-12 min-h-screen"
         role="region"
         aria-label="แคตตาล็อกผลงาน"
       >
@@ -165,6 +165,7 @@ export default function PortfolioClient({
                 hasAdditionalFilters={selectedOrg !== "all"}
                 additionalFilterLabel={selectedOrg === "all" ? undefined : ORGANIZATIONS.find(org => org.id === selectedOrg)?.label}
                 onClearAdditionalFilters={() => { setSelectedOrg("all"); setCurrentPage(1); }}
+                hidePillsOnDesktop
               />
 
               {error && <div role="alert">โหลดข้อมูลล่าสุดไม่สำเร็จ <button onClick={retry} className="underline min-h-[44px]">ลองอีกครั้ง</button></div>}

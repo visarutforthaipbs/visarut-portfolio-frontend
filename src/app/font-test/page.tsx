@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout";
 export default function FontTestPage() {
   return (
     <Layout>
-      <div className="py-16 bg-base">
+      <div className="py-16 bg-canvas">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-col items-start gap-8">
             <h1 className="text-3xl mb-4 text-content font-bold">

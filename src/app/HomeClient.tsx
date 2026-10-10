@@ -1,51 +1,36 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { ArrowRight, Mail, Phone, Send } from "lucide-react";
 import { Layout } from "@/components/layout";
-import { MarketplaceSearchBar } from "@/components/portfolio/MarketplaceSearchBar";
-import { MarketplaceSidebar, ORGANIZATIONS } from "@/components/portfolio/MarketplaceSidebar";
 import { MarketplaceGrid } from "@/components/portfolio/MarketplaceGrid";
 import { MarketplaceQuickViewModal } from "@/components/portfolio/MarketplaceQuickViewModal";
 import { ContactModal } from "@/components/portfolio/ContactModal";
 import { JsonLd } from "@/components/JsonLd";
-import { usePortfolios } from "@/hooks/useWordPress";
+import { siteConfig } from "@/lib/config";
 import type { PortfolioItem } from "@/types/portfolio";
-import { AlertCircle, MessageSquare } from "lucide-react";
 
 interface HomeClientProps {
-  initialBlogPosts?: unknown[];
-  featuredPortfolios: PortfolioItem[];
+  portfolios: PortfolioItem[];
 }
 
-import { matchOrganization } from "@/lib/portfolioOrganization";
+const FEATURED_SLUGS = ["livingriversiam", "migrantmother", "titang-2024"];
+const LATEST_COUNT = 9;
 
-export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedOrg, setSelectedOrg] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [sortBy, setSortBy] = useState<string>("latest");
+export default function HomeClient({ portfolios }: HomeClientProps) {
   const [activeQuickView, setActiveQuickView] = useState<PortfolioItem | null>(null);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  const { portfolios, loading, error, hasLoaded, retry } = usePortfolios({ all: true });
-
-  const sourcePortfolios =
-    hasLoaded ? portfolios : featuredPortfolios;
-
+  // Shared links (`/?item=slug`) still open the quick view; keep Back/Forward in sync.
   const syncQuickViewFromUrl = useCallback(() => {
-    if (typeof window === "undefined" || sourcePortfolios.length === 0) return;
-
+    if (typeof window === "undefined" || portfolios.length === 0) return;
     const itemSlug = new URL(window.location.href).searchParams.get("item");
     setActiveQuickView(
-      itemSlug
-        ? sourcePortfolios.find((portfolio) => portfolio.slug === itemSlug) || null
-        : null
+      itemSlug ? portfolios.find((portfolio) => portfolio.slug === itemSlug) || null : null
     );
-  }, [sourcePortfolios]);
+  }, [portfolios]);
 
-  // Open shared project links and keep Back/Forward navigation in sync.
   useEffect(() => {
     syncQuickViewFromUrl();
     window.addEventListener("popstate", syncQuickViewFromUrl);
@@ -64,201 +49,163 @@ export default function HomeClient({ featuredPortfolios }: HomeClientProps) {
       window.history.back();
       return;
     }
-
     const url = new URL(window.location.href);
     url.searchParams.delete("item");
     window.history.replaceState(window.history.state, "", url);
     setActiveQuickView(null);
   };
 
-  // 3. Power-User Keyboard Shortcuts (Cmd+K / Ctrl+K / '/' to focus search)
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (document.querySelector('[role="dialog"]')) return;
-      const activeElement = document.activeElement;
-      const isTyping =
-        activeElement instanceof HTMLInputElement ||
-        activeElement instanceof HTMLTextAreaElement ||
-        activeElement instanceof HTMLSelectElement ||
-        activeElement?.getAttribute("contenteditable") === "true";
+  const featured = useMemo(
+    () =>
+      FEATURED_SLUGS.map((slug) => portfolios.find((p) => p.slug === slug)).filter(
+        (p): p is PortfolioItem => Boolean(p)
+      ),
+    [portfolios]
+  );
 
-      if (
-        ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") ||
-        (e.key === "/" && !isTyping)
-      ) {
-        e.preventDefault();
-        const inputEl = document.getElementById("portfolio-search") as HTMLInputElement | null;
-        if (inputEl) inputEl.focus();
-      }
-    };
-    window.addEventListener("keydown", handleGlobalKeyDown);
-    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
-  }, []);
+  const latest = useMemo(
+    () =>
+      [...portfolios]
+        .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+        .filter((p) => !FEATURED_SLUGS.includes(p.slug))
+        .slice(0, LATEST_COUNT),
+    [portfolios]
+  );
 
-  // Filter items by search query, category, fuzzy organization, and sort
-  const filteredPortfolios = useMemo(() => {
-    return sourcePortfolios
-      .filter((item) => {
-        // Category filter
-        if (selectedCategory !== "all" && item.category !== selectedCategory) {
-          return false;
-        }
-
-        // Fuzzy Organization filter
-        if (selectedOrg !== "all" && !matchOrganization(item, selectedOrg)) {
-          return false;
-        }
-
-        // Search Query filter
-        if (searchQuery.trim()) {
-          const q = searchQuery.trim().toLowerCase();
-          const titleStr = typeof item.title === "string" ? item.title : item.title.rendered;
-          const excerptStr = item.excerpt
-            ? typeof item.excerpt === "string"
-              ? item.excerpt
-              : item.excerpt.rendered
-            : "";
-          const acfStr = JSON.stringify(item.acf || {});
-
-          const combined = (titleStr + " " + excerptStr + " " + acfStr).toLowerCase();
-          return combined.includes(q);
-        }
-
-        return true;
-      })
-      .sort((a, b) => {
-        if (sortBy === "oldest") {
-          return new Date(a.date || 0).getTime() - new Date(b.date || 0).getTime();
-        }
-        if (sortBy === "title") {
-          const titleA = typeof a.title === "string" ? a.title : a.title.rendered;
-          const titleB = typeof b.title === "string" ? b.title : b.title.rendered;
-          return titleA.localeCompare(titleB, "th");
-        }
-        return new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
-      });
-  }, [sourcePortfolios, selectedCategory, selectedOrg, searchQuery, sortBy]);
-
-  // Calculate category counts for sidebar
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: sourcePortfolios.length };
-    sourcePortfolios.forEach((item) => {
-      if (item.category) {
-        counts[item.category] = (counts[item.category] || 0) + 1;
-      }
-    });
-    return counts;
-  }, [sourcePortfolios]);
-
-  // Calculate organization counts for sidebar
-  const orgCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: sourcePortfolios.length };
-    const orgKeys = ["thai-pbs", "greenpeace", "realframe", "lanna", "nation", "ngo"];
-    orgKeys.forEach((key) => {
-      counts[key] = sourcePortfolios.filter((item) => matchOrganization(item, key)).length;
-    });
-    return counts;
-  }, [sourcePortfolios]);
+  const total = portfolios.length;
+  const phone = siteConfig.social.phone ?? "";
+  const phoneHref = `tel:${phone.replace(/[^+\d]/g, "")}`;
 
   return (
     <Layout>
-      {/* AI-SEO Structured Data Schema */}
-      <JsonLd items={sourcePortfolios} />
+      <JsonLd items={portfolios} />
 
-      {/* Hidden Semantic H1 for SEO & Accessibility */}
-      <h1 className="sr-only">วิศรุต แสนคำ · แฟ้มสะสมผลงาน</h1>
-
-      {/* ── PURE MARKETPLACE CATALOG CONTAINER ── */}
-      <section className="w-full bg-base py-4 sm:py-6 md:py-8 min-h-[calc(100dvh-4rem)] relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
-          <div className="flex flex-col lg:flex-row gap-5 sm:gap-6 items-start">
-            {/* Sidebar with Profile, Experience, Categories & Contact */}
-            <MarketplaceSidebar
-              selectedCategory={selectedCategory}
-              onCategorySelect={setSelectedCategory}
-              selectedOrg={selectedOrg}
-              onOrgSelect={setSelectedOrg}
-              categoryCounts={categoryCounts}
-              orgCounts={orgCounts}
-              isOpenMobile={isMobileSidebarOpen}
-              onCloseMobile={() => setIsMobileSidebarOpen(false)}
-              onOpenContactModal={() => setIsContactModalOpen(true)}
+      {/* ── Identity: who, what, one action ── */}
+      <section
+        aria-labelledby="home-title"
+        className="w-full bg-canvas border-b border-edge/60"
+      >
+        <div className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-16">
+          <div className="flex flex-col sm:flex-row gap-5 sm:gap-7 items-start">
+            <img
+              src="https://api.sankham.cv/wp-content/uploads/2025/08/visarut-profile.jpg"
+              alt=""
+              width={80}
+              height={80}
+              className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border border-edge bg-surface shrink-0"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/placeholder-image.svg";
+              }}
             />
+            <div className="flex flex-col gap-4 min-w-0">
+              <div className="flex flex-col gap-1.5">
+                <h1
+                  id="home-title"
+                  className="text-3xl md:text-5xl font-bold text-content tracking-tight leading-[1.15]"
+                >
+                  วิศรุต แสนคำ
+                </h1>
+                <p className="text-base md:text-lg font-semibold text-accent">
+                  ผู้ผลิตสื่ออิสระ · เชียงใหม่
+                </p>
+              </div>
+              <p className="text-base md:text-lg text-muted leading-relaxed max-w-2xl">
+                ช่างภาพสารคดี ผู้กำกับภาพวิดีโอ และนักพัฒนาเว็บสื่อสังคม — ภาพถ่ายสารคดี
+                วิดีโอเชิงประเด็น เว็บไซต์อินเทอร์แอคทีฟ และสื่อแคมเปญขับเคลื่อนสังคม
+              </p>
 
-            {/* Main Stream (Search bar & Grid view) */}
-            <section className="flex-1 flex flex-col gap-4 sm:gap-5 w-full min-w-0" aria-label="รายการผลงาน">
-              {!searchQuery && selectedCategory === "all" && selectedOrg === "all" && (
-                <section aria-label="ผลงานแนะนำ" className="space-y-3 pb-3 sm:pb-4 border-b border-edge/60">
-                  <h2 className="text-lg font-bold text-content">ผลงานแนะนำ</h2>
-                  <MarketplaceGrid
-                    items={sourcePortfolios.filter(item => ["livingriversiam", "migrantmother", "titang-2024"].includes(item.slug))}
-                    viewMode="list"
-                    onQuickView={openQuickView}
-                  />
-                </section>
-              )}
-              <h2 className="text-lg font-bold text-content">คลังผลงานทั้งหมด</h2>
-              {/* Search Toolbar */}
-              <MarketplaceSearchBar
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                selectedCategory={selectedCategory}
-                onCategorySelect={setSelectedCategory}
-                viewMode={viewMode}
-                onViewModeChange={setViewMode}
-                sortBy={sortBy}
-                onSortChange={setSortBy}
-                onToggleMobileSidebar={() => setIsMobileSidebarOpen(true)}
-                totalCount={filteredPortfolios.length}
-                hasAdditionalFilters={selectedOrg !== "all"}
-                additionalFilterLabel={selectedOrg === "all" ? undefined : ORGANIZATIONS.find(org => org.id === selectedOrg)?.label}
-                onClearAdditionalFilters={() => setSelectedOrg("all")}
-              />
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-1 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-full bg-content text-canvas text-sm font-semibold hover:opacity-85 active:scale-[0.98] transition-[opacity,transform] cursor-pointer"
+                >
+                  <Send size={15} aria-hidden="true" />
+                  <span>ส่งข้อความติดต่องาน</span>
+                </button>
+                <Link
+                  href="/portfolio"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 min-h-[44px] px-5 rounded-full bg-canvas border border-edge text-sm font-semibold text-content hover:bg-surface active:scale-[0.98] transition-[background-color,transform]"
+                >
+                  <span>ดูผลงานทั้งหมด{total > 0 ? ` (${total})` : ""}</span>
+                  <ArrowRight size={15} aria-hidden="true" />
+                </Link>
+              </div>
 
-              {/* Grid / List Results */}
-              {error && (
-                <div className="py-12 text-center" role="alert">
-                  <div className="flex items-center gap-2 justify-center text-dim">
-                    <AlertCircle size={16} aria-hidden="true" />
-                    <span className="text-sm">โหลดข้อมูลล่าสุดไม่สำเร็จ ผลงานที่โหลดแล้วจะแสดงต่อไป</span>
-                    <button onClick={retry} className="underline min-h-[44px]">ลองอีกครั้ง</button>
-                  </div>
-                </div>
-              )}
-              {(!error || sourcePortfolios.length > 0) && (
-                <MarketplaceGrid
-                  items={filteredPortfolios}
-                  viewMode={viewMode}
-                  onQuickView={openQuickView}
-                  isLoading={loading && sourcePortfolios.length === 0}
-                />
-              )}
-            </section>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-dim">
+                <a
+                  href={`mailto:${siteConfig.social.email}`}
+                  className="inline-flex items-center gap-1.5 min-h-[36px] hover:text-content transition-colors"
+                >
+                  <Mail size={14} aria-hidden="true" />
+                  <span>{siteConfig.social.email}</span>
+                </a>
+                {phone && (
+                  <a
+                    href={phoneHref}
+                    className="inline-flex items-center gap-1.5 min-h-[36px] hover:text-content transition-colors"
+                  >
+                    <Phone size={14} aria-hidden="true" />
+                    <span>{phone}</span>
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* ── MOBILE FLOATING ACTION BUTTON (FAB) FOR CONTACT ── */}
-        <button
-          onClick={() => setIsContactModalOpen(true)}
-          className="lg:hidden fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-40 flex items-center gap-2 px-4 py-3 bg-content text-base border border-edge rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer min-h-[44px]"
-          aria-label="ติดต่องาน"
-        >
-          <MessageSquare size={18} className="text-accent" />
-          <span className="text-xs font-bold">ติดต่องาน</span>
-        </button>
       </section>
 
-      {/* Quick View Drawer Modal */}
-      <MarketplaceQuickViewModal
-        portfolio={activeQuickView}
-        onClose={closeQuickView}
-      />
+      <div className="w-full bg-canvas">
+        <div className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-14 flex flex-col gap-12 md:gap-16">
+          {/* ── Featured ── */}
+          {featured.length > 0 && (
+            <section aria-labelledby="featured-title" className="flex flex-col gap-4">
+              <h2 id="featured-title" className="text-xl md:text-2xl font-bold text-content tracking-tight">
+                ผลงานแนะนำ
+              </h2>
+              <MarketplaceGrid items={featured} viewMode="list" onQuickView={openQuickView} />
+            </section>
+          )}
 
-      {/* Contact Form Popup Dialog */}
-      <ContactModal
-        isOpen={isContactModalOpen}
-        onClose={() => setIsContactModalOpen(false)}
-      />
+          {/* ── Latest ── */}
+          <section aria-labelledby="latest-title" className="flex flex-col gap-4">
+            <div className="flex items-end justify-between gap-4">
+              <h2 id="latest-title" className="text-xl md:text-2xl font-bold text-content tracking-tight">
+                ผลงานล่าสุด
+              </h2>
+              <Link
+                href="/portfolio"
+                className="hidden sm:inline-flex items-center gap-1 min-h-[36px] px-2 -mr-2 rounded-lg text-sm font-semibold text-accent hover:bg-surface transition-colors"
+              >
+                <span>ดูทั้งหมด</span>
+                <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            </div>
+
+            {latest.length > 0 ? (
+              <MarketplaceGrid items={latest} viewMode="grid" onQuickView={openQuickView} />
+            ) : (
+              <div className="w-full text-center py-16 bg-surface/30 rounded-2xl border border-edge/60 flex flex-col items-center gap-3">
+                <p className="text-sm text-muted">โหลดรายการผลงานไม่สำเร็จในขณะนี้</p>
+                <Link href="/portfolio" className="inline-flex items-center min-h-[44px] px-4 rounded-xl border border-edge text-sm font-semibold text-content hover:bg-surface">
+                  เปิดคลังผลงาน
+                </Link>
+              </div>
+            )}
+
+            <Link
+              href="/portfolio"
+              className="sm:hidden inline-flex items-center justify-center gap-1.5 min-h-[44px] px-5 rounded-full bg-canvas border border-edge text-sm font-semibold text-content hover:bg-surface transition-colors"
+            >
+              <span>ดูผลงานทั้งหมด{total > 0 ? ` (${total})` : ""}</span>
+              <ArrowRight size={15} aria-hidden="true" />
+            </Link>
+          </section>
+        </div>
+      </div>
+
+      <MarketplaceQuickViewModal portfolio={activeQuickView} onClose={closeQuickView} />
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </Layout>
   );
 }

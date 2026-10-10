@@ -9,11 +9,14 @@ import "./globals.css";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const viewport: Viewport = {
-  themeColor: "#22c55e",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F1117" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: "light",
+  colorScheme: "light dark",
 };
 
 export const metadata: Metadata = {
@@ -138,31 +141,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="วิศรุต แสนคำ" />
         <meta name="application-name" content="วิศรุต แสนคำ" />
-        <meta name="msapplication-TileColor" content="#6b7280" />
+        <meta name="msapplication-TileColor" content="#1D1D1F" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
 
-        {/* Preload critical fonts */}
-        <link
-          rel="preload"
-          href="/font/dbhelvethaicax-webfont.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/font/dbhelvethaicaxmed-webfont.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/font/dbhelvethaicaxbd-webfont.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        {/* System font stack (SF Pro on Apple devices) — no webfont to preload */}
 
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="//api.sankham.cv" />

@@ -20,7 +20,7 @@ export default async function HomePage() {
       <JsonLd data={generatePersonSchema()} />
       <JsonLd data={generateOrganizationSchema()} />
       <JsonLd data={generateWebsiteSchema()} />
-      <HomeClient featuredPortfolios={portfolios} />
+      <HomeClient portfolios={portfolios} />
     </>
   );
 }

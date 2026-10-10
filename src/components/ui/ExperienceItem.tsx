@@ -25,7 +25,7 @@ export function ExperienceItem({
                                 {company}
                             </span>
                             {current && (
-                                <span className="bg-accent-dim text-accent px-2 py-0.5 rounded-full text-xs">
+                                <span className="bg-brand-dim text-accent px-2 py-0.5 rounded-full text-xs">
                                     ปัจจุบัน
                                 </span>
                             )}

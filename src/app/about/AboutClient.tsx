@@ -7,7 +7,7 @@ export default function AboutClient() {
     <Layout>
       {/* Hero */}
       <section
-        className="bg-base py-20 md:py-28 flex justify-center w-full"
+        className="bg-canvas py-20 md:py-28 flex justify-center w-full"
         role="region"
         aria-label="เกี่ยวกับ"
       >
@@ -29,13 +29,13 @@ export default function AboutClient() {
       </section>
 
       {/* Divider */}
-      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+      <div className="w-full flex justify-center bg-canvas" aria-hidden="true">
         <div className="w-[60px] h-px bg-edge" />
       </div>
 
       {/* Experience */}
       <section
-        className="bg-base py-16 md:py-24 flex justify-center w-full"
+        className="bg-canvas py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="ประสบการณ์"
       >
@@ -54,13 +54,13 @@ export default function AboutClient() {
       </section>
 
       {/* Divider */}
-      <div className="w-full flex justify-center bg-base" aria-hidden="true">
+      <div className="w-full flex justify-center bg-canvas" aria-hidden="true">
         <div className="w-[60px] h-px bg-edge" />
       </div>
 
       {/* Awards */}
       <section
-        className="bg-base py-16 md:py-24 flex justify-center w-full"
+        className="bg-canvas py-16 md:py-24 flex justify-center w-full"
         role="region"
         aria-label="รางวัล"
       >

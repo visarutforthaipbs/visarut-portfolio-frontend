@@ -58,7 +58,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
 
   if (loading) {
     return (
-      <section className="bg-base py-16 md:py-20 flex justify-center w-full">
+      <section className="bg-canvas py-16 md:py-20 flex justify-center w-full">
         <div className="max-w-5xl mx-auto px-5 md:px-6">
           <div className="flex flex-col items-center gap-8">
             <p className="text-content">กำลังโหลดบทความ...</p>
@@ -73,7 +73,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
   }
 
   return (
-    <section className="bg-base py-16 md:py-20 flex justify-center w-full">
+    <section className="bg-canvas py-16 md:py-20 flex justify-center w-full">
       <div className="max-w-5xl mx-auto px-5 md:px-6">
         <div className="flex flex-col items-center gap-12">
           {/* Section Header */}
@@ -97,7 +97,7 @@ export function BlogPreview({ maxPosts = 3 }: BlogPreviewProps) {
           <div className="flex items-center gap-4 mt-8">
             <Link
               href="/blog"
-              className="text-base bg-accent text-[#1A1B2E] font-semibold hover:bg-signal px-6 py-3 rounded-lg flex items-center gap-2 transition-colors cursor-pointer"
+              className="text-base bg-brand text-on-brand font-semibold hover:bg-signal px-6 py-3 rounded-lg flex items-center gap-2 transition-colors cursor-pointer"
             >
               <span>ดูบทความทั้งหมด</span>
               <ArrowRight size={20} />
@@ -175,7 +175,7 @@ function BlogPostCard({
                 .map((category) => (
                   <span
                     key={category.id}
-                    className="bg-accent-dim text-accent px-2 py-1 rounded-md text-xs"
+                    className="bg-brand-dim text-accent px-2 py-1 rounded-md text-xs"
                   >
                     {category.name}
                   </span>

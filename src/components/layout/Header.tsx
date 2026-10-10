@@ -27,12 +27,12 @@ export function Header() {
   return (
     <header
       role="banner"
-      className="sticky top-0 z-30 flex justify-center w-full border-b border-edge bg-base/90 backdrop-blur-md"
+      className="sticky top-0 z-30 flex justify-center w-full border-b border-edge bg-canvas/90 backdrop-blur-md"
     >
       <div className="max-w-6xl w-full mx-auto px-5 md:px-6">
         <div className="flex items-center justify-between h-[52px] md:h-[56px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="inline-flex items-center gap-2 min-h-[44px] min-w-[44px] -ml-1 px-1 rounded-lg" aria-label="หน้าแรก">
             <img
               src="/logo/logo-1.svg"
               alt="วิศรุต แสนคำ"
@@ -51,14 +51,15 @@ export function Header() {
                   ? pathname === "/"
                   : pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
-                <Link key={item.href} href={item.href} aria-current={isActive ? "page" : undefined}>
-                  <span
-                    className={`text-xs md:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors duration-150 ${
-                      isActive ? "text-content bg-surface" : "text-dim hover:text-content hover:bg-surface/50"
-                    }`}
-                  >
-                    {item.labelTh || item.label}
-                  </span>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`inline-flex items-center min-h-[36px] px-3 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                    isActive ? "text-content bg-surface" : "text-dim hover:text-content hover:bg-surface/50"
+                  }`}
+                >
+                  {item.labelTh || item.label}
                 </Link>
               );
             })}

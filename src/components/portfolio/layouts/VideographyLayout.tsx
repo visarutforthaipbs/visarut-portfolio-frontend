@@ -90,7 +90,7 @@ export function VideographyLayout({
 
               <Link
                 href={`/portfolio/${portfolio.slug}`}
-                className="text-sm bg-accent text-[#1A1B2E] font-semibold px-4 py-2 rounded-md hover:bg-signal transition-colors cursor-pointer"
+                className="text-sm bg-brand text-on-brand font-semibold px-4 py-2 rounded-md hover:bg-signal transition-colors cursor-pointer"
               >
                 ดูผลงาน
               </Link>

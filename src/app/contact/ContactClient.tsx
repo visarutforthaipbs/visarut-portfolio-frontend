@@ -37,7 +37,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
       await submitContactForm(formData);
       setSubmitStatus("success");
       setFormData({ name: "", email: "", subject: "", message: "", website: "" });
-      setTimeout(() => setSubmitStatus("idle"), 5000);
+      setTimeout(() => setSubmitStatus("idle"), 10000);
     } catch (error) {
       setSubmitStatus("error");
       setErrorMessage(
@@ -49,12 +49,12 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
   };
 
   const inputClass =
-    "w-full bg-transparent border-b border-edge focus:border-content outline-none text-sm text-content py-3 placeholder:text-dim transition-colors";
+    "w-full bg-transparent border-b border-edge focus:border-content outline-none text-base text-content py-3 placeholder:text-dim transition-colors";
 
   return (
     <Layout>
       <section
-        className="bg-base flex justify-center w-full px-5 py-14 md:px-6 md:py-20"
+        className="bg-canvas flex justify-center w-full px-5 py-14 md:px-6 md:py-20"
         role="region"
         aria-label="ติดต่อ"
       >
@@ -71,7 +71,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
       </section>
 
       <section
-        className="bg-base flex justify-center w-full px-5 pb-16 md:px-6 md:pb-24"
+        className="bg-canvas flex justify-center w-full px-5 pb-16 md:px-6 md:pb-24"
         role="region"
         aria-label="ส่งข้อความ"
       >
@@ -88,7 +88,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
 
             {submitStatus === "success" && (
               <div role="alert" aria-live="polite">
-                <span className="text-sm text-green-500">
+                <span className="text-sm font-medium text-accent">
                   ส่งข้อความสำเร็จ เราจะติดต่อกลับโดยเร็ว
                 </span>
               </div>
@@ -96,7 +96,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
 
             {submitStatus === "error" && (
               <div role="alert" aria-live="polite">
-                <span className="text-sm text-red-500">
+                <span className="text-sm font-medium text-danger">
                   {errorMessage}
                 </span>
                 <div>
@@ -132,6 +132,9 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                     onChange={handleInputChange}
                     placeholder="ชื่อ"
                     aria-label="ชื่อ"
+                    autoComplete="name"
+                    minLength={2}
+                    maxLength={100}
                     className={inputClass}
                     required
                   />
@@ -147,6 +150,8 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                     onChange={handleInputChange}
                     placeholder="อีเมล"
                     aria-label="อีเมล"
+                    autoComplete="email"
+                    maxLength={254}
                     className={inputClass}
                     required
                   />
@@ -161,6 +166,8 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                     onChange={handleInputChange}
                     placeholder="หัวข้อ"
                     aria-label="หัวข้อ"
+                    minLength={2}
+                    maxLength={160}
                     className={inputClass}
                     required
                   />
@@ -173,8 +180,10 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder="ข้อความ"
+                    placeholder="ข้อความ (อย่างน้อย 10 ตัวอักษร)"
                     aria-label="ข้อความ"
+                    minLength={10}
+                    maxLength={5000}
                     rows={5}
                     className={`${inputClass} resize-y`}
                     required
@@ -185,7 +194,7 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group inline-flex cursor-pointer items-center gap-2 border-b border-content pb-1 text-sm font-medium text-content transition-colors hover:text-muted hover:border-muted disabled:cursor-not-allowed disabled:opacity-50"
+                    className="group inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-full bg-content px-6 py-3 text-sm font-semibold text-canvas transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span>{isSubmitting ? "กำลังส่ง..." : "ส่งข้อความ"}</span>
                     <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
