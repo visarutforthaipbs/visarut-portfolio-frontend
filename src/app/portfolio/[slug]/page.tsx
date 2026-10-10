@@ -9,6 +9,42 @@ import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import { WordPressAPI } from "@/lib/wordpress";
 import { notFound } from "next/navigation";
 
+function normalizeSlug(s: string): string {
+  try {
+    return decodeURIComponent(s).normalize("NFC").toLowerCase();
+  } catch {
+    return s.toLowerCase();
+  }
+}
+
+/**
+ * The WP host's firewall answers 403 to `?slug=` lookups for a few long Thai
+ * slugs, while the same posts load fine by ID. Fall back to resolving the ID
+ * from the (cached) slug list, then fetch by ID.
+ */
+async function getPortfolioByIdFallback(slug: string): Promise<PortfolioItem | null> {
+  const wanted = normalizeSlug(slug);
+  for (let page = 1; page <= 5; page++) {
+    const listRes = await fetch(
+      wpApiUrl(siteConfig.api.wordpress.postsEndpoint, `per_page=100&page=${page}&_fields=id,slug`),
+      { next: { revalidate: 3600 } }
+    );
+    if (!listRes.ok) return null;
+    const list: { id: number; slug: string }[] = await listRes.json();
+    const hit = list.find((p) => normalizeSlug(p.slug) === wanted);
+    if (hit) {
+      const res = await fetch(
+        wpApiUrl(`${siteConfig.api.wordpress.postsEndpoint}/${hit.id}`, "_embed=true"),
+        { next: { revalidate: 3600 } }
+      );
+      if (!res.ok) return null;
+      return WordPressAPI.transformPortfolioPost(await res.json());
+    }
+    if (list.length < 100) return null;
+  }
+  return null;
+}
+
 async function getPortfolio(slug: string): Promise<PortfolioItem | null> {
   try {
     const portfolioResponse = await fetch(
@@ -16,10 +52,10 @@ async function getPortfolio(slug: string): Promise<PortfolioItem | null> {
       { next: { revalidate: 3600 } }
     );
 
-    if (!portfolioResponse.ok) return null;
+    if (!portfolioResponse.ok) return await getPortfolioByIdFallback(slug);
 
     const portfolioData = await portfolioResponse.json();
-    if (portfolioData.length === 0) return null;
+    if (portfolioData.length === 0) return await getPortfolioByIdFallback(slug);
 
     return WordPressAPI.transformPortfolioPost(portfolioData[0]);
   } catch (error) {
