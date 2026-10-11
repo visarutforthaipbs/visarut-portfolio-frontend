@@ -65,16 +65,25 @@ export function formatDate(dateStr?: string | Date): string {
     }
   }
 
-  // Pattern 2: YYYY-MM-DD or ISO string
-  const parsedDate = new Date(clean);
-  if (!isNaN(parsedDate.getTime())) {
-    const day = parsedDate.getDate();
-    const month = parsedDate.getMonth();
-    const thaiYear = parsedDate.getFullYear() + 543;
-    return `${day} ${THAI_MONTHS[month]} ${thaiYear}`;
+  // Pattern 2: YYYY-MM-DD or ISO string (strict — never let new Date() guess
+  // free text: "ตุลาคม 2569 (…)" used to become "1 มกราคม 3112").
+  if (/^\d{4}-\d{2}-\d{2}/.test(clean)) {
+    const parsedDate = new Date(clean);
+    if (!isNaN(parsedDate.getTime())) {
+      const day = parsedDate.getDate();
+      const month = parsedDate.getMonth();
+      const thaiYear = parsedDate.getFullYear() + 543;
+      return `${day} ${THAI_MONTHS[month]} ${thaiYear}`;
+    }
   }
 
-  return clean;
+  // Pattern 3: free Thai text from WordPress ("15 ธันวาคม 2022",
+  // "สิงหาคม - พฤศจิกายน 2025", "ตุลาคม 2569 (…)"). Keep the text, fix common
+  // month typos and show every Christian-era year as Buddhist era.
+  return clean
+    .replace(/กุมภาพันธุ์/g, "กุมภาพันธ์")
+    .replace(/\b(19\d{2}|20\d{2})\b/g, (y) => String(parseInt(y, 10) + 543))
+    .replace(/\s+-\s+/g, " – ");
 }
 
 /**
