@@ -19,6 +19,7 @@ export const CATEGORY_IDS: Record<PortfolioCategory, number> = {
   training: 52,
   research: 53,
   writing: 54,
+  game: 56,
 } as const;
 
 /** Reverse lookup: WordPress category ID → portfolio category slug */

@@ -26,6 +26,7 @@ import {
   GraduationCap,
   FileSearch,
   PenTool,
+  Gamepad2,
 } from "lucide-react";
 import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
 import { workExperience, awards } from "@/constants/data";
@@ -56,6 +57,7 @@ const CATEGORY_ICONS: Record<string, React.ComponentType<{ size?: number; classN
   training: GraduationCap,
   research: FileSearch,
   writing: PenTool,
+  game: Gamepad2,
 };
 
 export const ORGANIZATIONS = [

@@ -23,7 +23,8 @@ export type PortfolioCategory =
   | "live-stream"
   | "training"
   | "research"
-  | "writing";
+  | "writing"
+  | "game";
 
 // Portfolio Category Labels (Thai)
 export const PORTFOLIO_CATEGORIES: Record<PortfolioCategory, string> = {
@@ -40,6 +41,7 @@ export const PORTFOLIO_CATEGORIES: Record<PortfolioCategory, string> = {
   training: "อบรม",
   research: "งานวิจัย",
   writing: "งานเขียน",
+  game: "เกม",
 };
 
 // Media Types
