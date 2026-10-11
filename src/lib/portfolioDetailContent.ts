@@ -1,5 +1,6 @@
 import DOMPurify from "isomorphic-dompurify";
 import type { PortfolioItem } from "@/types/portfolio";
+import { formatDate } from "@/utils";
 
 export type DetailImage = {
   kind: "image";
@@ -70,18 +71,16 @@ export function describeExternalLink(raw?: string): ExternalLink | null {
 
 const TH_MONTHS = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
-/** ACF dates arrive either as free Thai text or as `YYYYMMDD`; format the latter, pass the former through. */
+/**
+ * ACF dates arrive as `YYYYMMDD`, ISO, or free Thai text. Use the same
+ * formatter as the portfolio cards so card and page agree (Buddhist era).
+ */
 export function formatProjectDate(value?: string, fallbackIso?: string): string | null {
   const v = (value || "").trim();
-  const m = v.match(/^(\d{4})(\d{2})(\d{2})$/);
-  if (m) {
-    const month = TH_MONTHS[Number(m[2]) - 1];
-    if (month) return `${Number(m[3])} ${month} ${m[1]}`;
-  }
-  if (v) return v;
+  if (v) return formatDate(v) || v;
   if (fallbackIso) {
     const d = new Date(fallbackIso);
-    if (!Number.isNaN(d.getTime())) return d.toLocaleDateString("th-TH-u-ca-gregory", { year: "numeric", month: "long" });
+    if (!Number.isNaN(d.getTime())) return `${TH_MONTHS[d.getMonth()]} ${d.getFullYear() + 543}`;
   }
   return null;
 }
