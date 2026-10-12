@@ -40,6 +40,26 @@ async function getFeaturedImage(mediaId: number): Promise<string | null> {
 }
 
 // Server-side metadata generation for SEO and social sharing
+/**
+ * Prerender every known slug so the page's <title>/<meta description> land in
+ * <head>. Dynamically streamed routes emit metadata AFTER </head>, which Google
+ * and Lighthouse treat as "no meta description" (Lighthouse SEO 92).
+ * Returns [] on API failure: the route then falls back to on-demand rendering.
+ */
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(
+      wpApiUrl(siteConfig.api.wordpress.blogPostsEndpoint, "per_page=100&_fields=slug"),
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) return [];
+    const rows: { slug: string }[] = await res.json();
+    return rows.map((row) => ({ slug: row.slug }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {

@@ -147,6 +147,7 @@ export default function RootLayout({
         {/* System font stack (SF Pro on Apple devices) — no webfont to preload */}
 
         {/* DNS prefetch for external domains */}
+        <link rel="preconnect" href="https://api.sankham.cv" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="//api.sankham.cv" />
 
         {/* Google tag (gtag.js) — rendered server-side in <head> so Search

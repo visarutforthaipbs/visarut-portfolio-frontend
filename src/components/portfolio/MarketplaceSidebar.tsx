@@ -105,7 +105,7 @@ export function MarketplaceSidebar({
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-accent/40 bg-surface shrink-0">
             <img
-              src="https://api.sankham.cv/wp-content/uploads/2025/08/visarut-profile.jpg"
+              src="https://api.sankham.cv/wp-content/uploads/2025/08/visarut-profile-300x289.jpg"
               alt="วิศรุต แสนคำ"
               className="w-full h-full object-cover"
               onError={(e) => {

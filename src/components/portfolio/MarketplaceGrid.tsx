@@ -192,7 +192,7 @@ export function MarketplaceGrid({
                 src={getFeaturedImageUrl(item)}
                 alt={cleanTitle}
                 className="absolute inset-0 w-full h-full! object-cover object-center transition-opacity duration-200"
-                priority={index < 2}
+                priority={index < 1}
               />
 
               {/* Overlay Category & Client Badges */}

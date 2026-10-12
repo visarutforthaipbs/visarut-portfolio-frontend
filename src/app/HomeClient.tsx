@@ -78,7 +78,7 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
         <div className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-16">
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-7 items-start">
             <img
-              src="https://api.sankham.cv/wp-content/uploads/2025/08/visarut-profile.jpg"
+              src="https://api.sankham.cv/wp-content/uploads/2025/08/visarut-profile-300x289.jpg"
               alt="ภาพถ่าย วิศรุต แสนคำ"
               width={80}
               height={80}
