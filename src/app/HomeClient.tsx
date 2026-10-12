@@ -79,7 +79,7 @@ export default function HomeClient({ portfolios }: HomeClientProps) {
           <div className="flex flex-col sm:flex-row gap-5 sm:gap-7 items-start">
             <img
               src="https://api.sankham.cv/wp-content/uploads/2025/08/visarut-profile.jpg"
-              alt=""
+              alt="ภาพถ่าย วิศรุต แสนคำ"
               width={80}
               height={80}
               className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border border-edge bg-surface shrink-0"
