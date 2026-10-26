@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, Mail, Phone } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 import { createContactMailto, submitContactForm } from "@/lib/contact";
@@ -19,6 +19,16 @@ export default function ContactClient({ initialSubject = "" }: { initialSubject?
     "idle" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // ?project= prefill is read client-side so /contact can be statically
+  // rendered (keeps <title>/<meta description> inside <head> — UX-009).
+  useEffect(() => {
+    if (initialSubject) return;
+    const project = new URLSearchParams(window.location.search).get("project");
+    if (project) {
+      setFormData((prev) => (prev.subject ? prev : { ...prev, subject: project.slice(0, 200) }));
+    }
+  }, [initialSubject]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

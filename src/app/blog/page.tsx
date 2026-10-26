@@ -6,7 +6,8 @@ import type { BlogPost, BlogCategory } from "@/types/wordpress";
 
 export const metadata: Metadata = generateSEO({
   title: "บล็อก",
-  description: "บทความ ความคิดเห็น และประสบการณ์จากการทำงานด้านสื่อ โดย วิศรุต แสนคำ",
+  description:
+    "บทความ ความคิดเห็น และประสบการณ์จากการทำงานสื่อของวิศรุต แสนคำ ผู้ผลิตสื่ออิสระ เชียงใหม่ ว่าด้วยภาพถ่าย วิดีโอ เว็บไซต์ และงานข่าว",
   url: "/blog",
 });
 
