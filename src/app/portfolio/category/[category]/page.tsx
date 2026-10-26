@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout";
 import { PORTFOLIO_CATEGORIES, PortfolioCategory, PortfolioItem } from "@/types/portfolio";
 import { WordPressAPI } from "@/lib/wordpress";
 import { generateSEO } from "@/lib/seo";
+import { getCategoryCounts } from "@/lib/categoryCounts";
 import { PhotographyLayout } from "@/components/portfolio/layouts/PhotographyLayout";
 import { VideographyLayout } from "@/components/portfolio/layouts/VideographyLayout";
 import { VideoEditingLayout } from "@/components/portfolio/layouts/VideoEditingLayout";
@@ -63,11 +64,17 @@ export async function generateMetadata({
   }
 
   const categoryName = PORTFOLIO_CATEGORIES[category as PortfolioCategory];
-  return generateSEO({
+  const meta = generateSEO({
     title: `ผลงานหมวด${categoryName}`,
     description: categoryDescription(category as PortfolioCategory, categoryName),
     url: `/portfolio/category/${category}`,
   });
+  // UX-012: an empty category is a thin page — keep it out of the index until it has work.
+  const counts = await getCategoryCounts();
+  if (counts && (counts[category] ?? 0) === 0) {
+    return { ...meta, robots: { index: false, follow: true } };
+  }
+  return meta;
 }
 
 export default async function CategoryPage({

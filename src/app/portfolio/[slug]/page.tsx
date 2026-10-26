@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PORTFOLIO_SEO_OVERRIDES } from "@/lib/seoOverrides";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { PortfolioItem, WordPressFeaturedMedia } from "@/types";
 import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
@@ -165,9 +166,11 @@ export async function generateMetadata({
     featuredImageUrl = getBlogPostImage(null, portfolio.content.rendered);
   }
 
-  const cleanTitle = decodeHtmlEntities(portfolio.title.rendered);
+  const pageTitle = decodeHtmlEntities(portfolio.title.rendered);
+  const override = PORTFOLIO_SEO_OVERRIDES[portfolio.id];
+  const cleanTitle = override?.title ?? pageTitle;
 
-  const description = buildDescription(portfolio, cleanTitle);
+  const description = override?.description ?? buildDescription(portfolio, pageTitle);
 
   const portfolioUrl = `${siteConfig.url}/portfolio/${portfolio.slug}`;
 

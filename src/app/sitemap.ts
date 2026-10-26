@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig, wpApiUrl, CATEGORY_IDS } from "@/lib/config";
+import { getCategoryCounts } from "@/lib/categoryCounts";
 import type { PortfolioItem } from "@/types";
 import type { BlogPost } from "@/types/wordpress";
 
@@ -88,7 +89,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // All 13 portfolio categories from single source of truth
-  const portfolioCategories = Object.keys(CATEGORY_IDS);
+  // UX-012: skip empty categories (they are noindex); fail open if WP is unreachable
+  const counts = await getCategoryCounts();
+  const portfolioCategories = Object.keys(CATEGORY_IDS).filter(
+    (c) => !counts || (counts[c] ?? 0) > 0
+  );
 
   const categoryPages = portfolioCategories.map((category) => ({
     url: `${baseUrl}/portfolio/category/${category}`,
