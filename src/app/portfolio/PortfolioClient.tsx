@@ -169,7 +169,8 @@ export default function PortfolioClient({
               />
 
               {error && <div role="alert">โหลดข้อมูลล่าสุดไม่สำเร็จ <button onClick={retry} className="underline min-h-[44px]">ลองอีกครั้ง</button></div>}
-              {/* Grid / List Results */}
+              {/* Grid / List Results — sr-only h2 keeps heading order h1 → h2 → h3 (cards) */}
+              <h2 className="sr-only">รายการผลงาน</h2>
               <MarketplaceGrid
                 items={visiblePortfolios}
                 viewMode={viewMode}
