@@ -34,7 +34,15 @@ function VideoFrame({ src, title }: { src: string; title: string }) {
   );
 }
 
-function Photo({ img, onOpen, eager }: { img: DetailImage; onOpen: () => void; eager?: boolean }) {
+// `sizes` = rendered width per layout, so the browser picks the smallest srcset candidate that stays sharp.
+const SIZES = {
+  hero: "(min-width: 1152px) 1104px, calc(100vw - 40px)",
+  column: "(min-width: 1024px) 640px, calc(100vw - 40px)",
+  half: "(min-width: 1024px) 310px, calc(50vw - 28px)",
+  masonry: "(min-width: 1152px) 542px, (min-width: 640px) calc(50vw - 30px), calc(100vw - 40px)",
+} as const;
+
+function Photo({ img, onOpen, eager, sizes }: { img: DetailImage; onOpen: () => void; eager?: boolean; sizes?: string }) {
   return (
     <figure className="flex flex-col gap-2">
       <button
@@ -45,6 +53,8 @@ function Photo({ img, onOpen, eager }: { img: DetailImage; onOpen: () => void; e
       >
         <img
           src={img.url}
+          srcSet={img.srcSet}
+          sizes={img.srcSet ? sizes : undefined}
           alt={img.alt}
           width={img.width}
           height={img.height}
@@ -168,7 +178,7 @@ export function PortfolioCaseStudy({ title, categoryLabel, detail, breadcrumb }:
       {/* ── Hero media ── */}
       {(heroEmbed || heroImage) && (
         <div className="max-w-6xl mx-auto px-5 md:px-6 pb-10 md:pb-14">
-          {heroEmbed ? <VideoFrame src={heroEmbed} title={title} /> : heroImage && <Photo img={heroImage} onOpen={() => openImage(heroImage)} eager />}
+          {heroEmbed ? <VideoFrame src={heroEmbed} title={title} /> : heroImage && <Photo img={heroImage} onOpen={() => openImage(heroImage)} eager sizes={SIZES.hero} />}
         </div>
       )}
 
@@ -181,7 +191,7 @@ export function PortfolioCaseStudy({ title, categoryLabel, detail, breadcrumb }:
               <div className="lg:col-span-7 flex flex-col gap-4 md:gap-5">
                 {groupMedia(media).map((row, r) => (
                   <div key={r} className={row.length === 2 ? "grid grid-cols-2 gap-4 md:gap-5" : ""}>
-                    {row.map((m, i) => (m.kind === "embed" ? <VideoFrame key={i} src={m.src} title={m.title} /> : <Photo key={i} img={m} onOpen={() => openImage(m)} />))}
+                    {row.map((m, i) => (m.kind === "embed" ? <VideoFrame key={i} src={m.src} title={m.title} /> : <Photo key={i} img={m} onOpen={() => openImage(m)} sizes={row.length === 2 ? SIZES.half : SIZES.column} />))}
                   </div>
                 ))}
               </div>
@@ -190,7 +200,7 @@ export function PortfolioCaseStudy({ title, categoryLabel, detail, breadcrumb }:
             <div className="max-w-2xl">{text}</div>
           ) : (
             <div className="columns-1 sm:columns-2 gap-4 md:gap-5 [&>*]:mb-4 md:[&>*]:mb-5 [&>*]:break-inside-avoid">
-              {media.map((m, i) => (m.kind === "embed" ? <VideoFrame key={i} src={m.src} title={m.title} /> : <Photo key={i} img={m} onOpen={() => openImage(m)} />))}
+              {media.map((m, i) => (m.kind === "embed" ? <VideoFrame key={i} src={m.src} title={m.title} /> : <Photo key={i} img={m} onOpen={() => openImage(m)} sizes={SIZES.masonry} />))}
             </div>
           )}
         </div>

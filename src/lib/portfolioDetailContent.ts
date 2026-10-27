@@ -9,6 +9,8 @@ export type DetailImage = {
   width?: number;
   height?: number;
   caption?: string;
+  /** WP-generated responsive candidates ("url 720w, url 1024w, …") — lets phones load a smaller file. */
+  srcSet?: string;
 };
 export type DetailEmbed = { kind: "embed"; src: string; title: string };
 export type DetailMedia = DetailImage | DetailEmbed;
@@ -85,6 +87,16 @@ export function formatProjectDate(value?: string, fallbackIso?: string): string 
   return null;
 }
 
+/** Keep only well-formed `https://… NNNw` candidates (WP srcset), else undefined. */
+function cleanSrcSet(raw: string | null): string | undefined {
+  if (!raw) return undefined;
+  const parts = raw
+    .split(",")
+    .map((p) => p.trim())
+    .filter((p) => /^https:\/\/\S+\s+\d+w$/.test(p));
+  return parts.length > 1 ? parts.join(", ") : undefined;
+}
+
 function imageFrom(img: Element, caption?: string): DetailImage | null {
   const url = img.getAttribute("src");
   if (!url) return null;
@@ -95,6 +107,7 @@ function imageFrom(img: Element, caption?: string): DetailImage | null {
     width: num(img.getAttribute("width")),
     height: num(img.getAttribute("height")),
     caption: caption || undefined,
+    srcSet: cleanSrcSet(img.getAttribute("srcset")),
   };
 }
 
