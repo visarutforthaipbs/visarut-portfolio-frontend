@@ -253,7 +253,7 @@ export default function PersonalProjectsPage() {
           >
             <div className="bg-surface p-5 md:p-6 rounded-lg border border-edge h-full transition-all duration-200 md:hover:-translate-y-1 hover:bg-surface-hover hover:border-accent">
               <div className="flex flex-col gap-3 items-start">
-                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full text-xs">
+                <span className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full text-xs">
                   ข่าว
                 </span>
                 <h3 className="text-lg md:text-xl font-semibold text-content leading-[1.4]">
@@ -279,7 +279,7 @@ export default function PersonalProjectsPage() {
           >
             <div className="bg-surface p-5 md:p-6 rounded-lg border border-edge h-full transition-all duration-200 md:hover:-translate-y-1 hover:bg-surface-hover hover:border-accent">
               <div className="flex flex-col gap-3 items-start">
-                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full text-xs">
+                <span className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full text-xs">
                   บทความ
                 </span>
                 <h3 className="text-lg md:text-xl font-semibold text-content leading-[1.4]">

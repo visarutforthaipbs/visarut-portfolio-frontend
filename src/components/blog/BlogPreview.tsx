@@ -175,7 +175,7 @@ function BlogPostCard({
                 .map((category) => (
                   <span
                     key={category.id}
-                    className="bg-brand-dim text-accent px-2 py-1 rounded-md text-xs"
+                    className="bg-brand-dim text-accent-on-tint px-2 py-1 rounded-md text-xs"
                   >
                     {category.name}
                   </span>

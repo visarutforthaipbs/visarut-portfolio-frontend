@@ -98,7 +98,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
           {photoACF.photography_style && (
             <div className="flex flex-col items-start gap-2 w-full">
               <span className="text-sm font-semibold text-accent">รูปแบบการถ่ายภาพ</span>
-              <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">{photoACF.photography_style}</span>
+              <span className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full">{photoACF.photography_style}</span>
             </div>
           )}
 
@@ -128,7 +128,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   <Film size={18} />
                   <span className="text-sm font-semibold">ประเภทวีดีโอ</span>
                 </div>
-                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">
+                <span className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full">
                   {videoACF.video_type === "documentary" ? "สารคดี"
                     : videoACF.video_type === "commercial" ? "โฆษณา"
                     : videoACF.video_type === "music-video" ? "มิวสิควิดีโอ"
@@ -242,7 +242,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   <User size={18} />
                   <span className="text-sm font-semibold">ประเภทเว็บไซต์</span>
                 </div>
-                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">
+                <span className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full">
                   {webACF.website_type === "web_app" ? "Web Application"
                     : webACF.website_type === "website" ? "Website"
                     : webACF.website_type === "ecommerce" ? "E-commerce"
@@ -298,7 +298,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
               <span className="text-sm font-semibold text-accent">เทคโนโลยีที่ใช้</span>
               <div className="flex items-center gap-2 flex-wrap">
                 {webACF.technologies_used.split(",").map((tech: string, index: number) => (
-                  <span key={index} className="bg-brand-dim text-accent px-3 py-1 rounded-full">{tech.trim()}</span>
+                  <span key={index} className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full">{tech.trim()}</span>
                 ))}
               </div>
             </div>
@@ -352,7 +352,7 @@ export function PortfolioACFDisplay({ portfolio }: PortfolioACFDisplayProps) {
                   <User size={18} />
                   <span className="text-sm font-semibold">ประเภทงานออกแบบ</span>
                 </div>
-                <span className="bg-brand-dim text-accent px-3 py-1 rounded-full">
+                <span className="bg-brand-dim text-accent-on-tint px-3 py-1 rounded-full">
                   {designACF.design_type === "social_media" ? "Social Media"
                     : designACF.design_type === "logo" ? "Logo"
                     : designACF.design_type === "branding" ? "Branding"

@@ -150,7 +150,7 @@ export function MarketplaceSearchBar({
               onClick={() => onCategorySelect(pill.value)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer min-h-[38px] flex items-center shrink-0 ${
                 isActive
-                  ? "bg-brand-dim text-accent border border-accent/40"
+                  ? "bg-brand-dim text-accent-on-tint border border-accent/40"
                   : "bg-canvas hover:bg-surface border border-edge/60 text-muted hover:text-content"
               }`}
               aria-pressed={isActive}

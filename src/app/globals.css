@@ -24,6 +24,8 @@
   --color-on-brand: #FFFFFF;
   /* text-safe accent (≥ 4.5:1 on canvas) */
   --color-accent: #1E7A45;
+  /* text on the tinted chip (bg-brand-dim) over gray surfaces: ≥ 4.5:1 on canvas/surface/hover */
+  --color-accent-on-tint: #1A7040;
   --color-accent-dim: rgba(45, 163, 90, 0.10);
   --color-signal: #25894D;
   --color-signal-dim: rgba(37, 137, 77, 0.10);
@@ -53,6 +55,7 @@
     --color-brand-dim: rgba(48, 180, 103, 0.16);
     --color-on-brand: #04200F;
     --color-accent: #5DD68A;
+    --color-accent-on-tint: #5DD68A;
     --color-accent-dim: rgba(93, 214, 138, 0.16);
     --color-signal: #30B467;
     --color-signal-dim: rgba(48, 180, 103, 0.18);
