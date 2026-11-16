@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PORTFOLIO_SEO_OVERRIDES } from "@/lib/seoOverrides";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { PortfolioItem, WordPressFeaturedMedia } from "@/types";
-import { getBlogPostImage, decodeHtmlEntities } from "@/utils";
+import { getBlogPostImage, decodeHtmlEntities, wpUtcIso } from "@/utils";
 import PortfolioDetailClient from "./PortfolioDetailClient";
 import { JsonLd } from "@/components/JsonLd";
 import { generateCreativeWorkSchema } from "@/lib/seo";
@@ -202,7 +202,7 @@ export async function generateMetadata({
       locale: "th_TH",
       type: "article",
       publishedTime: portfolio.date,
-      modifiedTime: portfolio.modified,
+      modifiedTime: wpUtcIso(portfolio.modified_gmt, portfolio.modified),
       authors: [siteConfig.author],
     },
     twitter: {

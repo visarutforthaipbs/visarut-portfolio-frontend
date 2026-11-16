@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig, wpApiUrl } from "@/lib/config";
 import type { BlogPost, WordPressFeaturedMedia } from "@/types/wordpress";
-import { getBlogPostImage } from "@/utils";
+import { getBlogPostImage, wpUtcIso } from "@/utils";
 import BlogPostClient from "./BlogPostClient";
 import { JsonLd } from "@/components/JsonLd";
 import { notFound } from "next/navigation";
@@ -116,7 +116,7 @@ export async function generateMetadata({
       locale: "th_TH",
       type: "article",
       publishedTime: post.date,
-      modifiedTime: post.modified,
+      modifiedTime: wpUtcIso(post.modified_gmt, post.modified),
       authors: [siteConfig.author],
     },
     twitter: {
@@ -158,7 +158,7 @@ export default async function BlogPostPage({
     url: `${siteConfig.url}/blog/${post.slug}`,
     image: featuredImageUrl || `${siteConfig.url}/placeholder-image.jpg`,
     datePublished: post.date,
-    dateModified: post.modified,
+    dateModified: wpUtcIso(post.modified_gmt, post.modified),
     author: {
       "@type": "Person",
       name: siteConfig.authorTh,

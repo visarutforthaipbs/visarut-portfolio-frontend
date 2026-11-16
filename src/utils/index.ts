@@ -228,3 +228,14 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
     timeout = setTimeout(later, wait);
   };
 }
+
+/**
+ * WordPress REST returns `modified`/`date` as site-LOCAL time with no timezone marker
+ * (e.g. "2026-10-26T10:02:44" = Bangkok). Parsing that on a UTC server (Vercel) is 7 h
+ * wrong. `*_gmt` is the same instant in UTC: this returns a proper ISO string ending in Z.
+ * Falls back to the local string only if the GMT field is missing.
+ */
+export function wpUtcIso(gmt?: string, local?: string): string | undefined {
+  if (gmt) return /(?:Z|[+-]\d{2}:?\d{2})$/.test(gmt) ? gmt : `${gmt}Z`;
+  return local;
+}
